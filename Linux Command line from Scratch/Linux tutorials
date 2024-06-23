@@ -1,0 +1,645 @@
+						Linux tutorials 
+
+
+Syntax:
+
+	command -[options] inputs
+
+	commandNames need to be on the seach path of shell
+
+	command operates on inputs
+
+	options modify a behavior of command 
+
+	Each command behaves very different
+
+
+history			----> shows all the previous command
+
+!501 			----> to execute the command at line number 501 
+!! 				----> to execute the last command
+
+How to delete history in a command line ---> $ history -c; history -w 
+
+
+
+cal 			----> display current year and month
+
+cal -y 			----> display current year
+
+cal 2017 		----> display calender of year 2017
+
+cal 12 2017 	----> displays 12th month of 2017 i.e december
+
+cal -A 1 12 2017 ----> display 12th month of 2017 and one month of after it. i.e january 2018
+
+cal -B 2 12 2017 ----> display 12th month of 2017 and two months of before it. i.e October and November 2018
+
+
+
+echo $PATH   	----> display all the default paths 
+
+which echo 	 	----> gives executable path of a command 
+
+
+
+
+Not all command require inputs like "date"
+
+date 			----> display date in current time standard (local machine time zone)
+
+date -u 		----> display time in UTC time zone 
+date --universal
+
+
+Piping : 
+	piping is about connecting the standard output of one command to the standard input of another command
+
+Without piping 
+	Redirection of date command output to date.txt
+$ date 1> date.txt
+ 	
+ 	Taking date.txt file content as an input to cut command 
+$ cut 0< date.txt --delimiter " " --field 1
+
+OR
+
+$ cut < date.txt --delimiter " " --fields 1
+
+	--delimiter means whats divide the fields (in date command, space divided command) and --field is the columns divided by delimiter.
+
+
+With piping 
+$ date | cut  --delimiter " " --fields 1 > today.txt
+
+
+The Tee Command :
+	the tee command allows you to save a snapshot of the data and continue doing piping
+
+$ date | tee fulldate.txt |cut --delimiter=" " --fields=1 > today.txt
+	it will create fulldate.txt and today.txt
+
+
+The xargs command :
+	the xargs command allows you to convert piped data into command line arguments for commands that only accept command line arguments,so that we can keep our pipe going 
+without having to break it at any point.
+
+Example: echo doesnt use standard input but it uses command line argument.
+
+ $ date | echo "hello world"
+ 	Above command gives only "hello world", not the output of date command because echo doesnt use standard input. it uses only command line input.
+
+ $ date | xargs echo
+ Fri Feb  2 08:01:32 JST 2024		---> This will display date command output.
+
+ $ date | xargs echo "hello world"
+ hello world Fri Feb 2 08:02:52 JST 2024
+
+ $ date | cut --delimiter " " --field 1 | xargs echo
+ Fri		--> In this, echo command will not work with xargs.
+
+
+ Aliases
+ 	An Alias is a custom nickname for a command or pipeline
+
+ 	~$vi .bash_aliases
+
+ 	alias etcls='ls  /etc > /home/vagrant/file1.txt'
+ 	alias runls='ls  /run > /home/vagrant/file2.txt'
+ 	alias catfiles='cat file1.txt file2.txt | tee /home/vagrant/unsorted.txt | sort -r >> /home/vagrant/reversed.txt'
+
+Close the terminal and start again to use the aliases command.
+
+Wildcards:
+	$ ls file*.txt
+
+	$ ls file?.txt
+
+	$ ls ??.txt
+
+	$ ls file[0-9].txt
+
+	$ ls file[0-9ABC].txt
+
+
+Creating a file Directory
+	$ touch file1
+
+	$ cat file.txt > (Press Enter and type sometime then press ctrl + D to save the content)
+
+	$ echo "Hello World" > file1.txt
+
+	$ mkdir folder
+
+	$ mkdir -p /home/ausaf/science/chemistry
+	
+	$ mkdir {jan,feb,mar,apr,apr,june,july,aug,spe,oct,nov,dec}_{2017,2018,2019,2020,2021,2022,2023,2024}
+
+	$ mkdir {jan,feb,mar,apr,apr,june,july,aug,spe,oct,nov,dec}_{2017..2024}
+
+	$ touch {jan,feb,mar,apr,apr,june,july,aug,spe,oct,nov,dec}_{2017..2024}/file{1..100}
+
+	$ touch file{A..D}.txt
+
+Deleting file and folder
+	$ rm *.txt
+
+	$ rm file*
+
+	$ rm file{1..10}.txt
+
+	$ rm *[2,3]*		It will delete files with has 2 and 3 in the file name 
+
+	$ rmdir delffolder
+
+	$ rm -r delffolder
+
+	$ rm -ri delffolder
+
+	$ mkdir -p delffolder/deleteme{A..D}
+	$ touch delffolder/deleteme{A..D}/file{1..10}
+	$ rm -ri delffolder/deleteme{A..D}/file{1..10}
+
+Copying files and folder
+	$ cp file1 file2 destination/
+
+	$ cp -r copy_me/ destination/
+
+Moving + Renaming files and folders
+	$ mv oldfile.txt newfile.txt
+
+	$ mv oldfolder newfolder 
+
+	$ mv newfolder/* .
+
+	$ mv file* ~/Documents/
+
+	$ mv ~/Documents/newfolder ./jackport 		# this will move newfolder with all its content to new location with named 'jackport' 
+
+Locate command
+	$ sudo apt install mlocate
+
+	$ locate *.conf
+
+	$ locate -i *.CONF                  # -i use for ignore case
+
+	$ locate -i --limit 5 *.conf		# this will display only 5 results.
+
+	$ locate -S                         # to display database information that locate command uses.
+
+	$ locate -e *.conf					# -e or --existing --- this will check the existance of file and then only report 
+
+	$ locate --existing --follow -i *.conf # for maximum assurance 
+
+As the database updates only once in a day, to update database when we need or like.
+	$ touch locate.txt 	  	# new file created
+	$ locate locate.txt 	# File not found 
+    $ sudo updatedb			# update database of locate command 
+    $ locate locate.txt 	# File found
+
+Find Command 
+	$ find 			# it will list all files in the current working directory. Its a default behavior of a 'find' command 
+
+	$ find /tmp		# it will list all files in the /tmp directory.
+
+	$ find . -maxdepth 1
+
+	$ find . -maxdepth 100
+
+	$ find . -type f
+ 
+	$ find . -type d
+
+	$ find . -maxdepth 2 -type f
+
+	$ find . -name "file.txt"
+
+	$ find . -name "*.txt"
+
+	$ find . -maxdepth 2 -name "*.txt"
+
+	$ find . -maxdepth 10 -name "?.txt"
+
+	$ find . -maxdepth 10 -iname "?.TXT"
+
+	$ sudo find / -type f -size +100k 	# we are using sudo to avoid permission issue
+
+	$ sudo find / -type f -size +100k  | wc -l
+
+	$ sudo find / -type f -size +100k -size -5M
+
+	$ sudo find / -type f -size +100k -size -5M | wc -l
+
+	$ find -iname "*.TXT"
+
+	$ sudo find / -maxdepth 3 -type f -size +100k -size -5M -exec cp {} ~/Desktop/copy_me \;
+
+	$ sudo find /home -maxdepth 2 -type d -name "*.txt" -exec rm {} \;
+
+	$ sudo find . -type f -empty | wc -l
+
+	$ sudo find . -type f -empty -exec rm -rf {} \;
+
+
+	$ mkdir haystack
+	$ mkdir haystack/folder{1..500}
+	$ touch haystack/folder{1..500}/file{1..100}
+	$ touch folder$(shuf -i 1-500 -n 1)/needle.txt
+	$ find haystack/ -type f -name "needle.txt"
+	$ find haystack/ -type f -iname "needle.txt" -exec mv {} ~ \;
+
+Viewing files
+	$ cat file1.txt file2.txt file3.txt file4.txt file5.txt
+
+	$ cat file[1-5].txt > beautiful.txt
+
+	$ tac beautiful.txt
+
+	$ cat file[1-5].txt | tac > reversed.txt # reversed the lines vertically
+
+	$ cat file[1-5].txt | rev 			# reversed the lines horizontally
+
+	$ less /etc/ssh/ssh_config
+
+	$ cat /etc/ssh/ssh_config | less
+
+	$ find | less
+
+	$ cat file[1-5].txt | head
+
+	$ find | head -n 5
+
+	$ head -n 20 /etc/ssh/ssh_config
+
+	$ cat file[1-5].txt | tail
+
+	$ tail -n 20 /etc/ssh/ssh_config
+
+	$ head -n 20 /etc/ssh/ssh_config | tail -n 3
+
+	$ find | tail -n 3 > ~/result.txt
+
+Sorting data
+	$ sort words.txt
+
+	$ sort words.txt > sorted.txt
+
+	$ sort words.txt | tac
+
+	$ sort -r words.txt
+
+	$ sort -r words.txt | less
+
+	$ sort -n numbers.txt 
+
+	$ sort -n numbers.txt | less
+
+	$ sort -nr numbers.txt | less
+
+	$ sort -u numbers0-9.txt 					# Removes duplicate lines 
+
+	$ ls -l /etc | head -n 20 | sort -k 5n		# sort 5th column numerically
+
+	$ ls -lh /etc | head -n 20 | sort -k 5hr	# sort 5th column in human readbale format
+
+	$ ls -lh /etc | head -n 20 | sort -k 6M		# sort 6th column month-wise
+
+	$ ls -l /etc | head -n 20 | sort -k 2n		# sort 2nd column numerically
+
+	$ ls -l /etc | head -n 20 | sort -k 2nr		# sort 2nd column numerically in reverse order
+
+File Archiving and Compression [consists of two steps a. creating a tar file b. compressioning using algorithm]
+	
+	Archiving of the files using tar
+	$ tar -cvf ourarchive.tar file[1-3].txt
+
+	$ tar -tf ourarchive.tar 		# To check content of archive 
+
+	$ tar -xvf ourarchive.tar
+
+	Compression of tar using gzip and bzip2
+	$ gzip ourarchive.tar
+
+	$ gunzip ourarchive.tar.gz
+
+	$ bzip2 ourarchive.tar
+
+	$ bunzip2 ourarchive.tar.bz2
+
+	$ file ourarchive.tar
+
+	$ zip ourzip.zip file[1-3].txt
+
+	$ unzip ourzip.zip
+
+	$ tar -cvzf ourarchive.tar.gz file[1-3].txt
+
+	$ tar -cvjf ourarchive.tar.bz2 file[1-3].txt
+
+	$ tar -xvzf ourarchive.tar.gz 		# z is used for extarcting .gz file
+
+	$ tar -xvjf ourarchive.tar.bzip2    # j is used for extarcting .bzip2 file
+
+	$ tar -xJf ourarchive.tar.xz        # J is used for extarcting .xz file
+
+
+BASH Scripting
+	$ nano backup.sh
+		#!/bin/bash
+
+		tar -czf ~/bash_script/backup.tar.gz ~/bash_script/folders_100
+	
+	$ mkdir ~/bin
+	$ cp backup.sh ~/bin
+	$ cd ~/bin
+	$ mv backup.sh backup
+
+	$ vi ~/.bashrc
+
+	include the fllowing line at the end of the file
+
+	PATH="$PATH:$HOME/bin"
+
+	$ source ~/.bashrc
+	$ backup
+
+		It will work as a command. We can execute it from anywhere to create a backup in directory mentioned in the script.
+
+Scheduled Automation using Cron
+	$ corntab -e
+
+	$ select-editor 			# use to select default editor
+	$ tty
+	/dev/pts/0
+
+	m    	h 	dom   mon   	day   			command 						# use cron guru for setting these feilds https://crontab.guru/ except command
+	*    	*	 *     *     	*    	echo "Hello world" > /dev/pts/0			# prints output on the terminal
+    */15  	*    */3   *     	*          bash ~/bin/backup    				# to execute a job every 15 minute on 3rd of a month
+    59		23	 *	  JAN,DEC.  SUN		 <command/script path>
+
+Open Source Software 
+	$ uname -o 				# This gives operation system used by the kernel
+
+  Compiling software from source code: Visit for open source software "https://www.gnu.org/software/software.html", copy the link of software archive and download it.
+
+	$ wget https://mirrors.hopbox.net/gnu/coreutils/coreutils-8.30.tar.xz
+	$ ls
+	$ tar -xJf coreutils-8.30.tar.xz 
+	$ ls
+	$ cd coreutils-8.30/
+	$ cd src
+	$ ls | grep ls.c
+	$ nano ls.c
+		Go and modify the c code. For example: type the line under main functionß --> printf("Hello friends");	
+
+	$ cd ..
+	$ sudo apt-get install gcc -y
+	$ ./configure 		# to configure new gcc i.e. compiler and compiled the code. To convert human readable code to machine code
+	
+	$ sudo apt-get install make -y
+	$ make				# to install new compiled code
+	$ sudo make install # to insatll our machine code on path to make it actual work
+
+  To uninstall:
+    $ cd Download/
+    $ ls
+  	$ cd coreutils-8.30/
+  	$ cd src/
+  	$ ls
+  	$ nano ls.c 
+  	$ cd ..
+  	$ make && sudo make install
+
+  	Close and Open the terminal, we can see 'ls' command doesnt show any message.
+
+Software Repositories
+	$ lsb_release -a 		# name of the operating system and its release 
+
+ 
+The APT Cache:  
+	The package manager on Ubuntu is 'apt' (stands for 'Advanced packaging tool')
+	$ apt-cache search docx
+  	$ apt-cache search docx|grep text
+  	$ apt-cache show docx2tx
+  	$ apt-cache show docx2txt|less
+  	$ apt-cache search "web search"
+  	$ apt-cache search "web search"|less
+  
+  	$ ls /var/lib/apt/lists/
+  
+  	$ apt-cache search "web server"
+  	$ apt-cache search "web server"|less
+  	$ apt-cache show apache2
+
+Updating the cache and Upgrading Software
+	$ sudo apt-get update -y 		# It will update the lists in our cache. --- it will update your cache
+
+	$ sudo apt-get update -y 		# It will upgrade all the software on our system 
+
+Installing New Software
+	$ apt-cache search xeyes
+  	$ apt-cache show x11-apps
+  	$ sudo apt-get install x11-apps -y
+
+  	$ xeyes				# It won't work for command line 
+
+
+Downloading the source code
+
+  	$ sudo nano /etc/apt/sources.list
+  		Remove '#' from each line starts with deb-src or deb. Save the file
+
+  	$ sudo apt-get update -y 				# It will install source code packages in our cache 
+  	$ sudo apt-get install dpkg-dev -y 		# This is one more packge we need to install source code packages.
+
+
+  	$ sudo apt-get source <package-name>
+  	$ sudo apt-get source x11-apps 			# It will download the soure code of x11-apps in present working directory.
+
+  	$ cd x11-apps-7.7+8/
+  	$ cd xeyes/
+  	$ ls
+  		We can source code files in this directory
+
+Uninstalling software
+
+	$ sudo apt-get remove <package-name>		# Not recommended. It will remove the packages but not their configuration files. 
+
+	$ sudo apt-get purge <package-name> 		# it will remove the packages along with their configuration files.
+
+	$ sudo apt-get autoremove 					# it will automatically remove all dangling packages which are not used by any software
+
+	$ cd /var/cache/apt/archives/				# here, we can see all the archives packages in .deb file extension
+
+	$ ls
+
+	$ cd ~
+
+	$ sudo apt-get clean						# It will clean all compresses archives stored in /var/cache/apt/archives/ directory.
+
+	$ sudo apt-get autoclean					# It deletes package archives no longer accessible
+
+
+SED command 
+	$ export image=$(sed -n '1p' /tmp/.auth)		# It will take first line and store to the variable 'image' 
+
+	Few examples of sed command:
+		Replace a string in a file with a newstring 
+		Find and delete a line
+		Remove empty lines
+		Remove the first or n lines in a file
+		To replace tabs with spaces 
+		Show defined lines from a file
+		Substitute within vi editor 
+		and many more...
+
+	This will replace kenny with lenny in the file content. But it shows on screen and doesnt change in file.
+		$ sed 's/kenny/lenny/g' filename
+
+	To insert change into file, we just need to use -i
+		$ sed -i 's/kenny/lenny/g' filename
+
+	To remove any word from a file content, below command gives changes on screen.
+		$ sed 's/Costanza//g' filename
+
+	To insert changes in the filename
+		$ sed -i 's/Costanza//g' filename
+
+	To insert a word before each line in a file
+		$ sed -i 's/^/ssh /g' servers
+
+		$ sed -i 's/$/ #EndoFLine/g' servers
+
+	To find and delete a line which contains a string (kenny) in a file.
+		$ sed -i '/kenny/d' filename
+
+	To remove empty lines from a file
+		$ sed -i '/^$/d' filename
+
+	To remove first line from a file
+		$ sed -i '1d' filename 
+
+	To remove first two lines from a file
+		$ sed -i '1,2d' filename
+
+	To replace tab with space
+		$ sed -i 's/\t/ /g' filename
+
+	To replace space with tab
+		$ sed -i 's/ /\t/g' filename
+
+	To print line 12-18 from a file
+		$ sed -n 12,18p filename 
+
+	To print everything execpt line 12-18 from a file|
+		$ sed 12,18d filename  
+
+	To insert empty line after each line in a file 
+		$ sed -i G filename 
+
+	To substitute a word with another word but except at line 8 in a file
+		$ sed -i '8!s/Kenny/K/g' filename
+
+	To substitute in vi editor
+		$ vi filename
+
+		:%s/kenny/K/g 		(Press Enter)
+
+
+AWK Command 
+	awk is a utility/language designed for data extraction. Most of the time it is used to extract feilds from a file or from an output.
+
+	To check awk verison
+		$ awk --verison
+
+	To extract a first column of a file 
+		$ awk '{print $1}' filename
+
+	To extract second column of a file
+		$ awk '{print $2}' filename
+
+	To extract data from a output of a command 
+		$ ls -l | awk '{print $1,$3}'
+
+	To extract a last field
+		$ ls -l | awk '{print $NF'
+
+	To search a specific word in a file
+		$ awk '/jerry/ {print}' filename
+
+	To get 1st field of /etc/passwd file
+		$ awk -F: '{print $1}' /etc/passwd
+	
+	To replace word field with new word
+		$ echo "Hello Tom" | awk '{$2="Adam"; print $0}'
+
+	To get lines have length more than 15 bytes
+		$ awk 'length($0) > 15' filename
+
+	To get matching field in /home/username
+		$ ls -l | awk '{if($NF== "filename") print $0;}'	# NF is used for last column
+
+	To get total number of fields in each line
+		$ ls -l | awk '{print NF}'
+
+
+ Other commands:
+
+PING command
+
+	$ ping -c 3 <ip_addr or FQDN>
+
+
+Network and Port
+
+	$ ss -ltnp
+
+To clear RAM, swap cache:
+
+	$ echo "3" > /proc/sys/vm/drops_caches
+
+To provide line number to each line in a file:
+	
+	$ nl filename.txt
+
+To get random number from a range of numbers:
+
+	$ shuf -i 20-25 
+	23
+	25
+	24
+	22
+	20
+	21
+
+	$ shuf -i 20-25 -n 1 	# Above command returns only one number from range 20-25.
+	22
+
+	$ shuf -i 20-25 -n 2	# Above command returns two number from range 20-25.
+	23
+	21
+
+To chnage passwd of a user through command line 
+
+	$ echo "1234" | passwd <username> --stdin
+
+To check public Ip of a server
+	$ curl ifconfig.co
+
+	$ curl ifconfig.me
+
+To check process user
+	$ ps -ef | grep httpd
+
+To start and enable a service at a same time
+	$ sudo systemctl enable --now mariadb   
+
+To delete secondary group of a user
+
+	$ $ sudo gpasswd -d <username> <groupname>
+
+
+
+
+ 
+
