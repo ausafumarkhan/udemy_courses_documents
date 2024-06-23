@@ -1,0 +1,27 @@
+								GIT Notes
+
+If you are getting server certificate issue, on the local machine or container, execute the following command 
+
+		$ git config --global http.sslVerify false
+
+For configuring a Git username and email, use the following commands:
+	$ git config --global user.name "abcdefgh"
+
+	$ git config --global user.email "xyz@gmail.com"
+
+
+DETACHED HEAD
+	$ git checkout <commit-hash>
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by switching back to a branch.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -c with the switch command. Example:
+
+ 	$ git switch -c <new-branch-name>
+
+Or undo this operation with:
+
+ 	$ git switch -
