@@ -1,0 +1,1884 @@
+
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<title>Hosting a Web App on Google Cloud Using Compute Engine | Google Cloud Skills Boost for Partners</title>
+<meta name="action-cable-url" content="/cable" />
+<script>
+//<![CDATA[
+window.gon={};gon.deployment="googlecourses-run";
+//]]>
+</script>
+<script>
+  (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer',"GTM-5XSKHDX");
+</script>
+<script src="https://cdn.qwiklabs.com/assets/hallofmirrors/polyfills/webcomponents-loader-8583b47b01e40e6ea7bf1ad443a20b7e79bbdd5eafac009806a228c91a97282c.js"></script>
+<script src="https://cdn.qwiklabs.com/assets/vendor-beb958bea8eff6a4ad4cf8f36a0a676817a4857e214b17ae983796071a4a816d.js"></script>
+<script src="https://cdn.qwiklabs.com/assets/application-8194cda6ef3c11dc4405ed62cf7fc7697cbe39d472be22a7c9d4bd377a7b77f0.js"></script>
+<script src="https://cdn.qwiklabs.com/assets/hallofmirrors/hallofmirrors-f8d9fcf289db0acb0062699ca48080cfaf9b1703f4acd2d7d8bacd8bb0bedf3d.js"></script>
+<!--[if lt IE 9]>
+<script src='http://html5shim.googlecode.com/svn/trunk/html5.js' type='text/javascript'></script>
+<![endif]-->
+<!--[endif]>  <![endif]-->
+<script id='ze-snippet' src='https://static.zdassets.com/ekr/snippet.js?key=511e4158-0aec-4e3c-b2e6-4daa1769f51e'></script>
+<script>
+  ql.perfTest.init();
+</script>
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="+65pISMiGx2TWlOslHSPQz+0RUFT+rAFBSv8u/ykA8pYNKj2qigpmciGXOwzFv/UUCTEplolNnaz9X50XVNbXA==" />
+<meta content='width=device-width, initial-scale=1.0, user-scalable=yes' name='viewport'>
+<meta content='1rRsY0INj8RvwB5EF5pwdxt2A2P9aDgAlsICaJ0d5w0' name='google-site-verification'>
+<meta content='#3681E4' property='msapplication-TileColor'>
+<meta content='/favicon-144.png' property='msapplication-TileImage'>
+<meta content='[{&quot;id&quot;:&quot;recaptcha_experiment&quot;,&quot;optimize_id&quot;:&quot;dpViOcLkT3qS4TvL2mRojA&quot;,&quot;title&quot;:&quot;No Recaptcha shown for trusted users&quot;,&quot;variant_index&quot;:0,&quot;variant&quot;:&quot;original&quot;}]' name='active-experiments'>
+<meta content='{&quot;userId&quot;:11061062,&quot;experimentIds&quot;:[&quot;programs&quot;,&quot;chat_off_for_signed_out_users&quot;,&quot;course_upgrade&quot;,&quot;program_learning_assignment&quot;,&quot;perf_test&quot;,&quot;program_groups&quot;,&quot;teams&quot;,&quot;canonical_domain_redirect&quot;,&quot;program_resources&quot;,&quot;used_in&quot;,&quot;community_forum&quot;,&quot;enforce_codebuild_verdicts&quot;,&quot;peer_assignment&quot;,&quot;oauth_risc_shutoff&quot;,&quot;show_annual_purchase_now&quot;,&quot;alexandria_show_bundle_errors&quot;,&quot;search_updates&quot;]}' name='help-api-product-data'>
+<meta content='{&quot;groupIds&quot;:[&quot;non_suadmins&quot;,&quot;students&quot;,&quot;non_organization&quot;,&quot;non_program&quot;]}' name='help-api-custom-data'>
+<meta content='In this lab, you deploy and scale a Web App on Google Compute Engine.
+ ' name='description'>
+<meta content='Qwiklabs' name='author'>
+<meta content='Hosting a Web App on Google Cloud Using Compute Engine | Google Cloud Skills Boost for Partners' property='og:title'>
+<meta content='website' property='og:type'>
+<meta content='/favicon-144.png' property='og:image'>
+<meta content='Qwiklabs' property='og:site_name'>
+<meta content='In this lab, you deploy and scale a Web App on Google Compute Engine.
+ ' property='og:description'>
+<meta content='/qwiklabs_logo_900x887.png' property='og:logo' size='900x887'>
+<meta content='/qwiklabs_logo_994x187.png' property='og:logo' size='994x187'>
+
+
+<meta property="og:url" content="https://partner.cloudskillsboost.google/focuses/13349?parent=catalog" /><link href="https://partner.cloudskillsboost.google/focuses/13349?parent=catalog" rel="canonical" />
+<link color='#3681E4' href='/favicon-svg.svg' rel='mask-icon'>
+<link href='/favicon-180.png' rel='apple-touch-icon-precomposed'>
+<link href='https://cdn.qwiklabs.com/Vag5GK2J6rS6843Qvg8TQJ1kEbAsEmQoF0%2BdLRfcLRE%3D' rel='shortcut icon' type='image/x-icon'>
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oswald:400|Roboto+Mono:400,700|Roboto:300,400,500,700|Google+Sans:300,400,500,700|Google+Sans+Display:400|Material+Icons|Google+Material+Icons" media="screen" />
+
+<link rel="stylesheet" href="https://cdn.qwiklabs.com/assets/application-9c3b65b21d70e11e97ae9ab48dd150018a15c36cd951e52fe5574dfa177e8bc8.css" media="all" />
+
+
+<style>
+  :root {
+    --primary-text-on-surface-color: #1a73e8;
+    --primary-text-on-surface-color-dark: #1568d6;
+    --primary-text-on-surface-color-darker: #135ec1;
+    --primary-text-on-surface-color-darkest: #1154ac;
+    --primary-surface-color: #1a73e8;
+    --primary-surface-color-rgb: 26,115,232;
+    --primary-surface-color-light: #d1e3fa;
+    --primary-surface-color-lightest: #e8f1fd;
+    --text-on-primary-color: #ffffff;
+    --accent-text-on-surface-color: #f29900;
+    --accent-surface-color: #f9ab00;
+    --accent-surface-color-rgb: 249,171,0;
+    --accent-surface-color-light: #ffefcc;
+    --text-on-accent-color: #202124;
+  }
+</style>
+
+<style>
+  :root {
+    --navbar-height: 112px;
+  }
+</style>
+
+
+
+</head>
+<body class='lab-show l-full no-nav application-new focuses focuses-show lab-show l-full no-nav '>
+<div class='header-container'>
+<div class='header'>
+<ql-toolbar jumpEnabled>
+<div class='header__title' slot='title'>
+<ql-icon-button label="Back" href="https://partner.cloudskillsboost.google/quests/121" id="f35ca56553a4c04f" target="_self" tip="Back">arrow_back</ql-icon-button>
+<h1 class='ql-headline-6'>Hosting a Web App on Google Cloud Using Compute Engine</h1>
+</div>
+<div class='header__actions' slot='action'>
+<ql-icon-button icon='share' id='share_2617' label='Share on social media' tip='Share'></ql-icon-button>
+<ql-menu for='share_2617'>
+<ql-menu-item data-analytics-action='Shared to LinkedIn Feed.' data-analytics-category='Lab' data-analytics-label='Hosting a Web App on Google Cloud Using Compute Engine' href='https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fpartner.cloudskillsboost.google%2Fcatalog_lab%2F2617%3Futm_medium%3Dsocial%26utm_source%3Dlinkedin%26utm_campaign%3Dql-social-share' icon='post_linkedin' label='Share on LinkedIn Feed' role='link' target='_blank'>
+<span class='label'>Share on LinkedIn Feed</span>
+</ql-menu-item>
+
+<ql-menu-item data-analytics-action='Shared to Twitter.' data-analytics-category='Lab' data-analytics-label='Hosting a Web App on Google Cloud Using Compute Engine' href='https://twitter.com/intent/tweet?text=Learn%20cloud%20tech%20through%20hands-on%20training%20on%20%23Qwiklabs%21&amp;url=https%3A%2F%2Fpartner.cloudskillsboost.google%2Fcatalog_lab%2F2617%3Futm_medium%3Dsocial%26utm_source%3Dtwitter%26utm_campaign%3Dql-social-share&amp;hashtags=' icon='post_twitter' label='Twitter' role='link' target='_blank'>
+<span class='label'>Twitter</span>
+</ql-menu-item>
+
+<ql-menu-item data-analytics-action='Shared to Facebook.' data-analytics-category='Lab' data-analytics-label='Hosting a Web App on Google Cloud Using Compute Engine' href='https://facebook.com/sharer.php?display=popup&amp;u=https%3A%2F%2Fpartner.cloudskillsboost.google%2Fcatalog_lab%2F2617%3Futm_medium%3Dsocial%26utm_source%3Dfacebook%26utm_campaign%3Dql-social-share' icon='post_facebook' label='Facebook' role='link' target='_blank'>
+<span class='label'>Facebook</span>
+</ql-menu-item>
+
+<ql-copyable-input label='Share Link' value='https://partner.cloudskillsboost.google/catalog_lab/2617'></ql-copyable-input>
+</ql-menu>
+
+<ql-icon-button class='icon-button js-favorite-button favorite-button' data-id='13349' data-name='Hosting a Web App on Google Cloud Using Compute Engine' data-type='CatalogItem' href='/favorite.json?item_id=13349&amp;item_type=CatalogItem' id='CatalogItem-13349-favorite-button' label='Add to favorites' tip='Add to favorites'>
+favorite_border
+</ql-icon-button>
+
+
+
+<ql-icon-button id='control-panel-target' style='display: none;'>
+dashboard
+</ql-icon-button>
+<ql-menu for='control-panel-target' id='control-panel-menu'></ql-menu>
+<ql-icon-button class='mobile-hide' icon='help_outline' id='help-menu-button' label='Open help menu' tip='Help'></ql-icon-button>
+<ql-menu for='help-menu-button' id='help-menu'>
+<ql-menu-item data-analytics-action='opened_help' data-analytics-label='lab' label='Help Center' onclick='hallofmirrors.helpService.startHelp({&quot;productData&quot;:{&quot;userId&quot;:11061062},&quot;context&quot;:&quot;lab&quot;})'></ql-menu-item>
+<ql-menu-item href='mailto:support@qwiklabs.com' label='Email support'></ql-menu-item>
+<ql-menu-item label='Chat support' onClick='ql.chat.open()'></ql-menu-item>
+</ql-menu>
+
+<ql-icon-button class='mobile-hide' icon='language' id='language' label='Select your language preference' tip='Language'></ql-icon-button>
+<ql-menu for='language'>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='ar' href='/focuses/13349?locale=ar&amp;parent=catalog' label='العربية‬‎' lang='ar'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='de' href='/focuses/13349?locale=de&amp;parent=catalog' label='Deutsch' lang='de'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='en' href='/focuses/13349?locale=en&amp;parent=catalog' label='English' lang='en'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='es' href='/focuses/13349?locale=es&amp;parent=catalog' label='español (Latinoamérica)' lang='es'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='fr' href='/focuses/13349?locale=fr&amp;parent=catalog' label='français' lang='fr'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='fr_CA' href='/focuses/13349?locale=fr_CA&amp;parent=catalog' label='français (Canada)' lang='fr-CA'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='he' href='/focuses/13349?locale=he&amp;parent=catalog' label='עברית' lang='he'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='id' href='/focuses/13349?locale=id&amp;parent=catalog' label='bahasa Indonesia' lang='id'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='it' href='/focuses/13349?locale=it&amp;parent=catalog' label='Italiano' lang='it'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='ja' href='/focuses/13349?locale=ja&amp;parent=catalog' label='日本語' lang='ja'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='ko' href='/focuses/13349?locale=ko&amp;parent=catalog' label='한국어' lang='ko'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='pl' href='/focuses/13349?locale=pl&amp;parent=catalog' label='Polski' lang='pl'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='pt_BR' href='/focuses/13349?locale=pt_BR&amp;parent=catalog' label='português (Brasil)' lang='pt-BR'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='pt_PT' href='/focuses/13349?locale=pt_PT&amp;parent=catalog' label='português (Portugal)' lang='pt-PT'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='ru' href='/focuses/13349?locale=ru&amp;parent=catalog' label='русский' lang='ru'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='tr' href='/focuses/13349?locale=tr&amp;parent=catalog' label='Türkçe' lang='tr'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='uk' href='/focuses/13349?locale=uk&amp;parent=catalog' label='український' lang='uk'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='zh' href='/focuses/13349?locale=zh&amp;parent=catalog' label='简体中文' lang='zh'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='zh_TW' href='/focuses/13349?locale=zh_TW&amp;parent=catalog' label='繁體中文' lang='zh-TW'></ql-menu-item>
+</ql-menu>
+
+<ql-icon-button id='my_account' label='My account' tip='My account'>
+<ql-avatar></ql-avatar>
+</ql-icon-button>
+<ql-menu for='my_account' id='my_account_menu' style='max-height: 640px'>
+<div class='my-account-menu'>
+<ql-avatar class='l-mtl l-mbl' size='120'></ql-avatar>
+<div class='my-account-menu__user-info l-mbl'>
+<h4 class='ql-subhead-1'>Ausaf Khan</h4>
+<p class='ql-body-2 text--light'>ausaf.khan@rakuten.com</p>
+<p class='ql-body-2 text--light'>
+</p>
+<a class="text--green ql-subhead-2" href="/my_account/payments"><ql-chip positive>
+0 Credits
+</ql-chip>
+</a></div>
+<div class='buttons l-mbl'>
+<a class="button button--hairline l-mrm" id="profile" href="/public_profiles/1d61c1a3-8a07-4495-8abe-b57e519718e6">Public Profile</a>
+<a class="button button--hairline" id="settings" href="/my_account/profile">Settings</a>
+</div>
+<hr>
+<ql-button data-analytics-action='clicked_sign_out' href='/users/sign_out' method='delete'>
+Sign Out
+</ql-button>
+<div class='privacy l-mtl'>
+<a target="_blank" class="ql-caption text--light" href="/privacy_policy">Privacy</a>
+<span class='ql-caption text--light l-mls l-mrs'>&middot;</span>
+<a class="ql-caption text--light" href="/terms_of_service">Terms</a>
+</div>
+</div>
+</ql-menu>
+
+</div>
+</ql-toolbar>
+
+</div>
+</div>
+
+<nav class='nav-panel js-nav-panel'>
+<div class='nav-panel__logo'>
+<div class="custom-logo"><img alt="Google Cloud Skills Boost for Partners" height="24" aria-label="Google Cloud Skills Boost for Partners" src="https://cdn.qwiklabs.com/PGyhmgS3zZncIEGywnx5UXsKwepRRFQ9BhAg%2FWHNrlQ%3D" /></div>
+</div>
+<nav class='ql-sidenav'>
+<ql-sidenav-item href='/' icon='home' label='Paths'></ql-sidenav-item>
+
+<ql-sidenav-item active href='/catalog' icon='school' label='Explore'></ql-sidenav-item>
+
+<ql-sidenav-item href='/profile' icon='event_note' label='Profile'></ql-sidenav-item>
+
+</nav>
+
+</nav>
+<div class='nav-panel__overlay js-nav-toggle'></div>
+
+<main class='js-main' id='jump-content'>
+<div class='l-main-wrapper' id='main-wrapper'>
+
+
+
+
+<div class='lab-assessment__tab js-open-lab-assessment-panel'>
+<button class='js-lab-assessment-total-score'>
+—/100
+</button>
+</div>
+<div aria-labelledby='lab-assessment-checkpoint' class='lab-assessment__panel js-lab-assessment-panel' role='dialog'>
+<div class='lab-assessment__panel__header'>
+<h4 id='lab-assessment-checkpoint'>Checkpoints</h4>
+<ql-icon-button class='js-close-lab-assessment-panel' icon='arrow_forward' label='Close dialog'></ql-icon-button>
+</div>
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Create GCS bucket
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button class='js-show-run-step-button' description='Create GCS bucket' step_no='1'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-1'>
+</span>
+/ 10
+</p>
+</div>
+</div>
+
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Copy startup script and code to Cloud Storage bucket
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button class='js-show-run-step-button' description='Copy startup script and code to Cloud Storage bucket' step_no='2'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-2'>
+</span>
+/ 10
+</p>
+</div>
+</div>
+
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Deploy instances and configure network
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button class='js-show-run-step-button' description='Deploy instances and configure network' step_no='3'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-3'>
+</span>
+/ 20
+</p>
+</div>
+</div>
+
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Create managed instance groups
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button class='js-show-run-step-button' description='Create managed instance groups' step_no='4'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-4'>
+</span>
+/ 20
+</p>
+</div>
+</div>
+
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Create HTTP(S) load balancers
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button class='js-show-run-step-button' description='Create HTTP(S) load balancers' step_no='5'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-5'>
+</span>
+/ 10
+</p>
+</div>
+</div>
+
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Update the frontend instances
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button class='js-show-run-step-button' description='Update the frontend instances' step_no='6'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-6'>
+</span>
+/ 10
+</p>
+</div>
+</div>
+
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Scaling GCE
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button class='js-show-run-step-button' description='Scaling GCE' step_no='7'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-7'>
+</span>
+/ 10
+</p>
+</div>
+</div>
+
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Update the website
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button class='js-show-run-step-button' description='Update the website' step_no='8'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-8'>
+</span>
+/ 10
+</p>
+</div>
+</div>
+
+</div>
+<ql-drawer-container class='js-lab-state' data-analytics-payload='{&quot;label&quot;:&quot;Hosting a Web App on Google Cloud Using Compute Engine&quot;,&quot;lab_name&quot;:&quot;Hosting a Web App on Google Cloud Using Compute Engine&quot;,&quot;classroom_name&quot;:null,&quot;deployment&quot;:&quot;googlecourses-run&quot;}' data-credits='0.0' data-focus-id='13349' data-lab-billing-limit='0.0' data-lab-duration='5400' data-parent='catalog' data-recaptcha-enabled id='lab-container'>
+<ql-drawer id='terminal-drawer' slot='drawer' style='width: calc(100% - 480px)'>
+<iframe allow='clipboard-read' class='terminal' id='embedded-resource'></iframe>
+</ql-drawer>
+<ql-drawer-content class='js-lab-wrapper' id='lab-content' slot='drawer-content'>
+<ql-drawer-container id='lab-content-container'>
+<ql-drawer id='control-panel-drawer' open slot='drawer' width='320'>
+<ql-lab-control-panel class='ql-lab-control-panel__max-height control-panel js-lab-control-panel' connectionFiles='[]' labControlButton='{&quot;disabled&quot;:false,&quot;pending&quot;:false,&quot;running&quot;:false}' labDetails='[]' labTimer='{&quot;ticking&quot;:false,&quot;secondsRemaining&quot;:5400}' studentResources='[]'>
+<script src="https://www.recaptcha.net/recaptcha/api.js?render=6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr"   ></script>
+        <script>
+          // Define function so that we can call it again later if we need to reset it
+          // This executes reCAPTCHA and then calls our callback.
+          function executeRecaptchaForStartLab() {
+            grecaptcha.ready(function() {
+              grecaptcha.execute('6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr', {action: 'start_lab'}).then(function(token) {
+                setInputWithRecaptchaResponseTokenForStartLab('g-recaptcha-response-data-start-lab', token)
+              });
+            });
+          };
+          // Invoke immediately
+          executeRecaptchaForStartLab()
+
+          // Async variant so you can await this function from another async function (no need for
+          // an explicit callback function then!)
+          // Returns a Promise that resolves with the response token.
+          async function executeRecaptchaForStartLabAsync() {
+            return new Promise((resolve, reject) => {
+             grecaptcha.ready(async function() {
+                resolve(await grecaptcha.execute('6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr', {action: 'start_lab'}))
+              });
+            })
+          };
+
+                    var setInputWithRecaptchaResponseTokenForStartLab = function(id, token) {
+            var element = document.getElementById(id);
+            element.value = token;
+          }
+
+        </script>
+<input type="hidden" name="g-recaptcha-response-data[start_lab]" id="g-recaptcha-response-data-start-lab" data-sitekey="6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr" class="g-recaptcha g-recaptcha-response "/>
+
+<div aria-live='polite' class='hidden' id='recaptcha-v2-start-lab' slot='recaptcha'>
+<script src="https://www.recaptcha.net/recaptcha/api.js" async defer ></script>
+<div data-sitekey="6LeOI8IUAAAAAPkHlMAE9NReCD_1WD81iYlBlCnV" data-callback="recaptchaComplete" data-expired-callback="expireV2Token" class="g-recaptcha "></div>
+          <noscript>
+            <div>
+              <div style="width: 302px; height: 422px; position: relative;">
+                <div style="width: 302px; height: 422px; position: absolute;">
+                  <iframe
+                    src="https://www.recaptcha.net/recaptcha/api/fallback?k=6LeOI8IUAAAAAPkHlMAE9NReCD_1WD81iYlBlCnV"
+                    name="ReCAPTCHA"
+                    style="width: 302px; height: 422px; border-style: none; border: 0; overflow: hidden;">
+                  </iframe>
+                </div>
+              </div>
+              <div style="width: 300px; height: 60px; border-style: none;
+                bottom: 12px; left: 25px; margin: 0px; padding: 0px; right: 25px;
+                background: #f9f9f9; border: 1px solid #c1c1c1; border-radius: 3px;">
+                <textarea id="g-recaptcha-response" name="g-recaptcha-response"
+                  class="g-recaptcha-response"
+                  style="width: 250px; height: 40px; border: 1px solid #c1c1c1;
+                  margin: 10px 25px; padding: 0px; resize: none;">
+                </textarea>
+              </div>
+            </div>
+          </noscript>
+
+</div>
+</ql-lab-control-panel>
+</ql-drawer>
+<ql-drawer-content id='lab-instructions' slot='drawer-content'>
+<ql-snackbar id='alert-snackbar'></ql-snackbar>
+<div class='alert alert--fake js-alert'>
+<p class='alert__message js-alert-message' role='alert'></p>
+<ql-icon-button class='alert__close js-alert-close' icon='clear'></ql-icon-button>
+<iframe class='l-ie-iframe-fix' tabindex='-1'></iframe>
+</div>
+<div class='lab-content__renderable-instructions js-lab-content'>
+<div class='lab-preamble'>
+<h1 class='lab-preamble__title'>
+Hosting a Web App on Google Cloud Using Compute Engine
+</h1>
+<div class='lab-preamble__details subtitle-headline-1'>
+<span>1 hour 30 minutes</span>
+<span>Free</span>
+<div class='lab__rating'>
+<a aria-label="Lab Reviews" href="/focuses/13349/reviews?parent=catalog"><div class='rateit' data-rateit-readonly='true' data-rateit-value='4.1943'></div>
+
+</a><ql-button aria-label='Rate Lab' id='rate-lab-btn' label='Rate Lab' text></ql-button>
+</div>
+</div>
+</div>
+<div class='lab-outline-place-holder'></div>
+
+<div class='markdown-lab-instructions js-markdown-instructions' id='markdown-lab-instructions'>
+
+<h2 id="step1">GSP662</h2>
+<p><img alt="Google Cloud self-paced labs logo" src="https://cdn.qwiklabs.com/GMOHykaqmlTHiqEeQXTySaMXYPHeIvaqa2qHEzw6Occ%3D"></p>
+<h2 id="step2">Overview</h2>
+<p>There are many ways to deploy web sites within Google Cloud with each solution offering different features, capabilities, and levels of control. Compute Engine offers a deep level of control over the infrastructure used to run a web site, but also requires a little more operational management compared to solutions like Google Kubernetes Engines (GKE), App Engine, or others. With Compute Engine, you have fine-grained control of aspects of the infrastructure, including the virtual machines, load balancers, and more. In this lab you will deploy a sample application, the "Fancy Store" ecommerce website, to show how a website can be deployed and scaled easily with Compute Engine.</p>
+<h3>What you'll learn</h3>
+<p>In this lab you learn how to:</p>
+<ul>
+<li>Create  <a href="https://cloud.google.com/compute/docs/instances/" target="_blank">Compute Engine instances</a>
+</li>
+<li>Create  <a href="https://cloud.google.com/compute/docs/instance-templates/" target="_blank">instance templates</a> from source instances</li>
+<li>Create  <a href="https://cloud.google.com/compute/docs/instance-groups/" target="_blank">managed instance groups</a>
+</li>
+<li>Create and test  <a href="https://cloud.google.com/compute/docs/instance-groups/autohealing-instances-in-migs" target="_blank">managed instance group health checks</a>
+</li>
+<li>Create HTTP(S)  <a href="https://cloud.google.com/load-balancing/" target="_blank">Load Balancers</a>
+</li>
+<li>Create  <a href="https://cloud.google.com/load-balancing/docs/health-checks" target="_blank">load balancer health checks</a>
+</li>
+<li>Use a  <a href="https://cloud.google.com/cdn/" target="_blank">Content Delivery Network (CDN)</a> for Caching</li>
+</ul>
+<p>At the end of the lab, you will have instances inside managed instance groups to provide autohealing, load balancing, autoscaling, and rolling updates for your website.</p>
+<h2 id="step3">Setup and requirements</h2>
+<h3>Before you click the Start Lab button</h3>
+<p>Read these instructions. Labs are timed and you cannot pause them. The timer, which starts when you click <strong>Start Lab</strong>, shows how long Google Cloud resources will be made available to you.</p>
+<p>This hands-on lab lets you do the lab activities yourself in a real cloud environment, not in a simulation or demo environment. It does so by giving you new, temporary credentials that you use to sign in and access Google Cloud for the duration of the lab.</p>
+<p>To complete this lab, you need:</p>
+<ul>
+<li>Access to a standard internet browser (Chrome browser recommended).</li>
+</ul>
+<ql-warningbox>
+<strong>Note:</strong> Use an Incognito or private browser window to run this lab. This prevents any conflicts between your personal account and the Student account, which may cause extra charges incurred to your personal account.
+</ql-warningbox>
+<ul>
+<li>Time to complete the lab---remember, once you start, you cannot pause a lab.</li>
+</ul>
+<ql-warningbox>
+<strong>Note:</strong> If you already have your own personal Google Cloud account or project, do not use it for this lab to avoid extra charges to your account.
+</ql-warningbox>
+<h3>How to start your lab and sign in to the Google Cloud Console</h3>
+<ol>
+<li>
+<p>Click the <strong>Start Lab</strong> button. If you need to pay for the lab, a pop-up opens for you to select your payment method.
+On the left is the <strong>Lab Details</strong> panel with the following:</p>
+<ul>
+<li>The <strong>Open Google Console</strong> button</li>
+<li>Time remaining</li>
+<li>The temporary credentials that you must use for this lab</li>
+<li>Other information, if needed, to step through this lab</li>
+</ul>
+</li>
+<li>
+<p>Click <strong>Open Google Console</strong>.
+The lab spins up resources, and then opens another tab that shows the <strong>Sign in</strong> page.</p>
+<p><strong><em>Tip:</em></strong> Arrange the tabs in separate windows, side-by-side.</p>
+<ql-infobox>
+<strong>Note: </strong>If you see the <strong>Choose an account</strong> dialog, click <strong>Use Another Account</strong>.        
+ </ql-infobox>
+</li>
+<li>
+<p>If necessary, copy the <strong>Username</strong> from the <strong>Lab Details</strong> panel and paste it into the <strong>Sign in</strong> dialog. Click <strong>Next</strong>.</p>
+</li>
+<li>
+<p>Copy the <strong>Password</strong> from the <strong>Lab Details</strong> panel and paste it into the <strong>Welcome</strong> dialog. Click <strong>Next</strong>.</p>
+<ql-infobox>
+<strong>Important: </strong>You must use the credentials from the left panel. Do not use your Google Cloud Skills Boost credentials. 
+ </ql-infobox>
+<ql-warningbox>
+<strong>Note: </strong>Using your own Google Cloud account for this lab may incur extra charges.
+ </ql-warningbox>
+</li>
+<li>
+<p>Click through the subsequent pages:</p>
+<ul>
+<li>Accept the terms and conditions.</li>
+<li>Do not add recovery options or two-factor authentication (because this is a temporary account).</li>
+<li>Do not sign up for free trials.</li>
+</ul>
+</li>
+</ol>
+<p>After a few moments, the Cloud Console opens in this tab.</p>
+<ql-infobox>
+<strong>Note:</strong> You can view the menu with a list of Google Cloud Products and Services by clicking the <strong>Navigation menu</strong> at the top-left.
+<img alt="Navigation menu icon" src="https://cdn.qwiklabs.com/nUxFb6oRFr435O3t6V7WYJAjeDFcrFb16G9wHWp5BzU%3D">
+</ql-infobox>
+<h3>Activate Cloud Shell</h3>
+<p>Cloud Shell is a virtual machine that is loaded with development tools. It offers a persistent 5GB home directory and runs on the Google Cloud. Cloud Shell provides command-line access to your Google Cloud resources.</p>
+<ol>
+<li>Click <strong>Activate Cloud Shell</strong> <img alt="Activate Cloud Shell icon" src="https://cdn.qwiklabs.com/ep8HmqYGdD%2FkUncAAYpV47OYoHwC8%2Bg0WK%2F8sidHquE%3D"> at the top of the Google Cloud console.</li>
+</ol>
+<p>When you are connected, you are already authenticated, and the project is set to your <strong>PROJECT_ID</strong>. The output contains a line that declares the <strong>PROJECT_ID</strong> for this session:</p>
+<ql-code-block output="">
+Your Cloud Platform project in this session is set to YOUR_PROJECT_ID
+</ql-code-block>
+<p><code>gcloud</code> is the command-line tool for Google Cloud. It comes pre-installed on Cloud Shell and supports tab-completion.</p>
+<ol start="2">
+<li>
+<p>(Optional) You can list the active account name with this command:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud auth list
+</ql-code-block>
+<ol start="3">
+<li>
+<p>Click <strong>Authorize</strong>.</p>
+</li>
+<li>
+<p>Your output should now look like this:</p>
+</li>
+</ol>
+<p><strong>Output:</strong></p>
+<ql-code-block language="plaintext" output="">
+ACTIVE: *
+ACCOUNT: student-01-xxxxxxxxxxxx@qwiklabs.net
+To set the active account, run:
+    $ gcloud config set account `ACCOUNT`
+</ql-code-block>
+<ol start="5">
+<li>
+<p>(Optional) You can list the project ID with this command:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud config list project
+</ql-code-block>
+<p><strong>Output:</strong></p>
+<ql-code-block language="plaintext" output="">
+[core]
+project = &lt;project_ID&gt;
+</ql-code-block>
+<p><strong>Example output:</strong></p>
+<ql-code-block language="plaintext" output="">
+[core]
+project = qwiklabs-gcp-44776a13dea667a6
+</ql-code-block>
+<ql-infobox>
+<strong>Note: </strong>For full documentation of <code>gcloud</code>, in Google Cloud, refer to <a href="https://cloud.google.com/sdk/gcloud" target="_blank">the gcloud CLI overview guide</a>.
+</ql-infobox>
+<h3>Set the region and zone</h3>
+<ol>
+<li>Set the project region for this lab:</li>
+</ol>
+<ql-code-block nowrap templated="">
+gcloud config set compute/region {{{project_0.default_region | "REGION"}}}
+</ql-code-block>
+<ol start="2">
+<li>Create a variable for region:</li>
+</ol>
+<ql-code-block nowrap templated="">
+export REGION={{{project_0.default_region | Region}}}
+</ql-code-block>
+<ol start="3">
+<li>Create a variable for zone:</li>
+</ol>
+<ql-code-block nowrap templated="">
+export ZONE={{{project_0.default_zone | Zone}}}
+</ql-code-block>
+<p>Learn more from the <a href="https://cloud.google.com/compute/docs/regions-zones/regions-zones" target="_blank">Regions &amp; Zones documentation</a>.</p>
+<ql-infobox><strong>Note: </strong>When you run <code>gcloud</code> on your own machine, the config settings are persisted across sessions. But in Cloud Shell, you need to set this for every new session or reconnection.
+</ql-infobox>
+<h2 id="step4">Task 1. Enable Compute Engine API</h2>
+<p>Next, enable the  <a href="https://console.cloud.google.com/flows/enableapi?apiid=compute" target="_blank">Compute Engine API</a>.</p>
+<ul>
+<li>
+<p>Execute the following to enable the Compute Engine API:</p>
+</li>
+</ul>
+<ql-code-block language="bash">
+gcloud services enable compute.googleapis.com
+</ql-code-block>
+<h2 id="step5">Task 2. Create Cloud Storage bucket</h2>
+<p>You will use a Cloud Storage bucket to house your built code as well as your startup scripts.</p>
+<ul>
+<li>
+<p>From within Cloud Shell, execute the following to create a new Cloud Storage bucket:</p>
+</li>
+</ul>
+<ql-code-block language="bash">
+gsutil mb gs://fancy-store-$DEVSHELL_PROJECT_ID
+</ql-code-block>
+<ql-infobox><strong>Note: </strong>Use of the <code>$DEVSHELL_PROJECT_ID</code> environment variable within Cloud Shell is to help ensure the names of objects are unique. Since all Project IDs within Google Cloud must be unique, appending the Project ID should make other names unique as well.
+</ql-infobox>
+<p>Click <strong>Check my progress</strong> to verify the objective.
+<ql-activity-tracking step="1">
+Create Cloud Storage bucket
+</ql-activity-tracking></p>
+<h2 id="step6">Task 3. Clone source repository</h2>
+<p>Use the existing Fancy Store ecommerce website based on the <code>monolith-to-microservices</code> repository as the basis for your website.</p>
+<p>Clone the source code so you can focus on the aspects of deploying to Compute Engine. Later on in this lab, you will perform a small update to the code to demonstrate the simplicity of updating on Compute Engine.</p>
+<ol>
+<li>
+<p>Clone the source code and then navigate to the <code>monolith-to-microservices</code> directory:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+git clone https://github.com/googlecodelabs/monolith-to-microservices.git
+</ql-code-block>
+<ql-code-block language="bash">
+cd ~/monolith-to-microservices
+</ql-code-block>
+<ol start="2">
+<li>
+<p>Run the initial build of the code to allow the application to run locally:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+./setup.sh
+</ql-code-block>
+<p>It will take a few minutes for this script to finish.</p>
+<ol start="3">
+<li>
+<p>Once completed, ensure Cloud Shell is running a compatible nodeJS version with the following command:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+nvm install --lts
+</ql-code-block>
+<ol start="4">
+<li>
+<p>Next, run the following to test the application, switch to the <code>microservices</code> directory, and start the web server:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+cd microservices
+npm start
+</ql-code-block>
+<p>You should see the following output:</p>
+<ql-code-block output="">
+Products microservice listening on port 8082!
+Frontend microservice listening on port 8080!
+Orders microservice listening on port 8081!
+</ql-code-block>
+<ol start="5">
+<li>Preview your application by clicking the <strong>web preview icon</strong> then selecting <strong>Preview on port 8080</strong>.</li>
+</ol>
+<p><img alt="Web preview icon and Preview on port 8080 option highlighted" src="https://cdn.qwiklabs.com/Dk9ATSH41enVkqcJ%2FyOYJYEcyKTSRj%2BlhCJLSXXP6AA%3D"></p>
+<p>This opens a new window where you can see the frontend of Fancy Store.</p>
+<ql-infobox><strong>Note: </strong>Within the Preview option, you should be able to see the Frontend; however, the Products and Orders functions will not work, as those services are not yet exposed.
+</ql-infobox>
+<ol start="6">
+<li>
+<p>Close this window after viewing the website and then press CTRL+C in the terminal window to stop the web server process.</p>
+</li>
+</ol>
+<h2 id="step7">Task 4. Create Compute Engine instances</h2>
+<p>Now it's time to start deploying some Compute Engine instances!</p>
+<p>In the following steps you will:</p>
+<ol>
+<li>
+<p>Create a startup script to configure instances.</p>
+</li>
+<li>
+<p>Clone source code and upload to Cloud Storage.</p>
+</li>
+<li>
+<p>Deploy a Compute Engine instance to host the backend microservices.</p>
+</li>
+<li>
+<p>Reconfigure the frontend code to utilize the backend microservices instance.</p>
+</li>
+<li>
+<p>Deploy a Compute Engine instance to host the frontend microservice.</p>
+</li>
+<li>
+<p>Configure the network to allow communication.</p>
+</li>
+</ol>
+<h3>Create the startup script</h3>
+<p>A startup script will be used to instruct the instance what to do each time it is started. This way the instances are automatically configured.</p>
+<ol>
+<li>Click <strong>Open Editor</strong> in the Cloud Shell ribbon to open the Code Editor.</li>
+</ol>
+<p><img alt="Open Editor button" src="https://cdn.qwiklabs.com/cLSDByRQwL60BI%2FwSnOn4sutVas9YQaekVTqPAJKWk4%3D"></p>
+<ol start="2">
+<li>
+<p>Navigate to the <code>monolith-to-microservices</code> folder.</p>
+</li>
+<li>
+<p>Click on <strong>File</strong> &gt; <strong>New File</strong> and create a file called <code>startup-script.sh</code></p>
+</li>
+<li>
+<p>Add the following code to the file. You will edit some of the code after it's added:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+#!/bin/bash
+# Install logging monitor. The monitor will automatically pick up logs sent to
+# syslog.
+curl -s "https://storage.googleapis.com/signals-agents/logging/google-fluentd-install.sh" | bash
+service google-fluentd restart &amp;
+# Install dependencies from apt
+apt-get update
+apt-get install -yq ca-certificates git build-essential supervisor psmisc
+# Install nodejs
+mkdir /opt/nodejs
+curl https://nodejs.org/dist/v16.14.0/node-v16.14.0-linux-x64.tar.gz | tar xvzf - -C /opt/nodejs --strip-components=1
+ln -s /opt/nodejs/bin/node /usr/bin/node
+ln -s /opt/nodejs/bin/npm /usr/bin/npm
+# Get the application source code from the Google Cloud Storage bucket.
+mkdir /fancy-store
+gsutil -m cp -r gs://fancy-store-[DEVSHELL_PROJECT_ID]/monolith-to-microservices/microservices/* /fancy-store/
+# Install app dependencies.
+cd /fancy-store/
+npm install
+# Create a nodeapp user. The application will run as this user.
+useradd -m -d /home/nodeapp nodeapp
+chown -R nodeapp:nodeapp /opt/app
+# Configure supervisor to run the node app.
+cat &gt;/etc/supervisor/conf.d/node-app.conf &lt;&lt; EOF
+[program:nodeapp]
+directory=/fancy-store
+command=npm start
+autostart=true
+autorestart=true
+user=nodeapp
+environment=HOME="/home/nodeapp",USER="nodeapp",NODE_ENV="production"
+stdout_logfile=syslog
+stderr_logfile=syslog
+EOF
+supervisorctl reread
+supervisorctl update
+</ql-code-block>
+<ol start="5">
+<li>Find the text <code>[DEVSHELL_PROJECT_ID]</code> in the file and replace it with your project ID:</li>
+</ol>
+<p><ql-variable key="project_0.project_id" placeholder="Project ID"></ql-variable></p>
+<p>The line of code within <code>startup-script.sh</code> should now be similar to the following:</p>
+<ql-code-block language="plaintext">
+gs://fancy-store-qwiklabs-gcp-123456789xyz/monolith-to-microservices/microservices/* /fancy-store/
+</ql-code-block>
+<ol start="6">
+<li>
+<p><strong>Save</strong> the <code>startup-script.sh</code> file, but do not close it yet.</p>
+</li>
+<li>
+<p>Look at the bottom right of Cloud Shell Code Editor, and ensure "End of Line Sequence" is set to "LF" and not "CRLF".</p>
+</li>
+</ol>
+<p><img alt='"End of Line Sequence"' src="https://cdn.qwiklabs.com/qx86NqNw9AZ2JE1oMYK9WwnmhhSuXgdzfh2U2%2F%2FTcKA%3D"></p>
+<ul>
+<li>
+<p>If this is set to CRLF, click <strong>CRLF</strong> and then select <strong>LF</strong> in the drop down.</p>
+</li>
+<li>
+<p>If this is already set to <strong>LF</strong>, then leave as is.</p>
+</li>
+</ul>
+<ol start="8">
+<li>
+<p>Close the <code>startup-script.sh</code> file.</p>
+</li>
+<li>
+<p>Return to Cloud Shell Terminal and run the following to copy the <code>startup-script.sh</code> file into your bucket:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+gsutil cp ~/monolith-to-microservices/startup-script.sh gs://fancy-store-$DEVSHELL_PROJECT_ID
+</ql-code-block>
+<p>It will now be accessible at: <code>https://storage.googleapis.com/[BUCKET_NAME]/startup-script.sh</code>.</p>
+<p>[BUCKET_NAME] represents the name of the Cloud Storage bucket. This will only be viewable by authorized users and service accounts by default, so inaccessible through a web browser. Compute Engine instances will automatically be able to access this through their service account.</p>
+<p>The startup script performs the following tasks:</p>
+<ul>
+<li>
+<p>Installs the Logging agent. The agent automatically collects logs from syslog.</p>
+</li>
+<li>
+<p>Installs Node.js and Supervisor. Supervisor runs the app as a daemon.</p>
+</li>
+<li>
+<p>Clones the app's source code from Cloud Storage Bucket and installs dependencies.</p>
+</li>
+<li>
+<p>Configures Supervisor to run the app. Supervisor makes sure the app is restarted if it exits unexpectedly or is stopped by an admin or process. It also sends the app's stdout and stderr to syslog for the Logging agent to collect.</p>
+</li>
+</ul>
+<h3>Copy code into the Cloud Storage bucket</h3>
+<p>When instances launch, they pull code from the Cloud Storage bucket, so you can store some configuration variables within the <code>.env</code> file of the code.</p>
+<ql-infobox><strong>Note: </strong>You could also code this to pull environment variables from elsewhere, but for demonstration purposes this is a simple method to handle configuration. In production, environment variables would likely be stored outside of the code.
+</ql-infobox>
+<ul>
+<li>
+<p>Copy the cloned code into your bucket:</p>
+</li>
+</ul>
+<ql-code-block language="bash">
+cd ~
+rm -rf monolith-to-microservices/*/node_modules
+gsutil -m cp -r monolith-to-microservices gs://fancy-store-$DEVSHELL_PROJECT_ID/
+</ql-code-block>
+<ql-infobox><strong>Note: </strong>The <code>node_modules</code> dependencies directories are deleted to ensure the copy is as fast and efficient as possible. These are recreated on the instances when they start up.
+</ql-infobox>
+<p>Click <strong>Check my progress</strong> to verify the objective.
+<ql-activity-tracking step="2">
+Copy startup script and code to Cloud Storage bucket
+</ql-activity-tracking></p>
+<h3>Deploy the backend instance</h3>
+<p>The first instance to be deployed will be the backend instance which will house the Orders and Products microservices.</p>
+<ql-infobox><strong>Note: </strong>In a production environment, you may want to separate each microservice into their own instance and instance group to allow them to scale independently. For demonstration purposes, both backend microservices (Orders &amp; Products) will reside on the same instance and instance group.</ql-infobox>
+<ul>
+<li>
+<p>Execute the following command to create an <code>e2-medium</code> instance that is configured to use the startup script. It is tagged as a <code>backend</code> instance so you can apply specific firewall rules to it later:</p>
+</li>
+</ul>
+<ql-code-block language="bash">
+gcloud compute instances create backend \
+    --zone=$ZONE \
+    --machine-type=e2-medium \
+    --tags=backend \
+   --metadata=startup-script-url=https://storage.googleapis.com/fancy-store-$DEVSHELL_PROJECT_ID/startup-script.sh
+</ql-code-block>
+<h3>Configure a connection to the backend</h3>
+<p>Before you deploy the frontend of the application, you need to update the configuration to point to the backend you just deployed.</p>
+<ol>
+<li>
+<p>Retrieve the external IP address of the backend with the following command, look under the <code>EXTERNAL_IP</code> tab for the backend instance:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+gcloud compute instances list
+</ql-code-block>
+<p>Example output:</p>
+<ql-code-block output="">
+NAME     ZONE           MACHINE_TYPE  PREEMPTIBLE  INTERNAL_IP  EXTERNAL_IP   STATUS
+backend  us-central1-f  e2-medium                  10.128.0.2   34.68.223.88  RUNNING
+</ql-code-block>
+<ol start="2">
+<li>
+<p><strong>Copy the External IP</strong> for the backend.</p>
+</li>
+<li>
+<p>In the Cloud Shell Explorer, navigate to <code>monolith-to-microservices</code> &gt; <code>react-app</code>.</p>
+</li>
+<li>
+<p>In the Code Editor, select <strong>View</strong> &gt; <strong>Toggle Hidden Files</strong> in order to see the <code>.env</code> file.</p>
+</li>
+</ol>
+<p>In the next step, you edit the <code>.env</code> file to point to the External IP of the backend. <strong>[BACKEND_ADDRESS]</strong> represents the External IP address of the backend instance determined from the above <code>gcloud</code> command.</p>
+<ol start="5">
+<li>
+<p>In the <code>.env</code> file, replace <code>localhost</code> with your <code>[BACKEND_ADDRESS]</code>:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+REACT_APP_ORDERS_URL=http://[BACKEND_ADDRESS]:8081/api/orders
+REACT_APP_PRODUCTS_URL=http://[BACKEND_ADDRESS]:8082/api/products
+</ql-code-block>
+<ol start="6">
+<li>
+<p><strong>Save</strong> the file.</p>
+</li>
+<li>
+<p>In Cloud Shell, run the following to rebuild <code>react-app</code>, which will update the frontend code:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+cd ~/monolith-to-microservices/react-app
+npm install &amp;&amp; npm run-script build
+</ql-code-block>
+<ol start="8">
+<li>
+<p>Then copy the application code into the Cloud Storage bucket:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+cd ~
+rm -rf monolith-to-microservices/*/node_modules
+gsutil -m cp -r monolith-to-microservices gs://fancy-store-$DEVSHELL_PROJECT_ID/
+</ql-code-block>
+<h3>Deploy the frontend instance</h3>
+<p>Now that the code is configured, deploy the frontend instance.</p>
+<ul>
+<li>
+<p>Execute the following to deploy the <code>frontend</code> instance with a similar command as before. This instance is tagged as <code>frontend</code> for firewall purposes:</p>
+</li>
+</ul>
+<ql-code-block language="bash">
+gcloud compute instances create frontend \
+    --zone=$ZONE \
+    --machine-type=e2-medium \
+    --tags=frontend \
+    --metadata=startup-script-url=https://storage.googleapis.com/fancy-store-$DEVSHELL_PROJECT_ID/startup-script.sh
+</ql-code-block>
+<ql-infobox><strong>Note: </strong>The deployment command and startup script is used with both the frontend and backend instances for simplicity, and because the code is configured to launch all microservices by default. As a result, all microservices run on both the frontend and backend in this sample. In a production environment you'd only run the microservices you need on each component.
+</ql-infobox>
+<h3>Configure the network</h3>
+<ol>
+<li>
+<p>Create firewall rules to allow access to port 8080 for the frontend, and ports 8081-8082 for the backend. These firewall commands use the tags assigned during instance creation for application:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud compute firewall-rules create fw-fe \
+    --allow tcp:8080 \
+    --target-tags=frontend
+</ql-code-block>
+<ql-code-block language="plaintext">
+gcloud compute firewall-rules create fw-be \
+    --allow tcp:8081-8082 \
+    --target-tags=backend
+</ql-code-block>
+<p>The website should now be fully functional.</p>
+<ol start="2">
+<li>
+<p>In order to navigate to the external IP of the <code>frontend</code>, you need to know the address. Run the following and look for the EXTERNAL_IP of the <code>frontend</code> instance:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud compute instances list
+</ql-code-block>
+<p>Example output:</p>
+<ql-code-block output="">
+NAME: backend
+ZONE: us-central1-f
+MACHINE_TYPE: e2-medium
+PREEMPTIBLE:
+INTERNAL_IP: 10.128.0.2
+EXTERNAL_IP: 34.27.178.79
+STATUS: RUNNING
+NAME: frontend
+ZONE: us-central1-f
+MACHINE_TYPE: e2-medium
+PREEMPTIBLE:
+INTERNAL_IP: 10.128.0.3
+EXTERNAL_IP: 34.172.241.242
+STATUS: RUNNING
+</ql-code-block>
+<p>It may take a couple minutes for the instance to start and be configured.</p>
+<ol start="3">
+<li>
+<p>Wait 3 minutes, and then execute the following to monitor for the application becoming ready, replacing FRONTEND_ADDRESS with the External IP for the frontend instance:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+watch -n 2 curl http://[FRONTEND_ADDRESS]:8080
+</ql-code-block>
+<p>Once you see output similar to the following, the website should be ready..</p>
+<p><img alt="Output" src="https://cdn.qwiklabs.com/2o%2FEZkwCPmf%2FkFUy05Ikyl7Nb5XM%2FC0pV2AC6BOv0mU%3D"></p>
+<ol start="4">
+<li>
+<p>Press CTRL+C to cancel the <code>watch</code> command</p>
+</li>
+<li>
+<p>Open a new browser tab and browse to <code>http://[FRONTEND_ADDRESS]:8080</code> to access the website, where [FRONTEND_ADDRESS] is the frontend EXTERNAL_IP determined above.</p>
+</li>
+<li>
+<p>Try navigating to the <strong>Products</strong> and <strong>Orders</strong> pages; these should now work.</p>
+</li>
+</ol>
+<p><img alt="Fancy Store Products tabbed page. Product images are tiled." src="https://cdn.qwiklabs.com/6mhPhrVBDstCzOqIFqna6TEGaojlLuWfByWddSXAAfU%3D"></p>
+<p>Click <strong>Check my progress</strong> to verify the objective.
+<ql-activity-tracking step="3">
+Deploy instances and configure network
+</ql-activity-tracking></p>
+<h2 id="step8">Task 5. Create managed instance groups</h2>
+<p>To allow the application to scale, managed instance groups will be created and will use the <code>frontend</code> and <code>backend</code> instances as Instance Templates.</p>
+<p>A managed instance group (MIG) contains identical instances that you can manage as a single entity in a single zone. Managed instance groups maintain high availability of your apps by proactively keeping your instances available, that is, in the RUNNING state. You will be using managed instance groups for your frontend and backend instances to provide autohealing, load balancing, autoscaling, and rolling updates.</p>
+<h3>Create instance template from source instance</h3>
+<p>Before you can create a managed instance group, you have to first create an instance template that will be the foundation for the group. Instance templates allow you to define the machine type, boot disk image or container image, network, and other instance properties to use when creating new VM instances. You can use instance templates to create instances in a managed instance group or even to create individual instances.</p>
+<p>To create the instance template, use the existing instances you created previously.</p>
+<ol>
+<li>
+<p>First, stop both instances:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+gcloud compute instances stop frontend --zone=$ZONE
+</ql-code-block>
+<ql-code-block language="bash">
+gcloud compute instances stop backend --zone=$ZONE
+</ql-code-block>
+<ol start="2">
+<li>
+<p>Then, create the instance template from each of the source instances:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+gcloud compute instance-templates create fancy-fe \
+    --source-instance-zone=$ZONE \
+    --source-instance=frontend
+</ql-code-block>
+<ql-code-block language="bash">
+gcloud compute instance-templates create fancy-be \
+    --source-instance-zone=$ZONE \
+    --source-instance=backend
+</ql-code-block>
+<ol start="3">
+<li>
+<p>Confirm the instance templates were created:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud compute instance-templates list
+</ql-code-block>
+<p>Example output:</p>
+<ql-code-block output="">
+NAME      MACHINE_TYPE  PREEMPTIBLE  CREATION_TIMESTAMP
+fancy-be  n1-standard-1                  2020-02-03T10:34:12.966-08:00
+fancy-fe  n1-standard-1                   2020-02-03T10:34:01.082-08:00
+</ql-code-block>
+<ol start="4">
+<li>
+<p>With the instance templates created, delete the <code>backend</code> vm to save resource space:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud compute instances delete backend --zone=$ZONE
+</ql-code-block>
+<ol start="5">
+<li>Type and enter <strong>y</strong> when prompted.</li>
+</ol>
+<p>Normally, you could delete the <code>frontend</code> vm as well, but you will use it to update the instance template later in the lab.</p>
+<h3>Create managed instance group</h3>
+<ol>
+<li>
+<p>Next, create two managed instance groups, one for the frontend and one for the backend:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud compute instance-groups managed create fancy-fe-mig \
+    --zone=$ZONE \
+    --base-instance-name fancy-fe \
+    --size 2 \
+    --template fancy-fe
+</ql-code-block>
+<ql-code-block language="plaintext">
+gcloud compute instance-groups managed create fancy-be-mig \
+    --zone=$ZONE \
+    --base-instance-name fancy-be \
+    --size 2 \
+    --template fancy-be
+</ql-code-block>
+<p>These managed instance groups will use the instance templates and are configured for two instances each within each group to start. The instances are automatically named based on the <code>base-instance-name</code> specified with random characters appended.</p>
+<ol start="2">
+<li>
+<p>For your application, the <code>frontend</code> microservice runs on port 8080, and the <code>backend</code> microservice runs on port 8081 for <code>orders</code> and port 8082 for products:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud compute instance-groups set-named-ports fancy-fe-mig \
+    --zone=$ZONE \
+    --named-ports frontend:8080
+</ql-code-block>
+<ql-code-block language="plaintext">
+gcloud compute instance-groups set-named-ports fancy-be-mig \
+    --zone=$ZONE \
+    --named-ports orders:8081,products:8082
+</ql-code-block>
+<p>Since these are non-standard ports, you specify named ports to identify these. Named ports are key:value pair metadata representing the service name and the port that it's running on. Named ports can be assigned to an instance group, which indicates that the service is available on all instances in the group. This information is used by the HTTP Load Balancing service that will be configured later.</p>
+<h3>Configure autohealing</h3>
+<p>To improve the availability of the application itself and to verify it is responding, configure an autohealing policy for the managed instance groups.</p>
+<p>An autohealing policy relies on an application-based health check to verify that an app is responding as expected. Checking that an app responds is more precise than simply verifying that an instance is in a RUNNING state, which is the default behavior.</p>
+<ql-infobox><p><strong>Note:</strong> Separate health checks for load balancing and for autohealing will be used. Health checks for load balancing can and should be more aggressive because these health checks determine whether an instance receives user traffic. You want to catch non-responsive instances quickly so you can redirect traffic if necessary.</p>
+In contrast, health checking for autohealing causes Compute Engine to proactively replace failing instances, so this health check should be more conservative than a load balancing health check.
+</ql-infobox>
+<ol>
+<li>
+<p>Create a health check that repairs the instance if it returns "unhealthy" 3 consecutive times for the <code>frontend</code> and <code>backend</code>:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+gcloud compute health-checks create http fancy-fe-hc \
+    --port 8080 \
+    --check-interval 30s \
+    --healthy-threshold 1 \
+    --timeout 10s \
+    --unhealthy-threshold 3
+</ql-code-block>
+<ql-code-block language="bash">
+gcloud compute health-checks create http fancy-be-hc \
+    --port 8081 \
+    --request-path=/api/orders \
+    --check-interval 30s \
+    --healthy-threshold 1 \
+    --timeout 10s \
+    --unhealthy-threshold 3
+</ql-code-block>
+<ol start="2">
+<li>
+<p>Create a firewall rule to allow the health check probes to connect to the microservices on ports 8080-8081:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+gcloud compute firewall-rules create allow-health-check \
+    --allow tcp:8080-8081 \
+    --source-ranges 130.211.0.0/22,35.191.0.0/16 \
+    --network default
+</ql-code-block>
+<ol start="3">
+<li>
+<p>Apply the health checks to their respective services:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+gcloud compute instance-groups managed update fancy-fe-mig \
+    --zone=$ZONE \
+    --health-check fancy-fe-hc \
+    --initial-delay 300
+</ql-code-block>
+<ql-code-block language="bash">
+gcloud compute instance-groups managed update fancy-be-mig \
+    --zone=$ZONE \
+    --health-check fancy-be-hc \
+    --initial-delay 300
+</ql-code-block>
+<ql-infobox><strong>Note: </strong>It can take 15 minutes before autohealing begins monitoring instances in the group.
+</ql-infobox>
+<ol start="4">
+<li>Continue with the lab to allow some time for autohealing to monitor the instances in the group. You will simulate a failure to test the autohealing at the end of the lab.</li>
+</ol>
+<p>Click <strong>Check my progress</strong> to verify the objective.
+<ql-activity-tracking step="4">
+Create managed instance groups
+</ql-activity-tracking></p>
+<h2 id="step9">Task 6. Create load balancers</h2>
+<p>To complement your managed instance groups, use HTTP(S) Load Balancers to serve traffic to the frontend and backend microservices, and use mappings to send traffic to the proper backend services based on pathing rules. This exposes a single load balanced IP for all services.</p>
+<p>You can learn more about the Load Balancing options on Google Cloud:  <a href="https://cloud.google.com/load-balancing/docs/load-balancing-overview" target="_blank">Overview of Load Balancing</a>.</p>
+<h3>Create HTTP(S) load balancer</h3>
+<p>Google Cloud offers many different types of load balancers. For this lab you use an HTTP(S) Load Balancer for your traffic. An HTTP load balancer is structured as follows:</p>
+<ol>
+<li>A forwarding rule directs incoming requests to a target HTTP proxy.</li>
+<li>The target HTTP proxy checks each request against a URL map to determine the appropriate backend service for the request.</li>
+<li>The backend service directs each request to an appropriate backend based on serving capacity, zone, and instance health of its attached backends. The health of each backend instance is verified using an HTTP health check. If the backend service is configured to use an HTTPS or HTTP/2 health check, the request will be encrypted on its way to the backend instance.</li>
+<li>Sessions between the load balancer and the instance can use the HTTP, HTTPS, or HTTP/2 protocol. If you use HTTPS or HTTP/2, each instance in the backend services must have an SSL certificate.</li>
+</ol>
+<ql-infobox><strong>Note: </strong>For demonstration purposes in order to avoid SSL certificate complexity, use HTTP instead of HTTPS. For production, it is recommended to use HTTPS for encryption wherever possible.
+</ql-infobox>
+<ol>
+<li>
+<p>Create health checks that will be used to determine which instances are capable of serving traffic for each service:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud compute http-health-checks create fancy-fe-frontend-hc \
+  --request-path / \
+  --port 8080
+</ql-code-block>
+<ql-code-block language="plaintext">
+gcloud compute http-health-checks create fancy-be-orders-hc \
+  --request-path /api/orders \
+  --port 8081
+</ql-code-block>
+<ql-code-block language="plaintext">
+gcloud compute http-health-checks create fancy-be-products-hc \
+  --request-path /api/products \
+  --port 8082
+</ql-code-block>
+<ql-infobox><strong>Note: </strong>These health checks are for the load balancer, and only handle directing traffic from the load balancer; they do not cause the managed instance groups to recreate instances.
+</ql-infobox>
+<ol start="2">
+<li>
+<p>Create backend services that are the target for load-balanced traffic. The backend services will use the health checks and named ports you created:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud compute backend-services create fancy-fe-frontend \
+  --http-health-checks fancy-fe-frontend-hc \
+  --port-name frontend \
+  --global
+</ql-code-block>
+<ql-code-block language="plaintext">
+gcloud compute backend-services create fancy-be-orders \
+  --http-health-checks fancy-be-orders-hc \
+  --port-name orders \
+  --global
+</ql-code-block>
+<ql-code-block language="plaintext">
+gcloud compute backend-services create fancy-be-products \
+  --http-health-checks fancy-be-products-hc \
+  --port-name products \
+  --global
+</ql-code-block>
+<ol start="3">
+<li>
+<p>Add the Load Balancer's  <a href="https://cloud.google.com/load-balancing/docs/backend-service" target="_blank">backend services</a>:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud compute backend-services add-backend fancy-fe-frontend \
+  --instance-group-zone=$ZONE \
+  --instance-group fancy-fe-mig \
+  --global
+</ql-code-block>
+<ql-code-block language="plaintext">
+gcloud compute backend-services add-backend fancy-be-orders \
+  --instance-group-zone=$ZONE \
+  --instance-group fancy-be-mig \
+  --global
+</ql-code-block>
+<ql-code-block language="plaintext">
+gcloud compute backend-services add-backend fancy-be-products \
+  --instance-group-zone=$ZONE \
+  --instance-group fancy-be-mig \
+  --global
+</ql-code-block>
+<ol start="4">
+<li>
+<p>Create a URL map. The URL map defines which URLs are directed to which backend services:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud compute url-maps create fancy-map \
+  --default-service fancy-fe-frontend
+</ql-code-block>
+<ol start="5">
+<li>
+<p>Create a path matcher to allow the <code>/api/orders</code> and <code>/api/products</code> paths to route to their respective services:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud compute url-maps add-path-matcher fancy-map \
+   --default-service fancy-fe-frontend \
+   --path-matcher-name orders \
+   --path-rules "/api/orders=fancy-be-orders,/api/products=fancy-be-products"
+</ql-code-block>
+<ol start="6">
+<li>
+<p>Create the proxy which ties to the URL map:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud compute target-http-proxies create fancy-proxy \
+  --url-map fancy-map
+</ql-code-block>
+<ol start="7">
+<li>
+<p>Create a global forwarding rule that ties a public IP address and port to the proxy:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud compute forwarding-rules create fancy-http-rule \
+  --global \
+  --target-http-proxy fancy-proxy \
+  --ports 80
+</ql-code-block>
+<p>Click <strong>Check my progress</strong> to verify the objective.
+<ql-activity-tracking step="5">
+Create HTTP(S) load balancers
+</ql-activity-tracking></p>
+<h3>Update the configuration</h3>
+<p>Now that you have a new static IP address, update the code on the <code>frontend</code> to point to this new address instead of the ephemeral address used earlier that pointed to the <code>backend</code> instance.</p>
+<ol>
+<li>
+<p>In Cloud Shell, change to the <code>react-app</code> folder which houses the <code>.env</code> file that holds the configuration:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+cd ~/monolith-to-microservices/react-app/
+</ql-code-block>
+<ol start="2">
+<li>
+<p>Find the IP address for the Load Balancer:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud compute forwarding-rules list --global
+</ql-code-block>
+<p>Example output:</p>
+<ql-code-block output="">
+NAME: fancy-http-rule
+REGION:
+IP_ADDRESS: 34.111.203.235
+IP_PROTOCOL: TCP
+TARGET: fancy-proxy
+</ql-code-block>
+<ol start="3">
+<li>
+<p>Return to the Cloud Shell Editor and edit the <code>.env</code> file again to point to Public IP of Load Balancer. [LB_IP] represents the External IP address of the backend instance determined above.</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+REACT_APP_ORDERS_URL=http://[LB_IP]/api/orders
+REACT_APP_PRODUCTS_URL=http://[LB_IP]/api/products
+</ql-code-block>
+<ql-infobox><strong>Note: </strong>The ports are removed in the new address because the load balancer is configured to handle this forwarding for you.
+</ql-infobox>
+<ol start="4">
+<li>
+<p><strong>Save</strong> the file.</p>
+</li>
+<li>
+<p>Rebuild <code>react-app</code>, which will update the frontend code:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+cd ~/monolith-to-microservices/react-app
+npm install &amp;&amp; npm run-script build
+</ql-code-block>
+<ol start="6">
+<li>
+<p>Copy the application code into your bucket:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+cd ~
+rm -rf monolith-to-microservices/*/node_modules
+gsutil -m cp -r monolith-to-microservices gs://fancy-store-$DEVSHELL_PROJECT_ID/
+</ql-code-block>
+<h3>Update the frontend instances</h3>
+<p>Now that there is new code and configuration, you want the frontend instances within the managed instance group to pull the new code.</p>
+<ul>
+<li>
+<p>Since your instances pull the code at startup, you can issue a rolling restart command:</p>
+</li>
+</ul>
+<ql-code-block language="plaintext">
+gcloud compute instance-groups managed rolling-action replace fancy-fe-mig \
+    --zone=$ZONE \
+    --max-unavailable 100%
+</ql-code-block>
+<ql-infobox><strong>Note: </strong>In this example of a rolling replace, you specifically state that all machines can be replaced immediately through the <code>--max-unavailable</code> parameter. Without this parameter, the command would keep an instance alive while restarting others to ensure availability. For testing purposes, you specify to replace all immediately for speed.
+</ql-infobox>
+<p>Click <strong>Check my progress</strong> to verify the objective.
+<ql-activity-tracking step="6">
+Update the frontend instances
+</ql-activity-tracking></p>
+<h3>Test the website</h3>
+<ol>
+<li>
+<p>Wait 3 minutes after issues the <code>rolling-action replace</code> command in order to give the instances time to be processed, and then check the status of the managed instance group. Run the following to confirm the service is listed as <strong>HEALTHY</strong>:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+watch -n 2 gcloud compute backend-services get-health fancy-fe-frontend --global
+</ql-code-block>
+<ol start="2">
+<li>Wait until the 2 services are listed as <strong>HEALTHY</strong>.</li>
+</ol>
+<p>Example output:</p>
+<ql-code-block output="">
+---
+backend: https://www.googleapis.com/compute/v1/projects/my-gce-codelab/zones/us-central1-a/instanceGroups/fancy-fe-mig
+status:
+  healthStatus:
+  - healthState: HEALTHY
+    instance: https://www.googleapis.com/compute/v1/projects/my-gce-codelab/zones/us-central1-a/instances/fancy-fe-x151
+    ipAddress: 10.128.0.7
+    port: 8080
+  - healthState: HEALTHY
+    instance: https://www.googleapis.com/compute/v1/projects/my-gce-codelab/zones/us-central1-a/instances/fancy-fe-cgrt
+    ipAddress: 10.128.0.11
+    port: 8080
+  kind: compute#backendServiceGroupHealth
+</ql-code-block>
+<ql-infobox><strong>Note: </strong>If one instance encounters an issue and is UNHEALTHY it should automatically be repaired. Wait for this to happen. <br><br>If neither instance enters a HEALTHY state after waiting a little while, something is wrong with the setup of the frontend instances that accessing them on port 8080 doesn't work. Test this by browsing to the instances directly on port 8080.
+</ql-infobox>
+<ol start="3">
+<li>Once both items appear as HEALTHY on the list, exit the <code>watch</code> command by pressing CTRL+C.</li>
+</ol>
+<ql-infobox><strong>Note: </strong>The application will be accessible via http://[LB_IP] where [LB_IP] is the IP_ADDRESS specified for the Load Balancer, which can be found with the following command:
+<p><code>gcloud compute forwarding-rules list --global</code></p>
+You'll be checking the application later in the  lab.
+</ql-infobox>
+<h2 id="step10">Task 7. Scaling Compute Engine</h2>
+<p>So far, you have created two managed instance groups with two instances each. This configuration is fully functional, but a static configuration regardless of load. Next, you create an autoscaling policy based on utilization to automatically scale each managed instance group.</p>
+<h3>Automatically resize by utilization</h3>
+<ul>
+<li>
+<p>To create the autoscaling policy, execute the following:</p>
+</li>
+</ul>
+<ql-code-block language="plaintext">
+gcloud compute instance-groups managed set-autoscaling \
+  fancy-fe-mig \
+  --zone=$ZONE \
+  --max-num-replicas 2 \
+  --target-load-balancing-utilization 0.60
+</ql-code-block>
+<ql-code-block language="plaintext">
+gcloud compute instance-groups managed set-autoscaling \
+  fancy-be-mig \
+  --zone=$ZONE \
+  --max-num-replicas 2 \
+  --target-load-balancing-utilization 0.60
+</ql-code-block>
+<p>These commands create an autoscaler on the managed instance groups that automatically adds instances when utilization is above 60% utilization, and removes instances when the load balancer is below 60% utilization.</p>
+<h3>Enable content delivery network</h3>
+<p>Another feature that can help with scaling is to enable a Content Delivery Network service, to provide caching for the frontend.</p>
+<ul>
+<li>
+<p>Execute the following command on the frontend service:</p>
+</li>
+</ul>
+<ql-code-block language="plaintext">
+gcloud compute backend-services update fancy-fe-frontend \
+    --enable-cdn --global
+</ql-code-block>
+<p>When a user requests content from the HTTP(S) load balancer, the request arrives at a Google Front End (GFE) which first looks in the Cloud CDN cache for a response to the user's request. If the GFE finds a cached response, the GFE sends the cached response to the user. This is called a cache hit.</p>
+<p>If the GFE can't find a cached response for the request, the GFE makes a request directly to the backend. If the response to this request is cacheable, the GFE stores the response in the Cloud CDN cache so that the cache can be used for subsequent requests.</p>
+<p>Click <strong>Check my progress</strong> to verify the objective.
+<ql-activity-tracking step="7">
+Scaling Compute Engine
+</ql-activity-tracking></p>
+<h2 id="step11">Task 8. Update the website</h2>
+<h3>Updating instance template</h3>
+<p>Existing instance templates are not editable; however, since your instances are stateless and all configuration is done through the startup script, you only need to change the instance template if you want to change the template settings . Now you're going to make a simple change to use a larger machine type and push that out.</p>
+<p>Complete the following steps to:</p>
+<ul>
+<li>
+<p>Update the <code>frontend</code> instance, which acts as the basis for the instance template. During the update, put a file on the updated version of the instance template's image, then update the instance template, roll out the new template, and then confirm the file exists on the managed instance group instances.</p>
+</li>
+<li>
+<p>Modify the machine type of your instance template, by switching from the n1-standard-1 machine type into a custom machine type with 4 vCPU and 3840MiB RAM.</p>
+</li>
+</ul>
+<ol>
+<li>
+<p>Run the following command to modify the machine type of the frontend instance:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+gcloud compute instances set-machine-type frontend \
+  --zone=$ZONE \
+  --machine-type custom-4-3840
+</ql-code-block>
+<ol start="2">
+<li>
+<p>Create the new Instance Template:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+gcloud compute instance-templates create fancy-fe-new \
+    --region=$REGION \
+    --source-instance=frontend \
+    --source-instance-zone=$ZONE
+</ql-code-block>
+<ol start="3">
+<li>
+<p>Roll out the updated instance template to the Managed Instance Group:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+gcloud compute instance-groups managed rolling-action start-update fancy-fe-mig \
+  --zone=$ZONE \
+  --version template=fancy-fe-new
+</ql-code-block>
+<ol start="4">
+<li>
+<p>Wait 3 minutes, and then run the following to monitor the status of the update:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+watch -n 2 gcloud compute instance-groups managed list-instances fancy-fe-mig \
+  --zone=$ZONE
+</ql-code-block>
+<p>This will take a few moments.</p>
+<p>Once you have at least 1 instance in the following condition:</p>
+<ul>
+<li>
+<p>STATUS: <strong>RUNNING</strong></p>
+</li>
+<li>
+<p>ACTION set to <strong>None</strong></p>
+</li>
+<li>
+<p>INSTANCE_TEMPLATE: the new template name (<strong>fancy-fe-new</strong>)</p>
+</li>
+</ul>
+<ol start="5">
+<li>
+<p><strong>Copy</strong> the name of one of the machines listed for use in the next command.</p>
+</li>
+<li>
+<p>CTRL+C to exit the <code>watch</code> process.</p>
+</li>
+<li>
+<p>Run the following to see if the virtual machine is using the new machine type (custom-4-3840), where [VM_NAME] is the newly created instance:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+gcloud compute instances describe [VM_NAME] | grep machineType
+</ql-code-block>
+<p>Expected example output:</p>
+<ql-code-block output="">
+machineType: https://www.googleapis.com/compute/v1/projects/project-name/zones/us-central1-f/machineTypes/custom-4-3840
+</ql-code-block>
+<h3>Make changes to the website</h3>
+<p><strong>Scenario:</strong> Your marketing team has asked you to change the homepage for your site. They think it should be more informative of who your company is and what you actually sell.</p>
+<p><strong>Task:</strong> Add some text to the homepage to make the marketing team happy! It looks like one of the developers has already created the changes with the file name <code>index.js.new</code>. You can just copy this file to <code>index.js</code> and the changes should be reflected. Follow the instructions below to make the appropriate changes.</p>
+<ol>
+<li>
+<p>Run the following commands to copy the updated file to the correct file name:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+cd ~/monolith-to-microservices/react-app/src/pages/Home
+mv index.js.new index.js
+</ql-code-block>
+<ol start="2">
+<li>
+<p>Print the file contents to verify the changes:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+cat ~/monolith-to-microservices/react-app/src/pages/Home/index.js
+</ql-code-block>
+<p>The resulting code should look like this:</p>
+<ql-code-block output="">
+/*
+Copyright 2019 Google LLC
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+    https://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+import React from "react";
+import { Box, Paper, Typography } from "@mui/material";
+export default function Home() {
+  return (
+    
+ theme.spacing(3, 2),
+        }}
+      &gt;
+        Fancy Fashion &amp; Style Online
+<br>
+
+          Tired of mainstream fashion ideas, popular trends and societal norms?
+          This line of lifestyle products will help you catch up with the Fancy
+          trend and express your personal style. Start shopping Fancy items now!
+        
+
+
+  );
+}
+</ql-code-block>
+<p>You updated the React components, but you need to build the React app to generate the static files.</p>
+<ol start="3">
+<li>
+<p>Run the following command to build the React app and copy it into the monolith public directory:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+cd ~/monolith-to-microservices/react-app
+npm install &amp;&amp; npm run-script build
+</ql-code-block>
+<ol start="4">
+<li>
+<p>Then re-push this code to the bucket:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+cd ~
+rm -rf monolith-to-microservices/*/node_modules
+gsutil -m cp -r monolith-to-microservices gs://fancy-store-$DEVSHELL_PROJECT_ID/
+</ql-code-block>
+<h3>Push changes with rolling replacements</h3>
+<ol>
+<li>
+<p>Now force all instances to be replaced to pull the update:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud compute instance-groups managed rolling-action replace fancy-fe-mig \
+  --zone=$ZONE \
+  --max-unavailable=100%
+</ql-code-block>
+<ql-infobox><p><strong>Note: </strong>In this example of a rolling replace, you specifically state that all machines can be replaced immediately through the <code>--max-unavailable</code> parameter. Without this parameter, the command would keep an instance alive while replacing others.</p> For testing purposes, you specify to replace all immediately for speed. In production, leaving a buffer would allow the website to continue serving the website while updating.</ql-infobox>
+<p>Click <strong>Check my progress</strong> to verify the objective.
+<ql-activity-tracking step="8">
+Update the website
+</ql-activity-tracking></p>
+<ol start="2">
+<li>
+<p>Wait 3 minutes after issuing the <code>rolling-action replace</code> command in order to give the instances time to be processed, and then check the status of the managed instance group. Run the following to confirm the service is listed as <strong>HEALTHY</strong>:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+watch -n 2 gcloud compute backend-services get-health fancy-fe-frontend --global
+</ql-code-block>
+<ol start="3">
+<li>Wait a few moments for both services to appear and become HEALTHY.</li>
+</ol>
+<p>Example output:</p>
+<ql-code-block output="">
+---
+backend: https://www.googleapis.com/compute/v1/projects/my-gce-codelab/zones/us-central1-a/instanceGroups/fancy-fe-mig
+status:
+  healthStatus:
+  - healthState: HEALTHY
+    instance: https://www.googleapis.com/compute/v1/projects/my-gce-codelab/zones/us-central1-a/instances/fancy-fe-x151
+    ipAddress: 10.128.0.7
+    port: 8080
+  - healthState: HEALTHY
+    instance: https://www.googleapis.com/compute/v1/projects/my-gce-codelab/zones/us-central1-a/instances/fancy-fe-cgrt
+    ipAddress: 10.128.0.11
+    port: 8080
+  kind: compute#backendServiceGroupHealth
+</ql-code-block>
+<ol start="4">
+<li>
+<p>Once items appear in the list with HEALTHY status, exit the <code>watch</code> command by pressing CTRL+C.</p>
+</li>
+<li>
+<p>Browse to the website via <code>http://[LB_IP]</code> where [LB_IP] is the IP_ADDRESS specified for the Load Balancer, which can be found with the following command:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud compute forwarding-rules list --global
+</ql-code-block>
+<p>The new website changes should now be visible.</p>
+<h3>Simulate failure</h3>
+<p>In order to confirm the health check works, log in to an instance and stop the services.</p>
+<ol>
+<li>
+<p>To find an instance name, execute the following:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud compute instance-groups list-instances fancy-fe-mig
+</ql-code-block>
+<ol start="2">
+<li>
+<p>Copy an instance name, then run the following to secure shell into the instance, where INSTANCE_NAME is one of the instances from the list:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud compute ssh [INSTANCE_NAME]
+</ql-code-block>
+<ol start="3">
+<li>
+<p>Type in "y" to confirm, and press <strong>Enter</strong> twice to not use a password.</p>
+</li>
+<li>
+<p>Within the instance, use <code>supervisorctl</code> to stop the application:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+sudo supervisorctl stop nodeapp; sudo killall node
+</ql-code-block>
+<ol start="5">
+<li>
+<p>Exit the instance:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+exit
+</ql-code-block>
+<ol start="6">
+<li>
+<p>Monitor the repair operations:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+watch -n 2 gcloud compute operations list \
+--filter='operationType~compute.instances.repair.*'
+</ql-code-block>
+<p>This will take  a few minutes to complete.</p>
+<p>Look for the following example output:</p>
+<ql-code-block output="">
+NAME                                                  TYPE                                       TARGET                                 HTTP_STATUS  STATUS  TIMESTAMP
+repair-1568314034627-5925f90ee238d-fe645bf0-7becce15  compute.instances.repair.recreateInstance  us-central1-a/instances/fancy-fe-1vqq  200          DONE    2019-09-12T11:47:14.627-07:00
+</ql-code-block>
+<p>The managed instance group recreated the instance to repair it.</p>
+<ol start="7">
+<li>
+<p>You can also monitor through the Console - go to  <strong>Navigation menu</strong> &gt; <strong>Compute Engine</strong> &gt; <strong>VM instances</strong>.</p>
+</li>
+</ol>
+<h2 id="step12">Congratulations!</h2>
+<p>You successfully deployed, scaled, and updated your website on Compute Engine. You are now experienced with Compute Engine, Managed Instance Groups, Load Balancers, and Health Checks!</p>
+<h3>Finish your quest</h3>
+<p>This self-paced lab is part of the <a href="https://google.qwiklabs.com/quests/125" target="_blank">Website on Google Cloud</a> quest. A quest is a series of related labs that form a learning path. Completing this quest earns you a badge to recognize your achievement. You can make your badge or badges public and link to them in your online resume or social media account. <a href="https://www.cloudskillsboost.google/quests/125/enroll" target="_blank">Enroll in this quest</a>  and get immediate completion credit.  Refer to the <a href="http://cloudskillsboost.google/catalog" target="_blank">catalog</a> for all available quests.</p>
+<p>Looking for a hands-on challenge lab to demonstrate your skills and validate your knowledge? On completing this quest, finish this additional <a href="https://google.qwiklabs.com/catalog_lab/2692" target="_blank">challenge lab</a> to receive an exclusive Google Cloud digital badge.</p>
+<h3>Take your next lab</h3>
+<p>Continue your learning with <a href="https://google.qwiklabs.com/catalog_lab/2488" target="_blank">Deploy, Scale, and Update your Website on Google Kubernetes Engine</a>, or check out these suggestions:</p>
+<ul>
+<li>
+<p><a href="https://google.qwiklabs.com/catalog_lab/2546" target="_blank">Migrating a Monolithic Website to Microservices on Google Kubernetes Engine</a></p>
+</li>
+<li>
+<p>Watch this video case study on <a href="https://www.youtube.com/embed/tts41rFP_0k?enablejsapi=1&amp;rel=0&amp;showinfo=0" target="_blank">Hosting Scalable Web Applications on Google Cloud</a></p>
+</li>
+</ul>
+<h3>Next steps / Learn more</h3>
+<p>To learn more, check out <a href="https://cloud.google.com/compute/docs/instance-groups/autohealing-instances-in-migs" target="_blank">Autohealing and health checks in Managed Instance Groups</a></p>
+<h3>Google Cloud training and certification</h3>
+<p>...helps you make the most of Google Cloud technologies. <a href="https://cloud.google.com/training/courses" target="_blank">Our classes</a> include technical skills and best practices to help you get up to speed quickly and continue your learning journey. We offer fundamental to advanced level training, with on-demand, live, and virtual options to suit your busy schedule. <a href="https://cloud.google.com/certification/" target="_blank">Certifications</a> help you validate and prove your skill and expertise in Google Cloud technologies.</p>
+<p><strong>Manual Last Updated June 13, 2023</strong></p>
+<p><strong>Lab Last Tested June 13, 2023</strong></p>
+<p>Copyright 2023 Google LLC All rights reserved. Google and the Google logo are trademarks of Google LLC. All other company and product names may be trademarks of the respective companies with which they are associated.</p>
+
+</div>
+</div>
+
+
+<div class='lab-content__end-lab-button js-end-lab-button-container hidden'>
+<ql-lab-control-button class='js-end-lab-button' running></ql-lab-control-button>
+</div>
+<!-- / TODO: Move recommendations into the end lab modal -->
+<div class='lab-content__renderable-instructions'>
+<div class='lab-content__recommendation'>
+<!-- # TODO: Change classes so that this doesn't stack vertically -->
+<section class='upcoming-cards'>
+<h2 class='ql-headline-4'>Continue questing</h2>
+<div class='activity-cards'>
+<ql-activity-card aria-label='Migrate to Cloud SQL for PostgreSQL using Database Migration Service' name='Migrate to Cloud SQL for PostgreSQL using Database Migration Service' path='/focuses/23649?parent=catalog' progress='0.0' type='lab'></ql-activity-card>
+
+</div>
+</section>
+
+</div>
+
+</div>
+</ql-drawer-content>
+<ql-drawer end id='outline-drawer' open slot='drawer' width='320'>
+<div aria-label='Lab Table of Contents' role='navigation'>
+<ul class='lab-content__outline js-lab-content-outline'>
+<li><a href="#step1">GSP662</a></li><li><a href="#step2">Overview</a></li><li><a href="#step3">Setup and requirements</a></li><li><a href="#step4">Task 1. Enable Compute Engine API</a></li><li><a href="#step5">Task 2. Create Cloud Storage bucket</a></li><li><a href="#step6">Task 3. Clone source repository</a></li><li><a href="#step7">Task 4. Create Compute Engine instances</a></li><li><a href="#step8">Task 5. Create managed instance groups</a></li><li><a href="#step9">Task 6. Create load balancers</a></li><li><a href="#step10">Task 7. Scaling Compute Engine</a></li><li><a href="#step11">Task 8. Update the website</a></li><li><a href="#step12">Congratulations!</a></li>
+</ul>
+</div>
+</ql-drawer>
+</ql-drawer-container>
+</ql-drawer-content>
+</ql-drawer-container>
+
+
+
+</div>
+</main>
+
+<span class='hidden' id='flash-sibling-before'></span>
+<ql-snackbar></ql-snackbar>
+
+
+<div class='modal fade' id='lab-details-modal'>
+<div class='modal-container'>
+<div class='modal-content mdl-shadow--24dp'>
+<div class='modal-body'>
+<p class='l-mbm'>
+In this lab, you deploy and scale a Web App on Google Compute Engine.
+ 
+</p>
+<p>
+This lab is included in these quests:
+<a href="/quests/121">Deploy and Manage Cloud Environments with Google Cloud</a>, <a href="/quests/125">Website on Google Cloud</a>, <a href="/quests/115">Build a Website on Google Cloud</a>, <a href="/quests/271">Build Google Cloud Infrastructure for Azure Professionals</a>, <a href="/quests/319">The Basics of Google Cloud Compute</a>.
+If you complete this lab you&#39;ll receive credit for it when you enroll in one of these quests.
+</p>
+<p class='small-label l-mbs'>
+<strong>
+Duration:
+</strong>
+0m setup
+&middot;
+90m access
+&middot;
+45m completion
+</p>
+<p class='small-label l-mbs'>
+<strong>AWS Region:</strong>
+[] <strong></strong>
+</p>
+<p class='small-label l-mbs'>
+<span><strong>Levels: </strong>introductory</span>
+</p>
+<p class='small-label'>
+<strong>
+Permalink:
+</strong>
+<a href="https://partner.cloudskillsboost.google/catalog_lab/2617">https://partner.cloudskillsboost.google/catalog_lab/2617</a>
+</p>
+</div>
+<div class='modal-actions'>
+<a class='button button--text' data-dismiss='modal'>
+Got It
+</a>
+</div>
+
+
+</div>
+</div>
+<iframe class='l-ie-iframe-fix' tabindex='-1' title='modal'></iframe>
+</div>
+<ql-dialog headline='How satisfied are you with this lab?&lt;span aria-hidden=&quot;true&quot;&gt;*&lt;/span&gt;' id='lab-review-dialog'>
+<form class="simple_form js-lab-review-form" id="edit_lab_review_29745385" action="/lab_reviews/29745385" accept-charset="UTF-8" data-remote="true" method="post"><input name="utf8" type="hidden" value="&#x2713;" autocomplete="off" /><input type="hidden" name="_method" value="patch" autocomplete="off" /><div aria-labelledby='lab-review-dialog' aria-required='true' aria-valuemax='5' aria-valuemin='0' aria-valuenow='5' class='rateit js-rateit' data-rateit-max='5' data-rateit-min='0' data-rateit-resetable='false' data-rateit-step='1' data-rateit-value='5' id='lab-review-rateit' role='slider' tabindex='0'></div>
+<div class='l-mtm'>
+
+<div class="control-group hidden lab_review_user_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" value="11061062" name="lab_review[user_id]" id="lab_review_user_id" /></div></div>
+<div class="control-group hidden lab_review_classroom_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" name="lab_review[classroom_id]" id="lab_review_classroom_id" /></div></div>
+<div class="control-group hidden lab_review_lab_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" value="2617" name="lab_review[lab_id]" id="lab_review_lab_id" /></div></div>
+<div class="control-group hidden lab_review_focus_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" name="lab_review[focus_id]" id="lab_review_focus_id" /></div></div>
+<div class="control-group hidden lab_review_rating"><div class="controls"><input class="hidden js-rating-input" autocomplete="off" type="hidden" value="2" name="lab_review[rating]" id="lab_review_rating" /></div></div>
+<div class="control-group text optional lab_review_comment"><label class="text optional control-label" for="lab_review_comment">Additional Comments</label><div class="controls"><textarea class="text optional" name="lab_review[comment]" id="lab_review_comment">
+</textarea></div></div>
+</div>
+</form><ql-button disabled id='submit' label='Submit' slot='action' text></ql-button>
+</ql-dialog>
+
+<ql-dialog headline='All done? If you end this lab, you will lose all your work. You may not be able to restart the lab if there is a quota limit. Are you sure you want to end this lab?' icon='error_outline' id='js-lab-are-you-sure-dialog'>
+<ql-button id='js-are-you-sure-button' label='Submit' slot='action' text></ql-button>
+</ql-dialog>
+
+
+<script>
+  $(function() {
+    ql.initMaterialInputs();
+    initChosen();
+    initSearch();
+    initTabs();
+    ql.list.init();
+    ql.favoriting.init();
+    ql.header.myAccount.init();
+    initTooltips();
+    ql.autocomplete.init();
+    ql.modals.init();
+    ql.toggleButtons.init();
+    ql.analytics.init();
+    ql.favoriting.init();
+  ql.chat.init();
+  ql.jumpContent.init();
+  ql.labControlPanel.addRecaptchaErrorHandler();
+  initLabContent();
+  ql.labOutline.links.init();
+  initLabReviewModal();
+  initLabReviewTranslations( {"star_amount_1":"1 of 5 stars","star_amount_2":"2 of 5 stars","star_amount_3":"3 of 5 stars","star_amount_4":"4 of 5 stars","star_amount_5":"5 of 5 stars"} )
+  ql.labAssessment.init();
+  ql.labData.init();
+  initLabTranslations( {"are_you_sure":"All done? If you end this lab, you will lose all your work. You may not be able to restart the lab if there is a quota limit. Are you sure you want to end this lab?","in_progress":"*In Progress*","ending":"*Ending*","starting":"*Starting, please wait*","end_concurrent_labs":"Sorry, you can only run one lab at a time. To start this lab, please confirm that you want all of your existing labs to end.","copied":"Copied","no_resource":"Error retrieving resource.","no_support":"No Support","mac_press":"Press ⌘-C to copy","thanks_review":"Thanks for reviewing this lab.","windows_press":"Press Ctrl-C to copy","days":"days"} );
+  ql.labRun.init();
+  ql.navPanel.init();
+  ql.navigation.init();
+  
+  });
+</script>
+
+</body>
+</html>
+

@@ -1,0 +1,1397 @@
+
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<title>Migrate to Cloud SQL for PostgreSQL using Database Migration Service | Google Cloud Skills Boost for Partners</title>
+<meta name="action-cable-url" content="/cable" />
+<script>
+//<![CDATA[
+window.gon={};gon.deployment="googlecourses-run";
+//]]>
+</script>
+<script>
+  (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer',"GTM-5XSKHDX");
+</script>
+<script src="https://cdn.qwiklabs.com/assets/hallofmirrors/polyfills/webcomponents-loader-8583b47b01e40e6ea7bf1ad443a20b7e79bbdd5eafac009806a228c91a97282c.js"></script>
+<script src="https://cdn.qwiklabs.com/assets/vendor-beb958bea8eff6a4ad4cf8f36a0a676817a4857e214b17ae983796071a4a816d.js"></script>
+<script src="https://cdn.qwiklabs.com/assets/application-8194cda6ef3c11dc4405ed62cf7fc7697cbe39d472be22a7c9d4bd377a7b77f0.js"></script>
+<script src="https://cdn.qwiklabs.com/assets/hallofmirrors/hallofmirrors-f8d9fcf289db0acb0062699ca48080cfaf9b1703f4acd2d7d8bacd8bb0bedf3d.js"></script>
+<!--[if lt IE 9]>
+<script src='http://html5shim.googlecode.com/svn/trunk/html5.js' type='text/javascript'></script>
+<![endif]-->
+<!--[endif]>  <![endif]-->
+<script id='ze-snippet' src='https://static.zdassets.com/ekr/snippet.js?key=511e4158-0aec-4e3c-b2e6-4daa1769f51e'></script>
+<script>
+  ql.perfTest.init();
+</script>
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="dCJkE7JFgEycH3uTrq8Ue1Wy2ZNOCIzpgMBqQ5JMrj7XuKXEO0+yyMfDdNMJzWTsOiJYdEfXCpo2HuiMM7v2qA==" />
+<meta content='width=device-width, initial-scale=1.0, user-scalable=yes' name='viewport'>
+<meta content='1rRsY0INj8RvwB5EF5pwdxt2A2P9aDgAlsICaJ0d5w0' name='google-site-verification'>
+<meta content='#3681E4' property='msapplication-TileColor'>
+<meta content='/favicon-144.png' property='msapplication-TileImage'>
+<meta content='[{&quot;id&quot;:&quot;recaptcha_experiment&quot;,&quot;optimize_id&quot;:&quot;dpViOcLkT3qS4TvL2mRojA&quot;,&quot;title&quot;:&quot;No Recaptcha shown for trusted users&quot;,&quot;variant_index&quot;:0,&quot;variant&quot;:&quot;original&quot;}]' name='active-experiments'>
+<meta content='{&quot;userId&quot;:11061062,&quot;experimentIds&quot;:[&quot;programs&quot;,&quot;chat_off_for_signed_out_users&quot;,&quot;course_upgrade&quot;,&quot;program_learning_assignment&quot;,&quot;perf_test&quot;,&quot;program_groups&quot;,&quot;teams&quot;,&quot;canonical_domain_redirect&quot;,&quot;program_resources&quot;,&quot;used_in&quot;,&quot;community_forum&quot;,&quot;enforce_codebuild_verdicts&quot;,&quot;peer_assignment&quot;,&quot;oauth_risc_shutoff&quot;,&quot;show_annual_purchase_now&quot;,&quot;alexandria_show_bundle_errors&quot;,&quot;search_updates&quot;]}' name='help-api-product-data'>
+<meta content='{&quot;groupIds&quot;:[&quot;non_suadmins&quot;,&quot;students&quot;,&quot;non_organization&quot;,&quot;non_program&quot;]}' name='help-api-custom-data'>
+<meta content='In this lab you migrate a stand-alone PostgreSQL database (running on a virtual machine) to Cloud SQL for PostgreSQL using a continuous Database Migration Service job and VPC peering for conectivity' name='description'>
+<meta content='Qwiklabs' name='author'>
+<meta content='Migrate to Cloud SQL for PostgreSQL using Database Migration Service | Google Cloud Skills Boost for Partners' property='og:title'>
+<meta content='website' property='og:type'>
+<meta content='/favicon-144.png' property='og:image'>
+<meta content='Qwiklabs' property='og:site_name'>
+<meta content='In this lab you migrate a stand-alone PostgreSQL database (running on a virtual machine) to Cloud SQL for PostgreSQL using a continuous Database Migration Service job and VPC peering for conectivity' property='og:description'>
+<meta content='/qwiklabs_logo_900x887.png' property='og:logo' size='900x887'>
+<meta content='/qwiklabs_logo_994x187.png' property='og:logo' size='994x187'>
+
+
+<meta property="og:url" content="https://partner.cloudskillsboost.google/focuses/23649?parent=catalog" /><link href="https://partner.cloudskillsboost.google/focuses/23649?parent=catalog" rel="canonical" />
+<link color='#3681E4' href='/favicon-svg.svg' rel='mask-icon'>
+<link href='/favicon-180.png' rel='apple-touch-icon-precomposed'>
+<link href='https://cdn.qwiklabs.com/Vag5GK2J6rS6843Qvg8TQJ1kEbAsEmQoF0%2BdLRfcLRE%3D' rel='shortcut icon' type='image/x-icon'>
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oswald:400|Roboto+Mono:400,700|Roboto:300,400,500,700|Google+Sans:300,400,500,700|Google+Sans+Display:400|Material+Icons|Google+Material+Icons" media="screen" />
+
+<link rel="stylesheet" href="https://cdn.qwiklabs.com/assets/application-9c3b65b21d70e11e97ae9ab48dd150018a15c36cd951e52fe5574dfa177e8bc8.css" media="all" />
+
+
+<style>
+  :root {
+    --primary-text-on-surface-color: #1a73e8;
+    --primary-text-on-surface-color-dark: #1568d6;
+    --primary-text-on-surface-color-darker: #135ec1;
+    --primary-text-on-surface-color-darkest: #1154ac;
+    --primary-surface-color: #1a73e8;
+    --primary-surface-color-rgb: 26,115,232;
+    --primary-surface-color-light: #d1e3fa;
+    --primary-surface-color-lightest: #e8f1fd;
+    --text-on-primary-color: #ffffff;
+    --accent-text-on-surface-color: #f29900;
+    --accent-surface-color: #f9ab00;
+    --accent-surface-color-rgb: 249,171,0;
+    --accent-surface-color-light: #ffefcc;
+    --text-on-accent-color: #202124;
+  }
+</style>
+
+<style>
+  :root {
+    --navbar-height: 112px;
+  }
+</style>
+
+
+
+</head>
+<body class='lab-show l-full no-nav application-new focuses focuses-show lab-show l-full no-nav '>
+<div class='header-container'>
+<div class='header'>
+<ql-toolbar jumpEnabled>
+<div class='header__title' slot='title'>
+<ql-icon-button label="Back" href="https://partner.cloudskillsboost.google/quests/121" id="9748ac9800408150" target="_self" tip="Back">arrow_back</ql-icon-button>
+<h1 class='ql-headline-6'>Migrate to Cloud SQL for PostgreSQL using Database Migration Service</h1>
+</div>
+<div class='header__actions' slot='action'>
+<ql-icon-button icon='share' id='share_4198' label='Share on social media' tip='Share'></ql-icon-button>
+<ql-menu for='share_4198'>
+<ql-menu-item data-analytics-action='Shared to LinkedIn Feed.' data-analytics-category='Lab' data-analytics-label='Migrate to Cloud SQL for PostgreSQL using Database Migration Service' href='https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fpartner.cloudskillsboost.google%2Fcatalog_lab%2F4198%3Futm_medium%3Dsocial%26utm_source%3Dlinkedin%26utm_campaign%3Dql-social-share' icon='post_linkedin' label='Share on LinkedIn Feed' role='link' target='_blank'>
+<span class='label'>Share on LinkedIn Feed</span>
+</ql-menu-item>
+
+<ql-menu-item data-analytics-action='Shared to Twitter.' data-analytics-category='Lab' data-analytics-label='Migrate to Cloud SQL for PostgreSQL using Database Migration Service' href='https://twitter.com/intent/tweet?text=Learn%20cloud%20tech%20through%20hands-on%20training%20on%20%23Qwiklabs%21&amp;url=https%3A%2F%2Fpartner.cloudskillsboost.google%2Fcatalog_lab%2F4198%3Futm_medium%3Dsocial%26utm_source%3Dtwitter%26utm_campaign%3Dql-social-share&amp;hashtags=' icon='post_twitter' label='Twitter' role='link' target='_blank'>
+<span class='label'>Twitter</span>
+</ql-menu-item>
+
+<ql-menu-item data-analytics-action='Shared to Facebook.' data-analytics-category='Lab' data-analytics-label='Migrate to Cloud SQL for PostgreSQL using Database Migration Service' href='https://facebook.com/sharer.php?display=popup&amp;u=https%3A%2F%2Fpartner.cloudskillsboost.google%2Fcatalog_lab%2F4198%3Futm_medium%3Dsocial%26utm_source%3Dfacebook%26utm_campaign%3Dql-social-share' icon='post_facebook' label='Facebook' role='link' target='_blank'>
+<span class='label'>Facebook</span>
+</ql-menu-item>
+
+<ql-copyable-input label='Share Link' value='https://partner.cloudskillsboost.google/catalog_lab/4198'></ql-copyable-input>
+</ql-menu>
+
+<ql-icon-button class='icon-button js-favorite-button favorite-button' data-id='23649' data-name='Migrate to Cloud SQL for PostgreSQL using Database Migration Service' data-type='CatalogItem' href='/favorite.json?item_id=23649&amp;item_type=CatalogItem' id='CatalogItem-23649-favorite-button' label='Add to favorites' tip='Add to favorites'>
+favorite_border
+</ql-icon-button>
+
+
+
+<ql-icon-button id='control-panel-target' style='display: none;'>
+dashboard
+</ql-icon-button>
+<ql-menu for='control-panel-target' id='control-panel-menu'></ql-menu>
+<ql-icon-button class='mobile-hide' icon='help_outline' id='help-menu-button' label='Open help menu' tip='Help'></ql-icon-button>
+<ql-menu for='help-menu-button' id='help-menu'>
+<ql-menu-item data-analytics-action='opened_help' data-analytics-label='lab' label='Help Center' onclick='hallofmirrors.helpService.startHelp({&quot;productData&quot;:{&quot;userId&quot;:11061062},&quot;context&quot;:&quot;lab&quot;})'></ql-menu-item>
+<ql-menu-item href='mailto:support@qwiklabs.com' label='Email support'></ql-menu-item>
+<ql-menu-item label='Chat support' onClick='ql.chat.open()'></ql-menu-item>
+</ql-menu>
+
+<ql-icon-button class='mobile-hide' icon='language' id='language' label='Select your language preference' tip='Language'></ql-icon-button>
+<ql-menu for='language'>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='ar' href='/focuses/23649?locale=ar&amp;parent=catalog' label='العربية‬‎' lang='ar'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='de' href='/focuses/23649?locale=de&amp;parent=catalog' label='Deutsch' lang='de'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='en' href='/focuses/23649?locale=en&amp;parent=catalog' label='English' lang='en'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='es' href='/focuses/23649?locale=es&amp;parent=catalog' label='español (Latinoamérica)' lang='es'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='fr' href='/focuses/23649?locale=fr&amp;parent=catalog' label='français' lang='fr'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='fr_CA' href='/focuses/23649?locale=fr_CA&amp;parent=catalog' label='français (Canada)' lang='fr-CA'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='he' href='/focuses/23649?locale=he&amp;parent=catalog' label='עברית' lang='he'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='id' href='/focuses/23649?locale=id&amp;parent=catalog' label='bahasa Indonesia' lang='id'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='it' href='/focuses/23649?locale=it&amp;parent=catalog' label='Italiano' lang='it'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='ja' href='/focuses/23649?locale=ja&amp;parent=catalog' label='日本語' lang='ja'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='ko' href='/focuses/23649?locale=ko&amp;parent=catalog' label='한국어' lang='ko'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='pl' href='/focuses/23649?locale=pl&amp;parent=catalog' label='Polski' lang='pl'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='pt_BR' href='/focuses/23649?locale=pt_BR&amp;parent=catalog' label='português (Brasil)' lang='pt-BR'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='pt_PT' href='/focuses/23649?locale=pt_PT&amp;parent=catalog' label='português (Portugal)' lang='pt-PT'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='ru' href='/focuses/23649?locale=ru&amp;parent=catalog' label='русский' lang='ru'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='tr' href='/focuses/23649?locale=tr&amp;parent=catalog' label='Türkçe' lang='tr'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='uk' href='/focuses/23649?locale=uk&amp;parent=catalog' label='український' lang='uk'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='zh' href='/focuses/23649?locale=zh&amp;parent=catalog' label='简体中文' lang='zh'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='zh_TW' href='/focuses/23649?locale=zh_TW&amp;parent=catalog' label='繁體中文' lang='zh-TW'></ql-menu-item>
+</ql-menu>
+
+<ql-icon-button id='my_account' label='My account' tip='My account'>
+<ql-avatar></ql-avatar>
+</ql-icon-button>
+<ql-menu for='my_account' id='my_account_menu' style='max-height: 640px'>
+<div class='my-account-menu'>
+<ql-avatar class='l-mtl l-mbl' size='120'></ql-avatar>
+<div class='my-account-menu__user-info l-mbl'>
+<h4 class='ql-subhead-1'>Ausaf Khan</h4>
+<p class='ql-body-2 text--light'>ausaf.khan@rakuten.com</p>
+<p class='ql-body-2 text--light'>
+</p>
+<a class="text--green ql-subhead-2" href="/my_account/payments"><ql-chip positive>
+0 Credits
+</ql-chip>
+</a></div>
+<div class='buttons l-mbl'>
+<a class="button button--hairline l-mrm" id="profile" href="/public_profiles/1d61c1a3-8a07-4495-8abe-b57e519718e6">Public Profile</a>
+<a class="button button--hairline" id="settings" href="/my_account/profile">Settings</a>
+</div>
+<hr>
+<ql-button data-analytics-action='clicked_sign_out' href='/users/sign_out' method='delete'>
+Sign Out
+</ql-button>
+<div class='privacy l-mtl'>
+<a target="_blank" class="ql-caption text--light" href="/privacy_policy">Privacy</a>
+<span class='ql-caption text--light l-mls l-mrs'>&middot;</span>
+<a class="ql-caption text--light" href="/terms_of_service">Terms</a>
+</div>
+</div>
+</ql-menu>
+
+</div>
+</ql-toolbar>
+
+</div>
+</div>
+
+<nav class='nav-panel js-nav-panel'>
+<div class='nav-panel__logo'>
+<div class="custom-logo"><img alt="Google Cloud Skills Boost for Partners" height="24" aria-label="Google Cloud Skills Boost for Partners" src="https://cdn.qwiklabs.com/PGyhmgS3zZncIEGywnx5UXsKwepRRFQ9BhAg%2FWHNrlQ%3D" /></div>
+</div>
+<nav class='ql-sidenav'>
+<ql-sidenav-item href='/' icon='home' label='Paths'></ql-sidenav-item>
+
+<ql-sidenav-item active href='/catalog' icon='school' label='Explore'></ql-sidenav-item>
+
+<ql-sidenav-item href='/profile' icon='event_note' label='Profile'></ql-sidenav-item>
+
+</nav>
+
+</nav>
+<div class='nav-panel__overlay js-nav-toggle'></div>
+
+<main class='js-main' id='jump-content'>
+<div class='l-main-wrapper' id='main-wrapper'>
+
+
+
+
+<div class='lab-assessment__tab js-open-lab-assessment-panel'>
+<button class='js-lab-assessment-total-score'>
+—/100
+</button>
+</div>
+<div aria-labelledby='lab-assessment-checkpoint' class='lab-assessment__panel js-lab-assessment-panel' role='dialog'>
+<div class='lab-assessment__panel__header'>
+<h4 id='lab-assessment-checkpoint'>Checkpoints</h4>
+<ql-icon-button class='js-close-lab-assessment-panel' icon='arrow_forward' label='Close dialog'></ql-icon-button>
+</div>
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Prepare the source database for migration.
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button class='js-show-run-step-button' description='Prepare the source database for migration.' step_no='1'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-1'>
+</span>
+/ 20
+</p>
+</div>
+</div>
+
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Create a Database Migration Service connection profile.
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button class='js-show-run-step-button' description='Create a Database Migration Service connection profile.' step_no='2'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-2'>
+</span>
+/ 20
+</p>
+</div>
+</div>
+
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Create and start a continuous migration job.
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button class='js-show-run-step-button' description='Create and start a continuous migration job.' step_no='3'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-3'>
+</span>
+/ 20
+</p>
+</div>
+</div>
+
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Confirm the data in Cloud SQL for PostgreSQL.
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button class='js-show-run-step-button' description='Confirm the data in Cloud SQL for PostgreSQL.' step_no='4'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-4'>
+</span>
+/ 20
+</p>
+</div>
+</div>
+
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Promote Cloud SQL to be a stand-alone instance for reading and writing data.
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button class='js-show-run-step-button' description='Promote Cloud SQL to be a stand-alone instance for reading and writing data.' step_no='5'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-5'>
+</span>
+/ 20
+</p>
+</div>
+</div>
+
+</div>
+<ql-drawer-container class='js-lab-state' data-analytics-payload='{&quot;label&quot;:&quot;Migrate to Cloud SQL for PostgreSQL using Database Migration Service&quot;,&quot;lab_name&quot;:&quot;Migrate to Cloud SQL for PostgreSQL using Database Migration Service&quot;,&quot;classroom_name&quot;:null,&quot;deployment&quot;:&quot;googlecourses-run&quot;}' data-credits='0.0' data-focus-id='23649' data-lab-billing-limit='0.0' data-lab-duration='5400' data-parent='catalog' data-recaptcha-enabled id='lab-container'>
+<ql-drawer id='terminal-drawer' slot='drawer' style='width: calc(100% - 480px)'>
+<iframe allow='clipboard-read' class='terminal' id='embedded-resource'></iframe>
+</ql-drawer>
+<ql-drawer-content class='js-lab-wrapper' id='lab-content' slot='drawer-content'>
+<ql-drawer-container id='lab-content-container'>
+<ql-drawer id='control-panel-drawer' open slot='drawer' width='320'>
+<ql-lab-control-panel class='ql-lab-control-panel__max-height control-panel js-lab-control-panel' connectionFiles='[]' labControlButton='{&quot;disabled&quot;:false,&quot;pending&quot;:false,&quot;running&quot;:false}' labDetails='[]' labTimer='{&quot;ticking&quot;:false,&quot;secondsRemaining&quot;:5400}' studentResources='[]'>
+<script src="https://www.recaptcha.net/recaptcha/api.js?render=6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr"   ></script>
+        <script>
+          // Define function so that we can call it again later if we need to reset it
+          // This executes reCAPTCHA and then calls our callback.
+          function executeRecaptchaForStartLab() {
+            grecaptcha.ready(function() {
+              grecaptcha.execute('6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr', {action: 'start_lab'}).then(function(token) {
+                setInputWithRecaptchaResponseTokenForStartLab('g-recaptcha-response-data-start-lab', token)
+              });
+            });
+          };
+          // Invoke immediately
+          executeRecaptchaForStartLab()
+
+          // Async variant so you can await this function from another async function (no need for
+          // an explicit callback function then!)
+          // Returns a Promise that resolves with the response token.
+          async function executeRecaptchaForStartLabAsync() {
+            return new Promise((resolve, reject) => {
+             grecaptcha.ready(async function() {
+                resolve(await grecaptcha.execute('6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr', {action: 'start_lab'}))
+              });
+            })
+          };
+
+                    var setInputWithRecaptchaResponseTokenForStartLab = function(id, token) {
+            var element = document.getElementById(id);
+            element.value = token;
+          }
+
+        </script>
+<input type="hidden" name="g-recaptcha-response-data[start_lab]" id="g-recaptcha-response-data-start-lab" data-sitekey="6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr" class="g-recaptcha g-recaptcha-response "/>
+
+<div aria-live='polite' class='hidden' id='recaptcha-v2-start-lab' slot='recaptcha'>
+<script src="https://www.recaptcha.net/recaptcha/api.js" async defer ></script>
+<div data-sitekey="6LeOI8IUAAAAAPkHlMAE9NReCD_1WD81iYlBlCnV" data-callback="recaptchaComplete" data-expired-callback="expireV2Token" class="g-recaptcha "></div>
+          <noscript>
+            <div>
+              <div style="width: 302px; height: 422px; position: relative;">
+                <div style="width: 302px; height: 422px; position: absolute;">
+                  <iframe
+                    src="https://www.recaptcha.net/recaptcha/api/fallback?k=6LeOI8IUAAAAAPkHlMAE9NReCD_1WD81iYlBlCnV"
+                    name="ReCAPTCHA"
+                    style="width: 302px; height: 422px; border-style: none; border: 0; overflow: hidden;">
+                  </iframe>
+                </div>
+              </div>
+              <div style="width: 300px; height: 60px; border-style: none;
+                bottom: 12px; left: 25px; margin: 0px; padding: 0px; right: 25px;
+                background: #f9f9f9; border: 1px solid #c1c1c1; border-radius: 3px;">
+                <textarea id="g-recaptcha-response" name="g-recaptcha-response"
+                  class="g-recaptcha-response"
+                  style="width: 250px; height: 40px; border: 1px solid #c1c1c1;
+                  margin: 10px 25px; padding: 0px; resize: none;">
+                </textarea>
+              </div>
+            </div>
+          </noscript>
+
+</div>
+</ql-lab-control-panel>
+</ql-drawer>
+<ql-drawer-content id='lab-instructions' slot='drawer-content'>
+<ql-snackbar id='alert-snackbar'></ql-snackbar>
+<div class='alert alert--fake js-alert'>
+<p class='alert__message js-alert-message' role='alert'></p>
+<ql-icon-button class='alert__close js-alert-close' icon='clear'></ql-icon-button>
+<iframe class='l-ie-iframe-fix' tabindex='-1'></iframe>
+</div>
+<div class='lab-content__renderable-instructions js-lab-content'>
+<div class='lab-preamble'>
+<h1 class='lab-preamble__title'>
+Migrate to Cloud SQL for PostgreSQL using Database Migration Service
+</h1>
+<div class='lab-preamble__details subtitle-headline-1'>
+<span>1 hour 30 minutes</span>
+<span>Free</span>
+<div class='lab__rating'>
+<a aria-label="Lab Reviews" href="/focuses/23649/reviews?parent=catalog"><div class='rateit' data-rateit-readonly='true' data-rateit-value='4.3578'></div>
+
+</a></div>
+</div>
+</div>
+<div class='lab-outline-place-holder'></div>
+
+<div class='markdown-lab-instructions js-markdown-instructions' id='markdown-lab-instructions'>
+
+<h2 id="step1">GSP918</h2>
+<p><img alt="Google Cloud self-paced labs logo" src="https://cdn.qwiklabs.com/GMOHykaqmlTHiqEeQXTySaMXYPHeIvaqa2qHEzw6Occ%3D"></p>
+<h2 id="step2">Overview</h2>
+<p><strong>Database Migration Service</strong> provides options for one-time and continuous jobs to migrate data to Cloud SQL using different connectivity options, including IP allowlists, VPC peering, and reverse SSH tunnels (see documentation on connectivity options at <a href="https://cloud.google.com/database-migration/docs/postgres/configure-connectivity" target="_blank">https://cloud.google.com/database-migration/docs/postgresql/configure-connectivity</a>.</p>
+<p>In this lab, you migrate a stand-alone PostgreSQL database (running on a virtual machine) to Cloud SQL for PostgreSQL using a continuous <strong>Database Migration Service</strong> job and VPC peering for connectivity.</p>
+<p>Migrating a database via <strong>Database Migration Service</strong> requires some preparation of the source database, including creating a dedicated user with replication rights, adding the <code>pglogical</code> database extension to the source database and granting rights to the schemata and tables in the database to be migrated, as well as the postgres database, to that user.</p>
+<p>After you create and run the migration job, you confirm that an initial copy of your database has been successfully migrated to your Cloud SQL for PostgreSQL instance. You also explore how continuous migration jobs apply data updates from your source database to your Cloud SQL instance. To conclude the migration job, you promote the Cloud SQL instance to be a stand-alone database for reading and writing data.</p>
+<h2 id="step3">Objectives</h2>
+<p>In this lab, you learn how to configure a continuous <strong>Database Migration Service</strong> job to migrate databases from a PostgreSQL instance to Cloud SQL for PostgreSQL.</p>
+<ul>
+<li>
+<p>Prepare the source database for migration.</p>
+</li>
+<li>
+<p>Create a profile for a source connection to a PostgreSQL instance (e.g., stand-alone PostgreSQL).</p>
+</li>
+<li>
+<p>Configure connectivity between the source and destination database instances using VPC peering.</p>
+</li>
+<li>
+<p>Configure firewall and database access rules to allow access to the source database for migration.</p>
+</li>
+<li>
+<p>Create, run, and verify a continuous migration job using <strong>Database Migration Service</strong>.</p>
+</li>
+<li>
+<p>Promote the destination instance (Cloud SQL for PostgreSQL) to be a stand-alone database for reading and writing data.</p>
+</li>
+</ul>
+<h2 id="step4">Setup</h2>
+
+<h3>How to start your lab and sign in to the Google Cloud Console</h3>
+<ol>
+<li>
+<p>Click the <strong>Start Lab</strong> button. If you need to pay for the lab, a pop-up opens for you to select your payment method.
+On the left is the <strong>Lab Details</strong> panel with the following:</p>
+<ul>
+<li>The <strong>Open Google Console</strong> button</li>
+<li>Time remaining</li>
+<li>The temporary credentials that you must use for this lab</li>
+<li>Other information, if needed, to step through this lab</li>
+</ul>
+</li>
+<li>
+<p>Click <strong>Open Google Console</strong>.
+The lab spins up resources, and then opens another tab that shows the <strong>Sign in</strong> page.</p>
+<p><strong><em>Tip:</em></strong> Arrange the tabs in separate windows, side-by-side.</p>
+<ql-infobox>
+<strong>Note: </strong>If you see the <strong>Choose an account</strong> dialog, click <strong>Use Another Account</strong>.        
+ </ql-infobox>
+</li>
+<li>
+<p>If necessary, copy the <strong>Username</strong> from the <strong>Lab Details</strong> panel and paste it into the <strong>Sign in</strong> dialog. Click <strong>Next</strong>.</p>
+</li>
+<li>
+<p>Copy the <strong>Password</strong> from the <strong>Lab Details</strong> panel and paste it into the <strong>Welcome</strong> dialog. Click <strong>Next</strong>.</p>
+<ql-infobox>
+<strong>Important: </strong>You must use the credentials from the left panel. Do not use your Google Cloud Skills Boost credentials. 
+ </ql-infobox>
+<ql-warningbox>
+<strong>Note: </strong>Using your own Google Cloud account for this lab may incur extra charges.
+ </ql-warningbox>
+</li>
+<li>
+<p>Click through the subsequent pages:</p>
+<ul>
+<li>Accept the terms and conditions.</li>
+<li>Do not add recovery options or two-factor authentication (because this is a temporary account).</li>
+<li>Do not sign up for free trials.</li>
+</ul>
+</li>
+</ol>
+<p>After a few moments, the Cloud Console opens in this tab.</p>
+<ql-infobox>
+<strong>Note:</strong> You can view the menu with a list of Google Cloud Products and Services by clicking the <strong>Navigation menu</strong> at the top-left.
+<img alt="Navigation menu icon" src="https://cdn.qwiklabs.com/nUxFb6oRFr435O3t6V7WYJAjeDFcrFb16G9wHWp5BzU%3D">
+</ql-infobox>
+<h3>Activate Cloud Shell</h3>
+<p>Cloud Shell is a virtual machine that is loaded with development tools. It offers a persistent 5GB home directory and runs on the Google Cloud. Cloud Shell provides command-line access to your Google Cloud resources.</p>
+<ol>
+<li>Click <strong>Activate Cloud Shell</strong> <img alt="Activate Cloud Shell icon" src="https://cdn.qwiklabs.com/ep8HmqYGdD%2FkUncAAYpV47OYoHwC8%2Bg0WK%2F8sidHquE%3D"> at the top of the Google Cloud console.</li>
+</ol>
+<p>When you are connected, you are already authenticated, and the project is set to your <strong>PROJECT_ID</strong>. The output contains a line that declares the <strong>PROJECT_ID</strong> for this session:</p>
+<ql-code-block output="">
+Your Cloud Platform project in this session is set to YOUR_PROJECT_ID
+</ql-code-block>
+<p><code>gcloud</code> is the command-line tool for Google Cloud. It comes pre-installed on Cloud Shell and supports tab-completion.</p>
+<ol start="2">
+<li>
+<p>(Optional) You can list the active account name with this command:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud auth list
+</ql-code-block>
+<ol start="3">
+<li>
+<p>Click <strong>Authorize</strong>.</p>
+</li>
+<li>
+<p>Your output should now look like this:</p>
+</li>
+</ol>
+<p><strong>Output:</strong></p>
+<ql-code-block language="plaintext" output="">
+ACTIVE: *
+ACCOUNT: student-01-xxxxxxxxxxxx@qwiklabs.net
+To set the active account, run:
+    $ gcloud config set account `ACCOUNT`
+</ql-code-block>
+<ol start="5">
+<li>
+<p>(Optional) You can list the project ID with this command:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud config list project
+</ql-code-block>
+<p><strong>Output:</strong></p>
+<ql-code-block language="plaintext" output="">
+[core]
+project = &lt;project_ID&gt;
+</ql-code-block>
+<p><strong>Example output:</strong></p>
+<ql-code-block language="plaintext" output="">
+[core]
+project = qwiklabs-gcp-44776a13dea667a6
+</ql-code-block>
+<ql-infobox>
+<strong>Note: </strong>For full documentation of <code>gcloud</code>, in Google Cloud, refer to <a href="https://cloud.google.com/sdk/gcloud" target="_blank">the gcloud CLI overview guide</a>.
+</ql-infobox>
+<h3>Verify that the Database Migration API is enabled</h3>
+<ol>
+<li>In the Google Cloud Console, enter <strong>Database Migration API</strong> in the top search bar. Click on the result for <strong>Database Migration API</strong>.</li>
+</ol>
+<p>This page will either show status information or give you the option to enable the API.</p>
+<ol start="2">
+<li>
+<p>If necessary, enable the API.</p>
+</li>
+</ol>
+<h3>Verify that the Service Networking API is enabled</h3>
+<p>The Service Networking API is required in order to be able to configure Cloud SQL to support VPC Peering and connections over a private ip-address.</p>
+<ol>
+<li>In the Google Cloud Console, enter <strong>Service Networking API</strong> in the top search bar. Click on the result for <strong>Service Networking API</strong>.</li>
+</ol>
+<p>This page will either show status information or give you the option to enable the API.</p>
+<ol start="2">
+<li>
+<p>If necessary, enable the API.</p>
+</li>
+</ol>
+<h2 id="step5">Task 1. Prepare the source database for migration</h2>
+<p>In this task you will add supporting features to the source database which are required in order for <strong>Database Migration Service</strong> to perform a migration. These are:</p>
+<ul>
+<li>
+<p>Installing and configuring the pglogical database extension.</p>
+</li>
+<li>
+<p>Configuring the stand-alone PostgreSQL database to allow access from Cloud Shell and Cloud SQL.</p>
+</li>
+<li>
+<p>Adding the pglogical database extension to the <code>postgres</code>, <code>orders</code> and <code>gmemegen_db</code> databases on the stand-alone server.</p>
+</li>
+<li>
+<p>Creating a <code>migration_admin</code> user (with Replication permissions) for database migration and granting the required permissions to schemata and relations to that user.</p>
+</li>
+</ul>
+<h3>Upgrade the database with the pglogical extension</h3>
+<p>In this step you will download and add the pglogical database extension to the orders and postgres databases on the <code>postgresql-vm</code> VM Instance.</p>
+<ol>
+<li>
+<p>In the Google Cloud Console, on the <strong>Navigation menu</strong> (<img alt="Navigation menu icon" src="https://cdn.qwiklabs.com/tkgw1TDgj4Q%2BYKQUW4jUFd0O5OEKlUMBRYbhlCrF0WY%3D">), click <strong>Compute Engine</strong> &gt; <strong>VM instances</strong>.</p>
+</li>
+<li>
+<p>In the entry for <code>postgresql-vm</code>, under <code>Connect</code> click <strong>SSH</strong>.</p>
+</li>
+<li>
+<p>If prompted, click <strong>Connect</strong>.</p>
+</li>
+<li>
+<p>In the terminal in the new browser window, install the <code>pglogical</code> database extension:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+sudo apt install postgresql-13-pglogical
+</ql-code-block>
+<ql-infobox><strong>Note:</strong> pglogical is a logical replication system implemented entirely as a PostgreSQL extension. Fully integrated, it requires no triggers or external programs. This alternative to physical replication is a highly efficient method of replicating data using a publish/subscribe model for selective replication. Read more here: <a href="https://github.com/2ndQuadrant/pglogical" target="_blank">https://github.com/2ndQuadrant/pglogical</a>
+</ql-infobox>
+<ol start="5">
+<li>Download and apply some additions to the PostgreSQL configuration files (to enable pglogical extension) and restart the postgresql service:</li>
+</ol>
+<ql-code-block nowrap>
+sudo su - postgres -c "gsutil cp gs://cloud-training/gsp918/pg_hba_append.conf ."
+sudo su - postgres -c "gsutil cp gs://cloud-training/gsp918/postgresql_append.conf ."
+sudo su - postgres -c "cat pg_hba_append.conf &gt;&gt; /etc/postgresql/13/main/pg_hba.conf"
+sudo su - postgres -c "cat postgresql_append.conf &gt;&gt; /etc/postgresql/13/main/postgresql.conf"
+sudo systemctl restart postgresql@13-main
+</ql-code-block>
+<p>In <code>pg_hba.conf</code> these commands added a rule to allow access to all hosts:</p>
+<ql-code-block output="">
+#GSP918 - allow access to all hosts
+host    all all 0.0.0.0/0   md5
+</ql-code-block>
+<p>In <code>postgresql.conf</code>, these commands set the minimal configuration for pglogical to configure it to listen on all addresses:</p>
+<ql-code-block nowrap output="">
+#GSP918 - added configuration for pglogical database extension
+wal_level = logical         # minimal, replica, or logical
+max_worker_processes = 10   # one per database needed on provider node
+                            # one per node needed on subscriber node
+max_replication_slots = 10  # one per node needed on provider node
+max_wal_senders = 10        # one per node needed on provider node
+shared_preload_libraries = 'pglogical'
+max_wal_size = 1GB
+min_wal_size = 80MB
+listen_addresses = '*'         # what IP address(es) to listen on, '*' is all
+</ql-code-block>
+<p>The above code snippets were appended to the relevant files and the PostgreSQL service restarted.</p>
+<ol start="6">
+<li>Launch the <strong>psql</strong> tool:</li>
+</ol>
+<ql-code-block language="bash">
+sudo su - postgres
+psql
+</ql-code-block>
+<ol start="7">
+<li>Add the <code>pglogical</code> database extension to the <code>postgres</code>, <code>orders</code> and <code>gmemegen_db</code> databases.</li>
+</ol>
+<ql-code-block language="postgresql">
+\c postgres;
+CREATE EXTENSION pglogical;
+\c orders;
+CREATE EXTENSION pglogical;
+\c gmemegen_db;
+CREATE EXTENSION pglogical;
+</ql-code-block>
+<ol start="8">
+<li>List the PostgreSQL databases on the server:</li>
+</ol>
+<ql-code-block language="postgresql">
+\l
+</ql-code-block>
+<p>Here you can see, besides the default postgresql databases, the <code>orders</code> and <code>gmemegen_db</code> databases provided for this lab. You will not use the <code>gmemegen_db</code> database in this lab, but will include it in the migration for use in a later lab.</p>
+<ql-code-block nowrap output="">
+                               List of databases
+    Name     |  Owner   | Encoding | Collate |  Ctype  |   Access privileges   
+-------------+----------+----------+---------+---------+-----------------------
+ gmemegen_db | postgres | UTF8     | C.UTF-8 | C.UTF-8 |
+ orders      | postgres | UTF8     | C.UTF-8 | C.UTF-8 |
+ postgres    | postgres | UTF8     | C.UTF-8 | C.UTF-8 |
+ template0   | postgres | UTF8     | C.UTF-8 | C.UTF-8 | =c/postgres          +
+             |          |          |         |         | postgres=CTc/postgres
+ template1   | postgres | UTF8     | C.UTF-8 | C.UTF-8 | =c/postgres          +
+             |          |          |         |         | postgres=CTc/postgres
+(5 rows)
+</ql-code-block>
+<h3>Create the database migration user</h3>
+<p>In this step you will create a dedicated user for managing database migration.</p>
+<ol>
+<li>In <strong>psql</strong>, enter the commands below to create a new user with the replication role:</li>
+</ol>
+<ql-code-block language="postgresql">
+CREATE USER migration_admin PASSWORD 'DMS_1s_cool!';
+ALTER DATABASE orders OWNER TO migration_admin;
+ALTER ROLE migration_admin WITH REPLICATION;
+</ql-code-block>
+<h3>Assign permissions to the migration user</h3>
+<p>In this step you will assign the necessary permissions to the <code>migration_admin</code> user to enable <strong>Database Migration Service</strong> to migrate your database.</p>
+<ol>
+<li>In <strong>psql</strong>, grant permissions to the <code>pglogical</code> schema and tables for the <code>postgres</code> database.</li>
+</ol>
+<ql-code-block language="postgresql">
+\c postgres;
+GRANT USAGE ON SCHEMA pglogical TO migration_admin;
+GRANT ALL ON SCHEMA pglogical TO migration_admin;
+GRANT SELECT ON pglogical.tables TO migration_admin;
+GRANT SELECT ON pglogical.depend TO migration_admin;
+GRANT SELECT ON pglogical.local_node TO migration_admin;
+GRANT SELECT ON pglogical.local_sync_status TO migration_admin;
+GRANT SELECT ON pglogical.node TO migration_admin;
+GRANT SELECT ON pglogical.node_interface TO migration_admin;
+GRANT SELECT ON pglogical.queue TO migration_admin;
+GRANT SELECT ON pglogical.replication_set TO migration_admin;
+GRANT SELECT ON pglogical.replication_set_seq TO migration_admin;
+GRANT SELECT ON pglogical.replication_set_table TO migration_admin;
+GRANT SELECT ON pglogical.sequence_state TO migration_admin;
+GRANT SELECT ON pglogical.subscription TO migration_admin;
+</ql-code-block>
+<ol start="2">
+<li>In <strong>psql</strong>, grant permissions to the <code>pglogical</code> schema and tables for the <code>orders</code> database.</li>
+</ol>
+<ql-code-block language="postgresql">
+\c orders;
+GRANT USAGE ON SCHEMA pglogical TO migration_admin;
+GRANT ALL ON SCHEMA pglogical TO migration_admin;
+GRANT SELECT ON pglogical.tables TO migration_admin;
+GRANT SELECT ON pglogical.depend TO migration_admin;
+GRANT SELECT ON pglogical.local_node TO migration_admin;
+GRANT SELECT ON pglogical.local_sync_status TO migration_admin;
+GRANT SELECT ON pglogical.node TO migration_admin;
+GRANT SELECT ON pglogical.node_interface TO migration_admin;
+GRANT SELECT ON pglogical.queue TO migration_admin;
+GRANT SELECT ON pglogical.replication_set TO migration_admin;
+GRANT SELECT ON pglogical.replication_set_seq TO migration_admin;
+GRANT SELECT ON pglogical.replication_set_table TO migration_admin;
+GRANT SELECT ON pglogical.sequence_state TO migration_admin;
+GRANT SELECT ON pglogical.subscription TO migration_admin;
+</ql-code-block>
+<ol start="3">
+<li>In <strong>psql</strong>, grant permissions to the <code>public</code> schema and tables for the <code>orders</code> database.</li>
+</ol>
+<ql-code-block language="postgresql">
+GRANT USAGE ON SCHEMA public TO migration_admin;
+GRANT ALL ON SCHEMA public TO migration_admin;
+GRANT SELECT ON public.distribution_centers TO migration_admin;
+GRANT SELECT ON public.inventory_items TO migration_admin;
+GRANT SELECT ON public.order_items TO migration_admin;
+GRANT SELECT ON public.products TO migration_admin;
+GRANT SELECT ON public.users TO migration_admin;
+</ql-code-block>
+<ol start="4">
+<li>In <strong>psql</strong>, grant permissions to the <code>pglogical</code> schema and tables for the <code>gmemegen_db</code> database.</li>
+</ol>
+<ql-code-block language="postgresql">
+\c gmemegen_db;
+GRANT USAGE ON SCHEMA pglogical TO migration_admin;
+GRANT ALL ON SCHEMA pglogical TO migration_admin;
+GRANT SELECT ON pglogical.tables TO migration_admin;
+GRANT SELECT ON pglogical.depend TO migration_admin;
+GRANT SELECT ON pglogical.local_node TO migration_admin;
+GRANT SELECT ON pglogical.local_sync_status TO migration_admin;
+GRANT SELECT ON pglogical.node TO migration_admin;
+GRANT SELECT ON pglogical.node_interface TO migration_admin;
+GRANT SELECT ON pglogical.queue TO migration_admin;
+GRANT SELECT ON pglogical.replication_set TO migration_admin;
+GRANT SELECT ON pglogical.replication_set_seq TO migration_admin;
+GRANT SELECT ON pglogical.replication_set_table TO migration_admin;
+GRANT SELECT ON pglogical.sequence_state TO migration_admin;
+GRANT SELECT ON pglogical.subscription TO migration_admin;
+</ql-code-block>
+<ol start="5">
+<li>In <strong>psql</strong>, grant permissions to the <code>public</code> schema and tables for the <code>gmemegen_db</code> database.</li>
+</ol>
+<ql-code-block language="postgresql">
+GRANT USAGE ON SCHEMA public TO migration_admin;
+GRANT ALL ON SCHEMA public TO migration_admin;
+GRANT SELECT ON public.meme TO migration_admin;
+</ql-code-block>
+<p>The source databases are now prepared for migration. The permissions you have granted to the <code>migration_admin</code> user are all that is required for <strong>Database Migration Service</strong> to migrate the <code>postgres</code>, <code>orders</code> and <code>gmemegen_db</code> databases.</p>
+<p>Make the <code>migration_admin</code> user the owner of the tables in the <code>orders</code> database, so that you can edit the source data later, when you test the migration.</p>
+<ol start="6">
+<li>In <strong>psql</strong>, run the following commands:</li>
+</ol>
+<ql-code-block language="postgresql">
+\c orders;
+\dt
+ALTER TABLE public.distribution_centers OWNER TO migration_admin;
+ALTER TABLE public.inventory_items OWNER TO migration_admin;
+ALTER TABLE public.order_items OWNER TO migration_admin;
+ALTER TABLE public.products OWNER TO migration_admin;
+ALTER TABLE public.users OWNER TO migration_admin;
+\dt
+</ql-code-block>
+<ql-code-block nowrap output="">
+               List of relations
+ Schema |         Name         | Type  | Owner
+--------+----------------------+-------+-------
+ public | distribution_centers | table | migration_admin
+ public | inventory_items      | table | migration_admin
+ public | order_items          | table | migration_admin
+ public | products             | table | migration_admin
+ public | users                | table | migration_admin
+(5 rows)
+</ql-code-block>
+<ol start="7">
+<li>Exit <strong>psql</strong> and the postgres user session</li>
+</ol>
+<ql-code-block language="postgresql">
+\q
+exit
+</ql-code-block>
+<p>Click <em>Check my progress</em> to verify the objective.
+<ql-activity-tracking step="1">
+Prepare the PostgreSQL source instance for migration.
+</ql-activity-tracking></p>
+<h2 id="step6">Task 2. Create a Database Migration Service connection profile for a stand-alone PostgreSQL database</h2>
+<p>In this task, you will create a connection profile for the PostgreSQL source instance.</p>
+<h3>Get the connectivity information for the PostgreSQL source instance</h3>
+<p>In this step, you identify the internal IP address of the source database instance that you will migrate to Cloud SQL.</p>
+<ol>
+<li>
+<p>In the Google Cloud Console, on the <strong>Navigation menu</strong> (<img alt="Navigation menu icon" src="https://cdn.qwiklabs.com/tkgw1TDgj4Q%2BYKQUW4jUFd0O5OEKlUMBRYbhlCrF0WY%3D">), click <strong>Compute Engine</strong> &gt; <strong>VM instances</strong>.</p>
+</li>
+<li>
+<p>Locate the line with the instance called <strong>postgresql-vm</strong>.</p>
+</li>
+<li>
+<p>Copy the value for <strong>Internal IP</strong> (e.g., 10.128.0.2).</p>
+</li>
+</ol>
+<h3>Create a new connection profile for the PostgreSQL source instance</h3>
+<p>A connection profile stores information about the source database instance (e.g., stand-alone PosgreSQL) and is used by the <strong>Database Migration Service</strong> to migrate data from the source to your destination Cloud SQL database instance. After you create a connection profile, it can be reused across migration jobs.</p>
+<p>In this step you will create a new connection profile for the PostgreSQL source instance.</p>
+<ol>
+<li>
+<p>In the Google Cloud Console, on the <strong>Navigation menu</strong> (<img alt="Navigation menu icon" src="https://cdn.qwiklabs.com/tkgw1TDgj4Q%2BYKQUW4jUFd0O5OEKlUMBRYbhlCrF0WY%3D">), click <strong>Database Migration</strong> &gt; <strong>Connection profiles</strong>.</p>
+</li>
+<li>
+<p>Click <strong>+ Create Profile</strong>.</p>
+</li>
+<li>
+<p>For <strong>Database engine</strong>, select <strong>PostgreSQL</strong>.</p>
+</li>
+<li>
+<p>For <strong>Connection profile name</strong>, enter <strong>postgres-vm</strong>.</p>
+</li>
+<li>
+<p>For <strong>Hostname or IP address</strong>, enter the internal IP for the PostgreSQL source instance that you copied in the previous task (e.g., 10.128.0.2)</p>
+</li>
+<li>
+<p>For <strong>Port</strong>, enter <strong>5432</strong>.</p>
+</li>
+<li>
+<p>For <strong>Username</strong>, enter <strong>migration_admin</strong>.</p>
+</li>
+<li>
+<p>For <strong>Password</strong>, enter <strong>DMS_1s_cool!</strong> .</p>
+</li>
+<li>
+<p>For <strong>Region</strong> select <ql-variable key="project_0.startup_script.ql_region" placeholder="(region)"></ql-variable>.</p>
+</li>
+<li>
+<p>For all other values leave the defaults.</p>
+</li>
+<li>
+<p>Click <strong>Create</strong>.</p>
+</li>
+</ol>
+<p>A new connection profile named <strong>postgres-vm</strong> will appear in the Connections profile list.</p>
+<p>Click <em>Check my progress</em> to verify the objective.
+<ql-activity-tracking step="2">
+Create a connection profile for the PostgreSQL source instance.
+</ql-activity-tracking></p>
+<h2 id="step7">Task 3. Create and start a continuous migration job</h2>
+<p>When you create a new migration job, you first define the source database instance using a previously created connection profile. Then you create a new destination database instance and configure connectivity between the source and destination instances.</p>
+<p>In this task, you use the migration job interface to create a new Cloud SQL for PostgreSQL database instance and set it as the destination for the continuous migration job from the PostgreSQL source instance.</p>
+<h3>Create a new continuous migration job</h3>
+<p>In this step you will create a new continuous migration job.</p>
+<ol>
+<li>
+<p>In the Google Cloud Console, on the <strong>Navigation menu</strong> (<img alt="Navigation menu icon" src="https://cdn.qwiklabs.com/tkgw1TDgj4Q%2BYKQUW4jUFd0O5OEKlUMBRYbhlCrF0WY%3D">), click <strong>Database Migration</strong> &gt; <strong>Migration jobs</strong>.</p>
+</li>
+<li>
+<p>Click <strong>+ Create Migration Job</strong>.</p>
+</li>
+<li>
+<p>For <strong>Migration job name</strong>, enter <strong>vm-to-cloudsql</strong>.</p>
+</li>
+<li>
+<p>For <strong>Source database engine</strong>, select <strong>PostgreSQL</strong>.</p>
+</li>
+<li>
+<p>For <strong>Destination region</strong>, select <ql-variable key="project_0.startup_script.ql_region" placeholder="(region)"></ql-variable>.</p>
+</li>
+<li>
+<p>For <strong>Destination database engine</strong>, select <strong>Cloud SQL for PostgreSQL</strong>.</p>
+</li>
+<li>
+<p>For <strong>Migration job type</strong>, select <strong>Continuous</strong>.</p>
+</li>
+</ol>
+<p>Leave the defaults for the other settings.</p>
+<ol start="8">
+<li>
+<p>Click <strong>Save &amp; Continue</strong>.</p>
+</li>
+</ol>
+<h3>Define the source instance</h3>
+<p>In this step, you will define the source instance for the migration.</p>
+<ol>
+<li>For <strong>Source connection profile</strong>, select <strong>postgres-vm</strong>.</li>
+</ol>
+<p>Leave the defaults for the other settings.</p>
+<ol start="2">
+<li>Click <strong>Save &amp; Continue</strong>.</li>
+</ol>
+<p><img alt="After you select the source connection profile, you can see its configuration details, including source hostname or IP address, port, username, and encryption type." src="https://cdn.qwiklabs.com/Ml7KnPNNMWe2cncjr4mM3Xox0KLgKOPCaQ2a6CBdaPk%3D"></p>
+<h3>Create the destination instance</h3>
+<p>In this step, you will create the destination instance for the migration.</p>
+<ol>
+<li>
+<p>For <strong>Destination Instance ID</strong>, enter <strong>postgresql-cloudsql</strong>.</p>
+</li>
+<li>
+<p>For <strong>Root password</strong>, enter <strong>supersecret!</strong>.</p>
+</li>
+<li>
+<p>For <strong>Database version</strong>, select <strong>Cloud SQL for PostgreSQL 13</strong>.</p>
+</li>
+<li>
+<p>In <strong>Choose region and zone</strong> section, click <strong>Select zone</strong> and select <ql-variable key="project_0.startup_script.ql_zone" placeholder="(zone)"></ql-variable> as primary zone.</p>
+</li>
+<li>
+<p>For <strong>Instance connectivity</strong>, select <strong>Private IP</strong> and <strong>Public IP</strong>.</p>
+</li>
+<li>
+<p>Select <strong>Use an automatically allocated IP range</strong>.</p>
+</li>
+</ol>
+<p>Leave the defaults for the other settings.</p>
+<ol start="7">
+<li>Click <strong>Allocate &amp; Connect</strong>.</li>
+</ol>
+<p><img alt="Leave the default option selected to use an automatically allocated IP range." src="https://cdn.qwiklabs.com/1EHDwa2WZr4leM2DwU9Pm0WQRUCsQECv%2BtKHu%2FRubwU%3D"></p>
+<aside class="special"><p><strong>Note:</strong> This step may take a few minutes. If asked to retry the request, click the Retry button to refresh the Service Networking API.
+</p>
+<p>When this step is complete, an updated message notifies you that the instance will use the existing managed service connection.</p>
+<p>You will need to edit the pg_hba.conf file on the VM instance to allow access to the IP range that is automatically generated in point 5 of the previous step. You will do this in a later step before testing the migration configuration at the end of this task.</p>
+</aside>
+<p><img alt="The updated message says that the instance will use the existing managed service connection." src="https://cdn.qwiklabs.com/mtMkawJ3VedEux2wfDgfVDPwfNXc%2F7ct2iI2ipTonJ0%3D"></p>
+<p>Enter the additional information needed to create the destination instance on Cloud SQL.</p>
+<ol start="8">
+<li>
+<p>For <strong>Machine type</strong>. select <strong>Standard</strong> and check <strong>1 vCPU, 3.75 GB</strong></p>
+</li>
+<li>
+<p>For <strong>Storage type</strong>, select <strong>SSD</strong></p>
+</li>
+<li>
+<p>For <strong>Storage capacity</strong>, select <strong>10 GB</strong></p>
+</li>
+<li>
+<p>Click <strong>Create &amp; Continue</strong>.</p>
+</li>
+</ol>
+<p>If prompted to confirm, click <strong>Create Destination &amp; Continue</strong>. A message will state that your destination database instance is being created. Continue to the next step while you wait.</p>
+<h3>Define the connectivity method</h3>
+<p>In this step, you will define the connectivity method for the migration.</p>
+<p><img alt="The message states that the button for configure &amp; continue is enabled when the destination Cloud SQL instance has been created." src="https://cdn.qwiklabs.com/YjhH3DtvIvmtZnJVKl1ivl0gJhrIm4nhxZEnUtpbsmo%3D"></p>
+<ol>
+<li>
+<p>For <strong>Connectivity method</strong>, select <strong>VPC peering</strong>.</p>
+</li>
+<li>
+<p>For <strong>VPC</strong>, select <strong>default</strong>.</p>
+</li>
+</ol>
+<p>VPC peering is configured by <strong>Database Migration Service</strong> using the information provided for the VPC network (the default network in this example).</p>
+<p>When you see an updated message that the destination instance was created, proceed to the next step.</p>
+<p><img alt="The updated message informs you that the destination Cloud SQL instance has been created." src="https://cdn.qwiklabs.com/1RvoZn%2BeZYQNCOy%2BT4%2F9kHj9BgvLMr6mTuRY8YuX%2BSc%3D"></p>
+<ol start="3">
+<li>
+<p>Click <strong>Configure &amp; Continue</strong>.</p>
+</li>
+</ol>
+<h3>Allow access to the posgresql-vm instance from automatically allocated IP range</h3>
+<p>In this step you will edit the <code>pg_hba.conf</code> PostgreSQL configuration file to allow the Database Migration Service to access the stand-alone PostgreSQL database.</p>
+<ol>
+<li>
+<p>Get the allocated IP address range. In the Google Cloud Console on the <strong>Navigation menu</strong> (<img alt="Navigation menu icon" src="https://cdn.qwiklabs.com/tkgw1TDgj4Q%2BYKQUW4jUFd0O5OEKlUMBRYbhlCrF0WY%3D">), right-click <strong>VPC network</strong> &gt; <strong>VPC network peering</strong> and open it in a new tab.</p>
+</li>
+<li>
+<p>Click on the <code>servicenetworking-googleapis-com</code> entry.</p>
+</li>
+<li>
+<p>In the <strong>Imported routes</strong> tab, select and copy the <code>Destination IP range</code> (e.g. 10.107.176.0/24).</p>
+</li>
+<li>
+<p>In the Terminal session on the VM instance, edit the <code>pg_hba.conf</code> file as follows:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+sudo nano /etc/postgresql/13/main/pg_hba.conf
+</ql-code-block>
+<ol start="5">
+<li>On the last line of the file:</li>
+</ol>
+<ql-code-block output="">
+#GSP918 - allow access to all hosts
+host    all all 0.0.0.0/0   md5
+</ql-code-block>
+<p>replace the "all IP addresses" range (0.0.0.0/0) with the range copied in point 3 above.</p>
+<ql-code-block output="">
+#GSP918 - allow access to all hosts
+host    all all 10.107.176.0/24   md5
+</ql-code-block>
+<ql-infobox><strong>Note:</strong> The above step is not required to make the migration work, but it is good practice to make the source database more secure during the migration process, and also restricts access after the migration when the migrated database becomes the source of truth.
+</ql-infobox>
+<ol start="6">
+<li>
+<p>Save and exit the nano editor with Ctrl-O, Enter, Ctrl-X</p>
+</li>
+<li>
+<p>Restart the PostgreSQL service to make the changes take effect. In the VM instance Terminal session:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+sudo systemctl start postgresql@13-main
+</ql-code-block>
+<h3>Test and start the continuous migration job</h3>
+<p>In this step, you will test and start the migration job.</p>
+<ol>
+<li>
+<p>In the <strong>Database Migration Service</strong> tab you open earlier, review the details of the migration job.</p>
+</li>
+<li>
+<p>Click <strong>Test Job</strong>.</p>
+</li>
+<li>
+<p>After a successful test, click <strong>Create &amp; Start Job</strong>.</p>
+</li>
+</ol>
+<p><img alt="Be sure to click on the button for create &amp; start job to ensure that the job is successfully started." src="https://cdn.qwiklabs.com/XospRsr5gC2eLUMYtVfhDd10XzRtYu16RME6J%2FHovt0%3D"></p>
+<p>If prompted to confirm, click <strong>Create &amp; Start</strong>.</p>
+<h3>Review the status of the continuous migration job</h3>
+<p>In this step, you will confirm that the continuous migration job is running.</p>
+<ol>
+<li>
+<p>In the Google Cloud Console, on the <strong>Navigation menu</strong> (<img alt="Navigation menu icon" src="https://cdn.qwiklabs.com/tkgw1TDgj4Q%2BYKQUW4jUFd0O5OEKlUMBRYbhlCrF0WY%3D">), click <strong>Database Migration</strong> &gt; <strong>Migration jobs</strong>.</p>
+</li>
+<li>
+<p>Click the migration job <strong>vm-to-cloudsql</strong> to see the details page.</p>
+</li>
+<li>
+<p>Review the migration job status.</p>
+<ul>
+<li>If you have not started the job, the status will show as <strong>Not started</strong>. You can choose to start or delete the job.</li>
+<li>After the job has started, the status will show as <strong>Starting</strong> and then transition to <strong>Running Full dump in progress</strong> to indicate that the initial database dump is in progress.</li>
+<li>After the initial database dump has been completed, the status will transition to <strong>Running CDC in progress</strong> to indicate that continuous migration is active.</li>
+</ul>
+</li>
+</ol>
+<p>When the job status changes to <strong>Running CDC in progress</strong>, proceed to the next task.</p>
+<p><img alt="The migration job named vm-to-cloudsql has a status of running CDC in progress." src="https://cdn.qwiklabs.com/bZ0YEQotMzJNrR1u9E%2Bm%2FvOAyrlaJY8J4nXxr%2F%2BeJlQ%3D"></p>
+<aside class="special"><p><strong>Note:</strong> Continuous migration jobs remain in a running status to ensure that the destination database continues to receive data updates from the source.
+</p>
+<p>A completed status is achieved after the destination database is promoted to be a stand-alone database for reading and writing data which you will see in the final task in the lab.</p>
+</aside>
+<p>Click <em>Check my progress</em> to verify the objective.
+<ql-activity-tracking step="3">
+Create, start, and review a continuous migration job.
+</ql-activity-tracking></p>
+<h2 id="step8">Task 4. Confirm the data in Cloud SQL for PostgreSQL</h2>
+<h3>Check the PostgreSQL databases in Cloud SQL</h3>
+<ol>
+<li>
+<p>In the Google Cloud Console, on the <strong>Navigation menu</strong> (<img alt="Navigation menu icon" src="https://cdn.qwiklabs.com/tkgw1TDgj4Q%2BYKQUW4jUFd0O5OEKlUMBRYbhlCrF0WY%3D">), click <strong>Databases</strong> &gt; <strong>SQL</strong>.</p>
+</li>
+<li>
+<p>Expand the instance ID called <strong>postgresql-cloudsql-master</strong>.</p>
+</li>
+<li>
+<p>Click on the instance <strong>postgresql-cloudsql</strong> (PostgreSQL read replica).</p>
+</li>
+<li>
+<p>In the <strong>Replica Instance</strong> menu, click <strong>Databases</strong>.</p>
+</li>
+</ol>
+<p>Notice that the databases called <strong>postgres</strong>, <strong>orders</strong> and <strong>gmemegen_db</strong> have been migrated to Cloud SQL.</p>
+<p><img alt="The migrated databases on Cloud SQL." src="https://cdn.qwiklabs.com/Lwnq1UmMGx%2FwEfVlC9f%2F5x1DA6T3tB9lwzlI3fozzoc%3D"></p>
+<h3>Connect to the PostgreSQL instance</h3>
+<ol>
+<li>
+<p>In the <strong>Replica Instance</strong> menu, click <strong>Overview</strong>.</p>
+</li>
+<li>
+<p>Scroll down to the <strong>Connect to this instance</strong> section and click <strong>Open Cloud Shell</strong>.</p>
+</li>
+</ol>
+<p>The command to connect to PostgreSQL will pre-populate in Cloud Shell:</p>
+<ql-code-block language="bash" output="">
+gcloud sql connect postgresql-cloudsql --user=postgres --quiet
+</ql-code-block>
+<ol start="3">
+<li>Run the pre-populated command.</li>
+</ol>
+<p>If prompted, click <strong>Authorize</strong> for the API.</p>
+<ol start="4">
+<li>When prompted for a password, which you previously set, enter:</li>
+</ol>
+<ql-code-block language="bash">
+supersecret!
+</ql-code-block>
+<p>You have now activated the PostgreSQL interactive console for the destination instance.</p>
+<h3>Review the data in the Cloud SQL for PostgreSQL instance</h3>
+<ol>
+<li>To select the database in the PostgreSQL interactive console, run the following command:</li>
+</ol>
+<ql-code-block language="postgresql">
+\c orders;
+</ql-code-block>
+<ol start="2">
+<li>When prompted for a password, enter:</li>
+</ol>
+<ql-code-block language="bash">
+supersecret!
+</ql-code-block>
+<ol start="3">
+<li>Query the <code>distribution_centers</code> table:</li>
+</ol>
+<ql-code-block language="postgresql">
+select * from distribution_centers;
+</ql-code-block>
+<p>(Output)</p>
+<ql-code-block nowrap output="">
+ longitude | latitude |                    name                     | id
+-----------+----------+---------------------------------------------+----
+ -89.9711  | 35.1174  | Memphis TN                                  |  1
+ -87.6847  | 41.8369  | Chicago IL                                  |  2
+ -95.3698  | 29.7604  | Houston TX                                  |  3
+ -118.25   | 34.05    | Los Angeles CA                              |  4
+ -90.0667  | 29.95    | New Orleans LA                              |  5
+ -73.7834  | 40.634   | Port Authority of New York/New Jersey NY/NJ |  6
+ -75.1667  | 39.95    | Philadelphia PA                             |  7
+ -88.0431  | 30.6944  | Mobile AL                                   |  8
+ -79.9333  | 32.7833  | Charleston SC                               |  9
+ -81.1167  | 32.0167  | Savannah GA                                 | 10
+ </ql-code-block>
+<ol start="4">
+<li>Exit the PostgreSQL interactive console by typing:</li>
+</ol>
+<ql-code-block language="postgresql">
+\q
+</ql-code-block>
+<h3>Update stand-alone source data to test continuous migration</h3>
+<ol>
+<li>In Cloud Shell, type the following commands to connect to the source PostgreSQL instance:</li>
+</ol>
+<ql-code-block language="bash" nowrap templated="">
+export VM_NAME=postgresql-vm
+export PROJECT_ID=$(gcloud config list --format 'value(core.project)')
+export POSTGRESQL_IP=$(gcloud compute instances describe ${VM_NAME} \
+  --zone={{{ project_0.default_zone|(zone) }}} --format="value(networkInterfaces[0].accessConfigs[0].natIP)")
+echo $POSTGRESQL_IP
+psql -h $POSTGRESQL_IP -p 5432 -d orders -U migration_admin
+</ql-code-block>
+<ql-infobox><strong>Note:</strong> The above is an alternative approach to accessing the stand-alone database on the VM instance.</ql-infobox>
+<ol start="2">
+<li>When prompted for a password, enter:</li>
+</ol>
+<ql-code-block language="bash">
+DMS_1s_cool!
+</ql-code-block>
+<ol start="3">
+<li>In <strong>psql</strong>, enter the following commands:</li>
+</ol>
+<ql-code-block language="postgresql">
+\c orders;
+</ql-code-block>
+<ql-code-block language="postgresql">
+insert into distribution_centers values(-80.1918,25.7617,'Miami FL',11);
+</ql-code-block>
+<ol start="4">
+<li>Close the interactive <strong>psql</strong> session:</li>
+</ol>
+<ql-code-block language="postgresql">
+\q
+</ql-code-block>
+<h3>Connect to the Cloud SQL PostgreSQL database to check that updated data has been migrated</h3>
+<ol>
+<li>In Cloud Shell, type the following commands to connect to the destination Cloud SQL PostgreSQL instance:</li>
+</ol>
+<ql-code-block language="bash">
+gcloud sql connect postgresql-cloudsql --user=postgres --quiet
+</ql-code-block>
+<ol start="2">
+<li>When prompted for a password, which you previously set, enter the password for the Cloud SQL instance:</li>
+</ol>
+<ql-code-block language="bash">
+supersecret!
+</ql-code-block>
+<p>You have now activated the PostgreSQL interactive console for the destination instance.</p>
+<h3>Review data in Cloud SQL for PostgreSQL database</h3>
+<ol>
+<li>In Cloud Shell, select the active database in the PostgreSQL interactive console:</li>
+</ol>
+<ql-code-block language="postgresql">
+\c orders;
+</ql-code-block>
+<ol start="2">
+<li>When prompted for a password, which you previously set, enter:</li>
+</ol>
+<ql-code-block language="bash">
+supersecret!
+</ql-code-block>
+<ol start="3">
+<li>Query the <code>distribution_centers</code> table:</li>
+</ol>
+<ql-code-block language="postgresql">
+select * from distribution_centers;
+</ql-code-block>
+<p>(Output)</p>
+<ql-code-block nowrap output="">
+ longitude | latitude |                    name                     | id
+-----------+----------+---------------------------------------------+----
+ -89.9711  | 35.1174  | Memphis TN                                  |  1
+ -87.6847  | 41.8369  | Chicago IL                                  |  2
+ -95.3698  | 29.7604  | Houston TX                                  |  3
+ -118.25   | 34.05    | Los Angeles CA                              |  4
+ -90.0667  | 29.95    | New Orleans LA                              |  5
+ -73.7834  | 40.634   | Port Authority of New York/New Jersey NY/NJ |  6
+ -75.1667  | 39.95    | Philadelphia PA                             |  7
+ -88.0431  | 30.6944  | Mobile AL                                   |  8
+ -79.9333  | 32.7833  | Charleston SC                               |  9
+ -81.1167  | 32.0167  | Savannah GA                                 | 10
+ -80.1918  | 25.7617  | Miami FL                                    | 11
+ </ql-code-block>
+<p>Note that the new row added on the stand-alone <code>orders</code> database, is now present on the migrated database.</p>
+<ol start="4">
+<li>Exit the PostgreSQL interactive console:</li>
+</ol>
+<ql-code-block language="postgresql">
+\q
+</ql-code-block>
+<p>Click <em>Check my progress</em> to verify the objective.
+<ql-activity-tracking step="4">
+Test the continuous migration of data from the source to the destination.
+</ql-activity-tracking></p>
+<h2 id="step9">Task 5. Promote Cloud SQL to be a stand-alone instance for reading and writing data</h2>
+<ol>
+<li>
+<p>In the Google Cloud Console, on the <strong>Navigation menu</strong> (<img alt="Navigation menu icon" src="https://cdn.qwiklabs.com/tkgw1TDgj4Q%2BYKQUW4jUFd0O5OEKlUMBRYbhlCrF0WY%3D">), click <strong>Database Migration</strong> &gt; <strong>Migration jobs</strong>.</p>
+</li>
+<li>
+<p>Click the migration job name <strong>vm-to-cloudsql</strong> to see the details page.</p>
+</li>
+<li>
+<p>Click <strong>Promote</strong>.</p>
+</li>
+</ol>
+<p>If prompted to confirm, click <strong>Promote</strong>.</p>
+<p>When the promotion is complete, the status of the job will update to <strong>Completed</strong>.</p>
+<p><img alt="The migration job named vm-to-cloudsql has a status of complete." src="https://cdn.qwiklabs.com/f8ciqtM%2Fs8I5tt7a8YGPxzgzxZJCBKY0IH3ImNVMXRY%3D"></p>
+<ol start="4">
+<li>In the Google Cloud Console, on the <strong>Navigation menu</strong> (<img alt="Navigation menu icon" src="https://cdn.qwiklabs.com/tkgw1TDgj4Q%2BYKQUW4jUFd0O5OEKlUMBRYbhlCrF0WY%3D">), click <strong>Databases</strong> &gt; <strong>SQL</strong>.</li>
+</ol>
+<p>Note that <strong>postgresql-cloudsql</strong> is now a stand-alone instance for reading and writing data.</p>
+<p><img alt="The instance named postgresql-cloudsql is labeled as the primary instance." src="https://cdn.qwiklabs.com/saB9PQ71Zcjx54m9lH%2F5KIjwfLKYd7KiSHseSFBrmMw%3D"></p>
+<p>Click <em>Check my progress</em> to verify the objective.
+<ql-activity-tracking step="5">
+Promote Cloud SQL for PostgreSQL database to be a stand-alone instance for reading and writing data.
+</ql-activity-tracking></p>
+<h2 id="step10">Congratulations!</h2>
+<h3>Finish Your Quest</h3>
+<p>This self-paced lab is part of the <a href="https://www.cloudskillsboost.google/quests/186" target="_blank">Manage PostgreSQL Databases on Cloud SQL</a> Quest. A Quest is a series of related labs that form a learning path. Completing this Quest earns you the badge above, to recognize your achievement. You can make your public and link to them in your online resume or social media account. <a href="https://www.cloudskillsboost.google/quests/186/enroll" target="_blank">Enroll in a quest</a> and get immediate completion credit if you've taken this lab.  <a href="http://google.qwiklabs.com/catalog" target="_blank">See other available Quests</a>.</p>
+
+<p><strong>Manual Last Updated: April 6, 2023</strong></p>
+<p><strong>Lab Last Tested: April 6, 2023</strong></p>
+<p>Copyright 2023 Google LLC All rights reserved. Google and the Google logo are trademarks of Google LLC. All other company and product names may be trademarks of the respective companies with which they are associated.</p>
+
+</div>
+</div>
+
+
+<div class='lab-content__end-lab-button js-end-lab-button-container hidden'>
+<ql-lab-control-button class='js-end-lab-button' running></ql-lab-control-button>
+</div>
+<!-- / TODO: Move recommendations into the end lab modal -->
+<div class='lab-content__renderable-instructions'>
+<div class='lab-content__recommendation'>
+<!-- # TODO: Change classes so that this doesn't stack vertically -->
+<section class='upcoming-cards'>
+<h2 class='ql-headline-4'>Continue questing</h2>
+<div class='activity-cards'>
+<ql-activity-card aria-label='Migrate to Cloud SQL for PostgreSQL using Database Migration Service' name='Migrate to Cloud SQL for PostgreSQL using Database Migration Service' path='/focuses/23649?parent=catalog' progress='0.0' type='lab'></ql-activity-card>
+
+</div>
+</section>
+
+</div>
+
+</div>
+</ql-drawer-content>
+<ql-drawer end id='outline-drawer' open slot='drawer' width='320'>
+<div aria-label='Lab Table of Contents' role='navigation'>
+<ul class='lab-content__outline js-lab-content-outline'>
+<li><a href="#step1">GSP918</a></li><li><a href="#step2">Overview</a></li><li><a href="#step3">Objectives</a></li><li><a href="#step4">Setup</a></li><li><a href="#step5">Task 1. Prepare the source database for migration</a></li><li><a href="#step6">Task 2. Create a Database Migration Service connection profile for a stand-alone PostgreSQL database</a></li><li><a href="#step7">Task 3. Create and start a continuous migration job</a></li><li><a href="#step8">Task 4. Confirm the data in Cloud SQL for PostgreSQL</a></li><li><a href="#step9">Task 5. Promote Cloud SQL to be a stand-alone instance for reading and writing data</a></li><li><a href="#step10">Congratulations!</a></li>
+</ul>
+</div>
+</ql-drawer>
+</ql-drawer-container>
+</ql-drawer-content>
+</ql-drawer-container>
+
+
+
+</div>
+</main>
+
+<span class='hidden' id='flash-sibling-before'></span>
+<ql-snackbar></ql-snackbar>
+
+
+<div class='modal fade' id='lab-details-modal'>
+<div class='modal-container'>
+<div class='modal-content mdl-shadow--24dp'>
+<div class='modal-body'>
+<p class='l-mbm'>
+In this lab you migrate a stand-alone PostgreSQL database (running on a virtual machine) to Cloud SQL for PostgreSQL using a continuous Database Migration Service job and VPC peering for conectivity
+</p>
+<p>
+This lab is included in these quests:
+<a href="/quests/121">Deploy and Manage Cloud Environments with Google Cloud</a>, <a href="/quests/186">Manage PostgreSQL Databases on Cloud SQL</a>.
+If you complete this lab you&#39;ll receive credit for it when you enroll in one of these quests.
+</p>
+<p class='small-label l-mbs'>
+<strong>
+Duration:
+</strong>
+7m setup
+&middot;
+90m access
+&middot;
+60m completion
+</p>
+<p class='small-label l-mbs'>
+<strong>AWS Region:</strong>
+[] <strong></strong>
+</p>
+<p class='small-label l-mbs'>
+<span><strong>Levels: </strong>introductory</span>
+</p>
+<p class='small-label'>
+<strong>
+Permalink:
+</strong>
+<a href="https://partner.cloudskillsboost.google/catalog_lab/4198">https://partner.cloudskillsboost.google/catalog_lab/4198</a>
+</p>
+</div>
+<div class='modal-actions'>
+<a class='button button--text' data-dismiss='modal'>
+Got It
+</a>
+</div>
+
+
+</div>
+</div>
+<iframe class='l-ie-iframe-fix' tabindex='-1' title='modal'></iframe>
+</div>
+<ql-dialog headline='How satisfied are you with this lab?&lt;span aria-hidden=&quot;true&quot;&gt;*&lt;/span&gt;' id='lab-review-dialog'>
+<form class="simple_form js-lab-review-form" id="new_lab_review" action="/lab_reviews" accept-charset="UTF-8" data-remote="true" method="post"><input name="utf8" type="hidden" value="&#x2713;" autocomplete="off" /><div aria-labelledby='lab-review-dialog' aria-required='true' aria-valuemax='5' aria-valuemin='0' aria-valuenow='0' class='rateit js-rateit' data-rateit-max='5' data-rateit-min='0' data-rateit-resetable='false' data-rateit-step='1' data-rateit-value='0' id='lab-review-rateit' role='slider' tabindex='0'></div>
+<div class='l-mtm'>
+
+<div class="control-group hidden lab_review_user_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" value="11061062" name="lab_review[user_id]" id="lab_review_user_id" /></div></div>
+<div class="control-group hidden lab_review_classroom_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" name="lab_review[classroom_id]" id="lab_review_classroom_id" /></div></div>
+<div class="control-group hidden lab_review_lab_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" value="4198" name="lab_review[lab_id]" id="lab_review_lab_id" /></div></div>
+<div class="control-group hidden lab_review_focus_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" name="lab_review[focus_id]" id="lab_review_focus_id" /></div></div>
+<div class="control-group hidden lab_review_rating"><div class="controls"><input class="hidden js-rating-input" autocomplete="off" type="hidden" name="lab_review[rating]" id="lab_review_rating" /></div></div>
+<div class="control-group text optional lab_review_comment"><label class="text optional control-label" for="lab_review_comment">Additional Comments</label><div class="controls"><textarea class="text optional" name="lab_review[comment]" id="lab_review_comment">
+</textarea></div></div>
+</div>
+</form><ql-button disabled id='submit' label='Submit' slot='action' text></ql-button>
+</ql-dialog>
+
+<ql-dialog headline='All done? If you end this lab, you will lose all your work. You may not be able to restart the lab if there is a quota limit. Are you sure you want to end this lab?' icon='error_outline' id='js-lab-are-you-sure-dialog'>
+<ql-button id='js-are-you-sure-button' label='Submit' slot='action' text></ql-button>
+</ql-dialog>
+
+
+<script>
+  $(function() {
+    ql.initMaterialInputs();
+    initChosen();
+    initSearch();
+    initTabs();
+    ql.list.init();
+    ql.favoriting.init();
+    ql.header.myAccount.init();
+    initTooltips();
+    ql.autocomplete.init();
+    ql.modals.init();
+    ql.toggleButtons.init();
+    ql.analytics.init();
+    ql.favoriting.init();
+  ql.chat.init();
+  ql.jumpContent.init();
+  ql.labControlPanel.addRecaptchaErrorHandler();
+  initLabContent();
+  ql.labOutline.links.init();
+  initLabReviewModal();
+  initLabReviewTranslations( {"star_amount_1":"1 of 5 stars","star_amount_2":"2 of 5 stars","star_amount_3":"3 of 5 stars","star_amount_4":"4 of 5 stars","star_amount_5":"5 of 5 stars"} )
+  ql.labAssessment.init();
+  ql.labData.init();
+  initLabTranslations( {"are_you_sure":"All done? If you end this lab, you will lose all your work. You may not be able to restart the lab if there is a quota limit. Are you sure you want to end this lab?","in_progress":"*In Progress*","ending":"*Ending*","starting":"*Starting, please wait*","end_concurrent_labs":"Sorry, you can only run one lab at a time. To start this lab, please confirm that you want all of your existing labs to end.","copied":"Copied","no_resource":"Error retrieving resource.","no_support":"No Support","mac_press":"Press ⌘-C to copy","thanks_review":"Thanks for reviewing this lab.","windows_press":"Press Ctrl-C to copy","days":"days"} );
+  ql.labRun.init();
+  ql.navPanel.init();
+  ql.navigation.init();
+  
+  });
+</script>
+
+</body>
+</html>
+

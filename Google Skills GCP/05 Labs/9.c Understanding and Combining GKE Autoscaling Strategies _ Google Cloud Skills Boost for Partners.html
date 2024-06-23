@@ -1,0 +1,1291 @@
+
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<title>Understanding and Combining GKE Autoscaling Strategies | Google Cloud Skills Boost for Partners</title>
+<script>
+//<![CDATA[
+window.gon={};gon.deployment="googlecourses-run";
+//]]>
+</script>
+<script>
+  (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer',"GTM-5XSKHDX");
+</script>
+<script src="https://cdn.qwiklabs.com/assets/hallofmirrors/polyfills/webcomponents-loader-8583b47b01e40e6ea7bf1ad443a20b7e79bbdd5eafac009806a228c91a97282c.js"></script>
+<script src="https://cdn.qwiklabs.com/assets/vendor-beb958bea8eff6a4ad4cf8f36a0a676817a4857e214b17ae983796071a4a816d.js"></script>
+<script src="https://cdn.qwiklabs.com/assets/application-3120f058991567f3906a2b96e46758fe3aeede76b5781fa030c25ae64f3349f2.js"></script>
+<script src="https://cdn.qwiklabs.com/assets/hallofmirrors/hallofmirrors-44d98881a4daa3a278296d522024196794a2d669d97cae5e65742f199c289630.js"></script>
+<!--[if lt IE 9]>
+<script src='http://html5shim.googlecode.com/svn/trunk/html5.js' type='text/javascript'></script>
+<![endif]-->
+<!--[endif]>  <![endif]-->
+<script id='ze-snippet' src='https://static.zdassets.com/ekr/snippet.js?key=511e4158-0aec-4e3c-b2e6-4daa1769f51e'></script>
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="9VwJPcjqVhhnPpC72TAYXPxDnTViBtiJpGfs/ccDO7xWxsjqQeBknDzin/t+UmjLk9Mc0mvZXvoSuW4yZvRjKg==" />
+<meta content='width=device-width, initial-scale=1.0, user-scalable=yes' name='viewport'>
+<meta content='1rRsY0INj8RvwB5EF5pwdxt2A2P9aDgAlsICaJ0d5w0' name='google-site-verification'>
+<meta content='#3681E4' property='msapplication-TileColor'>
+<meta content='/favicon-144.png' property='msapplication-TileImage'>
+<meta content='[{&quot;id&quot;:&quot;recaptcha_experiment&quot;,&quot;optimize_id&quot;:&quot;dpViOcLkT3qS4TvL2mRojA&quot;,&quot;title&quot;:&quot;No Recaptcha shown for trusted users&quot;,&quot;variant_index&quot;:0,&quot;variant&quot;:&quot;original&quot;}]' name='active-experiments'>
+<meta content='{&quot;userId&quot;:11061062,&quot;experimentIds&quot;:[&quot;oauth_risc_shutoff&quot;,&quot;program_groups&quot;,&quot;program_learning_assignment&quot;,&quot;course_upgrade&quot;,&quot;enforce_codebuild_verdicts&quot;,&quot;canonical_domain_redirect&quot;,&quot;alexandria_show_bundle_errors&quot;,&quot;used_in&quot;,&quot;show_annual_purchase_now&quot;,&quot;program_resources&quot;,&quot;programs&quot;,&quot;teams&quot;,&quot;chat_off_for_signed_out_users&quot;]}' name='help-api-product-data'>
+<meta content='{&quot;groupIds&quot;:[&quot;non_suadmins&quot;,&quot;students&quot;,&quot;non_organization&quot;,&quot;non_program&quot;]}' name='help-api-custom-data'>
+<meta content='In this lab you will explore the benefits of different Google Kubernetes Engine autoscaling strategies, like Horizontal Pod Autoscaling and Vertical Pod Autoscaling for pod-level scaling, and Cluster Autoscaler and Node Auto Provisioning for node-level scaling.' name='description'>
+<meta content='Qwiklabs' name='author'>
+<meta content='Understanding and Combining GKE Autoscaling Strategies | Google Cloud Skills Boost for Partners' property='og:title'>
+<meta content='website' property='og:type'>
+<meta content='/favicon-144.png' property='og:image'>
+<meta content='Qwiklabs' property='og:site_name'>
+<meta content='In this lab you will explore the benefits of different Google Kubernetes Engine autoscaling strategies, like Horizontal Pod Autoscaling and Vertical Pod Autoscaling for pod-level scaling, and Cluster Autoscaler and Node Auto Provisioning for node-level scaling.' property='og:description'>
+<meta content='/qwiklabs_logo_900x887.png' property='og:logo' size='900x887'>
+<meta content='/qwiklabs_logo_994x187.png' property='og:logo' size='994x187'>
+
+
+<meta property="og:url" content="https://partner.cloudskillsboost.google/focuses/16391?parent=catalog" /><link href="https://partner.cloudskillsboost.google/focuses/16391?parent=catalog" rel="canonical" />
+<link color='#3681E4' href='/favicon-svg.svg' rel='mask-icon'>
+<link href='/favicon-180.png' rel='apple-touch-icon-precomposed'>
+<link href='https://cdn.qwiklabs.com/Vag5GK2J6rS6843Qvg8TQJ1kEbAsEmQoF0%2BdLRfcLRE%3D' rel='shortcut icon' type='image/x-icon'>
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oswald:400|Roboto+Mono:400,700|Roboto:300,400,500,700|Google+Sans:300,400,500,700|Google+Sans+Display:400|Material+Icons|Google+Material+Icons" media="screen" />
+
+<link rel="stylesheet" href="https://cdn.qwiklabs.com/assets/application-9ff670d4fe0d403d921ffc3c9f4362793f1df46bf496cf49078238b5cb1bc5a4.css" media="all" />
+
+
+<style>
+  :root {
+    --primary-text-on-surface-color: #1a73e8;
+    --primary-text-on-surface-color-dark: #1568d6;
+    --primary-text-on-surface-color-darker: #135ec1;
+    --primary-text-on-surface-color-darkest: #1154ac;
+    --primary-surface-color: #1a73e8;
+    --primary-surface-color-rgb: 26,115,232;
+    --primary-surface-color-light: #d1e3fa;
+    --primary-surface-color-lightest: #e8f1fd;
+    --text-on-primary-color: #ffffff;
+    --accent-text-on-surface-color: #f29900;
+    --accent-surface-color: #f9ab00;
+    --accent-surface-color-rgb: 249,171,0;
+    --accent-surface-color-light: #ffefcc;
+    --text-on-accent-color: #202124;
+  }
+</style>
+
+<style>
+  :root {
+    --navbar-height: 112px;
+  }
+</style>
+
+
+
+</head>
+<body class='lab-show l-full no-nav application-new focuses focuses-show lab-show l-full no-nav '>
+<div class='header-container'>
+<div class='header'>
+<ql-toolbar jumpEnabled>
+<div class='header__title' slot='title'>
+<ql-icon-button label="Back" href="https://partner.cloudskillsboost.google/quests/157" id="f871fd4c9d19c44c" target="_self" tip="Back">arrow_back</ql-icon-button>
+<h1 class='ql-headline-6'>Understanding and Combining GKE Autoscaling Strategies</h1>
+</div>
+<div class='header__actions' slot='action'>
+<ql-icon-button icon='share' id='share_3289' label='Share on social media' tip='Share'></ql-icon-button>
+<ql-menu for='share_3289'>
+<ql-menu-item data-analytics-action='Shared to LinkedIn Feed.' data-analytics-category='Lab' data-analytics-label='Understanding and Combining GKE Autoscaling Strategies' href='https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fpartner.cloudskillsboost.google%2Fcatalog_lab%2F3289%3Flocale%3Den%26utm_medium%3Dsocial%26utm_source%3Dlinkedin%26utm_campaign%3Dql-social-share' icon='post_linkedin' label='Share on LinkedIn Feed' role='link' target='_blank'>
+<span class='label'>Share on LinkedIn Feed</span>
+</ql-menu-item>
+
+<ql-menu-item data-analytics-action='Shared to Twitter.' data-analytics-category='Lab' data-analytics-label='Understanding and Combining GKE Autoscaling Strategies' href='https://twitter.com/intent/tweet?text=Learn%20cloud%20tech%20through%20hands-on%20training%20on%20%23Qwiklabs%21&amp;url=https%3A%2F%2Fpartner.cloudskillsboost.google%2Fcatalog_lab%2F3289%3Flocale%3Den%26utm_medium%3Dsocial%26utm_source%3Dtwitter%26utm_campaign%3Dql-social-share&amp;hashtags=' icon='post_twitter' label='Twitter' role='link' target='_blank'>
+<span class='label'>Twitter</span>
+</ql-menu-item>
+
+<ql-menu-item data-analytics-action='Shared to Facebook.' data-analytics-category='Lab' data-analytics-label='Understanding and Combining GKE Autoscaling Strategies' href='https://facebook.com/sharer.php?display=popup&amp;u=https%3A%2F%2Fpartner.cloudskillsboost.google%2Fcatalog_lab%2F3289%3Flocale%3Den%26utm_medium%3Dsocial%26utm_source%3Dfacebook%26utm_campaign%3Dql-social-share' icon='post_facebook' label='Facebook' role='link' target='_blank'>
+<span class='label'>Facebook</span>
+</ql-menu-item>
+
+<ql-copyable-input label='Share Link' value='https://partner.cloudskillsboost.google/catalog_lab/3289?locale=en'></ql-copyable-input>
+</ql-menu>
+
+<ql-icon-button class='icon-button js-favorite-button favorite-button' data-id='16391' data-name='Understanding and Combining GKE Autoscaling Strategies' data-type='CatalogItem' href='/favorite.json?item_id=16391&amp;item_type=CatalogItem&amp;locale=en' id='CatalogItem-16391-favorite-button' label='Add to favorites' tip='Add to favorites'>
+favorite_border
+</ql-icon-button>
+
+
+
+<ql-icon-button id='control-panel-target' style='display: none;'>
+dashboard
+</ql-icon-button>
+<ql-menu for='control-panel-target' id='control-panel-menu'></ql-menu>
+<ql-icon-button class='mobile-hide' icon='help_outline' id='help-menu-button' label='Open help menu' tip='Help'></ql-icon-button>
+<ql-menu for='help-menu-button' id='help-menu'>
+<ql-menu-item data-analytics-action='opened_help' data-analytics-label='lab' label='Help Center' onclick='hallofmirrors.helpService.startHelp({&quot;productData&quot;:{&quot;userId&quot;:11061062},&quot;context&quot;:&quot;lab&quot;})'></ql-menu-item>
+<ql-menu-item href='mailto:support@qwiklabs.com' label='Email support'></ql-menu-item>
+<ql-menu-item label='Chat support' onClick='ql.chat.open()'></ql-menu-item>
+</ql-menu>
+
+<ql-icon-button class='mobile-hide' icon='language' id='language' label='Select your language preference' tip='Language'></ql-icon-button>
+<ql-menu for='language'>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='ar' href='/focuses/16391?locale=ar&amp;parent=catalog' label='العربية‬‎' lang='ar'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='de' href='/focuses/16391?locale=de&amp;parent=catalog' label='Deutsch' lang='de'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='en' href='/focuses/16391?locale=en&amp;parent=catalog' label='English' lang='en'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='es' href='/focuses/16391?locale=es&amp;parent=catalog' label='español (Latinoamérica)' lang='es'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='fr' href='/focuses/16391?locale=fr&amp;parent=catalog' label='français' lang='fr'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='fr_CA' href='/focuses/16391?locale=fr_CA&amp;parent=catalog' label='français (Canada)' lang='fr-CA'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='he' href='/focuses/16391?locale=he&amp;parent=catalog' label='עברית' lang='he'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='id' href='/focuses/16391?locale=id&amp;parent=catalog' label='bahasa Indonesia' lang='id'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='it' href='/focuses/16391?locale=it&amp;parent=catalog' label='Italiano' lang='it'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='ja' href='/focuses/16391?locale=ja&amp;parent=catalog' label='日本語' lang='ja'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='ko' href='/focuses/16391?locale=ko&amp;parent=catalog' label='한국어' lang='ko'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='pl' href='/focuses/16391?locale=pl&amp;parent=catalog' label='Polski' lang='pl'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='pt_BR' href='/focuses/16391?locale=pt_BR&amp;parent=catalog' label='português (Brasil)' lang='pt-BR'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='pt_PT' href='/focuses/16391?locale=pt_PT&amp;parent=catalog' label='português (Portugal)' lang='pt-PT'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='ru' href='/focuses/16391?locale=ru&amp;parent=catalog' label='русский' lang='ru'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='tr' href='/focuses/16391?locale=tr&amp;parent=catalog' label='Türkçe' lang='tr'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='uk' href='/focuses/16391?locale=uk&amp;parent=catalog' label='український' lang='uk'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='zh' href='/focuses/16391?locale=zh&amp;parent=catalog' label='简体中文' lang='zh'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='zh_TW' href='/focuses/16391?locale=zh_TW&amp;parent=catalog' label='繁體中文' lang='zh-TW'></ql-menu-item>
+</ql-menu>
+
+<ql-icon-button id='my_account' label='My account' tip='My account'>
+<ql-avatar></ql-avatar>
+</ql-icon-button>
+<ql-menu for='my_account' id='my_account_menu' style='max-height: 640px'>
+<div class='my-account-menu'>
+<ql-avatar class='l-mtl l-mbl' size='120'></ql-avatar>
+<div class='my-account-menu__user-info l-mbl'>
+<h4 class='ql-subhead-1'>Ausaf Khan</h4>
+<p class='ql-body-2 text--light'>ausaf.khan@rakuten.com</p>
+<p class='ql-body-2 text--light'>
+</p>
+<a class="text--green ql-subhead-2" href="/my_account/payments?locale=en"><ql-chip positive>
+0 Credits
+</ql-chip>
+</a></div>
+<div class='buttons l-mbl'>
+<a class="button button--hairline l-mrm" id="profile" href="/public_profiles/1d61c1a3-8a07-4495-8abe-b57e519718e6">Public Profile</a>
+<a class="button button--hairline" id="settings" href="/my_account/profile?locale=en">Settings</a>
+</div>
+<hr>
+<ql-button data-analytics-action='clicked_sign_out' href='/users/sign_out?locale=en' method='delete'>
+Sign Out
+</ql-button>
+<div class='privacy l-mtl'>
+<a target="_blank" class="ql-caption text--light" href="/privacy_policy?locale=en">Privacy</a>
+<span class='ql-caption text--light l-mls l-mrs'>&middot;</span>
+<a class="ql-caption text--light" href="/terms_of_service?locale=en">Terms</a>
+</div>
+</div>
+</ql-menu>
+
+</div>
+</ql-toolbar>
+
+</div>
+</div>
+
+<nav class='nav-panel js-nav-panel'>
+<div class='nav-panel__logo'>
+<div class="custom-logo"><img alt="Google Cloud Skills Boost for Partners" height="24" aria-label="Google Cloud Skills Boost for Partners" src="https://cdn.qwiklabs.com/PGyhmgS3zZncIEGywnx5UXsKwepRRFQ9BhAg%2FWHNrlQ%3D" /></div>
+</div>
+<nav class='ql-sidenav'>
+<ql-sidenav-item href='/?locale=en' icon='home' label='Paths'></ql-sidenav-item>
+
+<ql-sidenav-item active href='/catalog?locale=en' icon='school' label='Explore'></ql-sidenav-item>
+
+<ql-sidenav-item href='/profile?locale=en' icon='event_note' label='Profile'></ql-sidenav-item>
+
+</nav>
+
+</nav>
+<div class='nav-panel__overlay js-nav-toggle'></div>
+
+<main class='js-main' id='jump-content'>
+<div class='l-main-wrapper' id='main-wrapper'>
+
+
+
+
+<div class='lab-assessment__tab js-open-lab-assessment-panel'>
+<button class='js-lab-assessment-total-score'>
+—/100
+</button>
+</div>
+<div aria-labelledby='lab-assessment-checkpoint' class='lab-assessment__panel js-lab-assessment-panel' role='dialog'>
+<div class='lab-assessment__panel__header'>
+<h4 id='lab-assessment-checkpoint'>Checkpoints</h4>
+<ql-icon-button class='js-close-lab-assessment-panel' icon='arrow_forward' label='Close dialog'></ql-icon-button>
+</div>
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Provision testing environment
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button class='js-show-run-step-button' description='Provision testing environment' step_no='1'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-1'>
+</span>
+/ 20
+</p>
+</div>
+</div>
+
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Scale pods with Horizontal Pod Autoscaling
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button class='js-show-run-step-button' description='Scale pods with Horizontal Pod Autoscaling' step_no='2'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-2'>
+</span>
+/ 20
+</p>
+</div>
+</div>
+
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Scale size of pods with Vertical Pod Autoscaling
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button class='js-show-run-step-button' description='Scale size of pods with Vertical Pod Autoscaling' step_no='3'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-3'>
+</span>
+/ 20
+</p>
+</div>
+</div>
+
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Cluster autoscaler
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button class='js-show-run-step-button' description='Cluster autoscaler' step_no='4'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-4'>
+</span>
+/ 20
+</p>
+</div>
+</div>
+
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Node Auto Provisioning
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button class='js-show-run-step-button' description='Node Auto Provisioning' step_no='5'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-5'>
+</span>
+/ 10
+</p>
+</div>
+</div>
+
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Optimize larger loads
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button class='js-show-run-step-button' description='Optimize larger loads' step_no='6'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-6'>
+</span>
+/ 10
+</p>
+</div>
+</div>
+
+</div>
+<ql-drawer-container class='js-lab-state' data-analytics-payload='{&quot;label&quot;:&quot;Understanding and Combining GKE Autoscaling Strategies&quot;,&quot;lab_name&quot;:&quot;Understanding and Combining GKE Autoscaling Strategies&quot;,&quot;classroom_name&quot;:null,&quot;deployment&quot;:&quot;googlecourses-run&quot;}' data-credits='0.0' data-focus-id='16391' data-lab-billing-limit='0.0' data-lab-duration='5400' data-parent='catalog' data-recaptcha-enabled id='lab-container'>
+<ql-drawer id='terminal-drawer' slot='drawer' style='width: calc(100% - 480px)'>
+<iframe allow='clipboard-read' class='terminal' id='embedded-resource'></iframe>
+</ql-drawer>
+<ql-drawer-content class='js-lab-wrapper' id='lab-content' slot='drawer-content'>
+<ql-drawer-container id='lab-content-container'>
+<ql-drawer id='control-panel-drawer' open slot='drawer' width='320'>
+<ql-lab-control-panel class='ql-lab-control-panel__max-height control-panel js-lab-control-panel' connectionFiles='[]' labControlButton='{&quot;disabled&quot;:false,&quot;pending&quot;:false,&quot;running&quot;:false}' labDetails='[]' labTimer='{&quot;ticking&quot;:false,&quot;secondsRemaining&quot;:5400}' studentResources='[]'>
+<script src="https://www.recaptcha.net/recaptcha/api.js?render=6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr"   ></script>
+        <script>
+          // Define function so that we can call it again later if we need to reset it
+          // This executes reCAPTCHA and then calls our callback.
+          function executeRecaptchaForStartLab() {
+            grecaptcha.ready(function() {
+              grecaptcha.execute('6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr', {action: 'start_lab'}).then(function(token) {
+                setInputWithRecaptchaResponseTokenForStartLab('g-recaptcha-response-data-start-lab', token)
+              });
+            });
+          };
+          // Invoke immediately
+          executeRecaptchaForStartLab()
+
+          // Async variant so you can await this function from another async function (no need for
+          // an explicit callback function then!)
+          // Returns a Promise that resolves with the response token.
+          async function executeRecaptchaForStartLabAsync() {
+            return new Promise((resolve, reject) => {
+             grecaptcha.ready(async function() {
+                resolve(await grecaptcha.execute('6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr', {action: 'start_lab'}))
+              });
+            })
+          };
+
+                    var setInputWithRecaptchaResponseTokenForStartLab = function(id, token) {
+            var element = document.getElementById(id);
+            element.value = token;
+          }
+
+        </script>
+<input type="hidden" name="g-recaptcha-response-data[start_lab]" id="g-recaptcha-response-data-start-lab" data-sitekey="6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr" class="g-recaptcha g-recaptcha-response "/>
+
+<div aria-live='polite' class='hidden' id='recaptcha-v2-start-lab' slot='recaptcha'>
+<script src="https://www.recaptcha.net/recaptcha/api.js" async defer ></script>
+<div data-sitekey="6LeOI8IUAAAAAPkHlMAE9NReCD_1WD81iYlBlCnV" data-callback="recaptchaComplete" data-expired-callback="expireV2Token" class="g-recaptcha "></div>
+          <noscript>
+            <div>
+              <div style="width: 302px; height: 422px; position: relative;">
+                <div style="width: 302px; height: 422px; position: absolute;">
+                  <iframe
+                    src="https://www.recaptcha.net/recaptcha/api/fallback?k=6LeOI8IUAAAAAPkHlMAE9NReCD_1WD81iYlBlCnV"
+                    name="ReCAPTCHA"
+                    style="width: 302px; height: 422px; border-style: none; border: 0; overflow: hidden;">
+                  </iframe>
+                </div>
+              </div>
+              <div style="width: 300px; height: 60px; border-style: none;
+                bottom: 12px; left: 25px; margin: 0px; padding: 0px; right: 25px;
+                background: #f9f9f9; border: 1px solid #c1c1c1; border-radius: 3px;">
+                <textarea id="g-recaptcha-response" name="g-recaptcha-response"
+                  class="g-recaptcha-response"
+                  style="width: 250px; height: 40px; border: 1px solid #c1c1c1;
+                  margin: 10px 25px; padding: 0px; resize: none;">
+                </textarea>
+              </div>
+            </div>
+          </noscript>
+
+</div>
+</ql-lab-control-panel>
+</ql-drawer>
+<ql-drawer-content id='lab-instructions' slot='drawer-content'>
+<ql-snackbar id='alert-snackbar'></ql-snackbar>
+<div class='alert alert--fake js-alert'>
+<p class='alert__message js-alert-message' role='alert'></p>
+<ql-icon-button class='alert__close js-alert-close' icon='clear'></ql-icon-button>
+<iframe class='l-ie-iframe-fix' tabindex='-1'></iframe>
+</div>
+<div class='lab-content__renderable-instructions js-lab-content'>
+<div class='lab-preamble'>
+<h1 class='lab-preamble__title'>
+Understanding and Combining GKE Autoscaling Strategies
+</h1>
+<div class='lab-preamble__details subtitle-headline-1'>
+<span>1 hour 30 minutes</span>
+<span>Free</span>
+<div class='lab__rating'>
+<a aria-label="Lab Reviews" href="/focuses/16391/reviews?locale=en&amp;parent=catalog"><div class='rateit' data-rateit-readonly='true' data-rateit-value='4.6091'></div>
+
+</a></div>
+</div>
+</div>
+<div class='lab-outline-place-holder'></div>
+
+<div class='markdown-lab-instructions js-markdown-instructions' id='markdown-lab-instructions'>
+
+<h2 id="step1">GSP768</h2>
+<p><img alt="Google Cloud self-paced labs logo" src="https://cdn.qwiklabs.com/GMOHykaqmlTHiqEeQXTySaMXYPHeIvaqa2qHEzw6Occ%3D"></p>
+<h2 id="step2">Overview</h2>
+<p>Google Kubernetes Engine has horizontal and vertical solutions for automatically scaling your pods as well as your infrastructure. When it comes to cost-optimization, these tools become extremely useful in ensuring that your workloads are being run as efficiently as possible and that you're only paying for what you're using.</p>
+<p>In this lab, will set up and observe <strong>Horizontal Pod Autoscaling</strong> and <strong>Vertical Pod Autoscaling</strong> for pod-level scaling and <strong>Cluster Autoscaler</strong> (horizontal infrastructure solution) and <strong>Node Auto Provisioning</strong> (vertical infrastructure solution) for node-level scaling. First you'll use these autoscaling tools to save as many resources as possible and shrink your cluster's size during a period of low demand. Then you will increase the demands of your cluster and observe how autoscaling maintains availability.</p>
+<h3>What you'll learn</h3>
+<ul>
+<li>
+<p>Decrease number of replicas for a Deployment with <strong>Horizontal Pod Autoscaler</strong></p>
+</li>
+<li>
+<p>Decrease CPU request of a Deployment with <strong>Vertical Pod Autoscaler</strong></p>
+</li>
+<li>
+<p>Decrease number of nodes used in cluster with <strong>Cluster Autoscaler</strong></p>
+</li>
+<li>
+<p>Automatically create an optimized node pool for workload with <strong>Node Auto Provisioning</strong></p>
+</li>
+<li>
+<p>Test the autoscaling behavior against a spike in demand</p>
+</li>
+<li>
+<p>Overprovision your cluster with <strong>Pause Pods</strong></p>
+</li>
+</ul>
+<h2 id="step3">Setup and requirements</h2>
+<h3>Before you click the Start Lab button</h3>
+<p>Read these instructions. Labs are timed and you cannot pause them. The timer, which starts when you click <strong>Start Lab</strong>, shows how long Google Cloud resources will be made available to you.</p>
+<p>This hands-on lab lets you do the lab activities yourself in a real cloud environment, not in a simulation or demo environment. It does so by giving you new, temporary credentials that you use to sign in and access Google Cloud for the duration of the lab.</p>
+<p>To complete this lab, you need:</p>
+<ul>
+<li>Access to a standard internet browser (Chrome browser recommended).</li>
+</ul>
+<ql-warningbox>
+<strong>Note:</strong> Use an Incognito or private browser window to run this lab. This prevents any conflicts between your personal account and the Student account, which may cause extra charges incurred to your personal account.
+</ql-warningbox>
+<ul>
+<li>Time to complete the lab---remember, once you start, you cannot pause a lab.</li>
+</ul>
+<ql-warningbox>
+<strong>Note:</strong> If you already have your own personal Google Cloud account or project, do not use it for this lab to avoid extra charges to your account.
+</ql-warningbox>
+<h3>How to start your lab and sign in to the Google Cloud Console</h3>
+<ol>
+<li>
+<p>Click the <strong>Start Lab</strong> button. If you need to pay for the lab, a pop-up opens for you to select your payment method.
+On the left is the <strong>Lab Details</strong> panel with the following:</p>
+<ul>
+<li>The <strong>Open Google Console</strong> button</li>
+<li>Time remaining</li>
+<li>The temporary credentials that you must use for this lab</li>
+<li>Other information, if needed, to step through this lab</li>
+</ul>
+</li>
+<li>
+<p>Click <strong>Open Google Console</strong>.
+The lab spins up resources, and then opens another tab that shows the <strong>Sign in</strong> page.</p>
+<p><strong><em>Tip:</em></strong> Arrange the tabs in separate windows, side-by-side.</p>
+<ql-infobox>
+<strong>Note: </strong>If you see the <strong>Choose an account</strong> dialog, click <strong>Use Another Account</strong>.        
+ </ql-infobox>
+</li>
+<li>
+<p>If necessary, copy the <strong>Username</strong> from the <strong>Lab Details</strong> panel and paste it into the <strong>Sign in</strong> dialog. Click <strong>Next</strong>.</p>
+</li>
+<li>
+<p>Copy the <strong>Password</strong> from the <strong>Lab Details</strong> panel and paste it into the <strong>Welcome</strong> dialog. Click <strong>Next</strong>.</p>
+<ql-infobox>
+<strong>Important: </strong>You must use the credentials from the left panel. Do not use your Google Cloud Skills Boost credentials. 
+ </ql-infobox>
+<ql-warningbox>
+<strong>Note: </strong>Using your own Google Cloud account for this lab may incur extra charges.
+ </ql-warningbox>
+</li>
+<li>
+<p>Click through the subsequent pages:</p>
+<ul>
+<li>Accept the terms and conditions.</li>
+<li>Do not add recovery options or two-factor authentication (because this is a temporary account).</li>
+<li>Do not sign up for free trials.</li>
+</ul>
+</li>
+</ol>
+<p>After a few moments, the Cloud Console opens in this tab.</p>
+<ql-infobox>
+<strong>Note:</strong> You can view the menu with a list of Google Cloud Products and Services by clicking the <strong>Navigation menu</strong> at the top-left.
+<img alt="Navigation menu icon" src="https://cdn.qwiklabs.com/nUxFb6oRFr435O3t6V7WYJAjeDFcrFb16G9wHWp5BzU%3D">
+</ql-infobox>
+<h3>Activate Cloud Shell</h3>
+<p>Cloud Shell is a virtual machine that is loaded with development tools. It offers a persistent 5GB home directory and runs on the Google Cloud. Cloud Shell provides command-line access to your Google Cloud resources.</p>
+<ol>
+<li>Click <strong>Activate Cloud Shell</strong> <img alt="Activate Cloud Shell icon" src="https://cdn.qwiklabs.com/ep8HmqYGdD%2FkUncAAYpV47OYoHwC8%2Bg0WK%2F8sidHquE%3D"> at the top of the Google Cloud console.</li>
+</ol>
+<p>When you are connected, you are already authenticated, and the project is set to your <strong>PROJECT_ID</strong>. The output contains a line that declares the <strong>PROJECT_ID</strong> for this session:</p>
+<ql-code-block output="">
+Your Cloud Platform project in this session is set to YOUR_PROJECT_ID
+</ql-code-block>
+<p><code>gcloud</code> is the command-line tool for Google Cloud. It comes pre-installed on Cloud Shell and supports tab-completion.</p>
+<ol start="2">
+<li>
+<p>(Optional) You can list the active account name with this command:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud auth list
+</ql-code-block>
+<ol start="3">
+<li>
+<p>Click <strong>Authorize</strong>.</p>
+</li>
+<li>
+<p>Your output should now look like this:</p>
+</li>
+</ol>
+<p><strong>Output:</strong></p>
+<ql-code-block language="plaintext" output="">
+ACTIVE: *
+ACCOUNT: student-01-xxxxxxxxxxxx@qwiklabs.net
+To set the active account, run:
+    $ gcloud config set account `ACCOUNT`
+</ql-code-block>
+<ol start="5">
+<li>
+<p>(Optional) You can list the project ID with this command:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud config list project
+</ql-code-block>
+<p><strong>Output:</strong></p>
+<ql-code-block language="plaintext" output="">
+[core]
+project = &lt;project_ID&gt;
+</ql-code-block>
+<p><strong>Example output:</strong></p>
+<ql-code-block language="plaintext" output="">
+[core]
+project = qwiklabs-gcp-44776a13dea667a6
+</ql-code-block>
+<ql-infobox>
+<strong>Note: </strong>For full documentation of <code>gcloud</code>, in Google Cloud, refer to <a href="https://cloud.google.com/sdk/gcloud" target="_blank">the gcloud CLI overview guide</a>.
+</ql-infobox>
+<h3>Provision testing environment</h3>
+<ol>
+<li>
+<p>Set your default zone to <code>us-central1-a</code>:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+gcloud config set compute/zone us-central1-a
+</ql-code-block>
+<ol start="2">
+<li>
+<p>Run the following command to create a three node cluster in the <code>us-central1-a</code> zone:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+gcloud container clusters create scaling-demo --num-nodes=3 --enable-vertical-pod-autoscaling
+</ql-code-block>
+<p>To help demonstrate horizontal pod autoscaling, this lab uses a custom docker image based on the <code>php-apache</code> image. It defines an <code>index.php</code> page which performs some CPU intensive computations. You will monitor a deployment of this image.</p>
+<ol start="3">
+<li>
+<p>Create a manifest for the <code>php-apache</code> deployment:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+cat &lt;&lt; EOF &gt; php-apache.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: php-apache
+spec:
+  selector:
+    matchLabels:
+      run: php-apache
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        run: php-apache
+    spec:
+      containers:
+      - name: php-apache
+        image: k8s.gcr.io/hpa-example
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            cpu: 500m
+          requests:
+            cpu: 200m
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: php-apache
+  labels:
+    run: php-apache
+spec:
+  ports:
+  - port: 80
+  selector:
+    run: php-apache
+EOF
+</ql-code-block>
+<ol start="4">
+<li>
+<p>Apply the newly created manifest to your cluster:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+kubectl apply -f php-apache.yaml
+</ql-code-block>
+<p>Click <strong>Check my progress</strong> to verify that you've performed the above task.
+<ql-activity-tracking step="1">
+Provision testing environment
+</ql-activity-tracking></p>
+<h2 id="step4">Task 1. Scale pods with Horizontal Pod Autoscaling</h2>
+<p>Horizontal Pod Autoscaling changes the shape of your Kubernetes workload by automatically increasing or decreasing the number of pods in response to the workload's CPU or memory consumption, or in response to custom metrics reported from within Kubernetes or external metrics from sources outside of your cluster.</p>
+<ol>
+<li>
+<p>In Cloud Shell, run this command to inspect your cluster's deployments:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+kubectl get deployment
+</ql-code-block>
+<p>You should see the <code>php-apache</code> deployment with 3/3 pods running:</p>
+<ql-code-block output="">
+NAME        READY        UP-TO-DATE        AVAILABLE     AGE
+php-apache  3/3          3                 3             91s
+</ql-code-block>
+<ql-warningbox><strong>Note: </strong>If you don't see 3 available pods, wait a minute for the pods to be created and try the previous command again. If you see 1/1 available pods, then it's likely enough time has passed for your deployment to scale down.
+</ql-warningbox>
+<ol start="2">
+<li>
+<p>Apply horizontal autoscaling to the <code>php-apache</code> deployment:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+kubectl autoscale deployment php-apache --cpu-percent=50 --min=1 --max=10
+</ql-code-block>
+<p>Click <strong>Check my progress</strong> to verify that you've performed the above task.
+<ql-activity-tracking step="2">
+Scale pods with Horizontal Pod Autoscaling
+</ql-activity-tracking></p>
+<p>This <code>autoscale</code> command will configure a Horizontal Pod Autoscaler that will maintain between 1 and 10 replicas of the pods controlled by the <code>php-apache</code> deployment. The <code>cpu-percent</code> flag specifies 50% as the target average CPU utilization of requested CPU over all the pods. HPA will adjust the number of replicas (via the deployment) to maintain an average CPU utilization of 50% across all pods.</p>
+<ol start="3">
+<li>
+<p>Check the current status of your Horizontal Pod Autoscaler:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+kubectl get hpa
+</ql-code-block>
+<p>Under the <strong>Targets</strong> column you should see <strong>0%/50%</strong>.</p>
+<p>This means that the pods within your deployment are currently at 0% of their target average CPU utilization. This is to be expected as the <code>php-apache</code> app is receiving no traffic right now.</p>
+<ql-warningbox><strong>Note: </strong>If you see <strong>&lt;unknown&gt;/50%</strong>, wait a minute and run the <code>kubectl get hpa</code> command again. Your HPA hasn't created an assessment yet.
+</ql-warningbox>
+<p>Also, take note of the <strong>Replicas</strong> column. To start with, the value will be <strong>3</strong>. This number will be changed by the autoscaler as the number of required pods changes.</p>
+<p>In this case, the autoscaler will scale the deployment down to the minimum number of pods indicated when you run the <code>autoscale</code> command. Horizontal Pod Autoscaling takes 5-10 minutes and will require shutting down or starting new pods depending on which way it's scaling.</p>
+<p>Continue to the next step of the lab. You will inspect the results of the autoscaler later on.</p>
+<ql-infobox><strong>Note: </strong>While you use <code>cpu-percent</code> as the target metric for your autoscaler in this lab, HPA allows custom metrics to be defined so that you can scale your pods based on other useful metrics captured in the logs.</ql-infobox>
+<h2 id="step5">Task 2. Scale size of pods with Vertical Pod Autoscaling</h2>
+<p>Vertical Pod Autoscaling frees you from having to think about what values to specify for a container's CPU and memory requests. The autoscaler can recommend values for CPU and memory requests and limits, or it can automatically update the values.</p>
+<ql-warningbox><strong>Note: </strong>Vertical Pod Autoscaling should not be used alongside Horizontal Pod Autoscaling on CPU or memory. Both autoscalers will try to respond to changes in demand on the same metrics and conflict. However, VPA on CPU or memory can be used with HPA on custom metrics to avoid overlap.</ql-warningbox>
+<p>Vertical Pod Autoscaling has already been enabled on the <em>scaling-demo</em> cluster.</p>
+<ol>
+<li>
+<p>To verify run:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+gcloud container clusters describe scaling-demo | grep ^verticalPodAutoscaling -A 1
+</ql-code-block>
+<p>The output should read <code>enabled: true</code></p>
+<ql-infobox><strong>Note: </strong>Vertical Pod Autoscaling can be enabled on an existing cluster with <code>gcloud container clusters update scaling-demo --enable-vertical-pod-autoscaling</code></ql-infobox>
+<p>To demonstrate VPA, you will deploy the <code>hello-server</code> app.</p>
+<ol start="2">
+<li>
+<p>Apply the <code>hello-server</code> deployment to your cluster:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+kubectl create deployment hello-server --image=gcr.io/google-samples/hello-app:1.0
+</ql-code-block>
+<ol start="3">
+<li>
+<p>Ensure the deployment was successfully created:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+kubectl get deployment hello-server
+</ql-code-block>
+<ol start="4">
+<li>
+<p>Assign a CPU resource request of 450m to the deployment:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+kubectl set resources deployment hello-server --requests=cpu=450m
+</ql-code-block>
+<ol start="5">
+<li>
+<p>Next, run this command to inspect the container specifics of the <code>hello-server</code> pods:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+kubectl describe pod hello-server | sed -n "/Containers:$/,/Conditions:/p"
+</ql-code-block>
+<ul>
+<li>
+<p>In the output, find <strong>Requests</strong>. Note that this pod is currently requesting the 450m CPU you assigned.</p>
+</li>
+</ul>
+<ol start="6">
+<li>
+<p>Now, create a manifest for you <strong>Vertical Pod Autoscaler</strong>:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+cat &lt;&lt; EOF &gt; hello-vpa.yaml
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: hello-server-vpa
+spec:
+  targetRef:
+    apiVersion: "apps/v1"
+    kind:       Deployment
+    name:       hello-server
+  updatePolicy:
+    updateMode: "Off"
+EOF
+</ql-code-block>
+<p>The above generates a manifest for a Vertical Pod Autoscaler targeting the <code>hello-server</code> deployment with an Update Policy of <strong>Off</strong>. A VPA can have one of three different update policies which can be useful depending on your application:</p>
+<ul>
+<li>
+<p><strong>Off:</strong> this policy means VPA will generate recommendations based on historical data which you can manually apply.</p>
+</li>
+<li>
+<p><strong>Initial</strong>: VPA recommendations will be used to create new pods once and then won't change the pod size after.</p>
+</li>
+<li>
+<p><strong>Auto:</strong> pods will regularly be deleted and recreated to match the size of the recommendations.</p>
+</li>
+</ul>
+<ol start="7">
+<li>
+<p>Apply the manifest for <code>hello-vpa</code>:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+kubectl apply -f hello-vpa.yaml
+</ql-code-block>
+<ol start="8">
+<li>
+<p>Wait a minute, and then view the <code>VerticalPodAutoscaler</code>:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+kubectl describe vpa hello-server-vpa
+</ql-code-block>
+<p>Locate the "Container Recommendations" at the end of the output. If you don't see it, wait a little longer and try the previous command again. When it appears, you'll see several different recommendation types, each with values for CPU and memory:</p>
+<ul>
+<li>
+<strong>Lower Bound</strong>: this is the lower bound number VPA looks at for triggering a resize. If your pod utilization goes below this, VPA will delete the pod and scale it down.</li>
+<li>
+<strong>Target:</strong> this is the value VPA will use when resizing the pod.</li>
+<li>
+<strong>Uncapped Target</strong>: if no minimum or maximum capacity is assigned to the VPA, this will be the target utilization for VPA.</li>
+<li>
+<strong>Upper Bound</strong>: this is the upper bound number VPA looks at for triggering a resize. If your pod utilization goes above this, VPA will delete the pod and scale it up.</li>
+</ul>
+<p>You'll notice VPA is recommending the CPU request for this container be set to <strong>25m</strong> instead of the previous <strong>100m</strong> as well as giving you a suggested number for how much memory should be requested.  At this point, these recommendations can be manually applied to the <code>hello-server</code> deployment.</p>
+<ql-infobox><strong>Note: </strong>Vertical Pod Autoscaling bases its recommendations on historical data from the container. In practice, it's recommended to wait at least 24 hours to collect recommendation data before applying any changes.</ql-infobox>
+<ol start="9">
+<li>
+<p>In order to observe VPA and its effects within this lab, you will change the <strong>hello-vpa</strong> update policy to <strong>Auto</strong> and observe the scaling.</p>
+</li>
+<li>
+<p>Update the manifest to set the policy to <strong>Auto</strong> and apply the configuration:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+sed -i 's/Off/Auto/g' hello-vpa.yaml
+kubectl apply -f hello-vpa.yaml
+</ql-code-block>
+<p>In order to resize a pod, Vertical Pod Autoscaler will need to delete that pod and recreate it with the new size. By default, to avoid downtime, VPA will not delete and resize the last active pod. Because of this, you will need at least 2 replicas to see VPA make any changes.</p>
+<ol start="11">
+<li>
+<p>Scale <code>hello-server</code> deployment to 2 replicas:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+kubectl scale deployment hello-server --replicas=2
+</ql-code-block>
+<ol start="12">
+<li>
+<p>Now, watch your pods:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+kubectl get pods -w
+</ql-code-block>
+<ol start="13">
+<li>Wait until you see your <code>hello-server-xxx</code> pods in the <strong>terminating</strong> status (or navigate to <strong>Kubernetes Engine</strong> &gt; <strong>Workloads</strong>):</li>
+</ol>
+<p><img alt="Output" src="https://cdn.qwiklabs.com/5vYrDLMwCpajrrGNgl9JiZVu%2FQK5WaVUNMlY8SwBUUs%3D"></p>
+<p>This is a sign that your VPA is deleting and resizing your pods. Once you see this, press <strong>Ctrl</strong> + <strong>c</strong> to quit the command.</p>
+<p>Click <strong>Check my progress</strong> to verify that you've performed the above task.
+<ql-activity-tracking step="3">
+Scale size of pods with Vertical Pod Autoscaling
+</ql-activity-tracking></p>
+<h2 id="step6">Task 3. HPA results</h2>
+<p>By this point, your <strong>Horizontal Pod Autoscaler</strong> will have most likely scaled your <code>php-apache</code> deployment down.</p>
+<ol>
+<li>
+<p>Run this command to check your HPA:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+kubectl get hpa
+</ql-code-block>
+<ul>
+<li>Look at the <strong>Replicas</strong> column. You'll see that your <code>php-apache</code> deployment has been scaled down to 1 pod.</li>
+</ul>
+<ql-warningbox><strong>Note: </strong>If you still see 3 replicas for your <code>php-apache</code> deployment, you need to wait a few more minutes for the autoscaler to take action.</ql-warningbox>
+<ul>
+<li>The HPA takes advantage of the fact that the app is inactive right now and removes all the unused resources. Furthermore, if more demand were placed on the <code>php-apache</code> app, it would scale back up to account for the load.</li>
+</ul>
+<ql-infobox><strong>Note: </strong>If availability of your application is a main concern, it's considered best practice to leave a slightly higher buffer as the minimum pod number for your Horizontal Pod Autoscaler to account for the time it takes to scale.</ql-infobox>
+<p>This is extremely useful when thinking about cost optimization. A well-tuned autoscaler means that you are maintaining high availability of your application while only paying for the resources that are required to maintain that availability, regardless of the demand.</p>
+<h2 id="step7">Task 4. VPA results</h2>
+<p>Now, the VPA should have resized your pods in the <code>hello-server</code> deployment.</p>
+<ol>
+<li>
+<p>Inspect your pods:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+kubectl describe pod hello-server | sed -n "/Containers:$/,/Conditions:/p"
+</ql-code-block>
+<ol start="2">
+<li>Find the <strong>Requests:</strong> field.</li>
+</ol>
+<ul>
+<li>Your <strong>Vertical Pod Autoscaler</strong> recreated the pods with their target utilizations.  Now it should be requesting a lower amount of CPU and also be requesting a certain amount of memory:</li>
+</ul>
+<ql-code-block output="">
+Requests:
+  cpu:       25m
+  memory:    262144k
+</ql-code-block>
+<ql-warningbox><strong>Note: </strong>If you still see a CPU request of 450m for either of the pods, manually set your CPU resource to the target with this command:
+<code>kubectl set resources deployment hello-server --requests=cpu=25m </code>
+Sometimes VPA in auto mode may take a long time or set inaccurate upper or lower bound values without the time to collect accurate data. In order to not lose time in the lab, using the recommendation as if it were in "Off" mode is a simple solution.
+</ql-warningbox>
+<p>In this case, VPA becomes an excellent tool for optimizing resource utilization and, in effect, saving on costs. The original request of 400m of CPU was higher than what this container needed. By adjusting the request to the recommended 25m, you're able to use less CPU from the node pool, potentially to the point of requiring less nodes to be provisioned in the cluster.</p>
+<p>With the Auto update policy, your VPA would continue to delete and resize the pods of the <code>hello-server</code> deployment throughout its lifetime. It could scale pods up with larger requests to handle heavy traffic and then scale back down during a downtime. This can be great for accounting for steady increases of demand for your application, but it does risk losing availability during heavy spikes.</p>
+<p>Depending on your application, it's generally safest to use VPA with the <strong>Off</strong> update policy and take the recommendations as needed in order to both optimize resource usage and maximize your cluster's availability.</p>
+<p>In the next sections, you will look at how to further optimize your resource utilization with the Cluster Autoscaler and Node Auto Provisioning.</p>
+<h2 id="step8">Task 5. Cluster autoscaler</h2>
+<p>The <strong>Cluster Autoscaler</strong> is designed to add or remove nodes based on demand. When demand is high, cluster autoscaler will add nodes to the node pool to accommodate that demand. When demand is low, cluster autoscaler will scale your cluster back down by removing nodes. This allows you to maintain high availability of your cluster while minimizing superfluous costs associated with additional machines.</p>
+<ol>
+<li>
+<p>Enable autoscaling for your cluster:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+gcloud beta container clusters update scaling-demo --enable-autoscaling --min-nodes 1 --max-nodes 5
+</ql-code-block>
+<p>This will take a few minutes to complete.</p>
+<p>When scaling a cluster, the decision of when to remove a node is a trade-off between optimizing for utilization or the availability of resources. Removing underutilized nodes improves cluster utilization, but new workloads might have to wait for resources to be provisioned again before they can run.</p>
+<p>You can specify which autoscaling profile to use when making such decisions. The currently available profiles are:</p>
+<ul>
+<li>
+<p><strong>Balanced</strong>: The default profile.</p>
+</li>
+<li>
+<p><strong>Optimize-utilization</strong>: Prioritize optimizing utilization over keeping spare resources in the cluster. When selected, the cluster autoscaler scales down the cluster more aggressively. It can remove more nodes, and remove nodes faster. This profile has been optimized for use with batch workloads that are not sensitive to start-up latency.</p>
+</li>
+</ul>
+<ol start="2">
+<li>
+<p>Switch to the <code>optimize-utilization</code> autoscaling profile so that the full effects of scaling can be observed:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+gcloud beta container clusters update scaling-demo \
+--autoscaling-profile optimize-utilization
+</ql-code-block>
+<ol start="3">
+<li>
+<p>With autoscaling enabled, observe your cluster in the Cloud Console.  Click the three bars at the top left to open the <strong>Navigation menu</strong>.</p>
+</li>
+<li>
+<p>From the <strong>Navigation menu</strong>, select <strong>Kubernetes Engine</strong> &gt; <strong>Clusters</strong>.</p>
+</li>
+<li>
+<p>On the <strong>Clusters</strong> page, select the <strong>scaling-demo</strong> cluster.</p>
+</li>
+<li>
+<p>In the scaling-demo's cluster page, select the <strong>Nodes</strong> tab.</p>
+</li>
+</ol>
+<p><img alt="Nodes tab" src="https://cdn.qwiklabs.com/rTfjoLQkKMMPy2eJte%2FGo5JsbOcfLaH%2FUxd2egFC8Dw%3D"></p>
+<ol start="7">
+<li>Take a look at the overview of your three nodes' resource utilization.</li>
+</ol>
+<ql-infobox><strong>Note: </strong>Your numbers may be different from the ones pictured. Kubernetes does not provision and assign resources in the same way every time.</ql-infobox>
+<p>If you combine the values of <strong>CPU requested</strong> and <strong>CPU allocatable</strong> for the 3 nodes, the totals would be 1555m and 2820m, respectively.  This means that there's a total of 1265m CPU available across the entire cluster. This is greater than what could be provided by one node.</p>
+<p>To optimize utilization, the current workload at its current demand could be consolidated into two nodes instead of three. However, your cluster hasn't automatically scaled down yet. This is because of the <em>system pods</em> distributed across the cluster.</p>
+<p>Your cluster runs a number of deployments under the <code>kube-system</code> namespace which allow the different GKE services like logging, monitoring, autoscaling, etc. to work.</p>
+<ol start="8">
+<li>
+<p>This can be verified by running this command in Cloud Shell:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+kubectl get deployment -n kube-system
+</ql-code-block>
+<p>By default, most of the system pods from these deployments will prevent cluster autoscaler from taking them completely offline to reschedule them. Generally, this is desired because many of these pods collect data used in other deployments and services. For example, <em>metrics-agent</em> being temporarily down would cause a gap in data collected for VPA and HPA, or the <em>fluentd</em> pod being down could create a gap in your cloud logs.</p>
+<p>For the purpose of this lab, you will apply Pod Disruption Budgets to your <code>kube-system</code> pods which will allow cluster autoscaler to safely reschedule them on another node. This will give enough room to scale your cluster down.</p>
+<p><strong>Pod Disruption Budgets (PDB)</strong> define how Kubernetes should handle disruptions like upgrades, pod removals, running out of resources, etc. In PDBs, you can specify the <code>max-unavailable</code> and/or the <code>min-available</code> number of pods a deployment should have.</p>
+<ol start="9">
+<li>
+<p>Run these commands to create the Pod Disruption Budgets for each of your <code>kube-system</code> pods:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+kubectl create poddisruptionbudget kube-dns-pdb --namespace=kube-system --selector k8s-app=kube-dns --max-unavailable 1
+kubectl create poddisruptionbudget prometheus-pdb --namespace=kube-system --selector k8s-app=prometheus-to-sd --max-unavailable 1
+kubectl create poddisruptionbudget kube-proxy-pdb --namespace=kube-system --selector component=kube-proxy --max-unavailable 1
+kubectl create poddisruptionbudget metrics-agent-pdb --namespace=kube-system --selector k8s-app=gke-metrics-agent --max-unavailable 1
+kubectl create poddisruptionbudget metrics-server-pdb --namespace=kube-system --selector k8s-app=metrics-server --max-unavailable 1
+kubectl create poddisruptionbudget fluentd-pdb --namespace=kube-system --selector k8s-app=fluentd-gke --max-unavailable 1
+kubectl create poddisruptionbudget backend-pdb --namespace=kube-system --selector k8s-app=glbc --max-unavailable 1
+kubectl create poddisruptionbudget kube-dns-autoscaler-pdb --namespace=kube-system --selector k8s-app=kube-dns-autoscaler --max-unavailable 1
+kubectl create poddisruptionbudget stackdriver-pdb --namespace=kube-system --selector app=stackdriver-metadata-agent --max-unavailable 1
+kubectl create poddisruptionbudget event-pdb --namespace=kube-system --selector k8s-app=event-exporter --max-unavailable 1
+</ql-code-block>
+<p>Click <strong>Check my progress</strong> to verify that you've performed the above task.
+<ql-activity-tracking step="4">
+Cluster autoscaler
+</ql-activity-tracking></p>
+<p>In each of these commands, you are selecting a different <strong>kube-system</strong> deployment pod based on a label defined in its creation and specifying that there can be 1 unavailable pod for each of these deployments. This will allow the autoscaler to reschedule the system pods.</p>
+<p>With the PDBs in place, your cluster should scale down from three nodes to two nodes in a minute or two.</p>
+<ol start="10">
+<li>
+<p>Rerun this command in Cloud Shell until you see only two nodes total:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+kubectl get nodes
+</ql-code-block>
+<p>In the Cloud Console, refresh the <strong>Nodes</strong> tab of your <strong>scaling-demo</strong> or return there with this  <a href="https://console.cloud.google.com/kubernetes/clusters/details/us-central1-a/scaling-demo/nodes" target="_blank">link</a> to inspect how your resources were packed:</p>
+<p><img alt="Nodes tab of the scaling-demo" src="https://cdn.qwiklabs.com/UKAsVBMhfnCJBwbAp4eRMFGFDDhG2KQy9KlAMeNChHI%3D"></p>
+<p>You set up automation that scaled your cluster down from three nodes to two nodes!</p>
+<p>Thinking about the costs, as a result of scaling down your nodepool, you will be billed for less machines during periods of low demand on your cluster. This scaling could be even more dramatic if you were fluctuating from high demand to low demand periods during the day.</p>
+<p>It’s important to note that, while <strong>Cluster Autoscaler</strong> removed an unnecessary node, <strong>Vertical Pod Autoscaling</strong> and <strong>Horizontal Pod Autoscaling</strong> helped reduce enough CPU demand so that the node was no longer needed. Combining these tools is a great way to optimize your overall costs and resource usage.</p>
+<p>So, the cluster autoscaler helps add and remove nodes in response to pods needing to be scheduled. However, GKE specifically has another feature to scale vertically, called <strong>node auto-provisioning</strong>.</p>
+<h2 id="step9">Task 6. Node Auto Provisioning</h2>
+<p><strong>Node Auto Provisioning</strong> (NAP) actually adds new node pools that are sized to meet demand. Without node auto provisioning, the cluster autoscaler will only be creating new nodes in the node pools you've specified, meaning the new nodes will be the same machine type as the other nodes in that pool. This is perfect for helping optimize resource usage for batch workloads and other apps that don't need extreme scaling, since creating a node pool that is specifically optimized for your use case might take more time than just adding more nodes to an existing pool.</p>
+<ul>
+<li>
+<p>Enable Node Auto Provisioning:</p>
+</li>
+</ul>
+<ql-code-block language="bash">
+gcloud container clusters update scaling-demo \
+    --enable-autoprovisioning \
+    --min-cpu 1 \
+    --min-memory 2 \
+    --max-cpu 45 \
+    --max-memory 160
+</ql-code-block>
+<p>In the command, you specify a minimum and maximum number for your CPU and memory resources. This is for the entire cluster.</p>
+<p><strong>NAP</strong> can take a little bit of time and it's also highly likely it won't create a new node pool for the <strong>scaling-demo</strong> cluster at its current state.</p>
+<p>In the next sections, you will increase the demand to your cluster and observe the actions of your autoscalers as well as <strong>NAP</strong>.</p>
+<p>Click <strong>Check my progress</strong> to verify that you've performed the above task.
+<ql-activity-tracking step="5">
+Node Auto Provisioning
+</ql-activity-tracking></p>
+<h2 id="step10">Task 7. Test with larger demand</h2>
+<p>So far, you've analyzed how HPA, VPA, and cluster autoscaler can help save resources and costs while your application has low demand. Now, you'll look at how these tools handle availability for increased demand.</p>
+<ol>
+<li>Open a new tab in <strong>Cloud Shell</strong> by pressing the <strong>+</strong> icon:</li>
+</ol>
+<p><img alt="Add a Cloud Shell icon" src="https://cdn.qwiklabs.com/udEhxUje%2FUvODWIjWKk3xS2C5t3PCozOpwDtAF%2Bw%2Beo%3D"></p>
+<ol start="2">
+<li>
+<p>In the new tab, run this command to send an infinite loop of queries to the <code>php-apache</code> service:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+kubectl run -i --tty load-generator --rm --image=busybox --restart=Never -- /bin/sh -c "while sleep 0.01; do wget -q -O- http://php-apache; done"
+</ql-code-block>
+<ol start="3">
+<li>
+<p>Return to your original <strong>Cloud Shell</strong> tab.</p>
+</li>
+<li>
+<p>Within a minute or so, you should see the higher CPU load on your HPA by executing:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+kubectl get hpa
+</ql-code-block>
+<p>Wait and rerun the command until you see your target above 100%.</p>
+<p><img alt="Output" src="https://cdn.qwiklabs.com/8y%2FxO%2FFqH80qkE3sFIlHa0aAov0F%2F%2BCOvQ4r5LXDc6Q%3D"></p>
+<ol start="5">
+<li>
+<p>Now, monitor how your cluster handles the increased load by periodically running this command:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+kubectl get deployment php-apache
+</ql-code-block>
+<p>You can also monitor your cluster by refreshing the <strong>nodes</strong> tab in your Cloud Console or or returning to it with this <a href="https://console.cloud.google.com/kubernetes/clusters/details/us-central1-a/scaling-demo/nodes" target="_blank">link</a></p>
+<p>After a few minutes, you will see a few things happen.</p>
+<ul>
+<li>First, your <code>php-apache</code> deployment will automatically be scaled up by HPA to handle the increased load.</li>
+<li>Then, <strong>cluster autoscaler</strong> will need to provision new nodes to handle the increased demand.</li>
+<li>Finally, <strong>node auto provisioning</strong> will create a node pool optimized for the CPU and memory requests of your cluster’s workloads. In this case, it should be a high cpu, low memory node pool because the load test is pushing the cpu limits.</li>
+</ul>
+<p>Wait until your <code>php-apache</code> deployment is scaled up to 7 replicas and your nodes tab looks similar to this:</p>
+<p><img alt="Node list" src="https://cdn.qwiklabs.com/X1EblYwy5bjzYZoaK5LdpZMOyw%2B1dL6QYeP6kv0wFSw%3D"></p>
+<ol start="6">
+<li>Return to the <strong>Cloud Shell</strong> tab you ran the load test in and cancel it by pressing <strong>Ctrl</strong> + <strong>c</strong>. Your cluster will now eventually scale back down as the demand decreases again.</li>
+</ol>
+<p>Your cluster efficiently scaled up to meet a higher demand! However, take note of the amount of time it took to handle this spike in demand. For many applications, losing availability while provisioning new resources can be an issue.</p>
+<h2 id="step11">Task 8. Optimize larger loads</h2>
+<p>When scaling up for larger loads, horizontal pod autoscaling will add new pods while vertical pod autoscaling will resize them depending on your settings. If there's room on an existing node, it might be able to skip pulling the image and immediately start running the application on a new pod. If you're working with a node that hasn't deployed your application before, a bit of time might be added if it needs to download the container images before running it.</p>
+<p>So, if you don't have enough room on your existing nodes and you're using the cluster autoscaler, it could take even longer. Now it needs to provision a new node, set it up, then download the image and start up pods. If the node auto-provisioner is going to create a new node pool like it did in your cluster, there will be even more time as you provision the new node pool first, and then go through all the same steps for the new node.</p>
+<ql-infobox><strong>Note: </strong>
+In practice, it’s important to ensure your app is using the smallest container images that it can.   Smaller images improve the cold start time of a pod because the smaller the image is the faster the node can download it when the Cluster Autoscaler provisions a new node for your cluster.  Additionally, larger images could cause longer pod startup times, resulting in poor performance when provisioning new nodes during spikes in traffic.
+</ql-infobox>
+<p>In order to handle these different latencies for autoscaling, you'll probably want to <strong>over-provision</strong> a little bit so there's less pressure on your apps when autoscaling-up. This is really important for cost-optimization, because you don't want to pay for more resources than you need, but you also don't want your apps' performance to suffer.</p>
+<p>To figure out how much to overprovision, you can use this formula:</p>
+<p><img alt="Formula: (1 minus buffer) divided by (1 plus traffic)" src="https://cdn.qwiklabs.com/WDXkMApOgcUhBRe9NNrjLL9RJtwnuYEDYRw9GWySu5o%3D"></p>
+<p>As an example, think about the CPU utilization for your cluster. You don't want it to hit 100%, so you could choose a buffer of 15% to keep a safe distance. Then, the traffic variable in the formula would be the percentage of traffic growth estimated in the next 2 to 3 minutes. In the load test you ran earlier, 0% to 150% was a bit of an extreme growth example, so instead imagine a more average traffic growth of 30%.</p>
+<p><img alt="Formula: (1 minus 15% buffer) divided by (1 plus 30% traffic growth) is equal is 65%" src="https://cdn.qwiklabs.com/DTIiSRu100b8%2B%2B2aXHRq%2FHju24PH8xwt%2FYxapCyxzso%3D"></p>
+<p>With these numbers, you can calculate a safety buffer of about 65%. That means you might want to over provision your resources by about 65% in order to handle scale ups while minimizing any issues.</p>
+<p>An efficient strategy to overprovision a cluster with Cluster Autoscaling is to use Pause Pods.</p>
+<p><strong>Pause Pods</strong> are low priority deployments which are able to be removed and replaced by high priority deployments. This means you can create low priority pods which don't actually do anything except reserve buffer space. When the higher-priority pod needs room, the pause pods will be removed and rescheduled to another node, or a new node, and the higher-priority pod has the room it needs to be scheduled quickly.</p>
+<ol>
+<li>
+<p>Create a manifest for a pause pod:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+cat &lt;&lt; EOF &gt; pause-pod.yaml
+---
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: overprovisioning
+value: -1
+globalDefault: false
+description: "Priority class used by overprovisioning."
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: overprovisioning
+  namespace: kube-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: overprovisioning
+  template:
+    metadata:
+      labels:
+        run: overprovisioning
+    spec:
+      priorityClassName: overprovisioning
+      containers:
+      - name: reserve-resources
+        image: k8s.gcr.io/pause
+        resources:
+          requests:
+            cpu: 1
+            memory: 4Gi
+EOF
+</ql-code-block>
+<ol start="2">
+<li>
+<p>Apply it to your cluster:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+kubectl apply -f pause-pod.yaml
+</ql-code-block>
+<ol start="3">
+<li>Now, wait a minute and then refresh the <strong>nodes</strong> tab of your <strong>scaling-demo</strong> cluster. If you're no longer on this tab, you can return there with this <a href="https://console.cloud.google.com/kubernetes/clusters/details/us-central1-a/scaling-demo/nodes" target="_blank">link</a>.</li>
+</ol>
+<p>Observe how a new node is created, most likely in a new node pool, to fit your newly created pause pod. Now, if you were to run the load test again, when you needed an extra node for your <code>php-apache</code> deployment, it could be scheduled on the node with your pause pod while your pause pod is instead put on a new node. This is excellent because your dummy pause pods allow your cluster to provision a new node in advance so that your actual application can scale up much faster. If you were expecting higher amounts of traffic, you could add more pause pods, but it's considered best practice to not add more than one pause pod per node.</p>
+<p>Click <strong>Check my progress</strong> to verify that you've performed the above task.
+<ql-activity-tracking step="6">
+Optimize larger loads
+</ql-activity-tracking></p>
+<h2 id="step12">Congratulations!</h2>
+<p>You configured a cluster to automatically and efficiently scale up or down based on its demand. Horizontal Pod Autoscaling and Vertical Pod Autoscaling provided solutions for automatically scaling your cluster's deployments while Cluster Autoscaler and Node Auto Provisioning provided solutions for automatically scaling your cluster's infrastructure.</p>
+<p>As always, knowing which of these tools to use will depend on your workload. Careful use of these autoscalers can mean maximizing availability when you need it while only paying for what you need during times of low demand. When thinking about costs, this means you are optimizing your resource usage and saving money.</p>
+<h3>Finish your quest</h3>
+<p>This self-paced lab is part of the <a href="https://google.qwiklabs.com/quests/157" target="_blank">Optimize Costs for Google Kubernetes Engine</a> quest. A quest is a series of related labs that form a learning path. Completing this quest earns you a badge to recognize your achievement. You can make your badge or badges public and link to them in your online resume or social media account. <a href="https://www.cloudskillsboost.google/quests/157/enroll" target="_blank">Enroll in this quest</a>  and get immediate completion credit.  Refer to the <a href="http://cloudskillsboost.google/catalog" target="_blank">Google Cloud Skills Boost catalog</a> for all available quests.</p>
+<h3>Take your next lab</h3>
+<p>Continue your quest with <a href="https://google.qwiklabs.com/catalog_lab/3312" target="_blank">GKE Workload Optimization</a>, or check out these Google Cloud Skills Boost labs:</p>
+<ul>
+<li>
+<p><a href="https://google.qwiklabs.com/catalog_lab/3202" target="_blank">Managing a GKE Multi-tenant Cluster with Namespaces</a></p>
+</li>
+<li>
+<p><a href="https://google.qwiklabs.com/catalog_lab/3200" target="_blank">Exploring Cost-optimization for GKE Virtual Machines</a></p>
+</li>
+</ul>
+<h3>Next steps / Learn more</h3>
+<ul>
+<li><a href="https://cloud.google.com/solutions/best-practices-for-running-cost-effective-kubernetes-applications-on-gke#fine-tune_gke_autoscaling" target="_blank">Best practices for running cost-optimized Kubernetes applications on GKE: Fine Tune GKE Autoscaling</a></li>
+<li><a href="https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-autoscaler" target="_blank">Cluster Autoscaler Docs</a></li>
+<li><a href="https://cloud.google.com/kubernetes-engine/docs/concepts/horizontalpodautoscaler" target="_blank">Horizontal Pod Autoscaler Docs</a></li>
+<li><a href="https://cloud.google.com/kubernetes-engine/docs/concepts/verticalpodautoscaler" target="_blank">Vertical Pod Autoscaler Docs</a></li>
+</ul>
+<h3>Google Cloud training and certification</h3>
+<p>...helps you make the most of Google Cloud technologies. <a href="https://cloud.google.com/training/courses" target="_blank">Our classes</a> include technical skills and best practices to help you get up to speed quickly and continue your learning journey. We offer fundamental to advanced level training, with on-demand, live, and virtual options to suit your busy schedule. <a href="https://cloud.google.com/certification/" target="_blank">Certifications</a> help you validate and prove your skill and expertise in Google Cloud technologies.</p>
+<h5>Manual Last Updated: January 17, 2023</h5>
+<h5>Lab Last Tested: January 17, 2023</h5>
+<p>Copyright 2023 Google LLC All rights reserved. Google and the Google logo are trademarks of Google LLC. All other company and product names may be trademarks of the respective companies with which they are associated.</p>
+
+</div>
+</div>
+
+
+<div class='lab-content__end-lab-button js-end-lab-button-container hidden'>
+<ql-lab-control-button class='js-end-lab-button' running></ql-lab-control-button>
+</div>
+<!-- / TODO: Move recommendations into the end lab modal -->
+<div class='lab-content__renderable-instructions'>
+<div class='lab-content__recommendation'>
+<!-- # TODO: Change classes so that this doesn't stack vertically -->
+<section class='upcoming-cards'>
+<h2 class='ql-headline-4'>Continue questing</h2>
+<div class='activity-cards'>
+<ql-activity-card aria-label='Understanding and Combining GKE Autoscaling Strategies' name='Understanding and Combining GKE Autoscaling Strategies' path='/focuses/16391?locale=en&amp;parent=catalog' progress='0.0' type='lab'></ql-activity-card>
+
+</div>
+</section>
+
+</div>
+
+</div>
+</ql-drawer-content>
+<ql-drawer end id='outline-drawer' open slot='drawer' width='320'>
+<div aria-label='Lab Table of Contents' role='navigation'>
+<ul class='lab-content__outline js-lab-content-outline'>
+<li><a href="#step1">GSP768</a></li><li><a href="#step2">Overview</a></li><li><a href="#step3">Setup and requirements</a></li><li><a href="#step4">Task 1. Scale pods with Horizontal Pod Autoscaling</a></li><li><a href="#step5">Task 2. Scale size of pods with Vertical Pod Autoscaling</a></li><li><a href="#step6">Task 3. HPA results</a></li><li><a href="#step7">Task 4. VPA results</a></li><li><a href="#step8">Task 5. Cluster autoscaler</a></li><li><a href="#step9">Task 6. Node Auto Provisioning</a></li><li><a href="#step10">Task 7. Test with larger demand</a></li><li><a href="#step11">Task 8. Optimize larger loads</a></li><li><a href="#step12">Congratulations!</a></li>
+</ul>
+</div>
+</ql-drawer>
+</ql-drawer-container>
+</ql-drawer-content>
+</ql-drawer-container>
+
+
+
+</div>
+</main>
+
+<span class='hidden' id='flash-sibling-before'></span>
+<ql-snackbar></ql-snackbar>
+
+
+<div class='modal fade' id='lab-details-modal'>
+<div class='modal-container'>
+<div class='modal-content mdl-shadow--24dp'>
+<div class='modal-body'>
+<p class='l-mbm'>
+In this lab you will explore the benefits of different Google Kubernetes Engine autoscaling strategies, like Horizontal Pod Autoscaling and Vertical Pod Autoscaling for pod-level scaling, and Cluster Autoscaler and Node Auto Provisioning for node-level scaling.
+</p>
+<p>
+This lab is included in the quest
+<a href="/quests/157?locale=en">Optimize Costs for Google Kubernetes Engine</a>.
+If you complete this lab you&#39;ll receive credit for it when you enroll in this quest.
+</p>
+<p class='small-label l-mbs'>
+<strong>
+Duration:
+</strong>
+0m setup
+&middot;
+90m access
+&middot;
+90m completion
+</p>
+<p class='small-label l-mbs'>
+<strong>AWS Region:</strong>
+[] <strong></strong>
+</p>
+<p class='small-label l-mbs'>
+<span><strong>Levels: </strong>intermediate</span>
+</p>
+<p class='small-label'>
+<strong>
+Permalink:
+</strong>
+<a href="https://partner.cloudskillsboost.google/catalog_lab/3289">https://partner.cloudskillsboost.google/catalog_lab/3289</a>
+</p>
+</div>
+<div class='modal-actions'>
+<a class='button button--text' data-dismiss='modal'>
+Got It
+</a>
+</div>
+
+
+</div>
+</div>
+<iframe class='l-ie-iframe-fix' tabindex='-1' title='modal'></iframe>
+</div>
+<ql-dialog headline='How satisfied are you with this lab?&lt;span aria-hidden=&quot;true&quot;&gt;*&lt;/span&gt;' id='lab-review-dialog'>
+<form class="simple_form js-lab-review-form" id="new_lab_review" action="/lab_reviews?locale=en" accept-charset="UTF-8" data-remote="true" method="post"><input name="utf8" type="hidden" value="&#x2713;" autocomplete="off" /><div aria-labelledby='lab-review-dialog' aria-required='true' aria-valuemax='5' aria-valuemin='0' aria-valuenow='0' class='rateit js-rateit' data-rateit-max='5' data-rateit-min='0' data-rateit-resetable='false' data-rateit-step='1' data-rateit-value='0' id='lab-review-rateit' role='slider' tabindex='0'></div>
+<div class='l-mtm'>
+
+<div class="control-group hidden lab_review_user_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" value="11061062" name="lab_review[user_id]" id="lab_review_user_id" /></div></div>
+<div class="control-group hidden lab_review_classroom_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" name="lab_review[classroom_id]" id="lab_review_classroom_id" /></div></div>
+<div class="control-group hidden lab_review_lab_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" value="3289" name="lab_review[lab_id]" id="lab_review_lab_id" /></div></div>
+<div class="control-group hidden lab_review_focus_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" name="lab_review[focus_id]" id="lab_review_focus_id" /></div></div>
+<div class="control-group hidden lab_review_rating"><div class="controls"><input class="hidden js-rating-input" autocomplete="off" type="hidden" name="lab_review[rating]" id="lab_review_rating" /></div></div>
+<div class="control-group text optional lab_review_comment"><label class="text optional control-label" for="lab_review_comment">Additional Comments</label><div class="controls"><textarea class="text optional" name="lab_review[comment]" id="lab_review_comment">
+</textarea></div></div>
+</div>
+</form><ql-button disabled id='submit' label='Submit' slot='action' text></ql-button>
+</ql-dialog>
+
+<ql-dialog headline='All done? If you end this lab, you will lose all your work. You may not be able to restart the lab if there is a quota limit. Are you sure you want to end this lab?' icon='error_outline' id='js-lab-are-you-sure-dialog'>
+<ql-button id='js-are-you-sure-button' label='Submit' slot='action' text></ql-button>
+</ql-dialog>
+
+
+<script>
+  $(function() {
+    ql.initMaterialInputs();
+    initChosen();
+    initSearch();
+    initTabs();
+    ql.list.init();
+    ql.favoriting.init();
+    ql.header.myAccount.init();
+    initTooltips();
+    ql.autocomplete.init();
+    ql.modals.init();
+    ql.toggleButtons.init();
+    ql.analytics.init();
+    ql.favoriting.init();
+  ql.chat.init();
+  ql.jumpContent.init();
+  ql.labControlPanel.addRecaptchaErrorHandler();
+  initLabContent();
+  ql.labOutline.links.init();
+  initLabReviewModal();
+  initLabReviewTranslations( {"star_amount_1":"1 of 5 stars","star_amount_2":"2 of 5 stars","star_amount_3":"3 of 5 stars","star_amount_4":"4 of 5 stars","star_amount_5":"5 of 5 stars"} )
+  ql.labAssessment.init();
+  ql.labData.init();
+  initLabTranslations( {"are_you_sure":"All done? If you end this lab, you will lose all your work. You may not be able to restart the lab if there is a quota limit. Are you sure you want to end this lab?","in_progress":"*In Progress*","ending":"*Ending*","starting":"*Starting, please wait*","end_concurrent_labs":"Sorry, you can only run one lab at a time. To start this lab, please confirm that you want all of your existing labs to end.","copied":"Copied","no_resource":"Error retrieving resource.","no_support":"No Support","mac_press":"Press ⌘-C to copy","thanks_review":"Thanks for reviewing this lab.","windows_press":"Press Ctrl-C to copy","days":"days"} );
+  ql.labRun.init();
+  ql.navPanel.init();
+  ql.navigation.init();
+  
+  });
+</script>
+
+</body>
+</html>
+

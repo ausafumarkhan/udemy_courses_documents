@@ -1,0 +1,1679 @@
+
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<title>Networking 101 | Google Cloud Skills Boost for Partners</title>
+<meta name="action-cable-url" content="/cable" />
+<script>
+//<![CDATA[
+window.gon={};gon.deployment="googlecourses-run";
+//]]>
+</script>
+<script>
+  (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer',"GTM-5XSKHDX");
+</script>
+<script src="https://cdn.qwiklabs.com/assets/hallofmirrors/polyfills/webcomponents-loader-8583b47b01e40e6ea7bf1ad443a20b7e79bbdd5eafac009806a228c91a97282c.js"></script>
+<script src="https://cdn.qwiklabs.com/assets/vendor-beb958bea8eff6a4ad4cf8f36a0a676817a4857e214b17ae983796071a4a816d.js"></script>
+<script src="https://cdn.qwiklabs.com/assets/application-8194cda6ef3c11dc4405ed62cf7fc7697cbe39d472be22a7c9d4bd377a7b77f0.js"></script>
+<script src="https://cdn.qwiklabs.com/assets/hallofmirrors/hallofmirrors-f8d9fcf289db0acb0062699ca48080cfaf9b1703f4acd2d7d8bacd8bb0bedf3d.js"></script>
+<!--[if lt IE 9]>
+<script src='http://html5shim.googlecode.com/svn/trunk/html5.js' type='text/javascript'></script>
+<![endif]-->
+<!--[endif]>  <![endif]-->
+<script id='ze-snippet' src='https://static.zdassets.com/ekr/snippet.js?key=511e4158-0aec-4e3c-b2e6-4daa1769f51e'></script>
+<script>
+  ql.perfTest.init();
+</script>
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="qkwz9EHZNdjBySV5lBMr0iAIkKDIX1HdWA/AzvQNXjcJ1vIjyNMHXJoVKjkzcVtFT5gRR8GA167u0UIBVfoGoQ==" />
+<meta content='width=device-width, initial-scale=1.0, user-scalable=yes' name='viewport'>
+<meta content='1rRsY0INj8RvwB5EF5pwdxt2A2P9aDgAlsICaJ0d5w0' name='google-site-verification'>
+<meta content='#3681E4' property='msapplication-TileColor'>
+<meta content='/favicon-144.png' property='msapplication-TileImage'>
+<meta content='[{&quot;id&quot;:&quot;recaptcha_experiment&quot;,&quot;optimize_id&quot;:&quot;dpViOcLkT3qS4TvL2mRojA&quot;,&quot;title&quot;:&quot;No Recaptcha shown for trusted users&quot;,&quot;variant_index&quot;:0,&quot;variant&quot;:&quot;original&quot;}]' name='active-experiments'>
+<meta content='{&quot;userId&quot;:11061062,&quot;experimentIds&quot;:[&quot;programs&quot;,&quot;chat_off_for_signed_out_users&quot;,&quot;course_upgrade&quot;,&quot;program_learning_assignment&quot;,&quot;perf_test&quot;,&quot;program_groups&quot;,&quot;teams&quot;,&quot;canonical_domain_redirect&quot;,&quot;program_resources&quot;,&quot;used_in&quot;,&quot;community_forum&quot;,&quot;enforce_codebuild_verdicts&quot;,&quot;peer_assignment&quot;,&quot;oauth_risc_shutoff&quot;,&quot;show_annual_purchase_now&quot;,&quot;alexandria_show_bundle_errors&quot;]}' name='help-api-product-data'>
+<meta content='{&quot;groupIds&quot;:[&quot;non_suadmins&quot;,&quot;students&quot;,&quot;non_organization&quot;,&quot;non_program&quot;]}' name='help-api-custom-data'>
+<meta content='In this lab you will learn how to perform basic networking tasks on Google Cloud Platform by setting up a network and 3 subnetworks; and how GCP might differ from an on-premises setup.' name='description'>
+<meta content='Qwiklabs' name='author'>
+<meta content='Networking 101 | Google Cloud Skills Boost for Partners' property='og:title'>
+<meta content='website' property='og:type'>
+<meta content='/favicon-144.png' property='og:image'>
+<meta content='Qwiklabs' property='og:site_name'>
+<meta content='In this lab you will learn how to perform basic networking tasks on Google Cloud Platform by setting up a network and 3 subnetworks; and how GCP might differ from an on-premises setup.' property='og:description'>
+<meta content='/qwiklabs_logo_900x887.png' property='og:logo' size='900x887'>
+<meta content='/qwiklabs_logo_994x187.png' property='og:logo' size='994x187'>
+
+
+<meta property="og:url" content="https://partner.cloudskillsboost.google/focuses/42462?parent=catalog" /><link href="https://partner.cloudskillsboost.google/focuses/42462?parent=catalog" rel="canonical" />
+<link color='#3681E4' href='/favicon-svg.svg' rel='mask-icon'>
+<link href='/favicon-180.png' rel='apple-touch-icon-precomposed'>
+<link href='https://cdn.qwiklabs.com/Vag5GK2J6rS6843Qvg8TQJ1kEbAsEmQoF0%2BdLRfcLRE%3D' rel='shortcut icon' type='image/x-icon'>
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oswald:400|Roboto+Mono:400,700|Roboto:300,400,500,700|Google+Sans:300,400,500,700|Google+Sans+Display:400|Material+Icons|Google+Material+Icons" media="screen" />
+
+<link rel="stylesheet" href="https://cdn.qwiklabs.com/assets/application-9c3b65b21d70e11e97ae9ab48dd150018a15c36cd951e52fe5574dfa177e8bc8.css" media="all" />
+
+
+<style>
+  :root {
+    --primary-text-on-surface-color: #1a73e8;
+    --primary-text-on-surface-color-dark: #1568d6;
+    --primary-text-on-surface-color-darker: #135ec1;
+    --primary-text-on-surface-color-darkest: #1154ac;
+    --primary-surface-color: #1a73e8;
+    --primary-surface-color-rgb: 26,115,232;
+    --primary-surface-color-light: #d1e3fa;
+    --primary-surface-color-lightest: #e8f1fd;
+    --text-on-primary-color: #ffffff;
+    --accent-text-on-surface-color: #f29900;
+    --accent-surface-color: #f9ab00;
+    --accent-surface-color-rgb: 249,171,0;
+    --accent-surface-color-light: #ffefcc;
+    --text-on-accent-color: #202124;
+  }
+</style>
+
+<style>
+  :root {
+    --navbar-height: 112px;
+  }
+</style>
+
+
+
+</head>
+<body class='lab-show l-full no-nav application-new focuses focuses-show lab-show l-full no-nav '>
+<div class='header-container'>
+<div class='header'>
+<ql-toolbar jumpEnabled>
+<div class='header__title' slot='title'>
+<ql-icon-button label="Back" href="https://partner.cloudskillsboost.google/quests/121" id="8d15b4a5138702c3" target="_self" tip="Back">arrow_back</ql-icon-button>
+<h1 class='ql-headline-6'>Networking 101</h1>
+</div>
+<div class='header__actions' slot='action'>
+<ql-icon-button icon='share' id='share_311' label='Share on social media' tip='Share'></ql-icon-button>
+<ql-menu for='share_311'>
+<ql-menu-item data-analytics-action='Shared to LinkedIn Feed.' data-analytics-category='Lab' data-analytics-label='Networking 101' href='https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fpartner.cloudskillsboost.google%2Fcatalog_lab%2F311%3Futm_medium%3Dsocial%26utm_source%3Dlinkedin%26utm_campaign%3Dql-social-share' icon='post_linkedin' label='Share on LinkedIn Feed' role='link' target='_blank'>
+<span class='label'>Share on LinkedIn Feed</span>
+</ql-menu-item>
+
+<ql-menu-item data-analytics-action='Shared to Twitter.' data-analytics-category='Lab' data-analytics-label='Networking 101' href='https://twitter.com/intent/tweet?text=Learn%20cloud%20tech%20through%20hands-on%20training%20on%20%23Qwiklabs%21&amp;url=https%3A%2F%2Fpartner.cloudskillsboost.google%2Fcatalog_lab%2F311%3Futm_medium%3Dsocial%26utm_source%3Dtwitter%26utm_campaign%3Dql-social-share&amp;hashtags=' icon='post_twitter' label='Twitter' role='link' target='_blank'>
+<span class='label'>Twitter</span>
+</ql-menu-item>
+
+<ql-menu-item data-analytics-action='Shared to Facebook.' data-analytics-category='Lab' data-analytics-label='Networking 101' href='https://facebook.com/sharer.php?display=popup&amp;u=https%3A%2F%2Fpartner.cloudskillsboost.google%2Fcatalog_lab%2F311%3Futm_medium%3Dsocial%26utm_source%3Dfacebook%26utm_campaign%3Dql-social-share' icon='post_facebook' label='Facebook' role='link' target='_blank'>
+<span class='label'>Facebook</span>
+</ql-menu-item>
+
+<ql-copyable-input label='Share Link' value='https://partner.cloudskillsboost.google/catalog_lab/311'></ql-copyable-input>
+</ql-menu>
+
+<ql-icon-button class='icon-button js-favorite-button favorite-button' data-id='42462' data-name='Networking 101' data-type='CatalogItem' href='/favorite.json?item_id=42462&amp;item_type=CatalogItem' id='CatalogItem-42462-favorite-button' label='Add to favorites' tip='Add to favorites'>
+favorite_border
+</ql-icon-button>
+
+
+
+<ql-icon-button id='control-panel-target' style='display: none;'>
+dashboard
+</ql-icon-button>
+<ql-menu for='control-panel-target' id='control-panel-menu'></ql-menu>
+<ql-icon-button class='mobile-hide' icon='help_outline' id='help-menu-button' label='Open help menu' tip='Help'></ql-icon-button>
+<ql-menu for='help-menu-button' id='help-menu'>
+<ql-menu-item data-analytics-action='opened_help' data-analytics-label='lab' label='Help Center' onclick='hallofmirrors.helpService.startHelp({&quot;productData&quot;:{&quot;userId&quot;:11061062},&quot;context&quot;:&quot;lab&quot;})'></ql-menu-item>
+<ql-menu-item href='mailto:support@qwiklabs.com' label='Email support'></ql-menu-item>
+<ql-menu-item label='Chat support' onClick='ql.chat.open()'></ql-menu-item>
+</ql-menu>
+
+<ql-icon-button class='mobile-hide' icon='language' id='language' label='Select your language preference' tip='Language'></ql-icon-button>
+<ql-menu for='language'>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='ar' href='/focuses/42462?locale=ar&amp;parent=catalog' label='العربية‬‎' lang='ar'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='de' href='/focuses/42462?locale=de&amp;parent=catalog' label='Deutsch' lang='de'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='en' href='/focuses/42462?locale=en&amp;parent=catalog' label='English' lang='en'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='es' href='/focuses/42462?locale=es&amp;parent=catalog' label='español (Latinoamérica)' lang='es'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='fr' href='/focuses/42462?locale=fr&amp;parent=catalog' label='français' lang='fr'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='fr_CA' href='/focuses/42462?locale=fr_CA&amp;parent=catalog' label='français (Canada)' lang='fr-CA'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='he' href='/focuses/42462?locale=he&amp;parent=catalog' label='עברית' lang='he'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='id' href='/focuses/42462?locale=id&amp;parent=catalog' label='bahasa Indonesia' lang='id'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='it' href='/focuses/42462?locale=it&amp;parent=catalog' label='Italiano' lang='it'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='ja' href='/focuses/42462?locale=ja&amp;parent=catalog' label='日本語' lang='ja'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='ko' href='/focuses/42462?locale=ko&amp;parent=catalog' label='한국어' lang='ko'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='pl' href='/focuses/42462?locale=pl&amp;parent=catalog' label='Polski' lang='pl'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='pt_BR' href='/focuses/42462?locale=pt_BR&amp;parent=catalog' label='português (Brasil)' lang='pt-BR'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='pt_PT' href='/focuses/42462?locale=pt_PT&amp;parent=catalog' label='português (Portugal)' lang='pt-PT'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='ru' href='/focuses/42462?locale=ru&amp;parent=catalog' label='русский' lang='ru'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='tr' href='/focuses/42462?locale=tr&amp;parent=catalog' label='Türkçe' lang='tr'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='uk' href='/focuses/42462?locale=uk&amp;parent=catalog' label='український' lang='uk'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='zh' href='/focuses/42462?locale=zh&amp;parent=catalog' label='简体中文' lang='zh'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='zh_TW' href='/focuses/42462?locale=zh_TW&amp;parent=catalog' label='繁體中文' lang='zh-TW'></ql-menu-item>
+</ql-menu>
+
+<ql-icon-button id='my_account' label='My account' tip='My account'>
+<ql-avatar></ql-avatar>
+</ql-icon-button>
+<ql-menu for='my_account' id='my_account_menu' style='max-height: 640px'>
+<div class='my-account-menu'>
+<ql-avatar class='l-mtl l-mbl' size='120'></ql-avatar>
+<div class='my-account-menu__user-info l-mbl'>
+<h4 class='ql-subhead-1'>Ausaf Khan</h4>
+<p class='ql-body-2 text--light'>ausaf.khan@rakuten.com</p>
+<p class='ql-body-2 text--light'>
+</p>
+<a class="text--green ql-subhead-2" href="/my_account/payments"><ql-chip positive>
+0 Credits
+</ql-chip>
+</a></div>
+<div class='buttons l-mbl'>
+<a class="button button--hairline l-mrm" id="profile" href="/public_profiles/1d61c1a3-8a07-4495-8abe-b57e519718e6">Public Profile</a>
+<a class="button button--hairline" id="settings" href="/my_account/profile">Settings</a>
+</div>
+<hr>
+<ql-button data-analytics-action='clicked_sign_out' href='/users/sign_out' method='delete'>
+Sign Out
+</ql-button>
+<div class='privacy l-mtl'>
+<a target="_blank" class="ql-caption text--light" href="/privacy_policy">Privacy</a>
+<span class='ql-caption text--light l-mls l-mrs'>&middot;</span>
+<a class="ql-caption text--light" href="/terms_of_service">Terms</a>
+</div>
+</div>
+</ql-menu>
+
+</div>
+</ql-toolbar>
+
+</div>
+</div>
+
+<nav class='nav-panel js-nav-panel'>
+<div class='nav-panel__logo'>
+<div class="custom-logo"><img alt="Google Cloud Skills Boost for Partners" height="24" aria-label="Google Cloud Skills Boost for Partners" src="https://cdn.qwiklabs.com/PGyhmgS3zZncIEGywnx5UXsKwepRRFQ9BhAg%2FWHNrlQ%3D" /></div>
+</div>
+<nav class='ql-sidenav'>
+<ql-sidenav-item href='/' icon='home' label='Paths'></ql-sidenav-item>
+
+<ql-sidenav-item active href='/catalog' icon='school' label='Explore'></ql-sidenav-item>
+
+<ql-sidenav-item href='/profile' icon='event_note' label='Profile'></ql-sidenav-item>
+
+</nav>
+
+</nav>
+<div class='nav-panel__overlay js-nav-toggle'></div>
+
+<main class='js-main' id='jump-content'>
+<div class='l-main-wrapper' id='main-wrapper'>
+
+
+
+
+<div class='lab-assessment__tab js-open-lab-assessment-panel'>
+<button class='js-lab-assessment-total-score'>
+—/100
+</button>
+</div>
+<div aria-labelledby='lab-assessment-checkpoint' class='lab-assessment__panel js-lab-assessment-panel' role='dialog'>
+<div class='lab-assessment__panel__header'>
+<h4 id='lab-assessment-checkpoint'>Checkpoints</h4>
+<ql-icon-button class='js-close-lab-assessment-panel' icon='arrow_forward' label='Close dialog'></ql-icon-button>
+</div>
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Create a custom network, subnetworks and firewall rules
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button class='js-show-run-step-button' description='Create a custom network, subnetworks and firewall rules' step_no='1'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-1'>
+</span>
+/ 50
+</p>
+</div>
+</div>
+
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Create three instances in specified zones for Traceroute and performance testing.
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button class='js-show-run-step-button' description='Create three instances in specified zones for Traceroute and performance testing.' step_no='2'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-2'>
+</span>
+/ 50
+</p>
+</div>
+</div>
+
+</div>
+<ql-drawer-container class='js-lab-state' data-analytics-payload='{&quot;label&quot;:&quot;Networking 101&quot;,&quot;lab_name&quot;:&quot;Networking 101&quot;,&quot;classroom_name&quot;:null,&quot;deployment&quot;:&quot;googlecourses-run&quot;}' data-credits='0.0' data-focus-id='42462' data-lab-billing-limit='0.0' data-lab-duration='4500' data-parent='catalog' data-recaptcha-enabled id='lab-container'>
+<ql-drawer id='terminal-drawer' slot='drawer' style='width: calc(100% - 480px)'>
+<iframe allow='clipboard-read' class='terminal' id='embedded-resource'></iframe>
+</ql-drawer>
+<ql-drawer-content class='js-lab-wrapper' id='lab-content' slot='drawer-content'>
+<ql-drawer-container id='lab-content-container'>
+<ql-drawer id='control-panel-drawer' open slot='drawer' width='320'>
+<ql-lab-control-panel class='ql-lab-control-panel__max-height control-panel js-lab-control-panel' connectionFiles='[]' labControlButton='{&quot;disabled&quot;:false,&quot;pending&quot;:false,&quot;running&quot;:false}' labDetails='[]' labTimer='{&quot;ticking&quot;:false,&quot;secondsRemaining&quot;:4500}' studentResources='[]'>
+<script src="https://www.recaptcha.net/recaptcha/api.js?render=6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr"   ></script>
+        <script>
+          // Define function so that we can call it again later if we need to reset it
+          // This executes reCAPTCHA and then calls our callback.
+          function executeRecaptchaForStartLab() {
+            grecaptcha.ready(function() {
+              grecaptcha.execute('6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr', {action: 'start_lab'}).then(function(token) {
+                setInputWithRecaptchaResponseTokenForStartLab('g-recaptcha-response-data-start-lab', token)
+              });
+            });
+          };
+          // Invoke immediately
+          executeRecaptchaForStartLab()
+
+          // Async variant so you can await this function from another async function (no need for
+          // an explicit callback function then!)
+          // Returns a Promise that resolves with the response token.
+          async function executeRecaptchaForStartLabAsync() {
+            return new Promise((resolve, reject) => {
+             grecaptcha.ready(async function() {
+                resolve(await grecaptcha.execute('6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr', {action: 'start_lab'}))
+              });
+            })
+          };
+
+                    var setInputWithRecaptchaResponseTokenForStartLab = function(id, token) {
+            var element = document.getElementById(id);
+            element.value = token;
+          }
+
+        </script>
+<input type="hidden" name="g-recaptcha-response-data[start_lab]" id="g-recaptcha-response-data-start-lab" data-sitekey="6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr" class="g-recaptcha g-recaptcha-response "/>
+
+<div aria-live='polite' class='hidden' id='recaptcha-v2-start-lab' slot='recaptcha'>
+<script src="https://www.recaptcha.net/recaptcha/api.js" async defer ></script>
+<div data-sitekey="6LeOI8IUAAAAAPkHlMAE9NReCD_1WD81iYlBlCnV" data-callback="recaptchaComplete" data-expired-callback="expireV2Token" class="g-recaptcha "></div>
+          <noscript>
+            <div>
+              <div style="width: 302px; height: 422px; position: relative;">
+                <div style="width: 302px; height: 422px; position: absolute;">
+                  <iframe
+                    src="https://www.recaptcha.net/recaptcha/api/fallback?k=6LeOI8IUAAAAAPkHlMAE9NReCD_1WD81iYlBlCnV"
+                    name="ReCAPTCHA"
+                    style="width: 302px; height: 422px; border-style: none; border: 0; overflow: hidden;">
+                  </iframe>
+                </div>
+              </div>
+              <div style="width: 300px; height: 60px; border-style: none;
+                bottom: 12px; left: 25px; margin: 0px; padding: 0px; right: 25px;
+                background: #f9f9f9; border: 1px solid #c1c1c1; border-radius: 3px;">
+                <textarea id="g-recaptcha-response" name="g-recaptcha-response"
+                  class="g-recaptcha-response"
+                  style="width: 250px; height: 40px; border: 1px solid #c1c1c1;
+                  margin: 10px 25px; padding: 0px; resize: none;">
+                </textarea>
+              </div>
+            </div>
+          </noscript>
+
+</div>
+</ql-lab-control-panel>
+</ql-drawer>
+<ql-drawer-content id='lab-instructions' slot='drawer-content'>
+<ql-snackbar id='alert-snackbar'></ql-snackbar>
+<div class='alert alert--fake js-alert'>
+<p class='alert__message js-alert-message' role='alert'></p>
+<ql-icon-button class='alert__close js-alert-close' icon='clear'></ql-icon-button>
+<iframe class='l-ie-iframe-fix' tabindex='-1'></iframe>
+</div>
+<div class='lab-content__renderable-instructions js-lab-content'>
+<div class='lab-preamble'>
+<h1 class='lab-preamble__title'>
+Networking 101
+</h1>
+<div class='lab-preamble__details subtitle-headline-1'>
+<span>1 hour 15 minutes</span>
+<span>Free</span>
+<div class='lab__rating'>
+<a aria-label="Lab Reviews" href="/focuses/42462/reviews?parent=catalog"><div class='rateit' data-rateit-readonly='true' data-rateit-value='4.6005'></div>
+
+</a><ql-button aria-label='Rate Lab' id='rate-lab-btn' label='Rate Lab' text></ql-button>
+</div>
+</div>
+</div>
+<div class='lab-outline-place-holder'></div>
+
+<div class='markdown-lab-instructions js-markdown-instructions' id='markdown-lab-instructions'>
+
+<h2 id="step1">GSP016</h2>
+<p><img alt="Google Cloud self-paced labs logo" src="https://cdn.qwiklabs.com/GMOHykaqmlTHiqEeQXTySaMXYPHeIvaqa2qHEzw6Occ%3D"></p>
+<h2 id="step2">Overview</h2>
+<p>In this hands-on lab you will learn how to perform basic networking tasks on Google Cloud (including Compute Engine instances) and how Google Cloud might differ from an on-premises setup. You'll develop a network and 3 subnetworks, resulting in this end-state environment:</p>
+<p><img alt="The end-state environment consisting of three subnetworks: subnet-us-central, subnet-europe-west, and asia-test-01 " src="https://cdn.qwiklabs.com/S3FEim1%2B4XAtYkIurnqHUA8DycwsLQ91egR6aRgV5ww%3D"></p>
+<p>The lab exercises you'll do are ordered to reflect a common cloud developer experience:</p>
+<ol>
+<li>
+<p>Set up your lab environment and learn how to work with your Google Cloud environment.</p>
+</li>
+<li>
+<p>Deploy a common network with subnets and multiple regions using common open source tools to explore your network around the world.</p>
+</li>
+<li>
+<p>Testing and monitoring your network and instances.</p>
+</li>
+</ol>
+<h3>What you'll learn</h3>
+<ul>
+<li>
+<p>Basics concepts and constructs of the Google Cloud networking.</p>
+</li>
+<li>
+<p>How default and User-created Networks are configured.</p>
+</li>
+<li>
+<p>How to measure performance &amp; latency characteristics.</p>
+</li>
+<li>
+<p>Basic security configurations of Access, Firewall, and Routing.</p>
+</li>
+</ul>
+<h3>Prerequisites</h3>
+<ul>
+<li>
+<p>Basic knowledge of Compute Engine</p>
+</li>
+<li>
+<p>Basic networking and TCP/IP knowledge</p>
+</li>
+<li>
+<p>Basic Unix/Linux command line knowledge</p>
+</li>
+</ul>
+<h2 id="step3">Setup and requirements</h2>
+<h3>Before you click the Start Lab button</h3>
+<p>Read these instructions. Labs are timed and you cannot pause them. The timer, which starts when you click <strong>Start Lab</strong>, shows how long Google Cloud resources will be made available to you.</p>
+<p>This hands-on lab lets you do the lab activities yourself in a real cloud environment, not in a simulation or demo environment. It does so by giving you new, temporary credentials that you use to sign in and access Google Cloud for the duration of the lab.</p>
+<p>To complete this lab, you need:</p>
+<ul>
+<li>Access to a standard internet browser (Chrome browser recommended).</li>
+</ul>
+<ql-warningbox>
+<strong>Note:</strong> Use an Incognito or private browser window to run this lab. This prevents any conflicts between your personal account and the Student account, which may cause extra charges incurred to your personal account.
+</ql-warningbox>
+<ul>
+<li>Time to complete the lab---remember, once you start, you cannot pause a lab.</li>
+</ul>
+<ql-warningbox>
+<strong>Note:</strong> If you already have your own personal Google Cloud account or project, do not use it for this lab to avoid extra charges to your account.
+</ql-warningbox>
+<h3>How to start your lab and sign in to the Google Cloud Console</h3>
+<ol>
+<li>
+<p>Click the <strong>Start Lab</strong> button. If you need to pay for the lab, a pop-up opens for you to select your payment method.
+On the left is the <strong>Lab Details</strong> panel with the following:</p>
+<ul>
+<li>The <strong>Open Google Console</strong> button</li>
+<li>Time remaining</li>
+<li>The temporary credentials that you must use for this lab</li>
+<li>Other information, if needed, to step through this lab</li>
+</ul>
+</li>
+<li>
+<p>Click <strong>Open Google Console</strong>.
+The lab spins up resources, and then opens another tab that shows the <strong>Sign in</strong> page.</p>
+<p><strong><em>Tip:</em></strong> Arrange the tabs in separate windows, side-by-side.</p>
+<ql-infobox>
+<strong>Note: </strong>If you see the <strong>Choose an account</strong> dialog, click <strong>Use Another Account</strong>.        
+ </ql-infobox>
+</li>
+<li>
+<p>If necessary, copy the <strong>Username</strong> from the <strong>Lab Details</strong> panel and paste it into the <strong>Sign in</strong> dialog. Click <strong>Next</strong>.</p>
+</li>
+<li>
+<p>Copy the <strong>Password</strong> from the <strong>Lab Details</strong> panel and paste it into the <strong>Welcome</strong> dialog. Click <strong>Next</strong>.</p>
+<ql-infobox>
+<strong>Important: </strong>You must use the credentials from the left panel. Do not use your Google Cloud Skills Boost credentials. 
+ </ql-infobox>
+<ql-warningbox>
+<strong>Note: </strong>Using your own Google Cloud account for this lab may incur extra charges.
+ </ql-warningbox>
+</li>
+<li>
+<p>Click through the subsequent pages:</p>
+<ul>
+<li>Accept the terms and conditions.</li>
+<li>Do not add recovery options or two-factor authentication (because this is a temporary account).</li>
+<li>Do not sign up for free trials.</li>
+</ul>
+</li>
+</ol>
+<p>After a few moments, the Cloud Console opens in this tab.</p>
+<ql-infobox>
+<strong>Note:</strong> You can view the menu with a list of Google Cloud Products and Services by clicking the <strong>Navigation menu</strong> at the top-left.
+<img alt="Navigation menu icon" src="https://cdn.qwiklabs.com/nUxFb6oRFr435O3t6V7WYJAjeDFcrFb16G9wHWp5BzU%3D">
+</ql-infobox>
+<h3>Activate Cloud Shell</h3>
+<p>Cloud Shell is a virtual machine that is loaded with development tools. It offers a persistent 5GB home directory and runs on the Google Cloud. Cloud Shell provides command-line access to your Google Cloud resources.</p>
+<ol>
+<li>Click <strong>Activate Cloud Shell</strong> <img alt="Activate Cloud Shell icon" src="https://cdn.qwiklabs.com/ep8HmqYGdD%2FkUncAAYpV47OYoHwC8%2Bg0WK%2F8sidHquE%3D"> at the top of the Google Cloud console.</li>
+</ol>
+<p>When you are connected, you are already authenticated, and the project is set to your <strong>PROJECT_ID</strong>. The output contains a line that declares the <strong>PROJECT_ID</strong> for this session:</p>
+<ql-code-block output="">
+Your Cloud Platform project in this session is set to YOUR_PROJECT_ID
+</ql-code-block>
+<p><code>gcloud</code> is the command-line tool for Google Cloud. It comes pre-installed on Cloud Shell and supports tab-completion.</p>
+<ol start="2">
+<li>
+<p>(Optional) You can list the active account name with this command:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud auth list
+</ql-code-block>
+<ol start="3">
+<li>
+<p>Click <strong>Authorize</strong>.</p>
+</li>
+<li>
+<p>Your output should now look like this:</p>
+</li>
+</ol>
+<p><strong>Output:</strong></p>
+<ql-code-block language="plaintext" output="">
+ACTIVE: *
+ACCOUNT: student-01-xxxxxxxxxxxx@qwiklabs.net
+To set the active account, run:
+    $ gcloud config set account `ACCOUNT`
+</ql-code-block>
+<ol start="5">
+<li>
+<p>(Optional) You can list the project ID with this command:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud config list project
+</ql-code-block>
+<p><strong>Output:</strong></p>
+<ql-code-block language="plaintext" output="">
+[core]
+project = &lt;project_ID&gt;
+</ql-code-block>
+<p><strong>Example output:</strong></p>
+<ql-code-block language="plaintext" output="">
+[core]
+project = qwiklabs-gcp-44776a13dea667a6
+</ql-code-block>
+<ql-infobox>
+<strong>Note: </strong>For full documentation of <code>gcloud</code>, in Google Cloud, refer to <a href="https://cloud.google.com/sdk/gcloud" target="_blank">the gcloud CLI overview guide</a>.
+</ql-infobox>
+<h3>Understanding Regions and Zones</h3>
+<p>Certain Compute Engine resources live in regions or zones. A region is a specific geographical location where you can run your resources. Each region has one or more zones. For example, the us-central1 region denotes a region in the Central United States that has zones <code>us-central1-a</code>, <code>us-central1-b</code>, <code>us-central1-c</code>, and <code>us-central1-f</code>.</p>
+<table>
+
+<tr>
+<th>Regions</th>
+<th>Zones</th>
+</tr>
+
+
+<tr>
+<td>Western US</td>
+<td>us-west1-a, us-west1-b</td>
+</tr>
+<tr>
+<td>Central US</td>
+<td>us-central1-a, us-central1-b, us-central1-d, us-central1-f</td>
+</tr>
+<tr>
+<td>Eastern US</td>
+<td>us-east1-b, us-east1-c, us-east1-d</td>
+</tr>
+<tr>
+<td>Western Europe</td>
+<td>europe-west1-b, europe-west1-c, europe-west1-d</td>
+</tr>
+<tr>
+<td>Eastern Asia</td>
+<td>asia-east1-a, asia-east1-b, asia-east1-c</td>
+</tr>
+
+</table>
+<p>Resources that live in a zone are referred to as zonal resources. Virtual machine Instances and persistent disks live in a zone. To attach a persistent disk to a virtual machine instance, both resources must be in the same zone. Similarly, if you want to assign a static IP address to an instance, the instance must be in the same region as the static IP.</p>
+<ql-infobox>
+Learn more about regions and zones and see a complete list in the Compute Engine page, <a href="https://cloud.google.com/compute/docs/regions-zones/" target="_blank">Regions and zones documentation</a>).
+</ql-infobox>
+<h2 id="step4">Google Cloud Network Concepts</h2>
+<p>In Google Cloud Platform, networks provide data connections into and out of your cloud resources (mostly Compute Engine instances). Securing your Networks is critical to securing your data and controlling access to your resources.</p>
+<p>Google Cloud Platform supports Projects, Networks, and Subnetworks to provide flexible, logical isolation of unrelated resources.</p>
+<p><img alt="Projects - Networks - Subnetworks window" src="https://cdn.qwiklabs.com/OMZLPGkFOgWXGemUTY0nqjpM4zhC3YqC8GtTIc6cID0%3D"></p>
+<p><strong><em>Projects</em></strong> are the outermost container and are used to group resources that share the same trust boundary. Many developers map Projects to teams since each Project has its own access policy (IAM) and member list. Projects also serve as a collector of billing and quota details reflecting resource consumption. Projects contain Networks which contain Subnetworks, Firewall rules, and Routes (see below architecture diagrams for illustration).</p>
+<p><img alt="Project map" src="https://cdn.qwiklabs.com/pFo%2BZ2M1mZ7tZoaVQ7nofXyx2XVRckHJ9h27IkfGpkw%3D"></p>
+<p><strong><em>Networks</em></strong> directly connect your resources to each other and to the outside world. Networks, using Firewalls, also house the access policies for incoming and outgoing connections. Networks can be Global (offering horizontal scalability across multiple Regions) or Regional (offering low-latency within a single Region).</p>
+<p><strong><em>Subnetworks</em></strong> allow you to group related resources (Compute Engine instances) into RFC1918 private address spaces. Subnetworks can only be Regional. A subnetwork can be in auto mode or custom mode.</p>
+<ul>
+<li>An auto mode network has one subnet per region, each with a predetermined IP range and gateway. These subnets are created automatically when you create the auto mode network, and each subnet has the same name as the overall network.</li>
+<li>A custom mode network has no subnets at creation. In order to create an instance in a custom mode network, you must first create a subnetwork in that region and specify its IP range. A custom mode network can have zero, one, or many subnets per region.</li>
+</ul>
+<h2 id="step5">Task 1. Review the default network</h2>
+<p>When a new project is created, a default network configuration provides each region with an auto subnet network. You can create up to four additional networks in a project. Additional networks can be auto subnet networks, custom subnet networks, or legacy networks.</p>
+<p>Each instance created within a subnetwork is assigned an IPv4 address from that subnetwork range.</p>
+<ul>
+<li>Review your network. Click <strong>Navigation menu</strong> &gt; <strong>VPC network</strong>.</li>
+</ul>
+<p><img alt="The VPC networks page displaying a list of network including their associated information such as IP address ranges and gateways " src="https://cdn.qwiklabs.com/sZWQkp5Yz9zRfQ4BJaa%2BdVgIXx%2FcwwWLtpyR83qDgJ0%3D"></p>
+<h3>Firewalls</h3>
+<p>for more information on how you can use firewall rules to isolate subnetworks, refer to <a href="https://cloud.google.com/vpc/docs/vpc#vpc_networks_and_subnets" target="_blank">subnetworks</a> and  <a href="https://cloud.google.com/compute/docs/vpc/firewalls" target="_blank">firewall rules</a>.</p>
+<p>Each network has a default firewall that blocks all inbound traffic to instances. To allow traffic to come into an instance, you must create "allow" rules for the firewall. Additionally, the default firewall allows traffic from instances unless you configure it to block outbound connections using an "egress" firewall configuration. Therefore, by default you can create "allow" rules for traffic you wish to pass ingress, and "deny" rules for traffic you wish to restrict egress. You may also create a default-deny policy for egress and prohibit external connections entirely.</p>
+<p>In general, it is recommended to configure the least permissive firewall rule that will support the kind of traffic you are trying to pass. For example, if you need to allow traffic to reach some instances, but restrict traffic from reaching others, create rules that allow traffic to the intended instances only. This more restrictive configuration is more predictable than a large firewall rule that allows traffic to all of the instances. If you want to have "deny" rules to override certain "allow" rules, you can set priority levels on each rule and the rule with the lowest numbered priority will be evaluated first. Creating large and complex sets of override rules can lead to allowing or blocking traffic that is not intended.</p>
+<p>The default network has automatically created firewall rules, which are shown below. No manually created network of any type has automatically created firewall rules. For all networks except the default network, you must create any firewall rules you need.</p>
+<p>The ingress firewall rules automatically created for the default network are as follows:</p>
+<table>
+<tr>
+<td colspan="1" rowspan="1">
+<p><code>default-allow-internal</code></p>
+</td>
+<td colspan="1" rowspan="1">
+<p>Allows network connections of any protocol and port between instances on the network.</p>
+</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="1">
+<p><code>default-allow-ssh</code></p>
+</td>
+<td colspan="1" rowspan="1">
+<p>Allows SSH connections from any source to any instance on the network over TCP port 22.</p>
+</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="1">
+<p><code>default-allow-rdp</code></p>
+</td>
+<td colspan="1" rowspan="1">
+<p>Allows RDP connections from any source to any instance on the network over TCP port 3389.</p>
+</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="1">
+<p><code>default-allow-icmp</code></p>
+</td>
+<td colspan="1" rowspan="1">
+<p>Allows ICMP traffic from any source to any instance on the network.</p>
+</td>
+</tr>
+</table>
+<ul>
+<li>To review the default Firewall rules, in the Console click <strong>Navigation menu</strong> &gt; <strong>VPC network</strong> &gt; <strong>Firewall</strong>.</li>
+</ul>
+<p><img alt="The Firewall page displaying a list of firewall rules including their respective types, targets, filters, proptocol/ports, priority, and network" src="https://cdn.qwiklabs.com/nioeMkliNkHkSP0lAnJUukidg81QxrrssBBm9gAl9qs%3D"></p>
+<h3>Network route</h3>
+<p>All networks have routes created automatically to the Internet (default route) and to the IP ranges in the network. The route names are automatically generated and will look different for each project.</p>
+<ul>
+<li>To review default Routes, click <strong>Navigation menu</strong> &gt; <strong>VPC network</strong> &gt; <strong>Routes</strong>.</li>
+</ul>
+<p><img alt="The Routes page displaying a list of routes and their respective description, destination IP range, priority level, and network" src="https://cdn.qwiklabs.com/Rx7vhCKG6ZxXLA0Jkr7AWlwQRzcjFTA0qeOSIJ8JJyU%3D"></p>
+<h2 id="step6">Task 2. Creating a custom network</h2>
+<h3>Creating a new network with custom subnet ranges</h3>
+<p>When manually assigning subnetwork ranges, you first create a custom subnet network, then create the subnetworks that you want within a region. You do not have to specify subnetworks for all regions right away, or even at all, but you cannot create instances in regions that have no subnetwork defined.</p>
+<p>When you create a new subnetwork, its name must be unique in that project for that region, even across networks. The same name can appear twice in a project as long as each one is in a different region. Because this is a subnetwork, there is no network-level IPv4 range or gateway IP, so none will be displayed.</p>
+<p>You can either create your custom network with the console or with the cloud shell. We'll show you both, but you have to decide which method to use while taking the lab. For example, you cannot go through a section using the instructions for the console, then go through the same section using gcloud command line.</p>
+<h2 id="step7">Task 3. Create custom network with the console</h2>
+<ql-infobox><strong>Note: </strong>
+If you prefer to use the command line, skip this section and continue with <b>Create custom Network with Cloud Shell</b>.
+</ql-infobox>
+<ol>
+<li>
+<p>To create a custom network, click <strong>Navigation menu</strong> &gt; <strong>VPC network</strong>.</p>
+</li>
+<li>
+<p>Click <strong>Create VPC Network</strong> and name it <code>taw-custom-network</code>.</p>
+</li>
+<li>
+<p>On the <strong>Custom</strong> tab create:</p>
+<ul>
+<li>Subnet name: <code>subnet-us-central</code>
+</li>
+<li>Region: <code>us-central1</code>
+</li>
+<li>IP address range: <code>10.0.0.0/16</code>
+</li>
+</ul>
+</li>
+<li>
+<p>Click <strong>Done</strong>.</p>
+<p><img alt="The populated Create a VPC network dialog box" src="https://cdn.qwiklabs.com/MIib77LYnq83cqHXnyZ7Qp%2FuOkf3JVzogKY7aryaQko%3D"></p>
+</li>
+<li>
+<p>Now click <strong>Add Subnet</strong> and add 2 more subnets in their respective regions:</p>
+<ul>
+<li>subnet-europe-west, europe-west1, 10.1.0.0/16</li>
+<li>subnet-asia-east, asia-east1, 10.2.0.0/16</li>
+</ul>
+</li>
+<li>
+<p>Click <strong>Create</strong> to finish.</p>
+</li>
+</ol>
+<p>At this point, the network has routes to the Internet and to any instances that you might create. But it has no firewall rules allowing access to instances, even from other instances. To allow access, you must create  <a href="https://cloud.google.com/compute/docs/vpc/firewalls" target="_blank">firewall rules</a>.</p>
+<p>Continue to the <strong>Adding firewall rules</strong> section.</p>
+<h2 id="step8">Task 4. Create custom network with Cloud Shell</h2>
+<ql-warningbox>
+<strong>Note:</strong> If you just created a network using the Console, do not do the same exercise using Cloud Shell. Re-take the lab instead to practice using the <code>gcloud </code> command line.
+</ql-warningbox>
+<ul>
+<li>
+<p>Enter the following command in cloud shell to create the custom network:</p>
+</li>
+</ul>
+<ql-code-block language="plaintext">
+gcloud compute networks create taw-custom-network --subnet-mode custom
+</ql-code-block>
+<p><strong>Output:</strong></p>
+<ql-code-block output="">
+NAME                MODE    IPV4_RANGE  GATEWAY_IPV4
+taw-custom-network  custom
+Instances on this network will not be reachable until firewall rules
+are created. As an example, you can allow all internal traffic between
+instances as well as SSH, RDP, and ICMP by running:
+$ gcloud compute firewall-rules create  --network taw-custom-network --allow tcp,udp,icmp --source-ranges 
+$ gcloud compute firewall-rules create  --network taw-custom-network --allow tcp:22,tcp:3389,icmp
+</ql-code-block>
+<p>Now create subnets for your new custom network. You'll create three of them.</p>
+<ol>
+<li>
+<p>Create <code>subnet-us-central</code> with an IP prefix:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud compute networks subnets create subnet-us-central \
+   --network taw-custom-network \
+   --region us-central1 \
+   --range 10.0.0.0/16
+</ql-code-block>
+<p><strong>Output:</strong></p>
+<ql-code-block output="">
+Created [https://www.googleapis.com/compute/v1/projects/cloud-network-module-101/regions/us-central1/subnetworks/subnet-us-central].
+NAME               REGION       NETWORK             RANGE
+subnet-us-central  us-central1  taw-custom-network  10.0.0.0/16
+</ql-code-block>
+<ol start="2">
+<li>
+<p>Create <code>subnet-europe-west</code> with an IP prefix:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud compute networks subnets create subnet-europe-west \
+   --network taw-custom-network \
+   --region europe-west1 \
+   --range 10.1.0.0/16
+</ql-code-block>
+<p><strong>Output:</strong></p>
+<ql-code-block output="">
+Created [https://www.googleapis.com/compute/v1/projects/cloud-network-module-101/regions/europe-west1/subnetworks/subnet-europe-west].
+NAME                REGION        NETWORK             RANGE
+subnet-europe-west  europe-west1  taw-custom-network  10.1.0.0/16
+</ql-code-block>
+<ol start="3">
+<li>
+<p>Create <code>subnet-asia-east</code> with an IP prefix:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud compute networks subnets create subnet-asia-east \
+   --network taw-custom-network \
+   --region asia-east1 \
+   --range 10.2.0.0/16
+</ql-code-block>
+<p><strong>Output:</strong></p>
+<ql-code-block output="">
+Created [https://www.googleapis.com/compute/v1/projects/cloud-network-module-101/regions/asia-east1/subnetworks/subnet-asia-east1].
+NAME                REGION        NETWORK             RANGE
+subnet-asia-east    asian-east1   taw-custom-network  10.2.0.0/16
+</ql-code-block>
+<ol start="4">
+<li>
+<p>List your networks:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud compute networks subnets list \
+   --network taw-custom-network
+</ql-code-block>
+<p>If you created an auto subnet network in the prior section, those subnets will be listed as well.</p>
+<p><strong>Output:</strong></p>
+<ql-code-block output="">
+NAME                REGION        NETWORK             RANGE
+subnet-asia-east    asia-east1    taw-custom-network  10.1.0.0/16
+subnet-europe-west  europe-west1  taw-custom-network  10.2.0.0/16
+subnet-us-central   us-central1   taw-custom-network  10.0.0.0/16
+</ql-code-block>
+<p>At this point, the network has routes to the Internet and to any instances that you might create. But, it has no firewall rules allowing access to instances, even from other instances. To allow access, you must create  <a href="https://cloud.google.com/vpc/docs/firewalls" target="_blank">firewall rules</a>.</p>
+<h2 id="step9">Task 5. Adding firewall rules</h2>
+<p>To allow access to VM instances, you must apply firewall rules. We will use an instance tag to apply the firewall rule to your VM instances. The firewall rule will apply to any VM using the same instance tag.</p>
+<ql-infobox>
+<strong>Note: </strong>Instance Tags are used by networks and firewalls to apply certain firewall rules to tagged VM instances. For example, if there are several instances that perform the same task, such as serving a large website, you can tag these instances with a shared word or term and then use that tag to allow HTTP access to those instances with a firewall rule. 
+<p></p>
+Tags are also reflected in the metadata server, so you can use them for applications running on your instances.
+</ql-infobox>
+<ul>
+<li>
+<p>Start by opening the firewall to allow HTTP Internet requests, then you'll add more firewall rules. Firewall rules can be added using the Console or Cloud Shell.</p>
+</li>
+</ul>
+<h3>Add firewall rules through the Console</h3>
+<ol>
+<li>In the Console, navigate to <strong>VPC networks</strong> with the Menu and click on the <code>taw-custom-networking</code> network:</li>
+</ol>
+<p><img alt="taw-custom-networking highlighted on the VPC networks page" src="https://cdn.qwiklabs.com/aTcYGRoL1FNuiq8gT%2B%2BK7BSnalpBntXfkIwauJBzVf8%3D"></p>
+<ol start="2">
+<li>Click the <strong>Firewalls</strong> tab, then <strong>Add Firewall rule</strong>.</li>
+</ol>
+<p><img alt="The Firewall Rules tab and the Add Firewall rule button highlighted on the VPC network details page" src="https://cdn.qwiklabs.com/fEJBNnZkkPkFiYUaRk%2BiEEhSdO17oLK8d%2FWUp5TBX4E%3D"></p>
+<ol start="3">
+<li>Enter the following info:</li>
+</ol>
+<table>
+<tr>
+<td colspan="1" rowspan="1">
+<p><strong>Field</strong></p>
+</td>
+<td colspan="1" rowspan="1">
+<p><strong>Value</strong></p>
+</td>
+<td colspan="1" rowspan="1">
+<p><strong>Comments</strong></p>
+</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="1">
+<p>Name</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>nw101-allow-http</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>New rule name</p>
+</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="1">
+<p>Targets</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>Specified target tags</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>Which instances to which the firewall rule applies.</p>
+</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="1">
+<p>Target tags</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>http</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>The tag we created</p>
+</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="1">
+<p>Source filter</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>IPv4 ranges</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>We will open the firewall for any IP address from the Internet.</p>
+</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="1">
+<p>Source IPv4 ranges</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>0.0.0.0/0</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>You will open the firewall for any IP address from the Internet.</p>
+</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="1">
+<p>Protocols and ports</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>Select <b>Specified protocols and ports</b>, then check the <b>tcp</b> box, and type <i>80</i></p>
+</td>
+<td colspan="1" rowspan="1">
+<p>Only HTTP</p>
+</td>
+</tr>
+</table>
+<p>Your screen will look like this:</p>
+<p><img alt="The populated Create a firewall rule dialog box" src="https://cdn.qwiklabs.com/wgjxrVqpSOarL8cGnc5RgzNMVK4uaXkJnQ89kZSg%2BmI%3D"></p>
+<ol start="4">
+<li>
+<p>Click <strong>Create</strong> and wait until the command succeeds. Next you'll create the additional firewall rules you'll need.</p>
+</li>
+</ol>
+<h3>Add firewall rules using Cloud Shell</h3>
+<ql-warningbox><strong>Note: </strong> If you just created a network using the Console, do not do the same exercise using Cloud Shell. Re-take the lab instead to practice using the <code>gcloud </code> command line.
+</ql-warningbox>
+<ul>
+<li>
+<p>To create firewall rules in Cloud Shell, run the following:</p>
+</li>
+</ul>
+<ql-code-block language="plaintext">
+gcloud compute firewall-rules create nw101-allow-http \
+--allow tcp:80 --network taw-custom-network --source-ranges 0.0.0.0/0 \
+--target-tags http
+</ql-code-block>
+<p><strong>Output:</strong></p>
+<p><img alt="The output wherein the name is nw101-allow-http, the network is taw-custom-network, direction is ingress, priority level is 1000, and allow status is tcp:80" src="https://cdn.qwiklabs.com/7812KhIgI%2FM8%2BgunUMsNo2l3JAePrDiGuadsxgMTj%2FU%3D"></p>
+<h3>Create additional firewall rules</h3>
+<p>These additional firewall rules will allow ICMP,  internal communication, SSH, and RDP. You can create them using the Console (or Cloud Shell). Remember to use one method or the other for each type of firewall rule, you can't do both.</p>
+<ul>
+<li><strong>ICMP</strong></li>
+</ul>
+<table>
+<tr>
+<td colspan="1" rowspan="1">
+<p>Field</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>Value</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>Comments</p>
+</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="1">
+<p>Name</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>nw101-allow-icmp</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>New rule name</p>
+</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="1">
+<p>Targets</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>Specified target tags</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>Select from the Targets dropdown</p>
+</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="1">
+<p>Target tags</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>rules</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>tag</p>
+</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="1">
+<p>Source filter</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>IPv4 ranges</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>We will open the firewall for any IP address on this list.</p>
+</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="1">
+<p>Source IPv4 ranges</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>0.0.0.0/0</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>We will open the firewall for any IP address from the Internet.</p>
+</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="1">
+<p>Protocols and ports</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>Select <b>Specified protocols and ports</b>, <b>other protocols</b>, then type <i>icmp</i></p>
+</td>
+<td colspan="1" rowspan="1">
+<p>The protocols and ports the firewall applies to</p>
+</td>
+</tr>
+</table>
+<p>(Cloud Shell commands)</p>
+<ql-code-block language="plaintext">
+gcloud compute firewall-rules create "nw101-allow-icmp" --allow icmp --network "taw-custom-network" --target-tags rules
+</ql-code-block>
+<ul>
+<li><strong>Internal Communication</strong></li>
+</ul>
+<table>
+<tr>
+<td colspan="1" rowspan="1">
+<p>Field</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>Value</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>Comments</p>
+</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="1">
+<p>Name</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>nw101-allow-internal</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>New rule name</p>
+</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="1">
+<p>Targets</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>All instances in the network</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>Select from the Targets dropdown</p>
+</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="1">
+<p>Source filter</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>IPv4 ranges</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>The filter used to apply the rule to specific traffic sources</p>
+</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="1">
+<p>Source IPv4 ranges</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>10.0.0.0/16,</p>
+<p>10.1.0.0/16,</p>
+<p>10.2.0.0/16</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>We will open the firewall for any IP address from the Internet.</p>
+</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="1">
+<p>Protocols and ports</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>Select <b>Specified protocols and ports</b>, then <b>tcp</b> and type <i>0-65535</i>; check <b>udp</b> type <i>0-65535</i>; check <b>Other protocols</b> and type <i>icmp</i></p>
+</td>
+<td colspan="1" rowspan="1">
+<p>Allows Tcp:0-65535, udp:0-65535,icmp</p>
+</td>
+</tr>
+</table>
+<p>(Cloud Shell commands)</p>
+<ql-code-block language="plaintext">
+gcloud compute firewall-rules create "nw101-allow-internal" --allow tcp:0-65535,udp:0-65535,icmp --network "taw-custom-network" --source-ranges "10.0.0.0/16","10.2.0.0/16","10.1.0.0/16"
+</ql-code-block>
+<ul>
+<li><strong>SSH</strong></li>
+</ul>
+<table>
+<tr>
+<td colspan="1" rowspan="1">
+<p>Field</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>Value</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>Comments</p>
+</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="1">
+<p>Name</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>nw101-allow-ssh</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>New rule name</p>
+</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="1">
+<p>Targets</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>Specified target tags</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>ssh</p>
+</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="1">
+<p>Target tags</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>ssh</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>The instances to which you apply the firewall rule</p>
+</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="1">
+<p>Source filter</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>IPv4 ranges</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>The filter used to apply the rule to specific traffic sources</p>
+</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="1">
+<p>Source IPv4 ranges</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>0.0.0.0/0</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>We will open the firewall for any IP address from the Internet.</p>
+</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="1">
+<p>Protocols and ports</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>Select <b>Specified protocols and ports</b>, check the <b>tcp</b> box, then type <i>22</i></p>
+</td>
+<td colspan="1" rowspan="1">
+<p>Allows tcp:22</p>
+</td>
+</tr>
+</table>
+<p>(Cloud Shell commands)</p>
+<ql-code-block language="plaintext">
+gcloud compute firewall-rules create "nw101-allow-ssh" --allow tcp:22 --network "taw-custom-network" --target-tags "ssh"
+</ql-code-block>
+<ul>
+<li><strong>RDP</strong></li>
+</ul>
+<table>
+<tr>
+<td colspan="1" rowspan="1">
+<p>Field</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>Value</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>Comments</p>
+</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="1">
+<p>Name</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>nw101-allow-rdp</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>New rule name</p>
+</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="1">
+<p>Targets</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>All instances in the network</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>Select from the Targets dropdown</p>
+</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="1">
+<p>Source filter</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>IPv4 ranges</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>Filter IP addresses</p>
+</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="1">
+<p>Source IPv4 ranges</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>0.0.0.0/0</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>We will open the firewall for any IP address from the Internet.</p>
+</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="1">
+<p>Protocols and ports</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>Select <b>Specified protocols and ports</b>, check the <b>tcp</b>, then type <i>3389</i></p>
+</td>
+<td colspan="1" rowspan="1">
+<p>Allows tcp:3389</p>
+</td>
+</tr>
+</table>
+<p>(Cloud Shell commands)</p>
+<ql-code-block language="plaintext">
+gcloud compute firewall-rules create "nw101-allow-rdp" --allow tcp:3389 --network "taw-custom-network"
+</ql-code-block>
+<ul>
+<li>Use the Console to review the firewall rules in your network. It should look like this:</li>
+</ul>
+<p><img alt="The Firewall rules tabbed page on the VPC network details dialog" src="https://cdn.qwiklabs.com/iQXkpAt3GuI5gAThIfm8aiqH8IrPWCf4vQM2HUiHNA8%3D"></p>
+<ql-infobox><strong>Note: </strong>What about those Routes I see in the Network console?
+<p></p>Google Cloud Networking uses Routes to direct packets between subnetworks and to the Internet. Whenever a subnetwork is created (or pre-created) in your Network, routes are automatically created in each region to allow packets to route between subnetworks. These cannot be modified.
+<p></p>Additional Routes can be created to send traffic to an instance, a VPN gateway, or default internet gateway. These Routes can be modified to tailor the desired network architecture. Routes and Firewalls work together to ensure your traffic gets where it needs to go.
+</ql-infobox>
+<p>Click <strong>Check my progress</strong> to verify the objective.</p>
+<ql-activity-tracking step="1">
+    Create a custom network, subnetworks and firewall rules.
+</ql-activity-tracking>
+<h2 id="step10">Task 6. Connecting to your lab VMs and checking latency</h2>
+<ul>
+<li>Click on <strong>VPC networks</strong> in the left menu to see your entire network. The taw-custom-network has three subnetworks and the firewalls rules applied.</li>
+</ul>
+<p>You should see this:</p>
+<p><img alt="The VPC network page displaying a list of networks and their respective subnets, mode, IP address ranges, gateways, firewall rules, and global dynamic routing statuses" src="https://cdn.qwiklabs.com/5%2F2IMw9QKWW5yKn0S7%2FwhKU03c%2BX2UV8gZ4s8v2gMjg%3D"></p>
+<p>The next steps are to create a VM in each subnet and make sure you can connect to them.</p>
+<h3>Creating a VM in each zone</h3>
+<p>For this section of the lab you will work in Cloud Shell.</p>
+<ol>
+<li>
+<p>Run this commands to create an instance named <code>us-test-01</code> in the <code>subnet-us-central</code> subnet:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud compute instances create us-test-01 \
+--subnet subnet-us-central \
+--zone us-central1-a \
+--tags ssh,http,rules
+</ql-code-block>
+<p>Be sure to note the external IP for later use in this lab.</p>
+<p><strong>Output:</strong></p>
+<ql-code-block output="">
+Created [https://www.googleapis.com/compute/v1/projects/cloud-network-module-101/zones/us-central1-a/instances/us-test-01].
+NAME        ZONE           MACHINE_TYPE   PREEMPTIBLE  INTERNAL_IP  EXTERNAL_IP     STATUS
+us-test-01  us-central1-a  n1-standard-1               10.0.0.2     104.198.230.22  RUNNING
+</ql-code-block>
+<ol start="2">
+<li>
+<p>Now make the europe-test-01 and asia-test-01 VMs in their correlated subnets:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud compute instances create europe-test-01 \
+--subnet subnet-europe-west \
+--zone europe-west1-b \
+--tags ssh,http,rules
+</ql-code-block>
+<ql-code-block language="plaintext">
+gcloud compute instances create asia-test-01 \
+--subnet subnet-asia-east \
+--zone asia-east1-a \
+--tags ssh,http,rules
+</ql-code-block>
+<p>Click <strong>Check my progress</strong> to verify the objective.</p>
+<ql-activity-tracking step="2">
+    Create three instances in specified zones for Traceroute and performance testing.
+</ql-activity-tracking>
+<h3>Verify you can connect your VM</h3>
+<p>Now do a few exercises to test the connection to your VMs.</p>
+<ol>
+<li>
+<p>Switch back to the Console and navigate to <strong>Compute Engine</strong>.</p>
+</li>
+<li>
+<p>Click the <strong>SSH</strong> button corresponding to the <code>us-test-01</code> instance. This opens an SSH connection to the instance in a new window.</p>
+</li>
+<li>
+<p>In the SSH window of <code>us-test-01</code>, type the following command to use an ICMP echo against <code>europe-test-01</code>, adding the external IP address for the VM in-line:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+ping -c 3 &lt;europe-test-01-external-ip-address&gt;
+</ql-code-block>
+<ql-infobox><strong>Note: </strong>You can locate the external IP of your virtual machines in the <strong>Compute Engine</strong> browser tab under the <strong>External IP</strong> field.
+<p></p>
+<img alt="The highlighted External IP column displaying three IP addresses" src="https://cdn.qwiklabs.com/bYYydPfnEZlzTHEsEHzQo7TjVcaI%2FtCBmxm%2FqBuaI9I%3D">
+<p></p>
+<strong>Your IP addresses will differ from the picture</strong>.
+</ql-infobox>
+<ol start="4">
+<li>
+<p>Run this command to use an ICMP echo against <code>asia-test-01</code>, adding the external IP address for the VM in-line:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+ping -c 3 &lt;asia-test-01-external-ip-address&gt;
+</ql-code-block>
+<p><strong>Example output:</strong></p>
+<ql-code-block output="">
+PING 35.187.149.67 (35.187.149.67) 56(84) bytes of data.
+64 bytes from 35.187.149.67: icmp_seq=1 ttl=76 time=152 ms
+64 bytes from 35.187.149.67: icmp_seq=2 ttl=76 time=152 ms
+64 bytes from 35.187.149.67: icmp_seq=3 ttl=76 time=152 ms
+</ql-code-block>
+<ol start="5">
+<li>
+<p>Now check that SSH also works for instances <code>europe-test-01</code> and <code>asia-test-01</code>. Try an ICMP echo against <code>us-test-01</code>.</p>
+</li>
+</ol>
+<h3>Use ping to measure latency</h3>
+<p>Use ping to measure the latency between instances between all the regions.</p>
+<ul>
+<li>
+<p>To observe the latency from the US Central region to the Europe West region, run the following command after opening an SSH window on the <code>us-test-01</code>:</p>
+</li>
+</ul>
+<ql-code-block language="bash">
+ping -c 3 europe-test-01.europe-west1-b
+</ql-code-block>
+<p><strong>Command output:</strong></p>
+<ql-code-block output="">
+PING europe-test-01.europe-west1-b.c.cloud-network-module-101.internal (10.2.0.2) 56(84) bytes of data.
+64 bytes from europe-test-01.europe-west1-b.c.cloud-network-module-101.internal (10.2.0.2): icmp_seq=1 ttl=64 time=105 ms
+64 bytes from europe-test-01.europe-west1-b.c.cloud-network-module-101.internal (10.2.0.2): icmp_seq=2 ttl=64 time=104 ms
+64 bytes from europe-test-01.europe-west1-b.c.cloud-network-module-101.internal (10.2.0.2): icmp_seq=3 ttl=64 time=104 ms
+</ql-code-block>
+<p>The latency you get back is the "Round Trip Time" (RTT) - the time the packet takes to get from <code>us-test-01</code> to <code>europe-test-01</code>.</p>
+<p>To test connectivity, Ping uses the ICMP  <a href="http://www.tcpipguide.com/free/t_ICMPv4EchoRequestandEchoReplyMessages.htm" target="_blank">Echo Request and Echo Reply Messages</a>.</p>
+<ql-infobox><strong>Note: </strong><b>Things to think about</b>
+<p></p>
+What is the latency you see between regions? What would you expect under ideal conditions? What is special about the connection from `europe-test-01` to `asia-test-01`?
+</ql-infobox>
+<ql-infobox><strong>Note: </strong>Internal DNS: How is DNS provided for VM instances?
+<p></p>
+Each instance has a metadata server that also acts as a DNS resolver for that instance. DNS lookups are performed for instance names. The metadata server itself stores all DNS information for the local network and queries Google's public DNS servers for any addresses outside of the local network.
+<p></p>
+An internal fully qualified domain name (FQDN) for an instance looks like this: hostName.[ZONE].c.[PROJECT_ID].internal .
+<p></p>
+You can always connect from one instance to another using this FQDN. If you want to connect to an instance using, for example, just hostName, you need information from the internal DNS resolver that is provided as part of Compute Engine.
+</ql-infobox>
+<h2 id="step11">Task 7. Traceroute and Performance testing</h2>
+<h3>Optional exercise</h3>
+<p>Traceroute is a tool to trace the path between two hosts. A traceroute can be a helpful first step to uncovering many different types of network problems. Support or network engineers often ask for a traceroute when diagnosing network issues.</p>
+<ql-infobox><strong>Note: Functionality</strong>
+<p></p>
+Traceroute shows all Layer 3 (routing layer) hops between the hosts. This is achieved by sending packets to the remote destination with increasing TTL (Time To Live) value (starting at 1). The TTL field is a field in the IP packet which gets decreased by one at every router. Once the TTL hits zero, the packet gets discarded and a "TTL exceeded" ICMP message is returned to the sender. This approach is used to avoid routing loops; packets cannot loop continuously because the TTL field will eventually decrement to 0. By default the OS sets the TTL value to a high value (64, 128, 255 or similar), so this should only ever be reached in abnormal situations. 
+<p></p>
+So traceroute sends packets first with TTL value of 1, then TTL value of 2, etc., causing these packets to expire at the first/second/etc. router in the path. It then takes the source IP/host of the ICMP TTL exceeded message returned to show the name/IP of the intermediate hop. Once the TTL is high enough, the packet reaches the destination, and the destination responds.
+<p></p>
+The type of packet sent varies by implementation. Under Linux, UDP packets are sent to a high, unused port. So the final destination responds with an ICMP Port Unreachable. Windows and the mtr tool by default use ICMP echo requests (like ping), so the final destination answers with an ICMP echo reply.
+</ql-infobox>
+<p>Now try it out by setting up a traceroute on one of your virtual machines.</p>
+<ol>
+<li>
+<p>For this step go back to using the <code>us-test-01</code> VM and <code>europe-test-01</code> VM and SSH into both of them.</p>
+</li>
+<li>
+<p>Install these performance tools in the SSH window for <code>us-test-01</code>:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+sudo apt-get update
+sudo apt-get -y install traceroute mtr tcpdump iperf whois host dnsutils siege
+</ql-code-block>
+<ql-code-block language="plaintext">
+traceroute www.icann.org
+</ql-code-block>
+<ol start="3">
+<li>
+<p>Now try a few other destinations and also from other sources:</p>
+<ul>
+<li>VMs in the same region or another region (eu1-vm, asia1-vm, w2-vm)</li>
+<li><a href="http://www.wikipedia.org/" target="_blank">www.wikipedia.org</a></li>
+<li><a href="http://www.adcash.com/" target="_blank">www.adcash.com</a></li>
+<li>bad.horse (works best if you increase max TTL, so traceroute -m 255 bad.horse)</li>
+<li>Anything else you can think of</li>
+</ul>
+</li>
+<li>
+<p>To stop traceroute, <strong>Ctrl</strong>-<strong>c</strong> in the SSH window and return to the command line.</p>
+</li>
+</ol>
+<ql-infobox><strong>Note: </strong>Things to think about
+<p></p>
+What do you notice with the different traceroutes?
+</ql-infobox>
+<h2 id="step12">Task 8. Use iperf to test performance</h2>
+<h3>Between two hosts</h3>
+<p><strong>Optional exercise</strong></p>
+<p>When you use <code>iperf</code> to test the performance between two hosts, one side needs to be set up as the iperf server to accept connections.</p>
+<ql-infobox><strong>Note: </strong> The following commands transfer Gigabytes of traffic between regions, which is charged at <a href="https://cloud.google.com/compute/pricing#internet_egress" target="_blank">Internet egress</a> rates. Be mindful of this when using them. If you are not on a allowlisted project, or in the free trial, you might want to skip, or only skim, this section. (Costs should be less than $1 USD.)
+</ql-infobox>
+<p>Try a very simple test:</p>
+<ol>
+<li>
+<p>SSH into <code>europe-test-01</code> and install the performance tools:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+sudo apt-get update
+sudo apt-get -y install traceroute mtr tcpdump iperf whois host dnsutils siege
+</ql-code-block>
+<ol start="2">
+<li>
+<p>SSH into <code>us-test-01</code> and run:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+iperf -s #run in server mode
+</ql-code-block>
+<ol start="3">
+<li>
+<p>On <code>europe-test-01</code> SSH run this <code>iperf</code>:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+iperf -c us-test-01.us-central1-a #run in client mode, connection to eu1-vm
+</ql-code-block>
+<p>You will see some output like this:</p>
+<ql-code-block output="">
+------------------------------------------------------------
+Client connecting to eu-vm, TCP port 5001
+TCP window size: 45.0 KByte (default)
+------------------------------------------------------------
+</ql-code-block>
+<ql-code-block output="">
+[  3] local 10.20.0.2 port 35923 connected with 10.30.0.2 port 5001
+[ ID] Interval       Transfer     Bandwidth
+[  3]  0.0-10.0 sec   298 MBytes   249 Mbits/sec
+</ql-code-block>
+<ol start="4">
+<li>
+<p>On <code>us-test-01</code> use <strong>Ctrl + c</strong> to exit the server side when you're done.</p>
+</li>
+</ol>
+<h3>Between VMs within a region</h3>
+<p><strong>Optional exercise</strong></p>
+<p>Now you'll deploy another instance (<code>us-test-02</code>)in a different zone than <code>us-test-01</code>. You will see that within a region, the bandwidth is limited by the  <a href="https://cloud.google.com/compute/docs/networks-and-firewalls#egress_throughput_caps" target="_blank">2 Gbit/s per core</a> egress cap.</p>
+<ol>
+<li>
+<p>In Cloud Shell, create <code>us-test-02</code>:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud compute instances create us-test-02 \
+--subnet subnet-us-central \
+--zone us-central1-b \
+--tags ssh,http
+</ql-code-block>
+<ol start="2">
+<li>
+<p>SSH to <code>us-test-02</code> and install performance tools:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+sudo apt-get update
+sudo apt-get -y install traceroute mtr tcpdump iperf whois host dnsutils siege
+</ql-code-block>
+<p>Between regions you reach much lower limits, mostly due to limits on TCP window size and single stream performance. You can increase bandwidth between hosts by using other parameters, like UDP.</p>
+<ol start="3">
+<li>
+<p>On <code>europe-test-01</code> SSH run:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+iperf -s -u #iperf server side
+</ql-code-block>
+<ol start="4">
+<li>
+<p>On <code>us-test-01</code> SSH run:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+iperf -c europe-test-01.europe-west1-b -u -b 2G #iperf client side - send 2 Gbits/s
+</ql-code-block>
+<p>This should be able to achieve a higher speed between EU and US. Even higher speeds can be achieved by running a bunch of TCP <code>iperfs</code> in parallel. Let's test this.</p>
+<ol start="5">
+<li>
+<p>In the SSH window for <code>us-test-01</code> run:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+iperf -s
+</ql-code-block>
+<ol start="6">
+<li>
+<p>In the SSH window for <code>us-test-02</code> run:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+iperf -c us-test-01.us-central1-a -P 20
+</ql-code-block>
+<p>The combined bandwidth should be really close to the maximum achievable bandwidth.</p>
+<ol start="7">
+<li>Test a few more combinations. If you use Linux on your laptop you can test against your laptop as well. (You can also try  <a href="https://github.com/esnet/iperf" target="_blank">iperf3</a> which is available for  <a href="https://iperf.fr/iperf-download.php" target="_blank">many OSes</a>, but this is not part of the lab.)</li>
+</ol>
+<p>As you can see, to reach the maximum bandwidth, just running a single TCP stream (for example, file copy) is not sufficient; you need to have several TCP sessions in parallel. Reasons are: TCP parameters such as Window Size; and functions such as Slow Start.</p>
+<p>For more information on this and all other TCP/IP topics, refer to <a href="https://www.amazon.com/TCP-Ip-Illustrated-Volume-Protocols/dp/9332535957/ref=dp_ob_title_bk" target="_blank">TCP/IP Illustrated</a>.</p>
+<p>Tools like  <a href="https://github.com/eeertekin/bbcp" target="_blank">bbcp</a> can help to copy files as fast as possible by parallelizing transfers and using configurable window size.</p>
+<h2 id="step13">Task 9. Test your knowledge</h2>
+<p><ql-multiple-select-probe answerindices="[0, 1]" optiontitles='[
+"Auto mode",
+"Custom mode",
+"Legacy Mode",
+"All of these"
+]' shuffle="" stem="Which of the following subnet creation modes are supported by Google Cloud?">
+</ql-multiple-select-probe></p>
+<h2 id="step14">End your lab</h2>
+<p>When you have completed your lab, click <strong>End Lab</strong>. Your account and the resources you've used are removed from the lab platform.</p>
+<p>You will be given an opportunity to rate the lab experience. Select the applicable number of stars, type a comment, and then click <strong>Submit</strong>.</p>
+<p>The number of stars indicates the following:</p>
+<ul>
+<li>1 star = Very dissatisfied</li>
+<li>2 stars = Dissatisfied</li>
+<li>3 stars = Neutral</li>
+<li>4 stars = Satisfied</li>
+<li>5 stars = Very satisfied</li>
+</ul>
+<p>You can close the dialog box if you don't want to provide feedback.</p>
+<p>For feedback, suggestions, or corrections, please use the <strong>Support</strong> tab.</p>
+<h3>Take your next lab</h3>
+<p>Continue your learning about Networking in the Cloud with <a href="https://google.qwiklabs.com/catalog_lab/1031" target="_blank">Multiple VPC Networks</a>, or check out these suggestions:</p>
+<ul>
+<li><a href="https://google.qwiklabs.com/catalog_lab/368" target="_blank">Getting Started with Cloud KMS</a></li>
+<li><a href="https://google.qwiklabs.com/catalog_lab/486" target="_blank">Orchestrating the Cloud with Kubernetes</a></li>
+</ul>
+<p>And when you're ready, try out the <a href="https://google.qwiklabs.com/quests/31" target="_blank">Networking fundamentals in the Google Cloud</a> Quest!</p>
+<h3>Google Cloud training and certification</h3>
+<p>...helps you make the most of Google Cloud technologies. <a href="https://cloud.google.com/training/courses" target="_blank">Our classes</a> include technical skills and best practices to help you get up to speed quickly and continue your learning journey. We offer fundamental to advanced level training, with on-demand, live, and virtual options to suit your busy schedule. <a href="https://cloud.google.com/certification/" target="_blank">Certifications</a> help you validate and prove your skill and expertise in Google Cloud technologies.</p>
+<p><strong>Manual last updated June 19, 2023</strong></p>
+<p><strong>Lab last tested June 19, 2023</strong></p>
+<p>Copyright 2023 Google LLC All rights reserved. Google and the Google logo are trademarks of Google LLC. All other company and product names may be trademarks of the respective companies with which they are associated.</p>
+
+</div>
+</div>
+
+
+<div class='lab-content__end-lab-button js-end-lab-button-container hidden'>
+<ql-lab-control-button class='js-end-lab-button' running></ql-lab-control-button>
+</div>
+<!-- / TODO: Move recommendations into the end lab modal -->
+<div class='lab-content__renderable-instructions'>
+<div class='lab-content__recommendation'>
+<!-- # TODO: Change classes so that this doesn't stack vertically -->
+<section class='upcoming-cards'>
+<h2 class='ql-headline-4'>Continue questing</h2>
+<div class='activity-cards'>
+<ql-activity-card aria-label='Migrate to Cloud SQL for PostgreSQL using Database Migration Service' name='Migrate to Cloud SQL for PostgreSQL using Database Migration Service' path='/focuses/23649?parent=catalog' progress='0.0' type='lab'></ql-activity-card>
+
+</div>
+</section>
+
+</div>
+
+</div>
+</ql-drawer-content>
+<ql-drawer end id='outline-drawer' open slot='drawer' width='320'>
+<div aria-label='Lab Table of Contents' role='navigation'>
+<ul class='lab-content__outline js-lab-content-outline'>
+<li><a href="#step1">GSP016</a></li><li><a href="#step2">Overview</a></li><li><a href="#step3">Setup and requirements</a></li><li><a href="#step4">Google Cloud Network Concepts</a></li><li><a href="#step5">Task 1. Review the default network</a></li><li><a href="#step6">Task 2. Creating a custom network</a></li><li><a href="#step7">Task 3. Create custom network with the console</a></li><li><a href="#step8">Task 4. Create custom network with Cloud Shell</a></li><li><a href="#step9">Task 5. Adding firewall rules</a></li><li><a href="#step10">Task 6. Connecting to your lab VMs and checking latency</a></li><li><a href="#step11">Task 7. Traceroute and Performance testing</a></li><li><a href="#step12">Task 8. Use iperf to test performance</a></li><li><a href="#step13">Task 9. Test your knowledge</a></li><li><a href="#step14">End your lab</a></li>
+</ul>
+</div>
+</ql-drawer>
+</ql-drawer-container>
+</ql-drawer-content>
+</ql-drawer-container>
+
+
+
+</div>
+</main>
+
+<span class='hidden' id='flash-sibling-before'></span>
+<ql-snackbar></ql-snackbar>
+
+
+<div class='modal fade' id='lab-details-modal'>
+<div class='modal-container'>
+<div class='modal-content mdl-shadow--24dp'>
+<div class='modal-body'>
+<p class='l-mbm'>
+In this lab you will learn how to perform basic networking tasks on Google Cloud Platform by setting up a network and 3 subnetworks; and how GCP might differ from an on-premises setup.
+</p>
+<p>
+This lab is included in these quests:
+<a href="/quests/121">Deploy and Manage Cloud Environments with Google Cloud</a>, <a href="/quests/24">Cloud Architecture</a>.
+If you complete this lab you&#39;ll receive credit for it when you enroll in one of these quests.
+</p>
+<p class='small-label l-mbs'>
+<strong>
+Duration:
+</strong>
+0m setup
+&middot;
+75m access
+&middot;
+75m completion
+</p>
+<p class='small-label l-mbs'>
+<strong>AWS Region:</strong>
+[] <strong></strong>
+</p>
+<p class='small-label l-mbs'>
+<span><strong>Levels: </strong>introductory</span>
+</p>
+<p class='small-label'>
+<strong>
+Permalink:
+</strong>
+<a href="https://partner.cloudskillsboost.google/catalog_lab/311">https://partner.cloudskillsboost.google/catalog_lab/311</a>
+</p>
+</div>
+<div class='modal-actions'>
+<a class='button button--text' data-dismiss='modal'>
+Got It
+</a>
+</div>
+
+
+</div>
+</div>
+<iframe class='l-ie-iframe-fix' tabindex='-1' title='modal'></iframe>
+</div>
+<ql-dialog headline='How satisfied are you with this lab?&lt;span aria-hidden=&quot;true&quot;&gt;*&lt;/span&gt;' id='lab-review-dialog'>
+<form class="simple_form js-lab-review-form" id="edit_lab_review_29760159" action="/lab_reviews/29760159" accept-charset="UTF-8" data-remote="true" method="post"><input name="utf8" type="hidden" value="&#x2713;" autocomplete="off" /><input type="hidden" name="_method" value="patch" autocomplete="off" /><div aria-labelledby='lab-review-dialog' aria-required='true' aria-valuemax='5' aria-valuemin='0' aria-valuenow='5' class='rateit js-rateit' data-rateit-max='5' data-rateit-min='0' data-rateit-resetable='false' data-rateit-step='1' data-rateit-value='5' id='lab-review-rateit' role='slider' tabindex='0'></div>
+<div class='l-mtm'>
+
+<div class="control-group hidden lab_review_user_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" value="11061062" name="lab_review[user_id]" id="lab_review_user_id" /></div></div>
+<div class="control-group hidden lab_review_classroom_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" name="lab_review[classroom_id]" id="lab_review_classroom_id" /></div></div>
+<div class="control-group hidden lab_review_lab_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" value="311" name="lab_review[lab_id]" id="lab_review_lab_id" /></div></div>
+<div class="control-group hidden lab_review_focus_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" name="lab_review[focus_id]" id="lab_review_focus_id" /></div></div>
+<div class="control-group hidden lab_review_rating"><div class="controls"><input class="hidden js-rating-input" autocomplete="off" type="hidden" value="2" name="lab_review[rating]" id="lab_review_rating" /></div></div>
+<div class="control-group text optional lab_review_comment"><label class="text optional control-label" for="lab_review_comment">Additional Comments</label><div class="controls"><textarea class="text optional" name="lab_review[comment]" id="lab_review_comment">
+</textarea></div></div>
+</div>
+</form><ql-button disabled id='submit' label='Submit' slot='action' text></ql-button>
+</ql-dialog>
+
+<ql-dialog headline='All done? If you end this lab, you will lose all your work. You may not be able to restart the lab if there is a quota limit. Are you sure you want to end this lab?' icon='error_outline' id='js-lab-are-you-sure-dialog'>
+<ql-button id='js-are-you-sure-button' label='Submit' slot='action' text></ql-button>
+</ql-dialog>
+
+
+<script>
+  $(function() {
+    ql.initMaterialInputs();
+    initChosen();
+    initSearch();
+    initTabs();
+    ql.list.init();
+    ql.favoriting.init();
+    ql.header.myAccount.init();
+    initTooltips();
+    ql.autocomplete.init();
+    ql.modals.init();
+    ql.toggleButtons.init();
+    ql.analytics.init();
+    ql.favoriting.init();
+  ql.chat.init();
+  ql.jumpContent.init();
+  ql.labControlPanel.addRecaptchaErrorHandler();
+  initLabContent();
+  ql.labOutline.links.init();
+  initLabReviewModal();
+  initLabReviewTranslations( {"star_amount_1":"1 of 5 stars","star_amount_2":"2 of 5 stars","star_amount_3":"3 of 5 stars","star_amount_4":"4 of 5 stars","star_amount_5":"5 of 5 stars"} )
+  ql.labAssessment.init();
+  ql.labData.init();
+  initLabTranslations( {"are_you_sure":"All done? If you end this lab, you will lose all your work. You may not be able to restart the lab if there is a quota limit. Are you sure you want to end this lab?","in_progress":"*In Progress*","ending":"*Ending*","starting":"*Starting, please wait*","end_concurrent_labs":"Sorry, you can only run one lab at a time. To start this lab, please confirm that you want all of your existing labs to end.","copied":"Copied","no_resource":"Error retrieving resource.","no_support":"No Support","mac_press":"Press ⌘-C to copy","thanks_review":"Thanks for reviewing this lab.","windows_press":"Press Ctrl-C to copy","days":"days"} );
+  ql.labRun.init();
+  ql.navPanel.init();
+  ql.navigation.init();
+  
+  });
+</script>
+
+</body>
+</html>
+

@@ -1,0 +1,1297 @@
+
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<title>Managing Deployments Using Kubernetes Engine | Google Cloud Skills Boost for Partners</title>
+<meta name="action-cable-url" content="/cable" />
+<script>
+//<![CDATA[
+window.gon={};gon.deployment="googlecourses-run";
+//]]>
+</script>
+<script>
+  (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer',"GTM-5XSKHDX");
+</script>
+<script src="https://cdn.qwiklabs.com/assets/hallofmirrors/polyfills/webcomponents-loader-8583b47b01e40e6ea7bf1ad443a20b7e79bbdd5eafac009806a228c91a97282c.js"></script>
+<script src="https://cdn.qwiklabs.com/assets/vendor-beb958bea8eff6a4ad4cf8f36a0a676817a4857e214b17ae983796071a4a816d.js"></script>
+<script src="https://cdn.qwiklabs.com/assets/application-8194cda6ef3c11dc4405ed62cf7fc7697cbe39d472be22a7c9d4bd377a7b77f0.js"></script>
+<script src="https://cdn.qwiklabs.com/assets/hallofmirrors/hallofmirrors-f8d9fcf289db0acb0062699ca48080cfaf9b1703f4acd2d7d8bacd8bb0bedf3d.js"></script>
+<!--[if lt IE 9]>
+<script src='http://html5shim.googlecode.com/svn/trunk/html5.js' type='text/javascript'></script>
+<![endif]-->
+<!--[endif]>  <![endif]-->
+<script id='ze-snippet' src='https://static.zdassets.com/ekr/snippet.js?key=511e4158-0aec-4e3c-b2e6-4daa1769f51e'></script>
+<script>
+  ql.perfTest.init();
+</script>
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="MRKgyrQpC0mfGIZdWOoE0yYBQpK2iwMsd+eQqsUMApaSiGEdPSM5zcTEiR3/iHRESZHDdb9UhV/BORJlZPtaAA==" />
+<meta content='width=device-width, initial-scale=1.0, user-scalable=yes' name='viewport'>
+<meta content='1rRsY0INj8RvwB5EF5pwdxt2A2P9aDgAlsICaJ0d5w0' name='google-site-verification'>
+<meta content='#3681E4' property='msapplication-TileColor'>
+<meta content='/favicon-144.png' property='msapplication-TileImage'>
+<meta content='[{&quot;id&quot;:&quot;recaptcha_experiment&quot;,&quot;optimize_id&quot;:&quot;dpViOcLkT3qS4TvL2mRojA&quot;,&quot;title&quot;:&quot;No Recaptcha shown for trusted users&quot;,&quot;variant_index&quot;:0,&quot;variant&quot;:&quot;original&quot;}]' name='active-experiments'>
+<meta content='{&quot;userId&quot;:11061062,&quot;experimentIds&quot;:[&quot;programs&quot;,&quot;chat_off_for_signed_out_users&quot;,&quot;course_upgrade&quot;,&quot;program_learning_assignment&quot;,&quot;perf_test&quot;,&quot;program_groups&quot;,&quot;teams&quot;,&quot;canonical_domain_redirect&quot;,&quot;program_resources&quot;,&quot;used_in&quot;,&quot;community_forum&quot;,&quot;enforce_codebuild_verdicts&quot;,&quot;peer_assignment&quot;,&quot;oauth_risc_shutoff&quot;,&quot;show_annual_purchase_now&quot;,&quot;alexandria_show_bundle_errors&quot;]}' name='help-api-product-data'>
+<meta content='{&quot;groupIds&quot;:[&quot;non_suadmins&quot;,&quot;students&quot;,&quot;non_organization&quot;,&quot;non_program&quot;]}' name='help-api-custom-data'>
+<meta content='Dev Ops best practices make use of multiple deployments to manage application deployment scenarios. This lab provides practice in scaling and managing containers to accomplish common scenarios where multiple heterogeneous deployments are used.' name='description'>
+<meta content='Qwiklabs' name='author'>
+<meta content='Managing Deployments Using Kubernetes Engine | Google Cloud Skills Boost for Partners' property='og:title'>
+<meta content='website' property='og:type'>
+<meta content='/favicon-144.png' property='og:image'>
+<meta content='Qwiklabs' property='og:site_name'>
+<meta content='Dev Ops best practices make use of multiple deployments to manage application deployment scenarios. This lab provides practice in scaling and managing containers to accomplish common scenarios where multiple heterogeneous deployments are used.' property='og:description'>
+<meta content='/qwiklabs_logo_900x887.png' property='og:logo' size='900x887'>
+<meta content='/qwiklabs_logo_994x187.png' property='og:logo' size='994x187'>
+
+
+<meta property="og:url" content="https://partner.cloudskillsboost.google/focuses/11576?parent=catalog" /><link href="https://partner.cloudskillsboost.google/focuses/11576?parent=catalog" rel="canonical" />
+<link color='#3681E4' href='/favicon-svg.svg' rel='mask-icon'>
+<link href='/favicon-180.png' rel='apple-touch-icon-precomposed'>
+<link href='https://cdn.qwiklabs.com/Vag5GK2J6rS6843Qvg8TQJ1kEbAsEmQoF0%2BdLRfcLRE%3D' rel='shortcut icon' type='image/x-icon'>
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oswald:400|Roboto+Mono:400,700|Roboto:300,400,500,700|Google+Sans:300,400,500,700|Google+Sans+Display:400|Material+Icons|Google+Material+Icons" media="screen" />
+
+<link rel="stylesheet" href="https://cdn.qwiklabs.com/assets/application-9c3b65b21d70e11e97ae9ab48dd150018a15c36cd951e52fe5574dfa177e8bc8.css" media="all" />
+
+
+<style>
+  :root {
+    --primary-text-on-surface-color: #1a73e8;
+    --primary-text-on-surface-color-dark: #1568d6;
+    --primary-text-on-surface-color-darker: #135ec1;
+    --primary-text-on-surface-color-darkest: #1154ac;
+    --primary-surface-color: #1a73e8;
+    --primary-surface-color-rgb: 26,115,232;
+    --primary-surface-color-light: #d1e3fa;
+    --primary-surface-color-lightest: #e8f1fd;
+    --text-on-primary-color: #ffffff;
+    --accent-text-on-surface-color: #f29900;
+    --accent-surface-color: #f9ab00;
+    --accent-surface-color-rgb: 249,171,0;
+    --accent-surface-color-light: #ffefcc;
+    --text-on-accent-color: #202124;
+  }
+</style>
+
+<style>
+  :root {
+    --navbar-height: 112px;
+  }
+</style>
+
+
+
+</head>
+<body class='lab-show l-full no-nav application-new focuses focuses-show lab-show l-full no-nav '>
+<div class='header-container'>
+<div class='header'>
+<ql-toolbar jumpEnabled>
+<div class='header__title' slot='title'>
+<ql-icon-button label="Back" href="https://partner.cloudskillsboost.google/quests/119" id="515f2977550cb84b" target="_self" tip="Back">arrow_back</ql-icon-button>
+<h1 class='ql-headline-6'>Managing Deployments Using Kubernetes Engine</h1>
+</div>
+<div class='header__actions' slot='action'>
+<ql-icon-button icon='share' id='share_572' label='Share on social media' tip='Share'></ql-icon-button>
+<ql-menu for='share_572'>
+<ql-menu-item data-analytics-action='Shared to LinkedIn Feed.' data-analytics-category='Lab' data-analytics-label='Managing Deployments Using Kubernetes Engine' href='https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fpartner.cloudskillsboost.google%2Fcatalog_lab%2F572%3Futm_medium%3Dsocial%26utm_source%3Dlinkedin%26utm_campaign%3Dql-social-share' icon='post_linkedin' label='Share on LinkedIn Feed' role='link' target='_blank'>
+<span class='label'>Share on LinkedIn Feed</span>
+</ql-menu-item>
+
+<ql-menu-item data-analytics-action='Shared to Twitter.' data-analytics-category='Lab' data-analytics-label='Managing Deployments Using Kubernetes Engine' href='https://twitter.com/intent/tweet?text=Learn%20cloud%20tech%20through%20hands-on%20training%20on%20%23Qwiklabs%21&amp;url=https%3A%2F%2Fpartner.cloudskillsboost.google%2Fcatalog_lab%2F572%3Futm_medium%3Dsocial%26utm_source%3Dtwitter%26utm_campaign%3Dql-social-share&amp;hashtags=' icon='post_twitter' label='Twitter' role='link' target='_blank'>
+<span class='label'>Twitter</span>
+</ql-menu-item>
+
+<ql-menu-item data-analytics-action='Shared to Facebook.' data-analytics-category='Lab' data-analytics-label='Managing Deployments Using Kubernetes Engine' href='https://facebook.com/sharer.php?display=popup&amp;u=https%3A%2F%2Fpartner.cloudskillsboost.google%2Fcatalog_lab%2F572%3Futm_medium%3Dsocial%26utm_source%3Dfacebook%26utm_campaign%3Dql-social-share' icon='post_facebook' label='Facebook' role='link' target='_blank'>
+<span class='label'>Facebook</span>
+</ql-menu-item>
+
+<ql-copyable-input label='Share Link' value='https://partner.cloudskillsboost.google/catalog_lab/572'></ql-copyable-input>
+</ql-menu>
+
+<ql-icon-button class='icon-button js-favorite-button favorite-button' data-id='11576' data-name='Managing Deployments Using Kubernetes Engine' data-type='CatalogItem' href='/favorite.json?item_id=11576&amp;item_type=CatalogItem' id='CatalogItem-11576-favorite-button' label='Add to favorites' tip='Add to favorites'>
+favorite_border
+</ql-icon-button>
+
+
+
+<ql-icon-button id='control-panel-target' style='display: none;'>
+dashboard
+</ql-icon-button>
+<ql-menu for='control-panel-target' id='control-panel-menu'></ql-menu>
+<ql-icon-button class='mobile-hide' icon='help_outline' id='help-menu-button' label='Open help menu' tip='Help'></ql-icon-button>
+<ql-menu for='help-menu-button' id='help-menu'>
+<ql-menu-item data-analytics-action='opened_help' data-analytics-label='lab' label='Help Center' onclick='hallofmirrors.helpService.startHelp({&quot;productData&quot;:{&quot;userId&quot;:11061062},&quot;context&quot;:&quot;lab&quot;})'></ql-menu-item>
+<ql-menu-item href='mailto:support@qwiklabs.com' label='Email support'></ql-menu-item>
+<ql-menu-item label='Chat support' onClick='ql.chat.open()'></ql-menu-item>
+</ql-menu>
+
+<ql-icon-button class='mobile-hide' icon='language' id='language' label='Select your language preference' tip='Language'></ql-icon-button>
+<ql-menu for='language'>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='ar' href='/focuses/11576?locale=ar&amp;parent=catalog' label='العربية‬‎' lang='ar'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='de' href='/focuses/11576?locale=de&amp;parent=catalog' label='Deutsch' lang='de'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='en' href='/focuses/11576?locale=en&amp;parent=catalog' label='English' lang='en'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='es' href='/focuses/11576?locale=es&amp;parent=catalog' label='español (Latinoamérica)' lang='es'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='fr' href='/focuses/11576?locale=fr&amp;parent=catalog' label='français' lang='fr'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='fr_CA' href='/focuses/11576?locale=fr_CA&amp;parent=catalog' label='français (Canada)' lang='fr-CA'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='he' href='/focuses/11576?locale=he&amp;parent=catalog' label='עברית' lang='he'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='id' href='/focuses/11576?locale=id&amp;parent=catalog' label='bahasa Indonesia' lang='id'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='it' href='/focuses/11576?locale=it&amp;parent=catalog' label='Italiano' lang='it'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='ja' href='/focuses/11576?locale=ja&amp;parent=catalog' label='日本語' lang='ja'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='ko' href='/focuses/11576?locale=ko&amp;parent=catalog' label='한국어' lang='ko'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='pl' href='/focuses/11576?locale=pl&amp;parent=catalog' label='Polski' lang='pl'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='pt_BR' href='/focuses/11576?locale=pt_BR&amp;parent=catalog' label='português (Brasil)' lang='pt-BR'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='pt_PT' href='/focuses/11576?locale=pt_PT&amp;parent=catalog' label='português (Portugal)' lang='pt-PT'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='ru' href='/focuses/11576?locale=ru&amp;parent=catalog' label='русский' lang='ru'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='tr' href='/focuses/11576?locale=tr&amp;parent=catalog' label='Türkçe' lang='tr'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='uk' href='/focuses/11576?locale=uk&amp;parent=catalog' label='український' lang='uk'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='zh' href='/focuses/11576?locale=zh&amp;parent=catalog' label='简体中文' lang='zh'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='zh_TW' href='/focuses/11576?locale=zh_TW&amp;parent=catalog' label='繁體中文' lang='zh-TW'></ql-menu-item>
+</ql-menu>
+
+<ql-icon-button id='my_account' label='My account' tip='My account'>
+<ql-avatar></ql-avatar>
+</ql-icon-button>
+<ql-menu for='my_account' id='my_account_menu' style='max-height: 640px'>
+<div class='my-account-menu'>
+<ql-avatar class='l-mtl l-mbl' size='120'></ql-avatar>
+<div class='my-account-menu__user-info l-mbl'>
+<h4 class='ql-subhead-1'>Ausaf Khan</h4>
+<p class='ql-body-2 text--light'>ausaf.khan@rakuten.com</p>
+<p class='ql-body-2 text--light'>
+</p>
+<a class="text--green ql-subhead-2" href="/my_account/payments"><ql-chip positive>
+0 Credits
+</ql-chip>
+</a></div>
+<div class='buttons l-mbl'>
+<a class="button button--hairline l-mrm" id="profile" href="/public_profiles/1d61c1a3-8a07-4495-8abe-b57e519718e6">Public Profile</a>
+<a class="button button--hairline" id="settings" href="/my_account/profile">Settings</a>
+</div>
+<hr>
+<ql-button data-analytics-action='clicked_sign_out' href='/users/sign_out' method='delete'>
+Sign Out
+</ql-button>
+<div class='privacy l-mtl'>
+<a target="_blank" class="ql-caption text--light" href="/privacy_policy">Privacy</a>
+<span class='ql-caption text--light l-mls l-mrs'>&middot;</span>
+<a class="ql-caption text--light" href="/terms_of_service">Terms</a>
+</div>
+</div>
+</ql-menu>
+
+</div>
+</ql-toolbar>
+
+</div>
+</div>
+
+<nav class='nav-panel js-nav-panel'>
+<div class='nav-panel__logo'>
+<div class="custom-logo"><img alt="Google Cloud Skills Boost for Partners" height="24" aria-label="Google Cloud Skills Boost for Partners" src="https://cdn.qwiklabs.com/PGyhmgS3zZncIEGywnx5UXsKwepRRFQ9BhAg%2FWHNrlQ%3D" /></div>
+</div>
+<nav class='ql-sidenav'>
+<ql-sidenav-item href='/' icon='home' label='Paths'></ql-sidenav-item>
+
+<ql-sidenav-item active href='/catalog' icon='school' label='Explore'></ql-sidenav-item>
+
+<ql-sidenav-item href='/profile' icon='event_note' label='Profile'></ql-sidenav-item>
+
+</nav>
+
+</nav>
+<div class='nav-panel__overlay js-nav-toggle'></div>
+
+<main class='js-main' id='jump-content'>
+<div class='l-main-wrapper' id='main-wrapper'>
+
+
+
+
+<div class='lab-assessment__tab js-open-lab-assessment-panel'>
+<button class='js-lab-assessment-total-score'>
+—/100
+</button>
+</div>
+<div aria-labelledby='lab-assessment-checkpoint' class='lab-assessment__panel js-lab-assessment-panel' role='dialog'>
+<div class='lab-assessment__panel__header'>
+<h4 id='lab-assessment-checkpoint'>Checkpoints</h4>
+<ql-icon-button class='js-close-lab-assessment-panel' icon='arrow_forward' label='Close dialog'></ql-icon-button>
+</div>
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Create a Kubernetes cluster and deployments (Auth, Hello, and Frontend)
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button class='js-show-run-step-button' description='Create a Kubernetes cluster and deployments (Auth, Hello, and Frontend)' step_no='1'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-1'>
+</span>
+/ 50
+</p>
+</div>
+</div>
+
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Canary Deployment
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button class='js-show-run-step-button' description='Canary Deployment' step_no='2'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-2'>
+</span>
+/ 50
+</p>
+</div>
+</div>
+
+</div>
+<ql-drawer-container class='js-lab-state' data-analytics-payload='{&quot;label&quot;:&quot;Managing Deployments Using Kubernetes Engine&quot;,&quot;lab_name&quot;:&quot;Managing Deployments Using Kubernetes Engine&quot;,&quot;classroom_name&quot;:null,&quot;deployment&quot;:&quot;googlecourses-run&quot;}' data-credits='0.0' data-focus-id='11576' data-lab-billing-limit='0.0' data-lab-duration='3600' data-parent='catalog' data-recaptcha-enabled id='lab-container'>
+<ql-drawer id='terminal-drawer' slot='drawer' style='width: calc(100% - 480px)'>
+<iframe allow='clipboard-read' class='terminal' id='embedded-resource'></iframe>
+</ql-drawer>
+<ql-drawer-content class='js-lab-wrapper' id='lab-content' slot='drawer-content'>
+<ql-drawer-container id='lab-content-container'>
+<ql-drawer id='control-panel-drawer' open slot='drawer' width='320'>
+<ql-lab-control-panel class='ql-lab-control-panel__max-height control-panel js-lab-control-panel' connectionFiles='[]' labControlButton='{&quot;disabled&quot;:false,&quot;pending&quot;:false,&quot;running&quot;:false}' labDetails='[]' labTimer='{&quot;ticking&quot;:false,&quot;secondsRemaining&quot;:3600}' studentResources='[]'>
+<script src="https://www.recaptcha.net/recaptcha/api.js?render=6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr"   ></script>
+        <script>
+          // Define function so that we can call it again later if we need to reset it
+          // This executes reCAPTCHA and then calls our callback.
+          function executeRecaptchaForStartLab() {
+            grecaptcha.ready(function() {
+              grecaptcha.execute('6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr', {action: 'start_lab'}).then(function(token) {
+                setInputWithRecaptchaResponseTokenForStartLab('g-recaptcha-response-data-start-lab', token)
+              });
+            });
+          };
+          // Invoke immediately
+          executeRecaptchaForStartLab()
+
+          // Async variant so you can await this function from another async function (no need for
+          // an explicit callback function then!)
+          // Returns a Promise that resolves with the response token.
+          async function executeRecaptchaForStartLabAsync() {
+            return new Promise((resolve, reject) => {
+             grecaptcha.ready(async function() {
+                resolve(await grecaptcha.execute('6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr', {action: 'start_lab'}))
+              });
+            })
+          };
+
+                    var setInputWithRecaptchaResponseTokenForStartLab = function(id, token) {
+            var element = document.getElementById(id);
+            element.value = token;
+          }
+
+        </script>
+<input type="hidden" name="g-recaptcha-response-data[start_lab]" id="g-recaptcha-response-data-start-lab" data-sitekey="6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr" class="g-recaptcha g-recaptcha-response "/>
+
+<div aria-live='polite' class='hidden' id='recaptcha-v2-start-lab' slot='recaptcha'>
+<script src="https://www.recaptcha.net/recaptcha/api.js" async defer ></script>
+<div data-sitekey="6LeOI8IUAAAAAPkHlMAE9NReCD_1WD81iYlBlCnV" data-callback="recaptchaComplete" data-expired-callback="expireV2Token" class="g-recaptcha "></div>
+          <noscript>
+            <div>
+              <div style="width: 302px; height: 422px; position: relative;">
+                <div style="width: 302px; height: 422px; position: absolute;">
+                  <iframe
+                    src="https://www.recaptcha.net/recaptcha/api/fallback?k=6LeOI8IUAAAAAPkHlMAE9NReCD_1WD81iYlBlCnV"
+                    name="ReCAPTCHA"
+                    style="width: 302px; height: 422px; border-style: none; border: 0; overflow: hidden;">
+                  </iframe>
+                </div>
+              </div>
+              <div style="width: 300px; height: 60px; border-style: none;
+                bottom: 12px; left: 25px; margin: 0px; padding: 0px; right: 25px;
+                background: #f9f9f9; border: 1px solid #c1c1c1; border-radius: 3px;">
+                <textarea id="g-recaptcha-response" name="g-recaptcha-response"
+                  class="g-recaptcha-response"
+                  style="width: 250px; height: 40px; border: 1px solid #c1c1c1;
+                  margin: 10px 25px; padding: 0px; resize: none;">
+                </textarea>
+              </div>
+            </div>
+          </noscript>
+
+</div>
+</ql-lab-control-panel>
+</ql-drawer>
+<ql-drawer-content id='lab-instructions' slot='drawer-content'>
+<ql-snackbar id='alert-snackbar'></ql-snackbar>
+<div class='alert alert--fake js-alert'>
+<p class='alert__message js-alert-message' role='alert'></p>
+<ql-icon-button class='alert__close js-alert-close' icon='clear'></ql-icon-button>
+<iframe class='l-ie-iframe-fix' tabindex='-1'></iframe>
+</div>
+<div class='lab-content__renderable-instructions js-lab-content'>
+<div class='lab-preamble'>
+<h1 class='lab-preamble__title'>
+Managing Deployments Using Kubernetes Engine
+</h1>
+<div class='lab-preamble__details subtitle-headline-1'>
+<span>1 hour </span>
+<span>Free</span>
+<div class='lab__rating'>
+<a aria-label="Lab Reviews" href="/focuses/11576/reviews?parent=catalog"><div class='rateit' data-rateit-readonly='true' data-rateit-value='4.4852'></div>
+
+</a><ql-button aria-label='Rate Lab' id='rate-lab-btn' label='Rate Lab' text></ql-button>
+</div>
+</div>
+</div>
+<div class='lab-outline-place-holder'></div>
+
+<div class='markdown-lab-instructions js-markdown-instructions' id='markdown-lab-instructions'>
+
+<h2 id="step1">GSP053</h2>
+<p><img alt="Google Cloud self-paced labs logo" src="https://cdn.qwiklabs.com/GMOHykaqmlTHiqEeQXTySaMXYPHeIvaqa2qHEzw6Occ%3D"></p>
+<h2 id="step2">Overview</h2>
+<p>Dev Ops practices will regularly make use of multiple deployments to manage application deployment scenarios such as "Continuous deployment", "Blue-Green deployments", "Canary deployments" and more. This lab is to provide practice in scaling and managing containers so you can accomplish these common scenarios where multiple heterogeneous deployments are being used.</p>
+<h3><strong>What you'll learn</strong></h3>
+<ul>
+<li>
+<p>Practice with kubectl tool</p>
+</li>
+<li>
+<p>Create deployment yaml files</p>
+</li>
+<li>
+<p>Launch, update, and scale deployments</p>
+</li>
+<li>
+<p>Practice with updating deployments and deployment styles</p>
+</li>
+</ul>
+<h3>Prerequisites</h3>
+<p>To maximize your learning, the following is recommended for this lab:</p>
+<ul>
+<li>
+<p>You've taken these Google Cloud Skills Boost labs:</p>
+<ul>
+<li><a href="https://google.qwiklabs.com/catalog_lab/944" target="_blank">Introduction to Docker</a></li>
+<li><a href="https://google.qwiklabs.com/catalog_lab/468" target="_blank">Hello Node Kubernetes</a></li>
+</ul>
+</li>
+<li>
+<p>You have Linux System Administration skills.</p>
+</li>
+<li>
+<p>You understand DevOps theory: concepts of continuous deployment.</p>
+</li>
+</ul>
+<h2 id="step3">Introduction to deployments</h2>
+<p>Heterogeneous deployments typically involve connecting two or more distinct infrastructure environments or regions to address a specific technical or operational need. Heterogeneous deployments are called "hybrid", "multi-cloud", or "public-private", depending upon the specifics of the deployment.</p>
+<p>For the purposes of this lab, heterogeneous deployments include those that span regions within a single cloud environment, multiple public cloud environments (multi-cloud), or a combination of on-premises and public cloud environments (hybrid or public-private).</p>
+<p>Various business and technical challenges can arise in deployments that are limited to a single environment or region:</p>
+<ul>
+<li>
+<strong>Maxed out resources</strong>: In any single environment, particularly in on-premises environments, you might not have the compute, networking, and storage resources to meet your production needs.</li>
+<li>
+<strong>Limited geographic reach</strong>: Deployments in a single environment require people who are geographically distant from one another to access one deployment. Their traffic might travel around the world to a central location.</li>
+<li>
+<strong>Limited availability</strong>: Web-scale traffic patterns challenge applications to remain fault-tolerant and resilient.</li>
+<li>
+<strong>Vendor lock-in</strong>: Vendor-level platform and infrastructure abstractions can prevent you from porting applications.</li>
+<li>
+<strong>Inflexible resources</strong>: Your resources might be limited to a particular set of compute, storage, or networking offerings.</li>
+</ul>
+<p>Heterogeneous deployments can help address these challenges, but they must be architected using programmatic and deterministic processes and procedures. One-off or ad-hoc deployment procedures can cause deployments or processes to be brittle and intolerant of failures. Ad-hoc processes can lose data or drop traffic. Good deployment processes must be repeatable and use proven approaches for managing provisioning, configuration, and maintenance.</p>
+<p>Three common scenarios for heterogeneous deployment are multi-cloud deployments, fronting on-premises data, and continuous integration/continuous delivery (CI/CD) processes.</p>
+<p>The following exercises practice some common use cases for heterogeneous deployments, along with well-architected approaches using Kubernetes and other infrastructure resources to accomplish them.</p>
+<h2 id="step4">Setup and requirements</h2>
+<h3>Before you click the Start Lab button</h3>
+<p>Read these instructions. Labs are timed and you cannot pause them. The timer, which starts when you click <strong>Start Lab</strong>, shows how long Google Cloud resources will be made available to you.</p>
+<p>This hands-on lab lets you do the lab activities yourself in a real cloud environment, not in a simulation or demo environment. It does so by giving you new, temporary credentials that you use to sign in and access Google Cloud for the duration of the lab.</p>
+<p>To complete this lab, you need:</p>
+<ul>
+<li>Access to a standard internet browser (Chrome browser recommended).</li>
+</ul>
+<ql-warningbox>
+<strong>Note:</strong> Use an Incognito or private browser window to run this lab. This prevents any conflicts between your personal account and the Student account, which may cause extra charges incurred to your personal account.
+</ql-warningbox>
+<ul>
+<li>Time to complete the lab---remember, once you start, you cannot pause a lab.</li>
+</ul>
+<ql-warningbox>
+<strong>Note:</strong> If you already have your own personal Google Cloud account or project, do not use it for this lab to avoid extra charges to your account.
+</ql-warningbox>
+<h3>How to start your lab and sign in to the Google Cloud Console</h3>
+<ol>
+<li>
+<p>Click the <strong>Start Lab</strong> button. If you need to pay for the lab, a pop-up opens for you to select your payment method.
+On the left is the <strong>Lab Details</strong> panel with the following:</p>
+<ul>
+<li>The <strong>Open Google Console</strong> button</li>
+<li>Time remaining</li>
+<li>The temporary credentials that you must use for this lab</li>
+<li>Other information, if needed, to step through this lab</li>
+</ul>
+</li>
+<li>
+<p>Click <strong>Open Google Console</strong>.
+The lab spins up resources, and then opens another tab that shows the <strong>Sign in</strong> page.</p>
+<p><strong><em>Tip:</em></strong> Arrange the tabs in separate windows, side-by-side.</p>
+<ql-infobox>
+<strong>Note: </strong>If you see the <strong>Choose an account</strong> dialog, click <strong>Use Another Account</strong>.        
+ </ql-infobox>
+</li>
+<li>
+<p>If necessary, copy the <strong>Username</strong> from the <strong>Lab Details</strong> panel and paste it into the <strong>Sign in</strong> dialog. Click <strong>Next</strong>.</p>
+</li>
+<li>
+<p>Copy the <strong>Password</strong> from the <strong>Lab Details</strong> panel and paste it into the <strong>Welcome</strong> dialog. Click <strong>Next</strong>.</p>
+<ql-infobox>
+<strong>Important: </strong>You must use the credentials from the left panel. Do not use your Google Cloud Skills Boost credentials. 
+ </ql-infobox>
+<ql-warningbox>
+<strong>Note: </strong>Using your own Google Cloud account for this lab may incur extra charges.
+ </ql-warningbox>
+</li>
+<li>
+<p>Click through the subsequent pages:</p>
+<ul>
+<li>Accept the terms and conditions.</li>
+<li>Do not add recovery options or two-factor authentication (because this is a temporary account).</li>
+<li>Do not sign up for free trials.</li>
+</ul>
+</li>
+</ol>
+<p>After a few moments, the Cloud Console opens in this tab.</p>
+<ql-infobox>
+<strong>Note:</strong> You can view the menu with a list of Google Cloud Products and Services by clicking the <strong>Navigation menu</strong> at the top-left.
+<img alt="Navigation menu icon" src="https://cdn.qwiklabs.com/nUxFb6oRFr435O3t6V7WYJAjeDFcrFb16G9wHWp5BzU%3D">
+</ql-infobox>
+<h3>Activate Cloud Shell</h3>
+<p>Cloud Shell is a virtual machine that is loaded with development tools. It offers a persistent 5GB home directory and runs on the Google Cloud. Cloud Shell provides command-line access to your Google Cloud resources.</p>
+<ol>
+<li>Click <strong>Activate Cloud Shell</strong> <img alt="Activate Cloud Shell icon" src="https://cdn.qwiklabs.com/ep8HmqYGdD%2FkUncAAYpV47OYoHwC8%2Bg0WK%2F8sidHquE%3D"> at the top of the Google Cloud console.</li>
+</ol>
+<p>When you are connected, you are already authenticated, and the project is set to your <strong>PROJECT_ID</strong>. The output contains a line that declares the <strong>PROJECT_ID</strong> for this session:</p>
+<ql-code-block output="">
+Your Cloud Platform project in this session is set to YOUR_PROJECT_ID
+</ql-code-block>
+<p><code>gcloud</code> is the command-line tool for Google Cloud. It comes pre-installed on Cloud Shell and supports tab-completion.</p>
+<ol start="2">
+<li>
+<p>(Optional) You can list the active account name with this command:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud auth list
+</ql-code-block>
+<ol start="3">
+<li>
+<p>Click <strong>Authorize</strong>.</p>
+</li>
+<li>
+<p>Your output should now look like this:</p>
+</li>
+</ol>
+<p><strong>Output:</strong></p>
+<ql-code-block language="plaintext" output="">
+ACTIVE: *
+ACCOUNT: student-01-xxxxxxxxxxxx@qwiklabs.net
+To set the active account, run:
+    $ gcloud config set account `ACCOUNT`
+</ql-code-block>
+<ol start="5">
+<li>
+<p>(Optional) You can list the project ID with this command:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud config list project
+</ql-code-block>
+<p><strong>Output:</strong></p>
+<ql-code-block language="plaintext" output="">
+[core]
+project = &lt;project_ID&gt;
+</ql-code-block>
+<p><strong>Example output:</strong></p>
+<ql-code-block language="plaintext" output="">
+[core]
+project = qwiklabs-gcp-44776a13dea667a6
+</ql-code-block>
+<ql-infobox>
+<strong>Note: </strong>For full documentation of <code>gcloud</code>, in Google Cloud, refer to <a href="https://cloud.google.com/sdk/gcloud" target="_blank">the gcloud CLI overview guide</a>.
+</ql-infobox>
+<h2 id="step5">Set the zone</h2>
+<p>Set your working Google Cloud zone by running the following command, substituting the local zone as <ql-variable key="project_0.default_zone" placeholder="&lt;filled in at lab start&gt;"></ql-variable>:</p>
+<ql-code-block nowrap templated="">
+gcloud config set compute/zone {{{ project_0.default_zone }}}
+</ql-code-block>
+<h2 id="step6">Get sample code for this lab</h2>
+<ol>
+<li>
+<p>Get the sample code for creating and running containers and deployments:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gsutil -m cp -r gs://spls/gsp053/orchestrate-with-kubernetes .
+cd orchestrate-with-kubernetes/kubernetes
+</ql-code-block>
+<ol start="2">
+<li>
+<p>Create a cluster with 3 nodes (this will take a few minutes to complete):</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+gcloud container clusters create bootcamp \
+  --machine-type e2-small \
+  --num-nodes 3 \
+  --scopes "https://www.googleapis.com/auth/projecthosting,storage-rw"
+</ql-code-block>
+<h2 id="step7">Task 1. Learn about the deployment object</h2>
+<p>Let's get started with deployments. First let's take a look at the deployment object.</p>
+<ol>
+<li>
+<p>The <code>explain</code>  command in <code>kubectl</code> can tell us about the deployment object:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+kubectl explain deployment
+</ql-code-block>
+<ol start="2">
+<li>
+<p>We can also see all of the fields using the <code>--recursive</code> option:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+kubectl explain deployment --recursive
+</ql-code-block>
+<ol start="3">
+<li>
+<p>You can use the explain command as you go through the lab to help you understand the structure of a deployment object and understand what the individual fields do:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+kubectl explain deployment.metadata.name
+</ql-code-block>
+<h2 id="step8">Task 2. Create a deployment</h2>
+<ol>
+<li>
+<p>Update the <code>deployments/auth.yaml</code> configuration file:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+vi deployments/auth.yaml
+</ql-code-block>
+<ol start="2">
+<li>
+<p>Start the editor:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+i
+</ql-code-block>
+<ol start="3">
+<li>
+<p>Change the <code>image</code> in the containers section of the deployment to the following:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+...
+containers:
+- name: auth
+  image: "kelseyhightower/auth:1.0.0"
+...
+</ql-code-block>
+<ol start="4">
+<li>
+<p>Save the <code>auth.yaml</code> file: press <code>&lt;Esc&gt;</code> then type:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+:wq
+</ql-code-block>
+<ol start="5">
+<li>
+<p>Press <code>&lt;Enter&gt;</code>. Now let's create a simple deployment. Examine the deployment configuration file:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+cat deployments/auth.yaml
+</ql-code-block>
+<p>Output:</p>
+<ql-code-block output="">
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth
+  template:
+    metadata:
+      labels:
+        app: auth
+        track: stable
+    spec:
+      containers:
+        - name: auth
+          image: "kelseyhightower/auth:1.0.0"
+          ports:
+            - name: http
+              containerPort: 80
+            - name: health
+              containerPort: 81
+...
+</ql-code-block>
+<p>Notice how the deployment is creating one replica and it's using version 1.0.0 of the auth container.</p>
+<p>When you run the <code>kubectl create</code> command to create the auth deployment, it will make one pod that conforms to the data in the deployment manifest. This means we can scale the number of Pods by changing the number specified in the <code>replicas</code> field.</p>
+<ol start="6">
+<li>
+<p>Go ahead and create your deployment object using <code>kubectl create</code>:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+kubectl create -f deployments/auth.yaml
+</ql-code-block>
+<ol start="7">
+<li>
+<p>Once you have created the deployment, you can verify that it was created:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+kubectl get deployments
+</ql-code-block>
+<ol start="8">
+<li>
+<p>Once the deployment is created, Kubernetes will create a ReplicaSet for the deployment. We can verify that a ReplicaSet was created for our deployment:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+kubectl get replicasets
+</ql-code-block>
+<p>We should see a ReplicaSet with a name like <code>auth-xxxxxxx</code></p>
+<ol start="9">
+<li>
+<p>Finally, we can view the Pods that were created as part of our deployment. The single Pod is created by the Kubernetes when the ReplicaSet is created:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+kubectl get pods
+</ql-code-block>
+<p>It's time to create a service for our auth deployment. You've already seen service manifest files, so we won't go into the details here.</p>
+<ol start="10">
+<li>
+<p>Use the <code>kubectl create</code> command to create the auth service:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+kubectl create -f services/auth.yaml
+</ql-code-block>
+<ol start="11">
+<li>
+<p>Now, do the same thing to create and expose the hello deployment:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+kubectl create -f deployments/hello.yaml
+kubectl create -f services/hello.yaml
+</ql-code-block>
+<ol start="12">
+<li>
+<p>And one more time to create and expose the frontend deployment:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+kubectl create secret generic tls-certs --from-file tls/
+kubectl create configmap nginx-frontend-conf --from-file=nginx/frontend.conf
+kubectl create -f deployments/frontend.yaml
+kubectl create -f services/frontend.yaml
+</ql-code-block>
+<ql-infobox><strong>Note:</strong> You created a ConfigMap for the frontend.</ql-infobox>
+<ol start="13">
+<li>
+<p>Interact with the frontend by grabbing its external IP and then curling to it:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+kubectl get services frontend
+</ql-code-block>
+<ql-warningbox><strong>Note: </strong>It may take a few seconds before the External-IP field is populated for your service. This is normal. Just re-run the above command every few seconds until the field is populated.</ql-warningbox>
+<ql-code-block language="plaintext">
+curl -ks https://&lt;EXTERNAL-IP&gt;
+</ql-code-block>
+<p>And you get the hello response back.</p>
+<ol start="14">
+<li>
+<p>You can also use the output templating feature of <code>kubectl</code> to use curl as a one-liner:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+curl -ks https://`kubectl get svc frontend -o=jsonpath="{.status.loadBalancer.ingress[0].ip}"`
+</ql-code-block>
+<h3>Test completed task</h3>
+<p>Click <strong>Check my progress</strong> below to check your lab progress. If you successfully created Kubernetes cluster and Auth, Hello and Frontend deployments, you'll see an assessment score.</p>
+<ql-activity-tracking step="1">
+    Create a Kubernetes cluster and deployments (Auth, Hello, and Frontend)
+</ql-activity-tracking>
+<h3>Scale a deployment</h3>
+<p>Now that we have a deployment created, we can scale it. Do this by updating the <code>spec.replicas</code> field.</p>
+<ol>
+<li>
+<p>You can look at an explanation of this field using the <code>kubectl explain</code> command again:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+kubectl explain deployment.spec.replicas
+</ql-code-block>
+<ol start="2">
+<li>
+<p>The replicas field can be most easily updated using the <code>kubectl scale</code> command:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+kubectl scale deployment hello --replicas=5
+</ql-code-block>
+<ql-warningbox><strong>Note:</strong> It may take a minute or so for all the new pods to start up.</ql-warningbox>
+<p>After the deployment is updated, Kubernetes will automatically update the associated ReplicaSet and start new Pods to make the total number of Pods equal 5.</p>
+<ol start="3">
+<li>
+<p>Verify that there are now 5 <code>hello</code> Pods running:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+kubectl get pods | grep hello- | wc -l
+</ql-code-block>
+<ol start="4">
+<li>
+<p>Now scale back the application:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+kubectl scale deployment hello --replicas=3
+</ql-code-block>
+<ol start="5">
+<li>
+<p>Again, verify that you have the correct number of Pods:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+kubectl get pods | grep hello- | wc -l
+</ql-code-block>
+<p>You learned about Kubernetes deployments and how to manage &amp; scale a group of Pods.</p>
+<h2 id="step9">Task 3. Rolling update</h2>
+<p>Deployments support updating images to a new version through a rolling update mechanism. When a deployment is updated with a new version, it creates a new ReplicaSet and slowly increases the number of replicas in the new ReplicaSet as it decreases the replicas in the old ReplicaSet.</p>
+<p><img alt="Deployment between replica sets diagram" src="https://cdn.qwiklabs.com/uc6D9jQ5Blkv8wf%2FccEcT35LyfKDHz7kFpsI4oHUmb0%3D"></p>
+<h3>Trigger a rolling update</h3>
+<ol>
+<li>
+<p>To update your deployment, run the following command:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+kubectl edit deployment hello
+</ql-code-block>
+<ol start="2">
+<li>
+<p>Change the <code>image</code> in the containers section of the deployment to the following:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+...
+containers:
+  image: kelseyhightower/hello:2.0.0
+...
+</ql-code-block>
+<ol start="3">
+<li>Save and exit.</li>
+</ol>
+<p>Once you save out of the editor, the updated deployment will be saved to your cluster and Kubernetes will begin a rolling update.</p>
+<ol start="4">
+<li>
+<p>See the new ReplicaSet that Kubernetes creates.:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+kubectl get replicaset
+</ql-code-block>
+<ol start="5">
+<li>
+<p>You can also see a new entry in the rollout history:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+kubectl rollout history deployment/hello
+</ql-code-block>
+<h3>Pause a rolling update</h3>
+<p>If you detect problems with a running rollout, pause it to stop the update.</p>
+<ol>
+<li>
+<p>Give that a try now:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+kubectl rollout pause deployment/hello
+</ql-code-block>
+<ol start="2">
+<li>
+<p>Verify the current state of the rollout:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+kubectl rollout status deployment/hello
+</ql-code-block>
+<ol start="3">
+<li>
+<p>You can also verify this on the Pods directly:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+kubectl get pods -o jsonpath --template='{range .items[*]}{.metadata.name}{"\t"}{"\t"}{.spec.containers[0].image}{"\n"}{end}'
+</ql-code-block>
+<h3>Resume a rolling update</h3>
+<p>The rollout is paused which means that some pods are at the new version and some pods are at the older version.</p>
+<ol>
+<li>
+<p>We can continue the rollout using the <code>resume</code> command:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+kubectl rollout resume deployment/hello
+</ql-code-block>
+<ol start="2">
+<li>
+<p>When the rollout is complete, you should see the following when running the <code>status</code> command:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+kubectl rollout status deployment/hello
+</ql-code-block>
+<p>Output:</p>
+<ql-code-block output="">
+deployment "hello" successfully rolled out
+</ql-code-block>
+<h3>Rollback an update</h3>
+<p>Assume that a bug was detected in your new version. Since the new version is presumed to have problems, any users connected to the new Pods will experience those issues.</p>
+<p>You will want to roll back to the previous version so you can investigate and then release a version that is fixed properly.</p>
+<ol>
+<li>
+<p>Use the <code>rollout</code> command to roll back to the previous version:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+kubectl rollout undo deployment/hello
+</ql-code-block>
+<ol start="2">
+<li>
+<p>Verify the roll back in the history:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+kubectl rollout history deployment/hello
+</ql-code-block>
+<ol start="3">
+<li>
+<p>Finally, verify that all the Pods have rolled back to their previous versions:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+kubectl get pods -o jsonpath --template='{range .items[*]}{.metadata.name}{"\t"}{"\t"}{.spec.containers[0].image}{"\n"}{end}'
+</ql-code-block>
+<p>Great! You learned about rolling updates for Kubernetes deployments and how to update applications without downtime.</p>
+<h2 id="step10">Task 4. Canary deployments</h2>
+<p>When you want to test a new deployment in production with a subset of your users, use a canary deployment. Canary deployments allow you to release a change to a small subset of your users to mitigate risk associated with new releases.</p>
+<h3>Create a canary deployment</h3>
+<p>A canary deployment consists of a separate deployment with your new version and a service that targets both your normal, stable deployment as well as your canary deployment.</p>
+<p><img alt="Canary deployment diagram" src="https://cdn.qwiklabs.com/qSrgIP5FyWKEbwOk3PMPAALJtQoJoEpgJMVwauZaZow%3D"></p>
+<ol>
+<li>
+<p>First, create a new canary deployment for the new version:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+cat deployments/hello-canary.yaml
+</ql-code-block>
+<p>Output:</p>
+<ql-code-block output="">
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-canary
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello
+  template:
+    metadata:
+      labels:
+        app: hello
+        track: canary
+        # Use ver 2.0.0 so it matches version on service selector
+        version: 2.0.0
+    spec:
+      containers:
+        - name: hello
+          image: kelseyhightower/hello:2.0.0
+          ports:
+            - name: http
+              containerPort: 80
+            - name: health
+              containerPort: 81
+...
+</ql-code-block>
+<ol start="2">
+<li>
+<p>Now create the canary deployment:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+kubectl create -f deployments/hello-canary.yaml
+</ql-code-block>
+<ol start="3">
+<li>
+<p>After the canary deployment is created, you should have two deployments, <code>hello</code> and <code>hello-canary</code>. Verify it with this  <code>kubectl</code> command:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+kubectl get deployments
+</ql-code-block>
+<p>On the <code>hello</code> service, the selector uses the <code>app:hello</code> selector which will match pods in <strong>both</strong> the prod deployment and canary deployment. However, because the canary deployment has a fewer number of pods, it will be visible to fewer users.</p>
+<h3>Verify the canary deployment</h3>
+<ol>
+<li>
+<p>You can verify the <code>hello</code> version being served by the request:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+curl -ks https://`kubectl get svc frontend -o=jsonpath="{.status.loadBalancer.ingress[0].ip}"`/version
+</ql-code-block>
+<ol start="2">
+<li>
+<p>Run this several times and you should see that some of the requests are served by hello 1.0.0 and a small subset (1/4 = 25%) are served by 2.0.0.</p>
+</li>
+</ol>
+<h4>Test completed task</h4>
+<p>Click <strong>Check my progress</strong> below to check your lab progress. If you successfully created Canary deployment, you'll see an assessment score.</p>
+<ql-activity-tracking step="2">
+    Canary Deployment
+</ql-activity-tracking>
+<h3>Canary deployments in production - session affinity</h3>
+<p>In this lab, each request sent to the Nginx service had a chance to be served by the canary deployment. But what if you wanted to ensure that a user didn't get served by the Canary deployment? A use case could be that the UI for an application changed, and you don't want to confuse the user. In a case like this, you want the user to "stick" to one deployment or the other.</p>
+<p>You can do this by creating a service with session affinity. This way the same user will always be served from the same version. In the example below the service is the same as before, but a new <code>sessionAffinity</code> field has been added, and set to ClientIP. All clients with the same IP address will have their requests sent to the same version of the <code>hello</code> application.</p>
+<ql-code-block output="">
+kind: Service
+apiVersion: v1
+metadata:
+  name: "hello"
+spec:
+  sessionAffinity: ClientIP
+  selector:
+    app: "hello"
+  ports:
+    - protocol: "TCP"
+      port: 80
+      targetPort: 80
+</ql-code-block>
+<p>Due to it being difficult to set up an environment to test this, you don't need to here, but you may want to use <code>sessionAffinity</code> for canary deployments in production.</p>
+<h2 id="step11">Task 5. Blue-green deployments</h2>
+<p>Rolling updates are ideal because they allow you to deploy an application slowly with minimal overhead, minimal performance impact, and minimal downtime. There are instances where it is beneficial to modify the load balancers to point to that new version only after it has been fully deployed. In this case, blue-green deployments are the way to go.</p>
+<p>Kubernetes achieves this by creating two separate deployments; one for the old "blue" version and one for the new "green" version. Use your existing <code>hello</code> deployment for the "blue" version. The deployments will be accessed via a Service which will act as the router. Once the new "green" version is up and running, you'll switch over to using that version by updating the Service.</p>
+<p><img alt="Blue-green deployment diagram" src="https://cdn.qwiklabs.com/POW8Q247ZKNY%2ByHIartCsoEu8MAih7k4u1twusCx6pw%3D"></p>
+<ql-warningbox><strong>Note: </strong>A major downside of blue-green deployments is that you will need to have at least 2x the resources in your cluster necessary to host your application. Make sure you have enough resources in your cluster before deploying both versions of the application at once.</ql-warningbox>
+<h3>The service</h3>
+<p>Use the existing hello service, but update it so that it has a selector <code>app:hello</code>, <code>version: 1.0.0</code>. The selector will match the existing "blue" deployment. But it will not match the "green" deployment because it will use a different version.</p>
+<ul>
+<li>
+<p>First update the service:</p>
+</li>
+</ul>
+<ql-code-block language="plaintext">
+kubectl apply -f services/hello-blue.yaml
+</ql-code-block>
+<ql-infobox><strong>Note: </strong> Ignore the warning that says <code>resource service/hello is missing</code> as this is patched automatically.</ql-infobox>
+<h3>Updating using Blue-Green deployment</h3>
+<p>In order to support a blue-green deployment style, we will create a new "green" deployment for our new version. The green deployment updates the version label and the image path.</p>
+<ql-code-block output="">
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-green
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: hello
+  template:
+    metadata:
+      labels:
+        app: hello
+        track: stable
+        version: 2.0.0
+    spec:
+      containers:
+        - name: hello
+          image: kelseyhightower/hello:2.0.0
+          ports:
+            - name: http
+              containerPort: 80
+            - name: health
+              containerPort: 81
+          resources:
+            limits:
+              cpu: 0.2
+              memory: 10Mi
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 81
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 15
+            timeoutSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /readiness
+              port: 81
+              scheme: HTTP
+            initialDelaySeconds: 5
+            timeoutSeconds: 1
+</ql-code-block>
+<ol>
+<li>
+<p>Create the green deployment:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+kubectl create -f deployments/hello-green.yaml
+</ql-code-block>
+<ol start="2">
+<li>
+<p>Once you have a green deployment and it has started up properly, verify that the current version of 1.0.0 is still being used:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+curl -ks https://`kubectl get svc frontend -o=jsonpath="{.status.loadBalancer.ingress[0].ip}"`/version
+</ql-code-block>
+<ol start="3">
+<li>
+<p>Now, update the service to point to the new version:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+kubectl apply -f services/hello-green.yaml
+</ql-code-block>
+<ol start="4">
+<li>
+<p>When the service is updated, the "green" deployment will be used immediately. You can now verify that the new version is always being used:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+curl -ks https://`kubectl get svc frontend -o=jsonpath="{.status.loadBalancer.ingress[0].ip}"`/version
+</ql-code-block>
+<h3>Blue-Green rollback</h3>
+<p>If necessary, you can roll back to the old version in the same way.</p>
+<ol>
+<li>
+<p>While the "blue" deployment is still running, just update the service back to the old version:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+kubectl apply -f services/hello-blue.yaml
+</ql-code-block>
+<ol start="2">
+<li>
+<p>Once you have updated the service, your rollback will have been successful. Again, verify that the right version is now being used:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+curl -ks https://`kubectl get svc frontend -o=jsonpath="{.status.loadBalancer.ingress[0].ip}"`/version
+</ql-code-block>
+<p>You did it! You learned about blue-green deployments and how to deploy updates to applications that need to switch versions all at once.</p>
+<h2 id="step12">Congratulations!</h2>
+<p>This concludes this hands-on lab practicing deployment management with Kubernetes. In this lab you've had the opportunity to work more with the <code>kubectl</code> command-line tool, and many styles of deployment configurations set up in YAML files to launch, update, and scale your deployments. With this foundation of practice you should feel comfortable applying these skills to your own DevOps practice.</p>
+<h3>Finish your quest</h3>
+<p>This self-paced lab is part of the <a href="https://google.qwiklabs.com/quests/29" target="_blank">Kubernetes in Google Cloud</a>, <a href="https://www.cloudskillsboost.google/quests/119" target="_blank">Set Up and Configure a Cloud Environment in Google Cloud</a>, <a href="https://google.qwiklabs.com/quests/66" target="_blank">Cloud Engineering</a>, and <a href="https://google.qwiklabs.com/quests/96" target="_blank">DevOps Essentials</a> quests. A quest is a series of related labs that form a learning path. Completing a quest earns you a badge to recognize your achievement. You can make your badge or badges public and link to them in your online resume or social media account. Enroll in a quest that contains this lab and get immediate completion credit.  Refer to the <a href="http://cloudskillsboost.google/catalog" target="_blank">Google Cloud Skills Boost catalog</a> to see all available quests.</p>
+<p>Looking for a hands-on challenge lab to demonstrate your Kubernetes skills and validate your knowledge? Finish this additional <a href="https://google.qwiklabs.com/catalog_lab/2524" target="_blank">challenge lab</a>.</p>
+<h3>Take your next lab</h3>
+<p>Continue your quest with these suggestions:</p>
+<ul>
+<li>
+<p><a href="https://google.qwiklabs.com/catalog_lab/984" target="_blank">Continuous Delivery with Jenkins in Kubernetes Engine</a></p>
+</li>
+<li>
+<p><a href="https://www.cloudskillsboost.google/catalog_lab/486" target="_blank">Orchestrating the Cloud with Kubernetes</a></p>
+</li>
+</ul>
+<h3>Next steps / Learn more</h3>
+<ul>
+<li>
+<p>On the Google Cloud website, learn more about:</p>
+<ul>
+<li>
+<a href="https://cloud.google.com/solutions/heterogeneous-deployment-patterns-with-kubernetes" target="_blank">Deployment Patterns with Kubernetes</a>.</li>
+<li>
+<a href="https://cloud.google.com/solutions/devops/" target="_blank">DevOps Solutions and DevOps Guides</a> in the Google Cloud documentation.</li>
+</ul>
+</li>
+<li>
+<p>On the Kubernetes website, connect with the <a href="https://kubernetes.io/community/" target="_blank">Kubernetes Community</a>!</p>
+</li>
+</ul>
+<h3>Google Cloud training and certification</h3>
+<p>...helps you make the most of Google Cloud technologies. <a href="https://cloud.google.com/training/courses" target="_blank">Our classes</a> include technical skills and best practices to help you get up to speed quickly and continue your learning journey. We offer fundamental to advanced level training, with on-demand, live, and virtual options to suit your busy schedule. <a href="https://cloud.google.com/certification/" target="_blank">Certifications</a> help you validate and prove your skill and expertise in Google Cloud technologies.</p>
+<p><strong>Manual last updated April 24, 2023</strong></p>
+<p><strong>Lab last tested April 24, 2023</strong></p>
+<p>Copyright 2023 Google LLC All rights reserved. Google and the Google logo are trademarks of Google LLC. All other company and product names may be trademarks of the respective companies with which they are associated.</p>
+
+</div>
+</div>
+
+
+<div class='lab-content__end-lab-button js-end-lab-button-container hidden'>
+<ql-lab-control-button class='js-end-lab-button' running></ql-lab-control-button>
+</div>
+<!-- / TODO: Move recommendations into the end lab modal -->
+<div class='lab-content__renderable-instructions'>
+<div class='lab-content__recommendation'>
+<!-- # TODO: Change classes so that this doesn't stack vertically -->
+<section class='upcoming-cards'>
+<h2 class='ql-headline-4'>Continue questing</h2>
+<div class='activity-cards'>
+<ql-activity-card aria-label='Set Up and Configure a Cloud Environment in Google Cloud: Challenge Lab' name='Set Up and Configure a Cloud Environment in Google Cloud: Challenge Lab' path='/focuses/11574?parent=catalog' progress='0.0' type='lab'></ql-activity-card>
+
+</div>
+</section>
+
+</div>
+
+</div>
+</ql-drawer-content>
+<ql-drawer end id='outline-drawer' open slot='drawer' width='320'>
+<div aria-label='Lab Table of Contents' role='navigation'>
+<ul class='lab-content__outline js-lab-content-outline'>
+<li><a href="#step1">GSP053</a></li><li><a href="#step2">Overview</a></li><li><a href="#step3">Introduction to deployments</a></li><li><a href="#step4">Setup and requirements</a></li><li><a href="#step5">Set the zone</a></li><li><a href="#step6">Get sample code for this lab</a></li><li><a href="#step7">Task 1. Learn about the deployment object</a></li><li><a href="#step8">Task 2. Create a deployment</a></li><li><a href="#step9">Task 3. Rolling update</a></li><li><a href="#step10">Task 4. Canary deployments</a></li><li><a href="#step11">Task 5. Blue-green deployments</a></li><li><a href="#step12">Congratulations!</a></li>
+</ul>
+</div>
+</ql-drawer>
+</ql-drawer-container>
+</ql-drawer-content>
+</ql-drawer-container>
+
+
+
+</div>
+</main>
+
+<span class='hidden' id='flash-sibling-before'></span>
+<ql-snackbar></ql-snackbar>
+
+
+<div class='modal fade' id='lab-details-modal'>
+<div class='modal-container'>
+<div class='modal-content mdl-shadow--24dp'>
+<div class='modal-body'>
+<p class='l-mbm'>
+Dev Ops best practices make use of multiple deployments to manage application deployment scenarios. This lab provides practice in scaling and managing containers to accomplish common scenarios where multiple heterogeneous deployments are used.
+</p>
+<p>
+This lab is included in these quests:
+<a href="/quests/24">Cloud Architecture</a>, <a href="/quests/29">Kubernetes in Google Cloud</a>, <a href="/quests/116">Deploy to Kubernetes in Google Cloud</a>, <a href="/quests/66">Cloud Engineering</a>, <a href="/quests/119">Set Up and Configure a Cloud Environment in Google Cloud</a>, <a href="/quests/96">DevOps Essentials</a>, <a href="/quests/141">Implement DevOps in Google Cloud</a>, <a href="/quests/45">Deprecated Kubernetes Solutions</a>, <a href="/quests/257">Manage Kubernetes in Google Cloud</a>.
+If you complete this lab you&#39;ll receive credit for it when you enroll in one of these quests.
+</p>
+<p class='small-label l-mbs'>
+<strong>
+Duration:
+</strong>
+0m setup
+&middot;
+60m access
+&middot;
+60m completion
+</p>
+<p class='small-label l-mbs'>
+<strong>AWS Region:</strong>
+[] <strong></strong>
+</p>
+<p class='small-label l-mbs'>
+<span><strong>Levels: </strong>intermediate</span>
+</p>
+<p class='small-label'>
+<strong>
+Permalink:
+</strong>
+<a href="https://partner.cloudskillsboost.google/catalog_lab/572">https://partner.cloudskillsboost.google/catalog_lab/572</a>
+</p>
+</div>
+<div class='modal-actions'>
+<a class='button button--text' data-dismiss='modal'>
+Got It
+</a>
+</div>
+
+
+</div>
+</div>
+<iframe class='l-ie-iframe-fix' tabindex='-1' title='modal'></iframe>
+</div>
+<ql-dialog headline='How satisfied are you with this lab?&lt;span aria-hidden=&quot;true&quot;&gt;*&lt;/span&gt;' id='lab-review-dialog'>
+<form class="simple_form js-lab-review-form" id="edit_lab_review_29671938" action="/lab_reviews/29671938" accept-charset="UTF-8" data-remote="true" method="post"><input name="utf8" type="hidden" value="&#x2713;" autocomplete="off" /><input type="hidden" name="_method" value="patch" autocomplete="off" /><div aria-labelledby='lab-review-dialog' aria-required='true' aria-valuemax='5' aria-valuemin='0' aria-valuenow='5' class='rateit js-rateit' data-rateit-max='5' data-rateit-min='0' data-rateit-resetable='false' data-rateit-step='1' data-rateit-value='5' id='lab-review-rateit' role='slider' tabindex='0'></div>
+<div class='l-mtm'>
+
+<div class="control-group hidden lab_review_user_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" value="11061062" name="lab_review[user_id]" id="lab_review_user_id" /></div></div>
+<div class="control-group hidden lab_review_classroom_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" name="lab_review[classroom_id]" id="lab_review_classroom_id" /></div></div>
+<div class="control-group hidden lab_review_lab_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" value="572" name="lab_review[lab_id]" id="lab_review_lab_id" /></div></div>
+<div class="control-group hidden lab_review_focus_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" name="lab_review[focus_id]" id="lab_review_focus_id" /></div></div>
+<div class="control-group hidden lab_review_rating"><div class="controls"><input class="hidden js-rating-input" autocomplete="off" type="hidden" value="2" name="lab_review[rating]" id="lab_review_rating" /></div></div>
+<div class="control-group text optional lab_review_comment"><label class="text optional control-label" for="lab_review_comment">Additional Comments</label><div class="controls"><textarea class="text optional" name="lab_review[comment]" id="lab_review_comment">
+</textarea></div></div>
+</div>
+</form><ql-button disabled id='submit' label='Submit' slot='action' text></ql-button>
+</ql-dialog>
+
+<ql-dialog headline='All done? If you end this lab, you will lose all your work. You may not be able to restart the lab if there is a quota limit. Are you sure you want to end this lab?' icon='error_outline' id='js-lab-are-you-sure-dialog'>
+<ql-button id='js-are-you-sure-button' label='Submit' slot='action' text></ql-button>
+</ql-dialog>
+
+
+<script>
+  $(function() {
+    ql.initMaterialInputs();
+    initChosen();
+    initSearch();
+    initTabs();
+    ql.list.init();
+    ql.favoriting.init();
+    ql.header.myAccount.init();
+    initTooltips();
+    ql.autocomplete.init();
+    ql.modals.init();
+    ql.toggleButtons.init();
+    ql.analytics.init();
+    ql.favoriting.init();
+  ql.chat.init();
+  ql.jumpContent.init();
+  ql.labControlPanel.addRecaptchaErrorHandler();
+  initLabContent();
+  ql.labOutline.links.init();
+  initLabReviewModal();
+  initLabReviewTranslations( {"star_amount_1":"1 of 5 stars","star_amount_2":"2 of 5 stars","star_amount_3":"3 of 5 stars","star_amount_4":"4 of 5 stars","star_amount_5":"5 of 5 stars"} )
+  ql.labAssessment.init();
+  ql.labData.init();
+  initLabTranslations( {"are_you_sure":"All done? If you end this lab, you will lose all your work. You may not be able to restart the lab if there is a quota limit. Are you sure you want to end this lab?","in_progress":"*In Progress*","ending":"*Ending*","starting":"*Starting, please wait*","end_concurrent_labs":"Sorry, you can only run one lab at a time. To start this lab, please confirm that you want all of your existing labs to end.","copied":"Copied","no_resource":"Error retrieving resource.","no_support":"No Support","mac_press":"Press ⌘-C to copy","thanks_review":"Thanks for reviewing this lab.","windows_press":"Press Ctrl-C to copy","days":"days"} );
+  ql.labRun.init();
+  ql.navPanel.init();
+  ql.navigation.init();
+  
+  });
+</script>
+
+</body>
+</html>
+

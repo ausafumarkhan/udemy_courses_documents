@@ -1,0 +1,829 @@
+
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<title>Dataprep: Qwik Start | Google Cloud Skills Boost for Partners</title>
+<meta name="action-cable-url" content="/cable" />
+<script>
+//<![CDATA[
+window.gon={};gon.deployment="googlecourses-run";
+//]]>
+</script>
+<script>
+  (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer',"GTM-5XSKHDX");
+</script>
+<script src="https://cdn.qwiklabs.com/assets/hallofmirrors/polyfills/webcomponents-loader-8583b47b01e40e6ea7bf1ad443a20b7e79bbdd5eafac009806a228c91a97282c.js"></script>
+<script src="https://cdn.qwiklabs.com/assets/vendor-beb958bea8eff6a4ad4cf8f36a0a676817a4857e214b17ae983796071a4a816d.js"></script>
+<script src="https://cdn.qwiklabs.com/assets/application-c356fe1f35a5825b7aa5170c98ba2ec25980821330758eb18dc621a929ed8929.js"></script>
+<script src="https://cdn.qwiklabs.com/assets/hallofmirrors/hallofmirrors-913af36b31dce5378d3a90d048fe1b5491078446d26cd816c207e522076b23de.js"></script>
+<!--[if lt IE 9]>
+<script src='http://html5shim.googlecode.com/svn/trunk/html5.js' type='text/javascript'></script>
+<![endif]-->
+<!--[endif]>  <![endif]-->
+<script id='ze-snippet' src='https://static.zdassets.com/ekr/snippet.js?key=511e4158-0aec-4e3c-b2e6-4daa1769f51e'></script>
+<script>
+  ql.perfTest.init();
+</script>
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="xWmFTRyZxrCIJ8EiPs2AIyjBGv9Px0gGf5w2WXW9OZdm80SalZP0NNP7zmKZr/C0R1GbGEYYznXJQrSW1EphAQ==" />
+<meta content='width=device-width, initial-scale=1.0, user-scalable=yes' name='viewport'>
+<meta content='1rRsY0INj8RvwB5EF5pwdxt2A2P9aDgAlsICaJ0d5w0' name='google-site-verification'>
+<meta content='#3681E4' property='msapplication-TileColor'>
+<meta content='/favicon-144.png' property='msapplication-TileImage'>
+<meta content='[{&quot;id&quot;:&quot;recaptcha_experiment&quot;,&quot;optimize_id&quot;:&quot;dpViOcLkT3qS4TvL2mRojA&quot;,&quot;title&quot;:&quot;No Recaptcha shown for trusted users&quot;,&quot;variant_index&quot;:0,&quot;variant&quot;:&quot;original&quot;}]' name='active-experiments'>
+<meta content='{&quot;userId&quot;:11061062,&quot;experimentIds&quot;:[&quot;programs&quot;,&quot;chat_off_for_signed_out_users&quot;,&quot;course_upgrade&quot;,&quot;program_learning_assignment&quot;,&quot;perf_test&quot;,&quot;program_groups&quot;,&quot;teams&quot;,&quot;canonical_domain_redirect&quot;,&quot;program_resources&quot;,&quot;used_in&quot;,&quot;community_forum&quot;,&quot;enforce_codebuild_verdicts&quot;,&quot;peer_assignment&quot;,&quot;oauth_risc_shutoff&quot;,&quot;show_annual_purchase_now&quot;,&quot;alexandria_show_bundle_errors&quot;]}' name='help-api-product-data'>
+<meta content='{&quot;groupIds&quot;:[&quot;non_suadmins&quot;,&quot;students&quot;,&quot;non_organization&quot;,&quot;non_program&quot;]}' name='help-api-custom-data'>
+<meta content='Google Cloud Dataprep is an intelligent data service for visually exploring, cleaning, and preparing data for analysis. Watch the short video &amp;lt;A HREF=&quot;https://youtu.be/K3K9X9VaThE&quot;&amp;gt;Dataprep: Qwik Start - Qwiklabs Preview&amp;lt;/A&amp;gt;.' name='description'>
+<meta content='Qwiklabs' name='author'>
+<meta content='Dataprep: Qwik Start | Google Cloud Skills Boost for Partners' property='og:title'>
+<meta content='website' property='og:type'>
+<meta content='/favicon-144.png' property='og:image'>
+<meta content='Qwiklabs' property='og:site_name'>
+<meta content='Google Cloud Dataprep is an intelligent data service for visually exploring, cleaning, and preparing data for analysis. Watch the short video &amp;lt;A HREF=&quot;https://youtu.be/K3K9X9VaThE&quot;&amp;gt;Dataprep: Qwik Start - Qwiklabs Preview&amp;lt;/A&amp;gt;.' property='og:description'>
+<meta content='/qwiklabs_logo_900x887.png' property='og:logo' size='900x887'>
+<meta content='/qwiklabs_logo_994x187.png' property='og:logo' size='994x187'>
+
+
+<meta property="og:url" content="https://partner.cloudskillsboost.google/focuses/13314?parent=catalog" /><link href="https://partner.cloudskillsboost.google/focuses/13314?parent=catalog" rel="canonical" />
+<link color='#3681E4' href='/favicon-svg.svg' rel='mask-icon'>
+<link href='/favicon-180.png' rel='apple-touch-icon-precomposed'>
+<link href='https://cdn.qwiklabs.com/Vag5GK2J6rS6843Qvg8TQJ1kEbAsEmQoF0%2BdLRfcLRE%3D' rel='shortcut icon' type='image/x-icon'>
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oswald:400|Roboto+Mono:400,700|Roboto:300,400,500,700|Google+Sans:300,400,500,700|Google+Sans+Display:400|Material+Icons|Google+Material+Icons" media="screen" />
+
+<link rel="stylesheet" href="https://cdn.qwiklabs.com/assets/application-9c3b65b21d70e11e97ae9ab48dd150018a15c36cd951e52fe5574dfa177e8bc8.css" media="all" />
+
+
+<style>
+  :root {
+    --primary-text-on-surface-color: #1a73e8;
+    --primary-text-on-surface-color-dark: #1568d6;
+    --primary-text-on-surface-color-darker: #135ec1;
+    --primary-text-on-surface-color-darkest: #1154ac;
+    --primary-surface-color: #1a73e8;
+    --primary-surface-color-rgb: 26,115,232;
+    --primary-surface-color-light: #d1e3fa;
+    --primary-surface-color-lightest: #e8f1fd;
+    --text-on-primary-color: #ffffff;
+    --accent-text-on-surface-color: #f29900;
+    --accent-surface-color: #f9ab00;
+    --accent-surface-color-rgb: 249,171,0;
+    --accent-surface-color-light: #ffefcc;
+    --text-on-accent-color: #202124;
+  }
+</style>
+
+<style>
+  :root {
+    --navbar-height: 112px;
+  }
+</style>
+
+
+
+</head>
+<body class='lab-show l-full no-nav application-new focuses focuses-show lab-show l-full no-nav '>
+<div class='header-container'>
+<div class='header'>
+<ql-toolbar jumpEnabled>
+<div class='header__title' slot='title'>
+<ql-icon-button label="Back" href="https://partner.cloudskillsboost.google/quests/117" id="bb2e57bbd68f5c28" target="_self" tip="Back">arrow_back</ql-icon-button>
+<h1 class='ql-headline-6'>Dataprep: Qwik Start</h1>
+</div>
+<div class='header__actions' slot='action'>
+<ql-icon-button icon='share' id='share_725' label='Share on social media' tip='Share'></ql-icon-button>
+<ql-menu for='share_725'>
+<ql-menu-item data-analytics-action='Shared to LinkedIn Feed.' data-analytics-category='Lab' data-analytics-label='Dataprep: Qwik Start' href='https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fpartner.cloudskillsboost.google%2Fcatalog_lab%2F725%3Futm_medium%3Dsocial%26utm_source%3Dlinkedin%26utm_campaign%3Dql-social-share' icon='post_linkedin' label='Share on LinkedIn Feed' role='link' target='_blank'>
+<span class='label'>Share on LinkedIn Feed</span>
+</ql-menu-item>
+
+<ql-menu-item data-analytics-action='Shared to Twitter.' data-analytics-category='Lab' data-analytics-label='Dataprep: Qwik Start' href='https://twitter.com/intent/tweet?text=Learn%20cloud%20tech%20through%20hands-on%20training%20on%20%23Qwiklabs%21&amp;url=https%3A%2F%2Fpartner.cloudskillsboost.google%2Fcatalog_lab%2F725%3Futm_medium%3Dsocial%26utm_source%3Dtwitter%26utm_campaign%3Dql-social-share&amp;hashtags=' icon='post_twitter' label='Twitter' role='link' target='_blank'>
+<span class='label'>Twitter</span>
+</ql-menu-item>
+
+<ql-menu-item data-analytics-action='Shared to Facebook.' data-analytics-category='Lab' data-analytics-label='Dataprep: Qwik Start' href='https://facebook.com/sharer.php?display=popup&amp;u=https%3A%2F%2Fpartner.cloudskillsboost.google%2Fcatalog_lab%2F725%3Futm_medium%3Dsocial%26utm_source%3Dfacebook%26utm_campaign%3Dql-social-share' icon='post_facebook' label='Facebook' role='link' target='_blank'>
+<span class='label'>Facebook</span>
+</ql-menu-item>
+
+<ql-copyable-input label='Share Link' value='https://partner.cloudskillsboost.google/catalog_lab/725'></ql-copyable-input>
+</ql-menu>
+
+<ql-icon-button class='icon-button js-favorite-button favorite-button' data-id='13314' data-name='Dataprep: Qwik Start' data-type='CatalogItem' href='/favorite.json?item_id=13314&amp;item_type=CatalogItem' id='CatalogItem-13314-favorite-button' label='Add to favorites' tip='Add to favorites'>
+favorite_border
+</ql-icon-button>
+
+
+
+<ql-icon-button id='control-panel-target' style='display: none;'>
+dashboard
+</ql-icon-button>
+<ql-menu for='control-panel-target' id='control-panel-menu'></ql-menu>
+<ql-icon-button class='mobile-hide' icon='help_outline' id='help-menu-button' label='Open help menu' tip='Help'></ql-icon-button>
+<ql-menu for='help-menu-button' id='help-menu'>
+<ql-menu-item data-analytics-action='opened_help' data-analytics-label='lab' label='Help Center' onclick='hallofmirrors.helpService.startHelp({&quot;productData&quot;:{&quot;userId&quot;:11061062},&quot;context&quot;:&quot;lab&quot;})'></ql-menu-item>
+<ql-menu-item href='mailto:support@qwiklabs.com' label='Email support'></ql-menu-item>
+<ql-menu-item label='Chat support' onClick='ql.chat.open()'></ql-menu-item>
+</ql-menu>
+
+<ql-icon-button class='mobile-hide' icon='language' id='language' label='Select your language preference' tip='Language'></ql-icon-button>
+<ql-menu for='language'>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='ar' href='/focuses/13314?locale=ar&amp;parent=catalog' label='العربية‬‎' lang='ar'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='de' href='/focuses/13314?locale=de&amp;parent=catalog' label='Deutsch' lang='de'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='en' href='/focuses/13314?locale=en&amp;parent=catalog' label='English' lang='en'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='es' href='/focuses/13314?locale=es&amp;parent=catalog' label='español (Latinoamérica)' lang='es'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='fr' href='/focuses/13314?locale=fr&amp;parent=catalog' label='français' lang='fr'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='fr_CA' href='/focuses/13314?locale=fr_CA&amp;parent=catalog' label='français (Canada)' lang='fr-CA'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='he' href='/focuses/13314?locale=he&amp;parent=catalog' label='עברית' lang='he'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='id' href='/focuses/13314?locale=id&amp;parent=catalog' label='bahasa Indonesia' lang='id'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='it' href='/focuses/13314?locale=it&amp;parent=catalog' label='Italiano' lang='it'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='ja' href='/focuses/13314?locale=ja&amp;parent=catalog' label='日本語' lang='ja'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='ko' href='/focuses/13314?locale=ko&amp;parent=catalog' label='한국어' lang='ko'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='pl' href='/focuses/13314?locale=pl&amp;parent=catalog' label='Polski' lang='pl'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='pt_BR' href='/focuses/13314?locale=pt_BR&amp;parent=catalog' label='português (Brasil)' lang='pt-BR'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='pt_PT' href='/focuses/13314?locale=pt_PT&amp;parent=catalog' label='português (Portugal)' lang='pt-PT'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='ru' href='/focuses/13314?locale=ru&amp;parent=catalog' label='русский' lang='ru'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='tr' href='/focuses/13314?locale=tr&amp;parent=catalog' label='Türkçe' lang='tr'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='uk' href='/focuses/13314?locale=uk&amp;parent=catalog' label='український' lang='uk'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='zh' href='/focuses/13314?locale=zh&amp;parent=catalog' label='简体中文' lang='zh'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='zh_TW' href='/focuses/13314?locale=zh_TW&amp;parent=catalog' label='繁體中文' lang='zh-TW'></ql-menu-item>
+</ql-menu>
+
+<ql-icon-button id='my_account' label='My account' tip='My account'>
+<ql-avatar></ql-avatar>
+</ql-icon-button>
+<ql-menu for='my_account' id='my_account_menu' style='max-height: 640px'>
+<div class='my-account-menu'>
+<ql-avatar class='l-mtl l-mbl' size='120'></ql-avatar>
+<div class='my-account-menu__user-info l-mbl'>
+<h4 class='ql-subhead-1'>Ausaf Khan</h4>
+<p class='ql-body-2 text--light'>ausaf.khan@rakuten.com</p>
+<p class='ql-body-2 text--light'>
+</p>
+<a class="text--green ql-subhead-2" href="/my_account/payments"><ql-chip positive>
+0 Credits
+</ql-chip>
+</a></div>
+<div class='buttons l-mbl'>
+<a class="button button--hairline l-mrm" id="profile" href="/public_profiles/1d61c1a3-8a07-4495-8abe-b57e519718e6">Public Profile</a>
+<a class="button button--hairline" id="settings" href="/my_account/profile">Settings</a>
+</div>
+<hr>
+<ql-button data-analytics-action='clicked_sign_out' href='/users/sign_out' method='delete'>
+Sign Out
+</ql-button>
+<div class='privacy l-mtl'>
+<a target="_blank" class="ql-caption text--light" href="/privacy_policy">Privacy</a>
+<span class='ql-caption text--light l-mls l-mrs'>&middot;</span>
+<a class="ql-caption text--light" href="/terms_of_service">Terms</a>
+</div>
+</div>
+</ql-menu>
+
+</div>
+</ql-toolbar>
+
+</div>
+</div>
+
+<nav class='nav-panel js-nav-panel'>
+<div class='nav-panel__logo'>
+<div class="custom-logo"><img alt="Google Cloud Skills Boost for Partners" height="24" aria-label="Google Cloud Skills Boost for Partners" src="https://cdn.qwiklabs.com/PGyhmgS3zZncIEGywnx5UXsKwepRRFQ9BhAg%2FWHNrlQ%3D" /></div>
+</div>
+<nav class='ql-sidenav'>
+<ql-sidenav-item href='/' icon='home' label='Paths'></ql-sidenav-item>
+
+<ql-sidenav-item active href='/catalog' icon='school' label='Explore'></ql-sidenav-item>
+
+<ql-sidenav-item href='/profile' icon='event_note' label='Profile'></ql-sidenav-item>
+
+</nav>
+
+</nav>
+<div class='nav-panel__overlay js-nav-toggle'></div>
+
+<main class='js-main' id='jump-content'>
+<div class='l-main-wrapper' id='main-wrapper'>
+
+
+
+
+<div class='lab-assessment__tab js-open-lab-assessment-panel'>
+<button class='js-lab-assessment-total-score'>
+—/100
+</button>
+</div>
+<div aria-labelledby='lab-assessment-checkpoint' class='lab-assessment__panel js-lab-assessment-panel' role='dialog'>
+<div class='lab-assessment__panel__header'>
+<h4 id='lab-assessment-checkpoint'>Checkpoints</h4>
+<ql-icon-button class='js-close-lab-assessment-panel' icon='arrow_forward' label='Close dialog'></ql-icon-button>
+</div>
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Create a Cloud Storage bucket
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button class='js-show-run-step-button' description='Create a Cloud Storage bucket' step_no='1'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-1'>
+</span>
+/ 50
+</p>
+</div>
+</div>
+
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Initialize Cloud Dataprep
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button class='js-show-run-step-button' description='Initialize Cloud Dataprep' step_no='2'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-2'>
+</span>
+/ 50
+</p>
+</div>
+</div>
+
+</div>
+<ql-drawer-container class='js-lab-state' data-analytics-payload='{&quot;label&quot;:&quot;Dataprep: Qwik Start&quot;,&quot;lab_name&quot;:&quot;Dataprep: Qwik Start&quot;,&quot;classroom_name&quot;:null,&quot;deployment&quot;:&quot;googlecourses-run&quot;}' data-credits='0.0' data-focus-id='13314' data-lab-billing-limit='0.0' data-lab-duration='3600' data-parent='catalog' data-recaptcha-enabled id='lab-container'>
+<ql-drawer id='terminal-drawer' slot='drawer' style='width: calc(100% - 480px)'>
+<iframe allow='clipboard-read' class='terminal' id='embedded-resource'></iframe>
+</ql-drawer>
+<ql-drawer-content class='js-lab-wrapper' id='lab-content' slot='drawer-content'>
+<ql-drawer-container id='lab-content-container'>
+<ql-drawer id='control-panel-drawer' open slot='drawer' width='320'>
+<ql-lab-control-panel class='ql-lab-control-panel__max-height control-panel js-lab-control-panel' connectionFiles='[]' labControlButton='{&quot;disabled&quot;:false,&quot;pending&quot;:false,&quot;running&quot;:false}' labDetails='[]' labTimer='{&quot;ticking&quot;:false,&quot;secondsRemaining&quot;:3600}' studentResources='[{&quot;text&quot;:&quot;Dataprep: Qwik Start - Qwiklabs Preview&quot;,&quot;icon&quot;:&quot;videocam&quot;,&quot;href&quot;:&quot;https://youtu.be/K3K9X9VaThE&quot;}]'>
+<script src="https://www.recaptcha.net/recaptcha/api.js?render=6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr"   ></script>
+        <script>
+          // Define function so that we can call it again later if we need to reset it
+          // This executes reCAPTCHA and then calls our callback.
+          function executeRecaptchaForStartLab() {
+            grecaptcha.ready(function() {
+              grecaptcha.execute('6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr', {action: 'start_lab'}).then(function(token) {
+                setInputWithRecaptchaResponseTokenForStartLab('g-recaptcha-response-data-start-lab', token)
+              });
+            });
+          };
+          // Invoke immediately
+          executeRecaptchaForStartLab()
+
+          // Async variant so you can await this function from another async function (no need for
+          // an explicit callback function then!)
+          // Returns a Promise that resolves with the response token.
+          async function executeRecaptchaForStartLabAsync() {
+            return new Promise((resolve, reject) => {
+             grecaptcha.ready(async function() {
+                resolve(await grecaptcha.execute('6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr', {action: 'start_lab'}))
+              });
+            })
+          };
+
+                    var setInputWithRecaptchaResponseTokenForStartLab = function(id, token) {
+            var element = document.getElementById(id);
+            element.value = token;
+          }
+
+        </script>
+<input type="hidden" name="g-recaptcha-response-data[start_lab]" id="g-recaptcha-response-data-start-lab" data-sitekey="6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr" class="g-recaptcha g-recaptcha-response "/>
+
+<div aria-live='polite' class='hidden' id='recaptcha-v2-start-lab' slot='recaptcha'>
+<script src="https://www.recaptcha.net/recaptcha/api.js" async defer ></script>
+<div data-sitekey="6LeOI8IUAAAAAPkHlMAE9NReCD_1WD81iYlBlCnV" data-callback="recaptchaComplete" data-expired-callback="expireV2Token" class="g-recaptcha "></div>
+          <noscript>
+            <div>
+              <div style="width: 302px; height: 422px; position: relative;">
+                <div style="width: 302px; height: 422px; position: absolute;">
+                  <iframe
+                    src="https://www.recaptcha.net/recaptcha/api/fallback?k=6LeOI8IUAAAAAPkHlMAE9NReCD_1WD81iYlBlCnV"
+                    name="ReCAPTCHA"
+                    style="width: 302px; height: 422px; border-style: none; border: 0; overflow: hidden;">
+                  </iframe>
+                </div>
+              </div>
+              <div style="width: 300px; height: 60px; border-style: none;
+                bottom: 12px; left: 25px; margin: 0px; padding: 0px; right: 25px;
+                background: #f9f9f9; border: 1px solid #c1c1c1; border-radius: 3px;">
+                <textarea id="g-recaptcha-response" name="g-recaptcha-response"
+                  class="g-recaptcha-response"
+                  style="width: 250px; height: 40px; border: 1px solid #c1c1c1;
+                  margin: 10px 25px; padding: 0px; resize: none;">
+                </textarea>
+              </div>
+            </div>
+          </noscript>
+
+</div>
+</ql-lab-control-panel>
+</ql-drawer>
+<ql-drawer-content id='lab-instructions' slot='drawer-content'>
+<ql-snackbar id='alert-snackbar'></ql-snackbar>
+<div class='alert alert--fake js-alert'>
+<p class='alert__message js-alert-message' role='alert'></p>
+<ql-icon-button class='alert__close js-alert-close' icon='clear'></ql-icon-button>
+<iframe class='l-ie-iframe-fix' tabindex='-1'></iframe>
+</div>
+<div class='lab-content__renderable-instructions js-lab-content'>
+<div class='lab-preamble'>
+<h1 class='lab-preamble__title'>
+Dataprep: Qwik Start
+</h1>
+<div class='lab-preamble__details subtitle-headline-1'>
+<span>1 hour </span>
+<span>Free</span>
+<div class='lab__rating'>
+<a aria-label="Lab Reviews" href="/focuses/13314/reviews?parent=catalog"><div class='rateit' data-rateit-readonly='true' data-rateit-value='4.6064'></div>
+
+</a></div>
+</div>
+</div>
+<div class='lab-outline-place-holder'></div>
+
+<div class='markdown-lab-instructions js-markdown-instructions' id='markdown-lab-instructions'>
+
+<p><em>This lab was developed with our partner, <a href="https://www.trifacta.com/" target="_blank">Trifacta</a>. Your personal information may be shared with Trifacta, the lab sponsor, if you have opted-in to receive product updates, announcements, and offers in your Account Profile.</em></p>
+<h2 id="step1">GSP105</h2>
+<p><img alt="Google Cloud self-paced labs logo" src="https://cdn.qwiklabs.com/GMOHykaqmlTHiqEeQXTySaMXYPHeIvaqa2qHEzw6Occ%3D"></p>
+<h2 id="step2">Overview</h2>
+<p><a href="https://cloud.google.com/dataprep/" target="_blank">Cloud Dataprep by Trifacta</a> is an intelligent data service for visually exploring, cleaning, and preparing data for analysis. Cloud Dataprep is serverless and works at any scale. There is no infrastructure to deploy or manage. Easy data preparation with clicks and no code!</p>
+<p>In this lab you use Dataprep to manipulate a dataset. You import datasets, correct mismatched data, transform data, and join data. If this is new to you, you'll know what it all is by the end of this lab.</p>
+<h2 id="step3">Setup and requirements</h2>
+<h3>Before you click the Start Lab button</h3>
+<p>Read these instructions. Labs are timed and you cannot pause them. The timer, which starts when you click <strong>Start Lab</strong>, shows how long Google Cloud resources will be made available to you.</p>
+<p>This hands-on lab lets you do the lab activities yourself in a real cloud environment, not in a simulation or demo environment. It does so by giving you new, temporary credentials that you use to sign in and access Google Cloud for the duration of the lab.</p>
+<p>To complete this lab, you need:</p>
+<ul>
+<li>Access to a standard internet browser (Chrome browser recommended).</li>
+</ul>
+<ql-warningbox>
+<strong>Note:</strong> Use an Incognito or private browser window to run this lab. This prevents any conflicts between your personal account and the Student account, which may cause extra charges incurred to your personal account.
+</ql-warningbox>
+<ul>
+<li>Time to complete the lab---remember, once you start, you cannot pause a lab.</li>
+</ul>
+<ql-warningbox>
+<strong>Note:</strong> If you already have your own personal Google Cloud account or project, do not use it for this lab to avoid extra charges to your account.
+</ql-warningbox>
+<h3>How to start your lab and sign in to the Google Cloud Console</h3>
+<ol>
+<li>
+<p>Click the <strong>Start Lab</strong> button. If you need to pay for the lab, a pop-up opens for you to select your payment method.
+On the left is the <strong>Lab Details</strong> panel with the following:</p>
+<ul>
+<li>The <strong>Open Google Console</strong> button</li>
+<li>Time remaining</li>
+<li>The temporary credentials that you must use for this lab</li>
+<li>Other information, if needed, to step through this lab</li>
+</ul>
+</li>
+<li>
+<p>Click <strong>Open Google Console</strong>.
+The lab spins up resources, and then opens another tab that shows the <strong>Sign in</strong> page.</p>
+<p><strong><em>Tip:</em></strong> Arrange the tabs in separate windows, side-by-side.</p>
+<ql-infobox>
+<strong>Note: </strong>If you see the <strong>Choose an account</strong> dialog, click <strong>Use Another Account</strong>.        
+ </ql-infobox>
+</li>
+<li>
+<p>If necessary, copy the <strong>Username</strong> from the <strong>Lab Details</strong> panel and paste it into the <strong>Sign in</strong> dialog. Click <strong>Next</strong>.</p>
+</li>
+<li>
+<p>Copy the <strong>Password</strong> from the <strong>Lab Details</strong> panel and paste it into the <strong>Welcome</strong> dialog. Click <strong>Next</strong>.</p>
+<ql-infobox>
+<strong>Important: </strong>You must use the credentials from the left panel. Do not use your Google Cloud Skills Boost credentials. 
+ </ql-infobox>
+<ql-warningbox>
+<strong>Note: </strong>Using your own Google Cloud account for this lab may incur extra charges.
+ </ql-warningbox>
+</li>
+<li>
+<p>Click through the subsequent pages:</p>
+<ul>
+<li>Accept the terms and conditions.</li>
+<li>Do not add recovery options or two-factor authentication (because this is a temporary account).</li>
+<li>Do not sign up for free trials.</li>
+</ul>
+</li>
+</ol>
+<p>After a few moments, the Cloud Console opens in this tab.</p>
+<ql-infobox>
+<strong>Note:</strong> You can view the menu with a list of Google Cloud Products and Services by clicking the <strong>Navigation menu</strong> at the top-left.
+<img alt="Navigation menu icon" src="https://cdn.qwiklabs.com/nUxFb6oRFr435O3t6V7WYJAjeDFcrFb16G9wHWp5BzU%3D">
+</ql-infobox>
+<h2 id="step4">Task 1. Create a Cloud Storage bucket in your project</h2>
+<ol>
+<li>
+<p>In the Cloud Console, select <strong>Navigation menu</strong>(<img alt="Navigation menu icon" src="https://cdn.qwiklabs.com/tkgw1TDgj4Q%2BYKQUW4jUFd0O5OEKlUMBRYbhlCrF0WY%3D">) &gt; <strong>Cloud Storage</strong> &gt; <strong>Buckets</strong>.</p>
+</li>
+<li>
+<p>Click <strong>Create bucket</strong>.</p>
+</li>
+<li>
+<p>In the <strong>Create a bucket</strong> dialog, <strong>Name</strong> the bucket a unique name. Leave other settings at their default value.</p>
+</li>
+</ol>
+<ql-infobox><strong>Note: </strong>
+Learn more about naming buckets from <a href="https://cloud.google.com/storage/docs/naming-buckets" target="_blank">Bucket naming guidelines</a>.
+</ql-infobox>
+<ol start="4">
+<li>
+<p>Uncheck <strong>Enforce public access prevention on this bucket</strong> for <code>Choose how to control access to objects</code>.</p>
+</li>
+<li>
+<p>Click <strong>Create</strong>.</p>
+</li>
+</ol>
+<p>You created your bucket. Remember the bucket name for later steps.</p>
+<h3>Test completed task</h3>
+<p>Click <strong>Check my progress</strong> to verify your performed task. If you have successfully created a Cloud Storage bucket, you see an assessment score.</p>
+<ql-activity-tracking step="1">
+    Create a Cloud Storage bucket
+</ql-activity-tracking>
+<h2 id="step5">Task 2. Initialize Cloud Dataprep</h2>
+<ol>
+<li>Select <strong>Navigation menu</strong> &gt; <strong>Dataprep</strong>.</li>
+<li>Check to accept the Google Dataprep Terms of Service, then click <strong>Accept</strong>.</li>
+<li>Check to authorize sharing your account information with Trifacta, then click <strong>Agree and Continue</strong>.</li>
+<li>Click <strong>Allow</strong> to allow Trifacta to access project data.</li>
+<li>Click your student username to sign in to Cloud Dataprep by Trifacta. Your username is the  <strong>Username</strong> in the left panel in your lab.</li>
+<li>Click <strong>Allow</strong> to grant Cloud Dataprep access to your Google Cloud lab account.</li>
+<li>Check to agree to Trifacta Terms of Service, and then click <strong>Accept</strong>.</li>
+<li>Click <strong>Continue</strong> on the <strong>First time setup</strong> screen to create the default storage location.</li>
+</ol>
+<p>Dataprep opens.</p>
+<h3>Test completed task</h3>
+<p>Click <strong>Check my progress</strong> to verify your performed task. If you have successfully initialized Cloud Dataprep with default storage location, you see an assessment score.</p>
+<ql-activity-tracking step="2">
+    Initialize Cloud Dataprep
+</ql-activity-tracking>
+<h2 id="step6">Task 3. Create a flow</h2>
+<p>Cloud Dataprep uses a <code>flow</code> workspace to access and manipulate datasets.</p>
+<ol>
+<li>Click <strong>Flows</strong> icon, then the <strong>Create</strong> button, then select <strong>Blank Flow</strong> :</li>
+</ol>
+<p><img alt="Flows icon, Create button, Blank Flow option" src="https://cdn.qwiklabs.com/YG1phM5jiQwM1RCHHoMDFd1agP2BHKRlkYlebPFq0YY%3D"></p>
+<ol start="2">
+<li>Click on <strong>Untitled Flow</strong>, then name and describe the flow. Since this lab uses 2016 data from the  <a href="https://www.fec.gov/data/browse-data/?tab=bulk-data" target="_blank">United States Federal Elections Commission 2016</a>, name the flow "FEC-2016", and then describe the flow as "United States Federal Elections Commission 2016".</li>
+<li>Click <strong>OK</strong>.</li>
+</ol>
+<p>The FEC-2016 flow page opens.</p>
+<h2 id="step7">Task 4. Import datasets</h2>
+<p>In this section you import and add data to the FEC-2016 flow.</p>
+<ol>
+<li>
+<p>Click <strong>Add Datasets</strong>, then select the <strong>Import Datasets</strong> link.</p>
+</li>
+<li>
+<p>In the left menu pane, select <strong>Cloud Storage</strong> to import datasets from Cloud Storage, then click on the pencil to edit the file path.</p>
+</li>
+</ol>
+<p><img alt="Cloud Storage page" src="https://cdn.qwiklabs.com/IMICgtrsZL8%2BLTjmyg754ftt0I%2Bby0KSPPPdj21VCz8%3D"></p>
+<ol start="3">
+<li>Type <code>gs://spls/gsp105</code> in the <strong>Choose a file or folder</strong> text box, then click <strong>Go</strong>.</li>
+</ol>
+<p>You may have to widen the browser window to see the <strong>Go</strong> and <strong>Cancel</strong> buttons.</p>
+<ol start="4">
+<li>
+<p>Click <strong>us-fec/</strong>.</p>
+</li>
+<li>
+<p>Click the <strong>+</strong> icon next to <code>cn-2016.txt</code> to create a dataset shown in the right pane. Click on the title in the dataset in the right pane and rename it "Candidate Master 2016".</p>
+</li>
+<li>
+<p>In the same way add the <code>itcont-2016-orig.txt</code> dataset, and rename it "Campaign Contributions 2016".</p>
+</li>
+<li>
+<p>Both datasets are listed in the right pane; click <strong>Import &amp; Add to Flow</strong>.</p>
+</li>
+</ol>
+<p><img alt="Two datasets listed in the right pane" src="https://cdn.qwiklabs.com/dQ3zTrEHhwVZnUJTvV3U%2Bazq5YT15qPiuq0lf38bRAw%3D"></p>
+<p>You see both datasets listed as a flow.</p>
+<h2 id="step8">Task 5. Prep the candidate file</h2>
+<ol>
+<li>By default, the Candidate Master 2016 dataset is selected. In the right pane, click <strong>Edit Recipe</strong>.</li>
+</ol>
+<p><img alt="Candidate Master 2016 dataset page" src="https://cdn.qwiklabs.com/0gU%2F3uAcWjKJtaBy%2FtOmayvgBECbTPs%2FPej3wjki9xw%3D"></p>
+<p>The Candidate Master 2016 Transformer page opens in the grid view.</p>
+<p><img alt="Candidate Master 2016 Transformer page in grid view" src="https://cdn.qwiklabs.com/9r2CStT1fxAbpxqs3CH7XWPY5OjUL5%2F63C3HL21TBNo%3D"></p>
+<p>The Transformer page is where you build your transformation recipe and see the results applied to the sample. When you are satisfied with what you see, execute the job against your dataset.</p>
+<ol start="2">
+<li>Each of the column heads have a Name and value that specify the data type. To see data types, click the column icon:</li>
+</ol>
+<p><img alt="column6" src="https://cdn.qwiklabs.com/np%2B84KqotZFP2Vm9pfBSUhQ2QApRI3El5anSZ%2B02Rfs%3D"></p>
+<ol start="3">
+<li>
+<p>Notice also that when you click the name of the column, a <strong>Details</strong> panel opens on the right.</p>
+</li>
+<li>
+<p>Click <strong>X</strong> in the top right of the Details panel to close the <strong>Details</strong> panel.</p>
+</li>
+</ol>
+<p>In the following steps you explore data in the grid view and apply transformation steps to your recipe.</p>
+<ol>
+<li>Column5 provides data from 1990-2064. Widen column5 (like you would on a spreadsheet) to separate each year. Click to select the tallest bin, which represents the year 2016.</li>
+</ol>
+<p><img alt="column5" src="https://cdn.qwiklabs.com/HBgC2djaKgiuQL6XDXuhBIYIZk7ao5FbDSTac%2FmiNV8%3D"></p>
+<p>This creates a step where these values are selected.</p>
+<ol start="2">
+<li>In the <strong>Suggestions</strong> panel on the right, in the <strong>Keep rows</strong> section, click <strong>Add</strong> to add this step to your recipe.</li>
+</ol>
+<p><img alt=" Suggestions panel" src="https://cdn.qwiklabs.com/Ts1eNo7vDLqRv%2FjotrG8%2FK8kHycDUYORiuFK%2F5xTkp4%3D"></p>
+<p>The Recipe panel on the right now has the following step:</p>
+<p><code>Keep rows where(DATE(2016, 1, 1) &lt;= column5) &amp;&amp; (column5 &lt; DATE(2018, 1, 1))</code></p>
+<ol start="3">
+<li>In Column6 (State), hover over and click on the mismatched (red) portion of the header to select the mismatched rows.</li>
+</ol>
+<p><img alt="column6" src="https://cdn.qwiklabs.com/J4An%2BqPwdGNzAdgSvOWakFOE%2FnrgJ%2B7ijW4SGJBch38%3D"></p>
+<p>Scroll down to the bottom (highlighted in red) find the mismatched values and notice how most of these records have the value "P" in column7, and "US" in column6. The mismatch occurs because column6 is marked as a "State" column (indicated by the flag icon), but there are non-state (such as "US") values.</p>
+<ol start="4">
+<li>To correct the mismatch, click <strong>X</strong> in the top of the Suggestions panel to cancel the transformation, then click on the flag icon in Column6 and change it to a "String" column.</li>
+</ol>
+<p><img alt="column6" src="https://cdn.qwiklabs.com/lZtnUvD5I6KCDVJ4Zot5dmDC1KkektpgBlQgF7OO4pc%3D"></p>
+<p>There is no longer a mismatch and the column marker is now green.</p>
+<ol start="5">
+<li>Filter on just the presidential candidates, which are those records that have the value "P" in column7. In the histogram for column7, hover over the two bins to see which is "H" and which is "P". Click the "P" bin.</li>
+</ol>
+<p><img alt="column7" src="https://cdn.qwiklabs.com/CIUuZWVWsWWQD3xJhQfJhm0qSoFcBK0cYUTpAnxpTbc%3D"></p>
+<ol start="6">
+<li>In the right Suggestions panel, click <strong>Add</strong> to accept the step to the recipe.</li>
+</ol>
+<p><img alt="Keep rows box" src="https://cdn.qwiklabs.com/3rctj2B3qPP53yr4UU4raLXyed9Zk8lHPlaXNNsZmhY%3D"></p>
+<h2 id="step9">Task 6. Wrangle the Contributions file and join it to the Candidates file</h2>
+<p>On the Join page, you can add your current dataset to another dataset or recipe based on information that is common to both datasets.</p>
+<p>Before you join the Contributions file to the Candidates file, clean up the Contributions file.</p>
+<ol>
+<li>Click on  <strong>FEC-2016</strong> (the dataset selector) at the top of the grid view page.</li>
+</ol>
+<p><img alt="FEC-2016 at the top of the grid view page" src="https://cdn.qwiklabs.com/HjbiWzAPc2RlYFro3r4llT65MBJjJkcA%2FklDCnLHn%2BU%3D"></p>
+<ol start="2">
+<li>
+<p>Click to select the grayed out <strong>Campaign Contributions 2016</strong>.</p>
+</li>
+<li>
+<p>In the right pane, click <strong>Add</strong> &gt; <strong>Recipe</strong>,  then click <strong>Edit Recipe</strong>.</p>
+</li>
+<li>
+<p>Click the <strong>recipe</strong> icon at the top right of the page, then click <strong>Add New Step</strong>.</p>
+</li>
+</ol>
+<p><img alt="Recipe icon and Add New Step button" src="https://cdn.qwiklabs.com/RSjdCHmcco6eqx2PxMao6QLRwsGdN17OuuKWuKScdJA%3D"></p>
+<p>Remove extra delimiters in the dataset.</p>
+<ol start="5">
+<li>
+<p>Insert the following Wrangle language command in the Search box:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+replacepatterns col: * with: '' on: `{start}"|"{end}` global: true
+</ql-code-block>
+<p>The Transformation Builder parses the Wrangle command and populates the Find and Replace transformation fields.</p>
+<p><img alt="ransformation Builder" src="https://cdn.qwiklabs.com/1BATF7Nh4eCh%2FfdTP63tsOKDXKBpYZrJcvX9xhkmD%2B4%3D"></p>
+<ol start="6">
+<li>
+<p>Click <strong>Add</strong> to add the transform to the recipe.</p>
+</li>
+<li>
+<p>Add another new step to the recipe. Click <strong>New Step</strong>, then type "Join" in the Search box.</p>
+</li>
+</ol>
+<p><img alt="Search transformations box" src="https://cdn.qwiklabs.com/R0Fk6rYEUC7dlUnXULpsr4UXwyI38nKt9koliI%2BmVeo%3D"></p>
+<ol start="8">
+<li>
+<p>Click <strong>Join datasets</strong> to open the Joins page.</p>
+</li>
+<li>
+<p>Click on "Candidate Master 2016" to join with Campaign Contributions 2016, then <strong>Accept</strong> in the bottom right.</p>
+</li>
+</ol>
+<p><img alt="Candidate Master 2016 row" src="https://cdn.qwiklabs.com/uihqUqtOIf5rTyiVKKK6ST1lALU2cg1LrT8dCZJcymA%3D"></p>
+<ol start="10">
+<li>On the right side, hover in the Join keys section, then click on the pencil (Edit icon).</li>
+</ol>
+<p><img alt="Join conditions box" src="https://cdn.qwiklabs.com/H4yPICUZhn0v03sH8lME2m%2FOnPRm2EK28AYf1CqwWK0%3D"></p>
+<p>Dataprep infers common keys. There are many common values that Dataprep suggests as Join Keys.</p>
+<ol start="11">
+<li>In the Add Key panel, in the Suggested join keys section, click <strong>column2 = column11</strong>.</li>
+</ol>
+<p><img alt="Add Key panel" src="https://cdn.qwiklabs.com/PVJawQJsD8zidQznUENkTaUpglQkmkZUoOe8n7dDMmE%3D"></p>
+<ol start="12">
+<li>Click <strong>Save and Continue</strong>.</li>
+</ol>
+<p>Columns 2 and 11 open for your review.</p>
+<ol start="13">
+<li>Click <strong>Next</strong>, then check the checkbox to the left of the "Column" label to add all columns of both datasets to the joined dataset.</li>
+</ol>
+<p><img alt="Column label list" src="https://cdn.qwiklabs.com/Y0yG7pQbqD9xQ%2FaaawSVMTCspoeJ3GlWrllws8dNzZ0%3D"></p>
+<ol start="14">
+<li>
+<p>Click <strong>Review</strong>, and then <strong>Add to Recipe</strong> to return to the grid view.</p>
+</li>
+</ol>
+<h2 id="step10">Task 7. Summary of data</h2>
+<p>Generate a useful summary by aggregating, averaging, and counting the contributions in Column 16 and grouping the candidates by IDs, names, and party affiliation in Columns 2, 24, 8 respectively.</p>
+<ol>
+<li>
+<p>At the top of the Recipe panel on the right, click on <strong>New Step</strong> and enter the following formula in the <strong>Transformation</strong> search box to preview the aggregated data.</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+pivot value:sum(column16),average(column16),countif(column16 &gt; 0) group: column2,column24,column8
+</ql-code-block>
+<p>An initial sample of the joined and aggregated data is displayed, representing a summary table of US presidential candidates and their 2016 campaign contribution metrics.</p>
+<p><img alt="Campaign contributions page" src="https://cdn.qwiklabs.com/KWn%2BlaBdq7hmCkvWKzDVVGl0JYFKCEXuKEJ2GkfF7uA%3D"></p>
+<ol start="2">
+<li>
+<p>Click <strong>Add</strong> to open a summary table of major US presidential candidates and their 2016 campaign contribution metrics.</p>
+</li>
+</ol>
+<h2 id="step11">Task 8. Rename columns</h2>
+<p>You can make the data easier to interpret by renaming the columns.</p>
+<ol>
+<li>
+<p>Add each of the renaming and rounding steps individually to the recipe by clicking <strong>New Step</strong>, then enter:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+rename type: manual mapping: [column24,'Candidate_Name'], [column2,'Candidate_ID'],[column8,'Party_Affiliation'], [sum_column16,'Total_Contribution_Sum'], [average_column16,'Average_Contribution_Sum'], [countif,'Number_of_Contributions']
+</ql-code-block>
+<ol start="2">
+<li>
+<p>Then click <strong>Add</strong>.</p>
+</li>
+<li>
+<p>Add in this last <strong>New Step</strong> to round the Average Contribution amount:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+set col: Average_Contribution_Sum value: round(Average_Contribution_Sum)
+</ql-code-block>
+<ol start="4">
+<li>Then click <strong>Add</strong>.</li>
+</ol>
+<p>Your results look something like this:</p>
+<p><img alt="Results table with columns for Candidate_Id, Candidate_Name, Part_Affiliation, and Total_Contribution_Sum" src="https://cdn.qwiklabs.com/5kpf3WN7jksYbhJVM%2FTmDRpycoWZ7VvssNsHzWEuEnA%3D"></p>
+<h2 id="step12">Congratulations!</h2>
+<p>You used Dataprep to add a dataset and created recipes to wrangle the data into meaningful results.</p>
+<h3>Next steps / Learn more</h3>
+<p>This lab is part of a series of labs called Qwik Starts. These labs are designed to give you a little taste of the many features available with Google Cloud. Search for "Qwik Starts" in the <a href="https://google.qwiklabs.com/catalog" target="_blank">lab catalog</a> to find the next lab you'd like to take!</p>
+<h3>Google Cloud training and certification</h3>
+<p>...helps you make the most of Google Cloud technologies. <a href="https://cloud.google.com/training/courses" target="_blank">Our classes</a> include technical skills and best practices to help you get up to speed quickly and continue your learning journey. We offer fundamental to advanced level training, with on-demand, live, and virtual options to suit your busy schedule. <a href="https://cloud.google.com/certification/" target="_blank">Certifications</a> help you validate and prove your skill and expertise in Google Cloud technologies.</p>
+<p><strong>Manual Last Updated Feb 1, 2022</strong></p>
+<p><strong>Lab Last Tested Feb 1, 2022</strong></p>
+<p>Copyright 2023 Google LLC All rights reserved. Google and the Google logo are trademarks of Google LLC. All other company and product names may be trademarks of the respective companies with which they are associated.</p>
+
+</div>
+</div>
+
+
+<div class='lab-content__end-lab-button js-end-lab-button-container hidden'>
+<ql-lab-control-button class='js-end-lab-button' running></ql-lab-control-button>
+</div>
+<!-- / TODO: Move recommendations into the end lab modal -->
+<div class='lab-content__renderable-instructions'>
+<div class='lab-content__recommendation'>
+<!-- # TODO: Change classes so that this doesn't stack vertically -->
+<section class='upcoming-cards'>
+<h2 class='ql-headline-4'>Continue questing</h2>
+<div class='activity-cards'>
+<ql-activity-card aria-label='Dataprep: Qwik Start' name='Dataprep: Qwik Start' path='/focuses/13314?parent=catalog' progress='0.0' type='lab'></ql-activity-card>
+
+</div>
+</section>
+
+</div>
+
+</div>
+</ql-drawer-content>
+<ql-drawer end id='outline-drawer' open slot='drawer' width='320'>
+<div aria-label='Lab Table of Contents' role='navigation'>
+<ul class='lab-content__outline js-lab-content-outline'>
+<li><a href="#step1">GSP105</a></li><li><a href="#step2">Overview</a></li><li><a href="#step3">Setup and requirements</a></li><li><a href="#step4">Task 1. Create a Cloud Storage bucket in your project</a></li><li><a href="#step5">Task 2. Initialize Cloud Dataprep</a></li><li><a href="#step6">Task 3. Create a flow</a></li><li><a href="#step7">Task 4. Import datasets</a></li><li><a href="#step8">Task 5. Prep the candidate file</a></li><li><a href="#step9">Task 6. Wrangle the Contributions file and join it to the Candidates file</a></li><li><a href="#step10">Task 7. Summary of data</a></li><li><a href="#step11">Task 8. Rename columns</a></li><li><a href="#step12">Congratulations!</a></li>
+</ul>
+</div>
+</ql-drawer>
+</ql-drawer-container>
+</ql-drawer-content>
+</ql-drawer-container>
+
+
+
+</div>
+</main>
+
+<span class='hidden' id='flash-sibling-before'></span>
+<ql-snackbar></ql-snackbar>
+
+
+<div class='modal fade' id='lab-details-modal'>
+<div class='modal-container'>
+<div class='modal-content mdl-shadow--24dp'>
+<div class='modal-body'>
+<p class='l-mbm'>
+Google Cloud Dataprep is an intelligent data service for visually exploring, cleaning, and preparing data for analysis. Watch the short video <a href="https://youtu.be/K3K9X9VaThE">Dataprep: Qwik Start - Qwiklabs Preview</a>.
+</p>
+<p>
+This lab is included in these quests:
+<a href="/quests/34">Baseline: Data, ML, AI</a>, <a href="/quests/117">Perform Foundational Data, ML, and AI Tasks in Google Cloud</a>.
+If you complete this lab you&#39;ll receive credit for it when you enroll in one of these quests.
+</p>
+<p class='small-label l-mbs'>
+<strong>
+Duration:
+</strong>
+0m setup
+&middot;
+60m access
+&middot;
+60m completion
+</p>
+<p class='small-label l-mbs'>
+<strong>AWS Region:</strong>
+[] <strong></strong>
+</p>
+<p class='small-label l-mbs'>
+<span><strong>Levels: </strong>introductory</span>
+</p>
+<p class='small-label'>
+<strong>
+Permalink:
+</strong>
+<a href="https://partner.cloudskillsboost.google/catalog_lab/725">https://partner.cloudskillsboost.google/catalog_lab/725</a>
+</p>
+</div>
+<div class='modal-actions'>
+<a class='button button--text' data-dismiss='modal'>
+Got It
+</a>
+</div>
+
+
+</div>
+</div>
+<iframe class='l-ie-iframe-fix' tabindex='-1' title='modal'></iframe>
+</div>
+<ql-dialog headline='How satisfied are you with this lab?&lt;span aria-hidden=&quot;true&quot;&gt;*&lt;/span&gt;' id='lab-review-dialog'>
+<form class="simple_form js-lab-review-form" id="new_lab_review" action="/lab_reviews" accept-charset="UTF-8" data-remote="true" method="post"><input name="utf8" type="hidden" value="&#x2713;" autocomplete="off" /><div aria-labelledby='lab-review-dialog' aria-required='true' aria-valuemax='5' aria-valuemin='0' aria-valuenow='0' class='rateit js-rateit' data-rateit-max='5' data-rateit-min='0' data-rateit-resetable='false' data-rateit-step='1' data-rateit-value='0' id='lab-review-rateit' role='slider' tabindex='0'></div>
+<div class='l-mtm'>
+
+<div class="control-group hidden lab_review_user_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" value="11061062" name="lab_review[user_id]" id="lab_review_user_id" /></div></div>
+<div class="control-group hidden lab_review_classroom_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" name="lab_review[classroom_id]" id="lab_review_classroom_id" /></div></div>
+<div class="control-group hidden lab_review_lab_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" value="725" name="lab_review[lab_id]" id="lab_review_lab_id" /></div></div>
+<div class="control-group hidden lab_review_focus_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" name="lab_review[focus_id]" id="lab_review_focus_id" /></div></div>
+<div class="control-group hidden lab_review_rating"><div class="controls"><input class="hidden js-rating-input" autocomplete="off" type="hidden" name="lab_review[rating]" id="lab_review_rating" /></div></div>
+<div class="control-group text optional lab_review_comment"><label class="text optional control-label" for="lab_review_comment">Additional Comments</label><div class="controls"><textarea class="text optional" name="lab_review[comment]" id="lab_review_comment">
+</textarea></div></div>
+</div>
+</form><ql-button disabled id='submit' label='Submit' slot='action' text></ql-button>
+</ql-dialog>
+
+<ql-dialog headline='All done? If you end this lab, you will lose all your work. You may not be able to restart the lab if there is a quota limit. Are you sure you want to end this lab?' icon='error_outline' id='js-lab-are-you-sure-dialog'>
+<ql-button id='js-are-you-sure-button' label='Submit' slot='action' text></ql-button>
+</ql-dialog>
+
+
+<script>
+  $(function() {
+    ql.initMaterialInputs();
+    initChosen();
+    initSearch();
+    initTabs();
+    ql.list.init();
+    ql.favoriting.init();
+    ql.header.myAccount.init();
+    initTooltips();
+    ql.autocomplete.init();
+    ql.modals.init();
+    ql.toggleButtons.init();
+    ql.analytics.init();
+    ql.favoriting.init();
+  ql.chat.init();
+  ql.jumpContent.init();
+  ql.labControlPanel.addRecaptchaErrorHandler();
+  initLabContent();
+  ql.labOutline.links.init();
+  initLabReviewModal();
+  initLabReviewTranslations( {"star_amount_1":"1 of 5 stars","star_amount_2":"2 of 5 stars","star_amount_3":"3 of 5 stars","star_amount_4":"4 of 5 stars","star_amount_5":"5 of 5 stars"} )
+  ql.labAssessment.init();
+  ql.labData.init();
+  initLabTranslations( {"are_you_sure":"All done? If you end this lab, you will lose all your work. You may not be able to restart the lab if there is a quota limit. Are you sure you want to end this lab?","in_progress":"*In Progress*","ending":"*Ending*","starting":"*Starting, please wait*","end_concurrent_labs":"Sorry, you can only run one lab at a time. To start this lab, please confirm that you want all of your existing labs to end.","copied":"Copied","no_resource":"Error retrieving resource.","no_support":"No Support","mac_press":"Press ⌘-C to copy","thanks_review":"Thanks for reviewing this lab.","windows_press":"Press Ctrl-C to copy","days":"days"} );
+  ql.labRun.init();
+  ql.navPanel.init();
+  ql.navigation.init();
+  
+  });
+</script>
+
+</body>
+</html>
+

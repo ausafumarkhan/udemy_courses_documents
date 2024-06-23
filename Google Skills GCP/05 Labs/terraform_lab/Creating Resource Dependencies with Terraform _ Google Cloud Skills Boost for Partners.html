@@ -1,0 +1,952 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<title>Creating Resource Dependencies with Terraform | Google Cloud Skills Boost for Partners</title>
+<meta name="action-cable-url" content="/cable" />
+<script>
+//<![CDATA[
+window.gon={};gon.deployment="googlecourses-run";
+//]]>
+</script>
+<script>
+  (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer',"GTM-5XSKHDX");
+</script>
+<script src="https://cdn.qwiklabs.com/assets/hallofmirrors/polyfills/webcomponents-loader-8583b47b01e40e6ea7bf1ad443a20b7e79bbdd5eafac009806a228c91a97282c.js"></script>
+<script src="https://cdn.qwiklabs.com/assets/vendor-613520545532a2795a401a8168ca8b698b9ee765a66f5ad9ead806b5c32eabe8.js"></script>
+<script src="https://cdn.qwiklabs.com/assets/application-f774d7f788672b60e7430061ab4632e13f46fdd1ad8ccce2fd4fddb685975d96.js"></script>
+<script src="https://cdn.qwiklabs.com/assets/hallofmirrors/hallofmirrors-afbc6f4d1914ab897958ffbcf5a79eeb9551aa4cd32fc55ccc4596af39c08749.js"></script>
+<!--[if lt IE 9]>  <![endif]-->
+<script src='http://html5shim.googlecode.com/svn/trunk/html5.js' type='text/javascript'></script>
+<!--[endif]>  <![endif]-->
+<script id='ze-snippet' src='https://static.zdassets.com/ekr/snippet.js?key=511e4158-0aec-4e3c-b2e6-4daa1769f51e'></script>
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="MeIsTbOb5yii6wlyyanKExnrHx22CvSzrWRICTvxHmORresk/PQQDdXJRdBzvrXffbXhYOoDpKBbPD82fbIIuA==" />
+<meta content='width=device-width, initial-scale=1.0, user-scalable=yes' name='viewport'>
+<meta content='1rRsY0INj8RvwB5EF5pwdxt2A2P9aDgAlsICaJ0d5w0' name='google-site-verification'>
+<meta content='#3681E4' property='msapplication-TileColor'>
+<meta content='/favicon-144.png' property='msapplication-TileImage'>
+<meta content='[{&quot;id&quot;:&quot;recaptcha_experiment&quot;,&quot;optimize_id&quot;:&quot;dpViOcLkT3qS4TvL2mRojA&quot;,&quot;title&quot;:&quot;No Recaptcha shown for trusted users&quot;,&quot;variant_index&quot;:0,&quot;variant&quot;:&quot;original&quot;}]' name='active-experiments'>
+<meta content='{&quot;userId&quot;:11061062,&quot;experimentIds&quot;:[&quot;teams&quot;,&quot;community_forum&quot;,&quot;alexandria_show_bundle_errors&quot;,&quot;program_learning_assignment&quot;,&quot;search_updates&quot;,&quot;barker&quot;,&quot;program_groups&quot;,&quot;show_annual_purchase_now&quot;,&quot;programs&quot;,&quot;course_upgrade&quot;,&quot;canonical_domain_redirect&quot;,&quot;enforce_codebuild_verdicts&quot;,&quot;chat_off_for_signed_out_users&quot;,&quot;program_resources&quot;,&quot;oauth_risc_shutoff&quot;,&quot;used_in&quot;,&quot;peer_assignment&quot;]}' name='help-api-product-data'>
+<meta content='{&quot;groupIds&quot;:[&quot;non_suadmins&quot;,&quot;students&quot;,&quot;non_organization&quot;,&quot;non_program&quot;]}' name='help-api-custom-data'>
+<meta content='Explore implicit and explicit resource dependencies and examine the use of lifecycle meta-argument.' name='description'>
+<meta content='Qwiklabs' name='author'>
+<meta content='Creating Resource Dependencies with Terraform | Google Cloud Skills Boost for Partners' property='og:title'>
+<meta content='website' property='og:type'>
+<meta content='/favicon-144.png' property='og:image'>
+<meta content='Qwiklabs' property='og:site_name'>
+<meta content='Explore implicit and explicit resource dependencies and examine the use of lifecycle meta-argument.' property='og:description'>
+<meta content='/qwiklabs_logo_900x887.png' property='og:logo' size='900x887'>
+<meta content='/qwiklabs_logo_994x187.png' property='og:logo' size='994x187'>
+
+
+<meta property="og:url" content="https://partner.cloudskillsboost.google/course_sessions/4668416/labs/357062" /><link href="https://partner.cloudskillsboost.google/course_sessions/4668416/labs/357062" rel="canonical" />
+<link color='#3681E4' href='/favicon-svg.svg' rel='mask-icon'>
+<link href='/favicon-180.png' rel='apple-touch-icon-precomposed'>
+<link href='https://cdn.qwiklabs.com/Vag5GK2J6rS6843Qvg8TQJ1kEbAsEmQoF0%2BdLRfcLRE%3D' rel='shortcut icon' type='image/x-icon'>
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oswald:400|Roboto+Mono:400,700|Roboto:300,400,500,700|Google+Sans:300,400,500,700|Google+Sans+Display:400|Material+Icons|Google+Material+Icons|Google+Sans+Text:400,500,700" media="screen" />
+
+<link rel="stylesheet" href="https://cdn.qwiklabs.com/assets/application-f06766d8a66868b44e1698330db89de0df7d0086eb11037f587d06ac3bf6bc2e.css" media="all" />
+
+
+<style>
+  :root {
+    --primary-text-on-surface-color: #1a73e8;
+    --primary-text-on-surface-color-dark: #1568d6;
+    --primary-text-on-surface-color-darker: #135ec1;
+    --primary-text-on-surface-color-darkest: #1154ac;
+    --primary-surface-color: #1a73e8;
+    --primary-surface-color-rgb: 26,115,232;
+    --primary-surface-color-light: #d1e3fa;
+    --primary-surface-color-lightest: #e8f1fd;
+    --text-on-primary-color: #ffffff;
+    --accent-text-on-surface-color: #f29900;
+    --accent-surface-color: #f9ab00;
+    --accent-surface-color-rgb: 249,171,0;
+    --accent-surface-color-light: #ffefcc;
+    --text-on-accent-color: #202124;
+  }
+</style>
+
+<style>
+  :root {
+    --navbar-height: 112px;
+  }
+</style>
+
+
+
+</head>
+<body class='lab-show l-full no-nav course-layout-body l-full no-nav  application-new course_sessions-labs course_sessions-labs-show lab-show l-full no-nav course-layout-body l-full no-nav  '>
+<ql-toolbar centered class='course-header'>
+<div class='course-header-navigation' role='navigation' slot='navigation'>
+<ul>
+<li>
+<ql-icon-button href='/course_templates/443' icon='home' label='Course home' tip='Home'></ql-icon-button>
+</li>
+<li>
+<ql-toggle-button class='course-side-toggle' data-analytics-action='Toggled course outline panel' data-analytics-category='Course' data-analytics-label='Getting Started with Terraform for Google Cloud' expandable for='course-outline-drawer' icon='list' id='toggle-outline' label='Toggle course outline' on tip='Toggle course outline'></ql-toggle-button>
+</li>
+<li>
+<ql-icon-button href='/course_sessions/4668416/video/357061' icon='arrow_back' label='Previous activity' tip='Previous activity'></ql-icon-button>
+</li>
+<li>
+<ql-icon-button href='/course_sessions/4668416/quizzes/357063' icon='arrow_forward' label='Next activity' tip='Next activity'></ql-icon-button>
+</li>
+</ul>
+</div>
+<h1 class='ql-headline-6' slot='title'>
+Creating Resource Dependencies with Terraform
+</h1>
+<div class='course-header-actions' slot='action'>
+<ql-icon-button id='control-panel-target' style='display: none;'>
+dashboard
+</ql-icon-button>
+<ql-menu for='control-panel-target' id='control-panel-menu'></ql-menu>
+
+
+<ql-icon-button class='mobile-hide' icon='help_outline' id='help-menu-button' label='Open help menu' tip='Help'></ql-icon-button>
+<ql-menu for='help-menu-button' id='help-menu'>
+<ql-menu-item data-analytics-action='opened_help' data-analytics-label='course' label='Help Center' onclick='hallofmirrors.helpService.startHelp({&quot;productData&quot;:{&quot;userId&quot;:11061062},&quot;context&quot;:&quot;course&quot;})'></ql-menu-item>
+<ql-menu-item href='mailto:support@qwiklabs.com' label='Email support'></ql-menu-item>
+<ql-menu-item label='Chat support' onClick='ql.chat.open()'></ql-menu-item>
+</ql-menu>
+
+</div>
+</ql-toolbar>
+
+
+<nav class='nav-panel js-nav-panel'>
+<div class='nav-panel__logo'>
+<div class="custom-logo"><img alt="Google Cloud Skills Boost for Partners" height="24" aria-label="Google Cloud Skills Boost for Partners" src="https://cdn.qwiklabs.com/PGyhmgS3zZncIEGywnx5UXsKwepRRFQ9BhAg%2FWHNrlQ%3D" /></div>
+</div>
+<nav class='ql-sidenav'>
+<ql-sidenav-item href='/' icon='home' label='Paths'></ql-sidenav-item>
+
+<ql-sidenav-item href='/catalog' icon='school' label='Explore'></ql-sidenav-item>
+
+<ql-sidenav-item href='/profile' icon='event_note' label='Profile'></ql-sidenav-item>
+
+</nav>
+
+</nav>
+<div class='nav-panel__overlay js-nav-toggle'></div>
+
+<main class='js-main' id='jump-content'>
+<div class='l-main-wrapper' id='main-wrapper'>
+<ql-drawer-container class='course-container'>
+<ql-drawer aria-labelledby='toggle-outline' id='course-outline-drawer' localStorageid='course-outline' open slot='drawer' width='240'>
+<ql-course-outline activeActivityId='357062' modules='[{&quot;id&quot;:&quot;55563&quot;,&quot;title&quot;:&quot;Course Introduction&quot;,&quot;description&quot;:&quot;\u003cp\u003eThis section welcomes learners to the Google Cloud Fundamentals: Core Infrastructure course, and provides an overview of the course structure and goals.\u003c/p\u003e&quot;,&quot;steps&quot;:[{&quot;id&quot;:&quot;364433&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;357036&quot;,&quot;href&quot;:&quot;/course_sessions/4668416/video/357036&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:142000,&quot;title&quot;:&quot;Course Introduction&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false}],&quot;expanded&quot;:false},{&quot;id&quot;:&quot;55564&quot;,&quot;title&quot;:&quot;Introduction to Terraform for Google Cloud&quot;,&quot;description&quot;:&quot;\u003cp\u003eThis is an introductory module that covers the business need for Terraform. We’ll start with the basics by providing an overview of infrastructure as code (IaC), which is the basic concept for Terraform. We will explore how Terraform can be used as an IaC tool on Google Cloud and also cover its features and benefits. We’ll then look at how Terraform transforms lines of code into real infrastructure on Google Cloud.\u003c/p\u003e&quot;,&quot;steps&quot;:[{&quot;id&quot;:&quot;364434&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;357037&quot;,&quot;href&quot;:&quot;/course_sessions/4668416/video/357037&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:67000,&quot;title&quot;:&quot;Module Overview&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;364435&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;357038&quot;,&quot;href&quot;:&quot;/course_sessions/4668416/video/357038&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:450000,&quot;title&quot;:&quot;Infrastructure as Code&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;364436&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;357039&quot;,&quot;href&quot;:&quot;/course_sessions/4668416/video/357039&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:318000,&quot;title&quot;:&quot;Terraform Overview&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;364437&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;357040&quot;,&quot;href&quot;:&quot;/course_sessions/4668416/video/357040&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:344000,&quot;title&quot;:&quot;Using Terraform&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;364438&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;357041&quot;,&quot;href&quot;:&quot;/course_sessions/4668416/quizzes/357041&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Quiz : Introducing to Terraform for Google Cloud&quot;,&quot;type&quot;:&quot;quiz&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;364439&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;357042&quot;,&quot;href&quot;:&quot;/course_sessions/4668416/video/357042&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:25000,&quot;title&quot;:&quot;Module Summary&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false}],&quot;expanded&quot;:false},{&quot;id&quot;:&quot;55565&quot;,&quot;title&quot;:&quot;Terms and Concepts&quot;,&quot;description&quot;:&quot;\u003cp\u003eIn this module, we introduce you to HashiCorp Language and discuss the terms and concepts involved in authoring a Terraform configuration. We also explore some of the important Terraform commands involved in managing the terraform configuration. Upon completion of this module, you will be able to interpret what each code block means, create basic configuration files within Terraform and be able to explain the purpose of a few few important terraform commands and we will also explore what a Validator tool is.`\u003c/p\u003e&quot;,&quot;steps&quot;:[{&quot;id&quot;:&quot;364440&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;357043&quot;,&quot;href&quot;:&quot;/course_sessions/4668416/video/357043&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:91000,&quot;title&quot;:&quot;Module Overview&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;364441&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;357044&quot;,&quot;href&quot;:&quot;/course_sessions/4668416/video/357044&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:232000,&quot;title&quot;:&quot;Terraform Configurations and the HashiCorp Language&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;364442&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;357045&quot;,&quot;href&quot;:&quot;/course_sessions/4668416/video/357045&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:399000,&quot;title&quot;:&quot;Author Phase Terms and Concepts&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;364443&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;357046&quot;,&quot;href&quot;:&quot;/course_sessions/4668416/video/357046&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:407000,&quot;title&quot;:&quot;Terraform Commands&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;364444&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;357047&quot;,&quot;href&quot;:&quot;/course_sessions/4668416/video/357047&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:256000,&quot;title&quot;:&quot;The Terraform Validator&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;364445&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;357048&quot;,&quot;href&quot;:&quot;/course_sessions/4668416/video/357048&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:489000,&quot;title&quot;:&quot;Demo - Terraform Workflow&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;364446&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;357049&quot;,&quot;href&quot;:&quot;/course_sessions/4668416/video/357049&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:39000,&quot;title&quot;:&quot;Lab Intro: Infrastructure as Code with Terraform&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;364447&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;357050&quot;,&quot;href&quot;:&quot;/course_sessions/4668416/labs/357050&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:3600000,&quot;title&quot;:&quot;Infrastructure as Code with Terraform&quot;,&quot;type&quot;:&quot;lab&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;364448&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;357051&quot;,&quot;href&quot;:&quot;/course_sessions/4668416/quizzes/357051&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Quiz: Terms and Concepts&quot;,&quot;type&quot;:&quot;quiz&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;364449&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;357052&quot;,&quot;href&quot;:&quot;/course_sessions/4668416/video/357052&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:48000,&quot;title&quot;:&quot;Module Summary&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false}],&quot;expanded&quot;:false},{&quot;id&quot;:&quot;55566&quot;,&quot;title&quot;:&quot;Writing Infrastructure Code for Google Cloud&quot;,&quot;description&quot;:&quot;\u003cp\u003eIn this module, you will explore more about resources, variables, and output resources. We will begin by exploring how to create infrastructure components using resources and then explore how Terraform handles dependencies within resources. While we have been covering resource creation by using hard-code resource arguments, we will explore how you can parameterize a given configuration using variables. We will explore the syntax to declare, define and use them within your configuration. We will then discuss how you can export resource attributes outside the resource declaration using output values. We will then wrap up the module by discovering how you can simplify code authoring using Terraform registry, and Cloud Foundation Toolkit.\u003c/p\u003e&quot;,&quot;steps&quot;:[{&quot;id&quot;:&quot;364450&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;357053&quot;,&quot;href&quot;:&quot;/course_sessions/4668416/video/357053&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:64000,&quot;title&quot;:&quot;Module Overview&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;364451&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;357054&quot;,&quot;href&quot;:&quot;/course_sessions/4668416/video/357054&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:285000,&quot;title&quot;:&quot;Introduction to Resources&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;364452&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;357055&quot;,&quot;href&quot;:&quot;/course_sessions/4668416/video/357055&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:163000,&quot;title&quot;:&quot;Meta-arguments for Resources&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;364453&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;357056&quot;,&quot;href&quot;:&quot;/course_sessions/4668416/video/357056&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:270000,&quot;title&quot;:&quot;Resource Dependencies&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;364454&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;357057&quot;,&quot;href&quot;:&quot;/course_sessions/4668416/video/357057&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:389000,&quot;title&quot;:&quot;Variables&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;364455&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;357058&quot;,&quot;href&quot;:&quot;/course_sessions/4668416/video/357058&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:84000,&quot;title&quot;:&quot;Variables Best Practices&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;364456&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;357059&quot;,&quot;href&quot;:&quot;/course_sessions/4668416/video/357059&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:177000,&quot;title&quot;:&quot;Output Values&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;364457&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;357060&quot;,&quot;href&quot;:&quot;/course_sessions/4668416/video/357060&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:100000,&quot;title&quot;:&quot;Terraform Registry and Cloud Foundation Toolkit&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;364458&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;357061&quot;,&quot;href&quot;:&quot;/course_sessions/4668416/video/357061&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:28000,&quot;title&quot;:&quot;Lab Intro: Creating Resource Dependencies with Terraform&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;364459&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;357062&quot;,&quot;href&quot;:&quot;/course_sessions/4668416/labs/357062&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:3600000,&quot;title&quot;:&quot;Creating Resource Dependencies with Terraform&quot;,&quot;type&quot;:&quot;lab&quot;,&quot;isComplete&quot;:false,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:false,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;364460&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;357063&quot;,&quot;href&quot;:&quot;/course_sessions/4668416/quizzes/357063&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Quiz: Writing Infrastructure Code for Google Cloud&quot;,&quot;type&quot;:&quot;quiz&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;364461&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;357064&quot;,&quot;href&quot;:&quot;/course_sessions/4668416/video/357064&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:33000,&quot;title&quot;:&quot;Module Summary&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false}],&quot;expanded&quot;:false},{&quot;id&quot;:&quot;55567&quot;,&quot;title&quot;:&quot;Organizing and Reusing Configuration with Terraform Modules&quot;,&quot;description&quot;:&quot;\u003cp\u003eYou will explore what modules are, how to use them from a public registry, how to use modules to reuse configurations, and parameterize configurations using input variables. You will also explore how to use output values to access resource attributes outside of the module.\u003c/p\u003e&quot;,&quot;steps&quot;:[{&quot;id&quot;:&quot;364462&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;357065&quot;,&quot;href&quot;:&quot;/course_sessions/4668416/video/357065&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:119000,&quot;title&quot;:&quot;Module Overview&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;364463&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;357066&quot;,&quot;href&quot;:&quot;/course_sessions/4668416/video/357066&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:253000,&quot;title&quot;:&quot;Introduction to Terraform Modules&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;364464&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;357067&quot;,&quot;href&quot;:&quot;/course_sessions/4668416/video/357067&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:107000,&quot;title&quot;:&quot;Modules use cases and benefits&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;364465&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;357068&quot;,&quot;href&quot;:&quot;/course_sessions/4668416/video/357068&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:201000,&quot;title&quot;:&quot;Reuse Configurations with Modules&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;364466&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;357069&quot;,&quot;href&quot;:&quot;/course_sessions/4668416/video/357069&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:225000,&quot;title&quot;:&quot;Variables and Outputs&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;364467&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;357070&quot;,&quot;href&quot;:&quot;/course_sessions/4668416/video/357070&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:183000,&quot;title&quot;:&quot;Best Practices and a Real Time Scenario&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;364468&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;357071&quot;,&quot;href&quot;:&quot;/course_sessions/4668416/video/357071&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:33000,&quot;title&quot;:&quot;Lab Intro: Automating the Deployment of Infrastructure Using Terraform&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;364469&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;357072&quot;,&quot;href&quot;:&quot;/course_sessions/4668416/labs/357072&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:3600000,&quot;title&quot;:&quot;Automating the Deployment of Infrastructure Using Terraform&quot;,&quot;type&quot;:&quot;lab&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;364470&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;357073&quot;,&quot;href&quot;:&quot;/course_sessions/4668416/quizzes/357073&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Quiz: Organizing and Reusing Configuration with Terraform Modules&quot;,&quot;type&quot;:&quot;quiz&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;364471&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;357074&quot;,&quot;href&quot;:&quot;/course_sessions/4668416/video/357074&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:40000,&quot;title&quot;:&quot;Module Summary&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false}],&quot;expanded&quot;:false},{&quot;id&quot;:&quot;55568&quot;,&quot;title&quot;:&quot;Introduction to Terraform State&quot;,&quot;description&quot;:&quot;\u003cp\u003eThe module starts with an introduction to Terraform state. You’ll then learn about the different ways to store Terraform state. Later in the module you’ll explore the benefits of storing the state file in a remote location. While there are many remote locations in which you can store the state file, this module describes how to store it in a Google Cloud Storage Bucket. You’ll wrap up the module by learning best practices for working with state files.\u003c/p\u003e&quot;,&quot;steps&quot;:[{&quot;id&quot;:&quot;364472&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;357075&quot;,&quot;href&quot;:&quot;/course_sessions/4668416/video/357075&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:65000,&quot;title&quot;:&quot;Module Overview&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;364473&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;357076&quot;,&quot;href&quot;:&quot;/course_sessions/4668416/video/357076&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:125000,&quot;title&quot;:&quot;Introduction to Terraform State&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;364474&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;357077&quot;,&quot;href&quot;:&quot;/course_sessions/4668416/video/357077&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:272000,&quot;title&quot;:&quot;Storing State Files&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;364475&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;357078&quot;,&quot;href&quot;:&quot;/course_sessions/4668416/video/357078&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:72000,&quot;title&quot;:&quot;Terraform State Best Practices&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;364476&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;357079&quot;,&quot;href&quot;:&quot;/course_sessions/4668416/video/357079&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:11000,&quot;title&quot;:&quot;Lab Intro: Creating a Remote Backend&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;364477&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;357080&quot;,&quot;href&quot;:&quot;/course_sessions/4668416/labs/357080&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:1800000,&quot;title&quot;:&quot;Creating a Remote Backend&quot;,&quot;type&quot;:&quot;lab&quot;,&quot;isComplete&quot;:false,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:false,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;364478&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;357081&quot;,&quot;href&quot;:&quot;/course_sessions/4668416/quizzes/357081&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Quiz: Introduction to Terraform State&quot;,&quot;type&quot;:&quot;quiz&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;364479&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;357082&quot;,&quot;href&quot;:&quot;/course_sessions/4668416/video/357082&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:28000,&quot;title&quot;:&quot;Module Summary&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false}],&quot;expanded&quot;:false},{&quot;id&quot;:&quot;55569&quot;,&quot;title&quot;:&quot;Course Summary&quot;,&quot;description&quot;:&quot;\u003cp\u003eIn this final section, we review what&#39;s been presented in this course.\u003c/p\u003e&quot;,&quot;steps&quot;:[{&quot;id&quot;:&quot;364480&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;357083&quot;,&quot;href&quot;:&quot;/course_sessions/4668416/video/357083&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:81000,&quot;title&quot;:&quot;Course Summary&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;364481&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;357084&quot;,&quot;href&quot;:&quot;/course_sessions/4668416/documents/357084&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Course Resource: All Slides&quot;,&quot;type&quot;:&quot;document&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false}],&quot;expanded&quot;:false}]' open></ql-course-outline>
+</ql-drawer>
+<ql-drawer-content class='course-activity' slot='drawer-content'>
+
+
+<div class='lab-assessment__tab js-open-lab-assessment-panel'>
+<button class='js-lab-assessment-total-score'>
+—/100
+</button>
+</div>
+<div aria-labelledby='lab-assessment-checkpoint' class='lab-assessment__panel js-lab-assessment-panel' role='dialog'>
+<div class='lab-assessment__panel__header'>
+<h4 id='lab-assessment-checkpoint'>Checkpoints</h4>
+<ql-icon-button class='js-close-lab-assessment-panel' icon='arrow_forward' label='Close dialog'></ql-icon-button>
+</div>
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Create static IP using implicit dependency
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button class='js-show-run-step-button' description='Create static IP using implicit dependency' step_no='1'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-1'>
+</span>
+/ 25
+</p>
+</div>
+</div>
+
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Create VM instance using implicit dependency
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button class='js-show-run-step-button' description='Create VM instance using implicit dependency' step_no='2'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-2'>
+</span>
+/ 25
+</p>
+</div>
+</div>
+
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Create cloud storage bucket using explicit dependency
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button class='js-show-run-step-button' description='Create cloud storage bucket using explicit dependency' step_no='3'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-3'>
+</span>
+/ 25
+</p>
+</div>
+</div>
+
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Create VM instance resource using explicit dependency
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button class='js-show-run-step-button' description='Create VM instance resource using explicit dependency' step_no='4'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-4'>
+</span>
+/ 25
+</p>
+</div>
+</div>
+
+</div>
+<ql-drawer-container class='js-lab-state' data-analytics-payload='{&quot;label&quot;:&quot;Creating Resource Dependencies with Terraform&quot;,&quot;lab_name&quot;:&quot;Creating Resource Dependencies with Terraform&quot;,&quot;classroom_name&quot;:null,&quot;deployment&quot;:&quot;googlecourses-run&quot;}' data-credits='0.0' data-focus-id='176058095' data-lab-billing-limit='0.0' data-lab-duration='5400' data-parent='course_session' data-recaptcha-enabled id='lab-container'>
+<ql-drawer id='terminal-drawer' slot='drawer' style='width: calc(100% - 480px)'>
+<iframe allow='clipboard-read' class='terminal' id='embedded-resource'></iframe>
+</ql-drawer>
+<ql-drawer-content class='js-lab-wrapper' id='lab-content' slot='drawer-content'>
+<ql-drawer-container id='lab-content-container'>
+<ql-drawer id='control-panel-drawer' open slot='drawer' width='320'>
+<ql-lab-control-panel class='ql-lab-control-panel__max-height control-panel js-lab-control-panel' connectionFiles='[]' labControlButton='{&quot;disabled&quot;:false,&quot;pending&quot;:false,&quot;running&quot;:false}' labDetails='[]' labTimer='{&quot;ticking&quot;:false,&quot;secondsRemaining&quot;:5400}' studentResources='[]'>
+<script src="https://www.recaptcha.net/recaptcha/api.js?render=6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr"   ></script>
+        <script>
+          // Define function so that we can call it again later if we need to reset it
+          // This executes reCAPTCHA and then calls our callback.
+          function executeRecaptchaForStartLab() {
+            grecaptcha.ready(function() {
+              grecaptcha.execute('6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr', {action: 'start_lab'}).then(function(token) {
+                setInputWithRecaptchaResponseTokenForStartLab('g-recaptcha-response-data-start-lab', token)
+              });
+            });
+          };
+          // Invoke immediately
+          executeRecaptchaForStartLab()
+
+          // Async variant so you can await this function from another async function (no need for
+          // an explicit callback function then!)
+          // Returns a Promise that resolves with the response token.
+          async function executeRecaptchaForStartLabAsync() {
+            return new Promise((resolve, reject) => {
+             grecaptcha.ready(async function() {
+                resolve(await grecaptcha.execute('6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr', {action: 'start_lab'}))
+              });
+            })
+          };
+
+                  var setInputWithRecaptchaResponseTokenForStartLab = function(id, token) {
+          var element = document.getElementById(id);
+          if (element !== null) element.value = token;
+        }
+
+        </script>
+<input type="hidden" name="g-recaptcha-response-data[start_lab]" id="g-recaptcha-response-data-start-lab" data-sitekey="6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr" class="g-recaptcha g-recaptcha-response "/>
+
+<div aria-live='polite' class='hidden' id='recaptcha-v2-start-lab' slot='recaptcha'>
+<script src="https://www.recaptcha.net/recaptcha/api.js" async defer ></script>
+<div data-sitekey="6LeOI8IUAAAAAPkHlMAE9NReCD_1WD81iYlBlCnV" data-callback="recaptchaComplete" data-expired-callback="expireV2Token" class="g-recaptcha "></div>
+          <noscript>
+            <div>
+              <div style="width: 302px; height: 422px; position: relative;">
+                <div style="width: 302px; height: 422px; position: absolute;">
+                  <iframe
+                    src="https://www.recaptcha.net/recaptcha/api/fallback?k=6LeOI8IUAAAAAPkHlMAE9NReCD_1WD81iYlBlCnV"
+                    name="ReCAPTCHA"
+                    style="width: 302px; height: 422px; border-style: none; border: 0; overflow: hidden;">
+                  </iframe>
+                </div>
+              </div>
+              <div style="width: 300px; height: 60px; border-style: none;
+                bottom: 12px; left: 25px; margin: 0px; padding: 0px; right: 25px;
+                background: #f9f9f9; border: 1px solid #c1c1c1; border-radius: 3px;">
+                <textarea id="g-recaptcha-response" name="g-recaptcha-response"
+                  class="g-recaptcha-response"
+                  style="width: 250px; height: 40px; border: 1px solid #c1c1c1;
+                  margin: 10px 25px; padding: 0px; resize: none;">
+                </textarea>
+              </div>
+            </div>
+          </noscript>
+
+</div>
+</ql-lab-control-panel>
+</ql-drawer>
+<ql-drawer-content id='lab-instructions' slot='drawer-content'>
+<ql-snackbar id='alert-snackbar'></ql-snackbar>
+<div class='alert alert--fake js-alert'>
+<p class='alert__message js-alert-message' role='alert'></p>
+<ql-icon-button class='alert__close js-alert-close' icon='clear'></ql-icon-button>
+<iframe class='l-ie-iframe-fix' tabindex='-1'></iframe>
+</div>
+<div class='lab-content__renderable-instructions js-lab-content'>
+<div class='lab-preamble'>
+<h1 class='lab-preamble__title'>
+Creating Resource Dependencies with Terraform
+</h1>
+<div class='lab-preamble__details subtitle-headline-1'>
+<span>1 hour 30 minutes</span>
+<span>Free</span>
+<div class='lab__rating'>
+<a aria-label="Lab Reviews" href="/focuses/176058095/reviews?parent=course_session"><div class='rateit' data-rateit-readonly='true' data-rateit-value='4.5519'></div>
+
+</a></div>
+</div>
+</div>
+<div class='lab-outline-place-holder'></div>
+
+<div class='markdown-lab-instructions js-markdown-instructions' id='markdown-lab-instructions'>
+
+<h2 id="step1">Overview</h2>
+<p>In this lab, you will create two VMs in the default network. We will use variables to define the VM's attributes at runtime and use output values to print a few resource attributes.</p>
+<p>We will then add a static IP address to the first VM to examine how terraform handles implicit dependencies.  We will then create a GCS bucket by mentioning explicit dependency to the VM to examine how terraform handles explicit dependency.</p>
+<h2 id="step2">Objectives</h2>
+<p>In this lab, you learn how to perform the following tasks:</p>
+<ul>
+<li>Use variables and output values</li>
+<li>Observe implicit dependency</li>
+<li>Create explicit resource dependency</li>
+</ul>
+<h2 id="step3">Task 1. Sign in to the Cloud Console</h2>
+<p>For each lab, you get a new Google Cloud project and set of resources for a fixed time at no cost.</p>
+<ol>
+<li>
+<p>Sign in to Qwiklabs using an <strong>incognito window</strong>.</p>
+</li>
+<li>
+<p>Note the lab's access time (for example, <code>1:15:00</code>), and make sure you can finish within that time.<br>
+There is no pause feature. You can restart if needed, but you have to start at the beginning.</p>
+</li>
+<li>
+<p>When ready, click <strong>Start lab</strong>.</p>
+</li>
+<li>
+<p>Note your lab credentials (<strong>Username</strong> and <strong>Password</strong>). You will use them to sign in to the Google Cloud Console.</p>
+</li>
+<li>
+<p>Click <strong>Open Google Console</strong>.</p>
+</li>
+<li>
+<p>Click <strong>Use another account</strong> and copy/paste credentials for <strong>this</strong> lab into the prompts.<br>
+If you use other credentials, you'll receive errors or <strong>incur charges</strong>.</p>
+</li>
+<li>
+<p>Accept the terms and skip the recovery resource page.</p>
+</li>
+</ol>
+<aside class="warning"><p><strong>Note:</strong> Do not click <strong>End Lab</strong> unless you have finished the lab or want to restart it. This clears your work and removes the project.
+  </p>
+</aside>
+<h2 id="step4">Task 2. Initialize Terraform</h2>
+<p>Let us initialize Terraform by setting Google as the provider.</p>
+<ol>
+<li>Open Cloud Shell (<img alt="Activate Cloud Shell" src="https://cdn.qwiklabs.com/ep8HmqYGdD%2FkUncAAYpV47OYoHwC8%2Bg0WK%2F8sidHquE%3D">) and execute the following command to verify that terraform is installed.</li>
+</ol>
+<ql-code-block language="plaintext">
+terraform -version
+</ql-code-block>
+<p>The output should look like this <strong>(do not copy; this is example output)</strong>:</p>
+<ql-code-block language="plaintext" output="">
+Terraform v1.2.2
+</ql-code-block>
+<p>Terraform comes pre-installed in Cloud Shell. With Terraform already installed, you can directly create infrastructure resources.</p>
+<ol start="2">
+<li>Create a directory for your Terraform configuration and navigate to it by running the following command:</li>
+</ol>
+<ql-code-block language="plaintext">
+mkdir tfinfra &amp;&amp; cd $_
+</ql-code-block>
+<ol start="3">
+<li>In Cloud Shell, click <strong>Open Editor</strong> to open Cloud Shell Editor.</li>
+<li>Click <strong>Open in a new window</strong> button to leave the Editor open in a separate tab..</li>
+<li>To create a new file in the <code>tfinfra</code> folder, right-click on <code>tfinfra</code> folder and click <strong>New File</strong>.</li>
+<li>Name the new file <strong>provider.tf</strong>, and then click <strong>OK</strong>.</li>
+<li>Add the following code into <code>provider.tf</code>:</li>
+</ol>
+<ql-code-block nowrap templated="">
+  provider "google" {
+  project = "{{{project_0.project_id|Project ID}}}"
+  region  = "{{{project_0.default_region | "REGION"}}}"
+  zone    = "{{{project_0.default_zone | "ZONE"}}}"
+}
+</ql-code-block>
+<ol start="8">
+<li>
+<p>To save <code>provider.tf</code>, click <strong>File</strong> &gt; <strong>Save</strong>.</p>
+</li>
+<li>
+<p>Initialize Terraform by running the following commands:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+terraform init
+</ql-code-block>
+<p>The output should look like this (<strong>do not copy; this is example output</strong>):</p>
+<ql-code-block language="plaintext" output="">
+Initializing the backend...
+Initializing provider plugins...
+- Finding hashicorp/google versions matching "4.15.0"...
+- Installing hashicorp/google v4.15.0...
+- Installed hashicorp/google v4.15.0 (signed by HashiCorp)
+Terraform has created a lock file .terraform.lock.hcl to record the provider
+selections it made above. Include this file in your version control repository
+so that Terraform can guarantee to make the same selections by default when
+you run "terraform init" in the future.
+Terraform has been successfully initialized!
+</ql-code-block>
+<p>Terraform has now installed the necessary plug-ins to interact with the Google Cloud API. Authentication is not required for API. The Cloud Shell credentials give access to the project and APIs.</p>
+<p><strong>Question:</strong>
+<ql-multiple-choice-probe answerindex="0" optiontitles='[
+"terraform init",
+"terraform plan",
+"terraform apply"
+]' shuffle="" stem="Which command installs the necessary plug-ins to interact with the Google Cloud API?">
+</ql-multiple-choice-probe></p>
+<p>In the remaining part of the lab, we will cover the two types of dependencies that Terraform can handle:</p>
+<ol>
+<li>Implicit dependencies: Dependencies known to Terraform</li>
+<li>Explicit dependencies: Dependencies unknown to Terraform</li>
+</ol>
+<h2 id="step5">Task 3. View Implicit Resource Dependency</h2>
+<p>To demonstrate how Terraform infers an implicit dependency, we assign a static IP address to the VM instance.</p>
+<h3>Create a VM instance</h3>
+<p>Let us create a VM instance and parameterize its configuration by defining variables:</p>
+<ol>
+<li>To create a new file, right-click on <code>tfinfra</code> folder and click <strong>New File</strong>.</li>
+<li>Name the new file <strong>instance.tf</strong>, and then open it.</li>
+<li>Copy the following code into <code>instance.tf</code>:</li>
+</ol>
+<ql-code-block language="plaintext">
+resource google_compute_instance "vm_instance" {
+name         = "${var.instance_name}"
+zone         = "${var.instance_zone}"
+machine_type = "${var.instance_type}"
+boot_disk {
+    initialize_params {
+      image = "debian-cloud/debian-11"
+      }
+  }
+ network_interface {
+    network = "default"
+    access_config {
+      # Allocate a one-to-one NAT IP to the instance
+    }
+  }
+}
+</ql-code-block>
+<ol start="4">
+<li>To save <code>instance.tf</code>, click <strong>File &gt; Save</strong>.</li>
+</ol>
+<h3>Create variables</h3>
+<ol>
+<li>Right-click on <code>tfinfra</code> folder and click <strong>New File</strong> to create a new file for variables.</li>
+<li>Name the new file <code>variables.tf</code>, and then click <strong>OK</strong>.</li>
+<li>Add the following properties to <code>variables.tf</code>:</li>
+</ol>
+<ql-code-block language="plaintext">
+variable "instance_name" {
+  type        = string
+  description = "Name for the Google Compute instance"
+}
+variable "instance_zone" {
+  type        = string
+  description = "Zone for the Google Compute instance"
+}
+variable "instance_type" {
+  type        = string
+  description = "Disk type of the Google Compute instance"
+  default     = "e2-medium"
+  }
+</ql-code-block>
+<p>By giving <strong>instance_type</strong> a default value, you make the variable optional. The <strong>instance_name</strong>, and <strong>instance_zone</strong> are required, and you will define them at run time.</p>
+<ol start="4">
+<li>To save <code>variable.tf</code>, click <strong>File &gt; Save</strong>.</li>
+</ol>
+<h3>Create output values</h3>
+<ol>
+<li>Right-click on <code>tfinfra</code> folder and click <strong>New File</strong> to create a new file for outputs.</li>
+<li>Name the new file <code>outputs.tf</code>, and then click <strong>OK</strong>.</li>
+<li>Add the following properties to <code>outputs.tf</code>:</li>
+</ol>
+<ql-code-block language="plaintext">
+output "network_IP" {
+  value = google_compute_instance.vm_instance.instance_id
+  description = "The internal ip address of the instance"
+}
+output "instance_link" {
+  value = google_compute_instance.vm_instance.self_link
+  description = "The URI of the created resource."
+}
+</ql-code-block>
+<ol start="4">
+<li>To save <code>outputs.tf</code>, click <strong>File &gt; Save</strong>.</li>
+</ol>
+<h3>Assign a static IP</h3>
+<ol>
+<li>Now add to your configuration by assigning a static IP to the VM instance in <code>instance.tf</code>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+resource "google_compute_address" "vm_static_ip" {
+  name = "terraform-static-ip"
+}
+</ql-code-block>
+<p>This should look familiar from the earlier example of adding a VM instance resource, except this time you're creating a <code>google_compute_address</code> resource type. This resource type allocates a reserved IP address to your project.</p>
+<ol start="2">
+<li>Update the network_interface configuration for your instance like so:</li>
+</ol>
+<ql-code-block language="plaintext">
+ network_interface {
+    network = "default"
+    access_config {
+      # Allocate a one-to-one NAT IP to the instance
+      nat_ip = google_compute_address.vm_static_ip.address
+    }
+  }
+</ql-code-block>
+<p>The final code is as shown below.</p>
+<ql-code-block language="plaintext">
+ resource "google_compute_address" "vm_static_ip" {
+  name = "terraform-static-ip"
+}
+ resource google_compute_instance "vm_instance" {
+name         = "${var.instance_name}"
+zone         = "${var.instance_zone}"
+machine_type = "${var.instance_type}"
+boot_disk {
+    initialize_params {
+      image = "debian-cloud/debian-11"
+      }
+  }
+ network_interface {
+    network = "default"
+    access_config {
+      # Allocate a one-to-one NAT IP to the instance
+      nat_ip = google_compute_address.vm_static_ip.address
+    }
+  }
+}
+</ql-code-block>
+<ol start="3">
+<li>Initialize terraform by running the following command.</li>
+</ol>
+<ql-code-block language="plaintext">
+terraform init
+</ql-code-block>
+<ol start="4">
+<li>Run the following command to preview the resources created.</li>
+</ol>
+<ql-code-block language="plaintext">
+terraform plan
+</ql-code-block>
+<ol start="5">
+<li>If prompted, enter the details for the instance creation as shown below:</li>
+</ol>
+<ul>
+<li>
+<p>var.instance_name: <code>myinstance</code></p>
+</li>
+<li>
+<p>var.instance_zone: <ql-variable key="project_0.default_zone" placeholder="ZONE"></ql-variable></p>
+</li>
+</ul>
+<ol start="6">
+<li>Run the following command to view the order of resource creation.</li>
+</ol>
+<ql-code-block language="plaintext">
+terraform apply
+</ql-code-block>
+<ol start="7">
+<li>If prompted, enter the details for the instance creation as shown below:</li>
+</ol>
+<ul>
+<li>
+<p>var.instance_name: <code>myinstance</code></p>
+</li>
+<li>
+<p>var.instance_zone: <ql-variable key="project_0.default_zone" placeholder="ZONE"></ql-variable></p>
+</li>
+</ul>
+<ol start="8">
+<li>Confirm the planned actions by typing <code>yes</code>.</li>
+</ol>
+<ql-infobox><strong>Note:</strong> Observe that Terraform handles implicit dependency automatically by creating a static IP address before the instance.</ql-infobox>
+<ql-code-block nowrap output="" templated="">
+google_compute_address.vm_static_ip: Creating...
+google_compute_address.vm_static_ip: Creation complete after 2s [id=projects/qwiklabs-gcp-03-4662a5b49176/regions/{{{project_0.default_region | "REGION"}}}/addresses/terraform-static-ip]
+google_compute_instance.vm_instance: Creating...
+google_compute_instance.vm_instance: Still creating... [10s elapsed]
+google_compute_instance.vm_instance: Creation complete after 15s [id=projects/qwiklabs-gcp-03-4662a5b49176/zones/{{{project_0.default_zone | "ZONE"}}}/instances/myinstance]
+Apply complete! Resources: 2 added, 0 changed, 0 destroyed.
+</ql-code-block>
+<h3>Verify on Cloud Console</h3>
+<p>In the Cloud Console, verify that the resources were created.</p>
+<ol>
+<li>
+<p>In the Cloud Console, on the <strong>Navigation menu</strong> (<img alt="Navigation menu" src="https://cdn.qwiklabs.com/tkgw1TDgj4Q%2BYKQUW4jUFd0O5OEKlUMBRYbhlCrF0WY%3D" title="Navigation menu">), click <strong>Compute Engine</strong> &gt; <strong>VM instances</strong>.</p>
+</li>
+<li>
+<p>View that an instance named <strong>myinstance</strong> is created.
+<img alt="terraform_instance" src="https://cdn.qwiklabs.com/RTu%2F5Nc%2B193Xyc2XR8GavN12pG%2BSmGBsHF%2BsAIujl%2Fo%3D"></p>
+</li>
+<li>
+<p>Verify the static IP address. On the <strong>Navigation menu</strong> (<img alt="Navigation menu" src="https://cdn.qwiklabs.com/tkgw1TDgj4Q%2BYKQUW4jUFd0O5OEKlUMBRYbhlCrF0WY%3D" title="Navigation menu">), click <strong>VPC networks</strong> &gt; <strong>IP addresses</strong> &gt; <strong>External IP addresses</strong>.
+<img alt="terraform_instance" src="https://cdn.qwiklabs.com/76EQabZE7okiwZiArXsuv30C2CjR2I62Wu17bIImrIY%3D"></p>
+</li>
+</ol>
+<p>Click <strong>Check my progress</strong> to verify static IP address created
+<ql-activity-tracking step="1">
+Create static IP using implicit dependency
+</ql-activity-tracking></p>
+<p>Click <strong>Check my progress</strong> to verify VM is created
+<ql-activity-tracking step="2">
+Create VM instance using implicit dependency
+</ql-activity-tracking></p>
+<h2 id="step6">Task 4. Create Explicit Dependency</h2>
+<p>Explicit dependencies are used to inform dependencies between resources that are not visible to Terraform. In this example, consider that you will run on your instance that expects to use a specific Cloud Storage bucket, but that dependency is configured inside the application code and thus not visible to Terraform. In that case, you can use <code>depends_on</code> to explicitly declare the dependency.</p>
+<ol>
+<li>To create a new file, right-click on <code>tfinfra</code> folder and click <strong>New File</strong>.</li>
+<li>Name the new file <strong>exp.tf</strong>, and then click <strong>OK</strong>.</li>
+<li>Add a Cloud Storage bucket and an instance with an explicit dependency on the bucket by adding the following base code into <code>exp.tf</code>:</li>
+</ol>
+<ql-code-block language="plaintext">
+# Create a new instance that uses the bucket
+resource "google_compute_instance" "another_instance" {
+  name         = "terraform-instance-2"
+  machine_type = "e2-micro"
+  boot_disk {
+    initialize_params {
+      image = "debian-cloud/debian-11"
+    }
+  }
+  network_interface {
+    network = "default"
+    access_config {
+    }
+  }
+  # Tells Terraform that this VM instance must be created only after the
+  # storage bucket has been created.
+  depends_on = [google_storage_bucket.example_bucket]
+}
+</ql-code-block>
+<ol start="4">
+<li>Add the following code to create a bucket.</li>
+</ol>
+<ql-code-block language="plaintext">
+# New resource for the storage bucket our application will use.
+resource "google_storage_bucket" "example_bucket" {
+  name     = "&lt;UNIQUE-BUCKET-NAME&gt;"
+  location = "US"
+  website {
+    main_page_suffix = "index.html"
+    not_found_page   = "404.html"
+  }
+}
+</ql-code-block>
+<ql-infobox><strong>Note:</strong> Storage buckets must be globally unique. Because of this, you will need to replace <code>UNIQUE-BUCKET-NAME</code> with a unique, valid name for a bucket. Using the project name and the date is usually a good way to create a unique bucket name.</ql-infobox>
+<p>Notice that in our code the VM instance configuration is added before the GCS bucket. When executing <code>Terraform apply</code> you will notice that the order that resources are defined in a terraform configuration file has no effect on how Terraform applies your changes.</p>
+<p>The final code is as show below:</p>
+<ql-code-block language="plaintext">
+resource "google_compute_instance" "another_instance" {
+  name         = "terraform-instance-2"
+  machine_type = "e2-micro"
+  boot_disk {
+    initialize_params {
+      image = "debian-cloud/debian-11"
+    }
+  }
+  network_interface {
+    network = "default"
+    access_config {
+    }
+  }
+  # Tells Terraform that this VM instance must be created only after the
+  # storage bucket has been created.
+  depends_on = [google_storage_bucket.example_bucket]
+}
+resource "google_storage_bucket" "example_bucket" {
+  name     = "&lt;UNIQUE-BUCKET-NAME&gt;"
+  location = "US"
+  website {
+    main_page_suffix = "index.html"
+    not_found_page   = "404.html"
+  }
+}
+</ql-code-block>
+<ol start="5">
+<li>
+<p>To save <code>exp.tf</code>, click <strong>File &gt; Save</strong>.</p>
+</li>
+<li>
+<p>Run the following command to preview the resources created.</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+terraform plan
+</ql-code-block>
+<p>If prompted, enter the details for the instance creation as shown below:</p>
+<ul>
+<li>
+<p>var.instance_name: <code>myinstance</code></p>
+</li>
+<li>
+<p>var.instance_zone: <ql-variable key="project_0.default_zone" placeholder="ZONE"></ql-variable></p>
+</li>
+</ul>
+<ol start="7">
+<li>Run the following command to view the order of resource creation.</li>
+</ol>
+<ql-code-block language="plaintext">
+terraform apply
+</ql-code-block>
+<p>If prompted, enter the details for the instance creation as shown below:</p>
+<ul>
+<li>
+<p>var.instance_name: <code>myinstance</code></p>
+</li>
+<li>
+<p>var.instance_zone: <ql-variable key="project_0.default_zone" placeholder="ZONE"></ql-variable></p>
+</li>
+</ul>
+<ol start="8">
+<li>
+<p>Confirm the planned actions by typing <code>yes</code>.</p>
+</li>
+<li>
+<p>Observe that due explicit dependency, the compute instance is created after the creation of the Cloud Storage Bucket.</p>
+</li>
+</ol>
+<ql-code-block nowrap output="" templated="">
+Enter a value: yes
+google_storage_bucket.example_bucket: Creating...
+google_storage_bucket.example_bucket: Creation complete after 1s [id=qwiklabs-gcp-03-4662a5b49176-abc]
+google_compute_instance.another_instance: Creating...
+google_compute_instance.another_instance: Still creating... [10s elapsed]
+google_compute_instance.another_instance: Creation complete after 14s [id=projects/qwiklabs-gcp-03-4662a5b49176/zones/{{{project_0.default_zone | "ZONE"}}}/instances/terraform-instance-2]
+Apply complete! Resources: 2 added, 0 changed, 0 destroyed.
+</ql-code-block>
+<h3>Verify on Cloud Console</h3>
+<p>In the Cloud Console, verify that the resources were created.</p>
+<ol>
+<li>
+<p>In the Cloud Console, on the <strong>Navigation menu</strong> (<img alt="Navigation menu" src="https://cdn.qwiklabs.com/tkgw1TDgj4Q%2BYKQUW4jUFd0O5OEKlUMBRYbhlCrF0WY%3D" title="Navigation menu">), click <strong>Compute Engine</strong> &gt; <strong>VM instances</strong>.</p>
+</li>
+<li>
+<p>View the <strong>terraform-instance-2</strong> instance created.</p>
+</li>
+<li>
+<p>Verify the Cloud Storage bucket created. On the <strong>Navigation menu</strong> (<img alt="Navigation menu" src="https://cdn.qwiklabs.com/tkgw1TDgj4Q%2BYKQUW4jUFd0O5OEKlUMBRYbhlCrF0WY%3D" title="Navigation menu">), click <strong>Cloud Storage</strong>.</p>
+</li>
+</ol>
+<p>Click <strong>Check my progress</strong> to verify that the bucket is created
+<ql-activity-tracking step="3">
+Create cloud storage bucket using explicit dependency
+</ql-activity-tracking></p>
+<p>Click <strong>Check my progress</strong> to verify that the VM is created
+<ql-activity-tracking step="4">
+Create VM instance resource using explicit dependency
+</ql-activity-tracking></p>
+<ql-warningbox><strong>Note: </strong>If you get an error, revisit the previous steps to ensure that your configuration matches the lab instructions. If you cannot troubleshoot the issue of your configuration, download and then look at these finished configurations:
+<ul>
+<li> <a href="https://storage.googleapis.com/cloud-training/T-TFGC-B/EN/1.0/student/Lab%20files/Creating%20resource%20dependencies/tfinfra/exp.tf" target="_blank">exp.tf</a>
+</li>
+<li> <a href="https://storage.googleapis.com/cloud-training/T-TFGC-B/EN/1.0/student/Lab%20files/Creating%20resource%20dependencies/tfinfra/instance.tf" target="_blank">instance.tf</a>
+</li>
+<li> <a href="https://storage.googleapis.com/cloud-training/T-TFGC-B/EN/1.0/student/Lab%20files/Creating%20resource%20dependencies/tfinfra/outputs.tf" target="_blank">outputs.tf</a>
+</li>
+<li> <a href="https://storage.googleapis.com/cloud-training/T-TFGC-B/EN/1.0/student/Lab%20files/Creating%20resource%20dependencies/tfinfra/provider.tf" target="_blank">provider.tf</a>
+</li>
+<li> <a href="https://storage.googleapis.com/cloud-training/T-TFGC-B/EN/1.0/student/Lab%20files/Creating%20resource%20dependencies/tfinfra/variable.tf" target="_blank">variable.tf</a>
+</li>
+</ul>
+</ql-warningbox>
+<h2 id="step7">Task 6. View Dependency Graph</h2>
+<ol>
+<li>To view resource dependency graph of the resource created, execute the following command</li>
+</ol>
+<ql-code-block language="plaintext">
+terraform graph | dot -Tsvg &gt; graph.svg
+</ql-code-block>
+<ol start="2">
+<li>Switch to the editor and notice a file called <strong>graph.svg</strong> created. Click the file to view the dependency graph.</li>
+</ol>
+<h2 id="step8">Review</h2>
+<p>In this lab, you have a VM instance with a static IP address to view how implicit resource dependencies are handled with Terraform. You then created an explicit dependency by adding the <code>depend_on</code> argument so that you can create a GCS bucket before creating a VM instance. You also viewed the dependency graph that terraform uses to trace the order of resource creation.</p>
+<h2 id="step9">End of your lab</h2>
+<p>When you have completed your lab, click End Lab. Qwiklabs removes the resources you've used and cleans the account for you.</p>
+<p>You will be given an opportunity to rate the lab experience. Select the applicable number of stars, type a comment, and then click Submit.</p>
+<p>The number of stars indicates the following:</p>
+<ul>
+<li>1 star = Very dissatisfied</li>
+<li>2 stars = Dissatisfied</li>
+<li>3 stars = Neutral</li>
+<li>4 stars = Satisfied</li>
+<li>5 stars = Very satisfied</li>
+</ul>
+<p>You can close the dialog box if you don't want to provide feedback.</p>
+<p>For feedback, suggestions, or corrections, please use the Support tab.</p>
+<p>Copyright 2022 Google LLC All rights reserved. Google and the Google logo are trademarks of Google LLC. All other company and product names may be trademarks of the respective companies with which they are associated.</p>
+
+</div>
+</div>
+
+
+<div class='lab-content__end-lab-button js-end-lab-button-container hidden'>
+<ql-lab-control-button class='js-end-lab-button' running></ql-lab-control-button>
+</div>
+<!-- / TODO: Move recommendations into the end lab modal -->
+</ql-drawer-content>
+<ql-drawer end id='outline-drawer' open slot='drawer' width='320'>
+<div aria-label='Lab Table of Contents' role='navigation'>
+<ul class='lab-content__outline js-lab-content-outline'>
+<li><a href="#step1">Overview</a></li><li><a href="#step2">Objectives</a></li><li><a href="#step3">Task 1. Sign in to the Cloud Console</a></li><li><a href="#step4">Task 2. Initialize Terraform</a></li><li><a href="#step5">Task 3. View Implicit Resource Dependency</a></li><li><a href="#step6">Task 4. Create Explicit Dependency</a></li><li><a href="#step7">Task 6. View Dependency Graph</a></li><li><a href="#step8">Review</a></li><li><a href="#step9">End of your lab</a></li>
+</ul>
+</div>
+</ql-drawer>
+</ql-drawer-container>
+</ql-drawer-content>
+</ql-drawer-container>
+
+
+
+</ql-drawer-content>
+</ql-drawer-container>
+
+</div>
+</main>
+
+<span class='hidden' id='flash-sibling-before'></span>
+<ql-snackbar></ql-snackbar>
+
+
+<ql-dialog headline='Score Details' icon='task_alt' id='jupyter-feedback-modal'>
+<iframe id='jupyter-feedback-frame' srcdoc='' title='Jupyter Feedback'></iframe>
+</ql-dialog>
+
+<div class='modal fade' id='lab-details-modal'>
+<div class='modal-container'>
+<div class='modal-content mdl-shadow--24dp'>
+<div class='modal-body'>
+<p class='l-mbm'>
+Explore implicit and explicit resource dependencies and examine the use of lifecycle meta-argument.
+</p>
+<p class='small-label l-mbs'>
+<strong>
+Duration:
+</strong>
+4m setup
+&middot;
+90m access
+&middot;
+60m completion
+</p>
+<p class='small-label l-mbs'>
+<strong>AWS Region:</strong>
+[] <strong></strong>
+</p>
+<p class='small-label l-mbs'>
+<span><strong>Levels: </strong>introductory</span>
+</p>
+<p class='small-label'>
+<strong>
+Permalink:
+</strong>
+<a href="https://partner.cloudskillsboost.google/catalog_lab/4982">https://partner.cloudskillsboost.google/catalog_lab/4982</a>
+</p>
+</div>
+<div class='modal-actions'>
+<a class='button button--text' data-dismiss='modal'>
+Got It
+</a>
+</div>
+
+
+</div>
+</div>
+<iframe class='l-ie-iframe-fix' tabindex='-1' title='modal'></iframe>
+</div>
+<ql-dialog headline='How satisfied are you with this lab?&lt;span aria-hidden=&quot;true&quot;&gt;*&lt;/span&gt;' id='lab-review-dialog'>
+<form class="simple_form js-lab-review-form" id="new_lab_review" action="/lab_reviews" accept-charset="UTF-8" data-remote="true" method="post"><input name="utf8" type="hidden" value="&#x2713;" autocomplete="off" /><div aria-labelledby='lab-review-dialog' aria-required='true' aria-valuemax='5' aria-valuemin='0' aria-valuenow='0' class='rateit js-rateit' data-rateit-max='5' data-rateit-min='0' data-rateit-resetable='false' data-rateit-step='1' data-rateit-value='0' id='lab-review-rateit' role='slider' tabindex='0'></div>
+<div class='l-mtm'>
+
+<div class="control-group hidden lab_review_user_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" value="11061062" name="lab_review[user_id]" id="lab_review_user_id" /></div></div>
+<div class="control-group hidden lab_review_classroom_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" name="lab_review[classroom_id]" id="lab_review_classroom_id" /></div></div>
+<div class="control-group hidden lab_review_lab_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" value="4982" name="lab_review[lab_id]" id="lab_review_lab_id" /></div></div>
+<div class="control-group hidden lab_review_focus_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" name="lab_review[focus_id]" id="lab_review_focus_id" /></div></div>
+<div class="control-group hidden lab_review_rating"><div class="controls"><input class="hidden js-rating-input" autocomplete="off" type="hidden" name="lab_review[rating]" id="lab_review_rating" /></div></div>
+<div class="control-group text optional lab_review_comment"><label class="text optional control-label" for="lab_review_comment">Additional Comments</label><div class="controls"><textarea class="text optional" name="lab_review[comment]" id="lab_review_comment">
+</textarea></div></div>
+</div>
+</form><ql-button disabled id='submit' label='Submit' slot='action' text></ql-button>
+</ql-dialog>
+
+<ql-dialog headline='All done? If you end this lab, you will lose all your work. You may not be able to restart the lab if there is a quota limit. Are you sure you want to end this lab?' icon='error_outline' id='js-lab-are-you-sure-dialog'>
+<ql-button id='js-are-you-sure-button' label='Submit' slot='action' text></ql-button>
+</ql-dialog>
+<ql-dialog dismissalLabel='Cancel' headline='A newer version of this course is available. Your progress will carry over if you choose to upgrade. However, your completion percentage may change if the new version has added or removed any learning activities. Click the preview button to see the course changes before upgrading.' icon='error' id='course-session-upgrade-modal'>
+<ql-button href='/course_templates/443/preview' label='Preview' slot='action'>
+Preview
+</ql-button>
+</ql-dialog>
+
+
+
+<script>
+  $(function() {
+    ql.initMaterialInputs();
+    initChosen();
+    initSearch();
+    initTabs();
+    ql.list.init();
+    ql.favoriting.init();
+    ql.header.myAccount.init();
+    initTooltips();
+    ql.autocomplete.init();
+    ql.modals.init();
+    ql.toggleButtons.init();
+    ql.analytics.init();
+    ql.labControlPanel.addRecaptchaErrorHandler();
+  initLabContent();
+  ql.labOutline.links.init();
+  initLabReviewModal();
+  initLabReviewTranslations( {"star_amount_1":"1 of 5 stars","star_amount_2":"2 of 5 stars","star_amount_3":"3 of 5 stars","star_amount_4":"4 of 5 stars","star_amount_5":"5 of 5 stars"} )
+  ql.labAssessment.init();
+  ql.labData.init();
+  initLabTranslations( {"are_you_sure":"All done? If you end this lab, you will lose all your work. You may not be able to restart the lab if there is a quota limit. Are you sure you want to end this lab?","in_progress":"*In Progress*","ending":"*Ending*","starting":"*Starting, please wait*","end_concurrent_labs":"Sorry, you can only run one lab at a time. To start this lab, please confirm that you want all of your existing labs to end.","copied":"Copied","no_resource":"Error retrieving resource.","no_support":"No Support","mac_press":"Press ⌘-C to copy","thanks_review":"Thanks for reviewing this lab.","windows_press":"Press Ctrl-C to copy","days":"days"} );
+  ql.labRun.init();
+  ql.chat.init();
+  ql.navPanel.init();
+  ql.navigation.init();
+  
+  });
+</script>
+
+</body>
+</html>
+
+

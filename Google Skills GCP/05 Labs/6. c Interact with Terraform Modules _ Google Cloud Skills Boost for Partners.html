@@ -1,0 +1,1332 @@
+
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<title>Interact with Terraform Modules | Google Cloud Skills Boost for Partners</title>
+<script>
+//<![CDATA[
+window.gon={};gon.deployment="googlecourses-run";
+//]]>
+</script>
+<script>
+  (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer',"GTM-5XSKHDX");
+</script>
+<script src="https://cdn.qwiklabs.com/assets/hallofmirrors/polyfills/webcomponents-loader-8583b47b01e40e6ea7bf1ad443a20b7e79bbdd5eafac009806a228c91a97282c.js"></script>
+<script src="https://cdn.qwiklabs.com/assets/vendor-beb958bea8eff6a4ad4cf8f36a0a676817a4857e214b17ae983796071a4a816d.js"></script>
+<script src="https://cdn.qwiklabs.com/assets/application-e8cb972df3c4fe0610b31ae6c7b12d323456c1a96b7ef459da8d7e0b1334a507.js"></script>
+<script src="https://cdn.qwiklabs.com/assets/hallofmirrors/hallofmirrors-7a09cf7f89024ad118922f5e419d9f62ee3d22bc7ac2719228be7c19a37a1e4f.js"></script>
+<!--[if lt IE 9]>
+<script src='http://html5shim.googlecode.com/svn/trunk/html5.js' type='text/javascript'></script>
+<![endif]-->
+<!--[endif]>  <![endif]-->
+<script id='ze-snippet' src='https://static.zdassets.com/ekr/snippet.js?key=511e4158-0aec-4e3c-b2e6-4daa1769f51e'></script>
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="na7uWHlrQfJyAfx/fObBAU+2Y2ne9Yx6ZnjqDM5kJ1I+NC+P8GFzdind8z/bhLGWICbijtcqCgnQpmjDb5N/xA==" />
+<meta content='width=device-width, initial-scale=1.0, user-scalable=yes' name='viewport'>
+<meta content='1rRsY0INj8RvwB5EF5pwdxt2A2P9aDgAlsICaJ0d5w0' name='google-site-verification'>
+<meta content='#3681E4' property='msapplication-TileColor'>
+<meta content='/favicon-144.png' property='msapplication-TileImage'>
+<meta content='[{&quot;id&quot;:&quot;recaptcha_experiment&quot;,&quot;optimize_id&quot;:&quot;dpViOcLkT3qS4TvL2mRojA&quot;,&quot;title&quot;:&quot;No Recaptcha shown for trusted users&quot;,&quot;variant_index&quot;:0,&quot;variant&quot;:&quot;original&quot;}]' name='active-experiments'>
+<meta content='{&quot;userId&quot;:11061062,&quot;experimentIds&quot;:[&quot;oauth_risc_shutoff&quot;,&quot;program_groups&quot;,&quot;program_learning_assignment&quot;,&quot;course_upgrade&quot;,&quot;enforce_codebuild_verdicts&quot;,&quot;canonical_domain_redirect&quot;,&quot;learning_center&quot;,&quot;alexandria_show_bundle_errors&quot;,&quot;used_in&quot;,&quot;show_annual_purchase_now&quot;,&quot;community_forum&quot;,&quot;program_resources&quot;,&quot;programs&quot;,&quot;chat_off_for_signed_out_users&quot;]}' name='help-api-product-data'>
+<meta content='{&quot;groupIds&quot;:[&quot;non_suadmins&quot;,&quot;students&quot;,&quot;non_organization&quot;,&quot;non_program&quot;]}' name='help-api-custom-data'>
+<meta content='In this hands-on lab you will create and use Terraform modules to organize your cloud configuration.' name='description'>
+<meta content='Qwiklabs' name='author'>
+<meta content='Interact with Terraform Modules | Google Cloud Skills Boost for Partners' property='og:title'>
+<meta content='website' property='og:type'>
+<meta content='/favicon-144.png' property='og:image'>
+<meta content='Qwiklabs' property='og:site_name'>
+<meta content='In this hands-on lab you will create and use Terraform modules to organize your cloud configuration.' property='og:description'>
+<meta content='/qwiklabs_logo_900x887.png' property='og:logo' size='900x887'>
+<meta content='/qwiklabs_logo_994x187.png' property='og:logo' size='994x187'>
+
+
+<meta property="og:url" content="https://partner.cloudskillsboost.google/focuses/16373?parent=catalog" /><link href="https://partner.cloudskillsboost.google/focuses/16373?parent=catalog" rel="canonical" />
+<link color='#3681E4' href='/favicon-svg.svg' rel='mask-icon'>
+<link href='/favicon-180.png' rel='apple-touch-icon-precomposed'>
+<link href='https://cdn.qwiklabs.com/Vag5GK2J6rS6843Qvg8TQJ1kEbAsEmQoF0%2BdLRfcLRE%3D' rel='shortcut icon' type='image/x-icon'>
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oswald:400|Roboto+Mono:400,700|Roboto:300,400,500,700|Google+Sans:300,400,500,700|Google+Sans+Display:400|Material+Icons|Google+Material+Icons" media="screen" />
+
+<link rel="stylesheet" href="https://cdn.qwiklabs.com/assets/application-68068ef39e5c434ed33fece13d77f9c8a42264363c729ca27e5af35578a2813d.css" media="all" />
+
+
+<style>
+  :root {
+    --primary-text-on-surface-color: #1a73e8;
+    --primary-text-on-surface-color-dark: #1568d6;
+    --primary-text-on-surface-color-darker: #135ec1;
+    --primary-text-on-surface-color-darkest: #1154ac;
+    --primary-surface-color: #1a73e8;
+    --primary-surface-color-rgb: 26,115,232;
+    --primary-surface-color-light: #d1e3fa;
+    --primary-surface-color-lightest: #e8f1fd;
+    --text-on-primary-color: #ffffff;
+    --accent-text-on-surface-color: #f29900;
+    --accent-surface-color: #f9ab00;
+    --accent-surface-color-rgb: 249,171,0;
+    --accent-surface-color-light: #ffefcc;
+    --text-on-accent-color: #202124;
+  }
+</style>
+
+<style>
+  :root {
+    --navbar-height: 112px;
+  }
+</style>
+
+
+
+</head>
+<body class='lab-show l-full no-nav application-new focuses focuses-show lab-show l-full no-nav '>
+<div class='header-container'>
+<div class='header'>
+<ql-toolbar jumpEnabled>
+<div class='header__title' slot='title'>
+<ql-icon-button label="Back" href="https://partner.cloudskillsboost.google/quests/159" id="8f7107343e1098f3" target="_self" tip="Back">arrow_back</ql-icon-button>
+<h1 class='ql-headline-6'>Interact with Terraform Modules</h1>
+</div>
+<div class='header__actions' slot='action'>
+<ql-icon-button icon='share' id='share_3358' label='Share on social media' tip='Share'></ql-icon-button>
+<ql-menu for='share_3358'>
+<ql-menu-item data-analytics-action='Shared to LinkedIn Feed.' data-analytics-category='Lab' data-analytics-label='Interact with Terraform Modules' href='https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fpartner.cloudskillsboost.google%2Fcatalog_lab%2F3358%3Futm_medium%3Dsocial%26utm_source%3Dlinkedin%26utm_campaign%3Dql-social-share' icon='post_linkedin' label='Share on LinkedIn Feed' role='link' target='_blank'>
+<span class='label'>Share on LinkedIn Feed</span>
+</ql-menu-item>
+
+<ql-menu-item data-analytics-action='Shared to Twitter.' data-analytics-category='Lab' data-analytics-label='Interact with Terraform Modules' href='https://twitter.com/intent/tweet?text=Learn%20cloud%20tech%20through%20hands-on%20training%20on%20%23Qwiklabs%21&amp;url=https%3A%2F%2Fpartner.cloudskillsboost.google%2Fcatalog_lab%2F3358%3Futm_medium%3Dsocial%26utm_source%3Dtwitter%26utm_campaign%3Dql-social-share&amp;hashtags=' icon='post_twitter' label='Twitter' role='link' target='_blank'>
+<span class='label'>Twitter</span>
+</ql-menu-item>
+
+<ql-menu-item data-analytics-action='Shared to Facebook.' data-analytics-category='Lab' data-analytics-label='Interact with Terraform Modules' href='https://facebook.com/sharer.php?display=popup&amp;u=https%3A%2F%2Fpartner.cloudskillsboost.google%2Fcatalog_lab%2F3358%3Futm_medium%3Dsocial%26utm_source%3Dfacebook%26utm_campaign%3Dql-social-share' icon='post_facebook' label='Facebook' role='link' target='_blank'>
+<span class='label'>Facebook</span>
+</ql-menu-item>
+
+<ql-copyable-input label='Share Link' value='https://partner.cloudskillsboost.google/catalog_lab/3358'></ql-copyable-input>
+</ql-menu>
+
+<ql-icon-button class='icon-button js-favorite-button favorite-button' data-id='16373' data-name='Interact with Terraform Modules' data-type='CatalogItem' href='/favorite.json?item_id=16373&amp;item_type=CatalogItem' id='CatalogItem-16373-favorite-button' label='Add to favorites' tip='Add to favorites'>
+favorite_border
+</ql-icon-button>
+
+
+
+<ql-icon-button id='control-panel-target' style='display: none;'>
+dashboard
+</ql-icon-button>
+<ql-menu for='control-panel-target' id='control-panel-menu'></ql-menu>
+<ql-icon-button class='mobile-hide' icon='help_outline' id='help-menu-button' label='Open help menu' tip='Help'></ql-icon-button>
+<ql-menu for='help-menu-button' id='help-menu'>
+<ql-menu-item data-analytics-action='opened_help' data-analytics-label='lab' label='Help Center' onclick='hallofmirrors.helpService.startHelp({&quot;productData&quot;:{&quot;userId&quot;:11061062},&quot;context&quot;:&quot;lab&quot;})'></ql-menu-item>
+<ql-menu-item href='mailto:support@qwiklabs.com' label='Email support'></ql-menu-item>
+<ql-menu-item label='Chat support' onClick='ql.chat.open()'></ql-menu-item>
+</ql-menu>
+
+<ql-icon-button class='mobile-hide' icon='language' id='language' label='Select your language preference' tip='Language'></ql-icon-button>
+<ql-menu for='language'>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='ar' href='/focuses/16373?locale=ar&amp;parent=catalog' label='العربية‬‎' lang='ar'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='de' href='/focuses/16373?locale=de&amp;parent=catalog' label='Deutsch' lang='de'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='en' href='/focuses/16373?locale=en&amp;parent=catalog' label='English' lang='en'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='es' href='/focuses/16373?locale=es&amp;parent=catalog' label='español (Latinoamérica)' lang='es'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='fr' href='/focuses/16373?locale=fr&amp;parent=catalog' label='français' lang='fr'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='fr_CA' href='/focuses/16373?locale=fr_CA&amp;parent=catalog' label='français (Canada)' lang='fr-CA'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='he' href='/focuses/16373?locale=he&amp;parent=catalog' label='עברית' lang='he'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='id' href='/focuses/16373?locale=id&amp;parent=catalog' label='bahasa Indonesia' lang='id'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='it' href='/focuses/16373?locale=it&amp;parent=catalog' label='Italiano' lang='it'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='ja' href='/focuses/16373?locale=ja&amp;parent=catalog' label='日本語' lang='ja'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='ko' href='/focuses/16373?locale=ko&amp;parent=catalog' label='한국어' lang='ko'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='pl' href='/focuses/16373?locale=pl&amp;parent=catalog' label='Polski' lang='pl'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='pt_BR' href='/focuses/16373?locale=pt_BR&amp;parent=catalog' label='português (Brasil)' lang='pt-BR'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='pt_PT' href='/focuses/16373?locale=pt_PT&amp;parent=catalog' label='português (Portugal)' lang='pt-PT'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='ru' href='/focuses/16373?locale=ru&amp;parent=catalog' label='русский' lang='ru'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='tr' href='/focuses/16373?locale=tr&amp;parent=catalog' label='Türkçe' lang='tr'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='uk' href='/focuses/16373?locale=uk&amp;parent=catalog' label='український' lang='uk'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='zh' href='/focuses/16373?locale=zh&amp;parent=catalog' label='简体中文' lang='zh'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='zh_TW' href='/focuses/16373?locale=zh_TW&amp;parent=catalog' label='繁體中文' lang='zh-TW'></ql-menu-item>
+</ql-menu>
+
+<ql-icon-button id='my_account' label='My account' tip='My account'>
+<ql-avatar></ql-avatar>
+</ql-icon-button>
+<ql-menu for='my_account' id='my_account_menu' style='max-height: 640px'>
+<div class='my-account-menu'>
+<ql-avatar class='l-mtl l-mbl' size='120'></ql-avatar>
+<div class='my-account-menu__user-info l-mbl'>
+<h4 class='ql-subhead-1'>Ausaf Khan</h4>
+<p class='ql-body-2 text--light'>ausaf.khan@rakuten.com</p>
+<p class='ql-body-2 text--light'>
+</p>
+<a class="text--green ql-subhead-2" href="/my_account/payments"><ql-chip positive>
+0 Credits
+</ql-chip>
+</a></div>
+<div class='buttons l-mbl'>
+<a class="button button--hairline" id="settings" href="/my_account/profile">Settings</a>
+</div>
+<hr>
+<ql-button data-analytics-action='clicked_sign_out' href='/users/sign_out' method='delete'>
+Sign Out
+</ql-button>
+<div class='privacy l-mtl'>
+<a target="_blank" class="ql-caption text--light" href="/privacy_policy">Privacy</a>
+<span class='ql-caption text--light l-mls l-mrs'>&middot;</span>
+<a class="ql-caption text--light" href="/terms_of_service">Terms</a>
+</div>
+</div>
+</ql-menu>
+
+</div>
+</ql-toolbar>
+
+</div>
+</div>
+
+<nav class='nav-panel js-nav-panel'>
+<div class='nav-panel__logo'>
+<div class="custom-logo"><img alt="Google Cloud Skills Boost for Partners" height="24" aria-label="Google Cloud Skills Boost for Partners" src="https://cdn.qwiklabs.com/PGyhmgS3zZncIEGywnx5UXsKwepRRFQ9BhAg%2FWHNrlQ%3D" /></div>
+</div>
+<nav class='ql-sidenav'>
+<ql-sidenav-item href='/' icon='home' label='Paths'></ql-sidenav-item>
+
+<ql-sidenav-item active href='/catalog' icon='school' label='Explore'></ql-sidenav-item>
+
+<ql-sidenav-item href='/profile' icon='event_note' label='Profile'></ql-sidenav-item>
+
+</nav>
+
+</nav>
+<div class='nav-panel__overlay js-nav-toggle'></div>
+
+<main class='js-main' id='jump-content'>
+<div class='l-main-wrapper' id='main-wrapper'>
+
+
+
+
+<div class='lab-assessment__tab js-open-lab-assessment-panel'>
+<button class='js-lab-assessment-total-score'>
+—/100
+</button>
+</div>
+<div aria-labelledby='lab-assessment-checkpoint' class='lab-assessment__panel js-lab-assessment-panel' role='dialog'>
+<div class='lab-assessment__panel__header'>
+<h4 id='lab-assessment-checkpoint'>Checkpoints</h4>
+<ql-icon-button class='js-close-lab-assessment-panel' icon='arrow_forward' label='Close dialog'></ql-icon-button>
+</div>
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Provision infrastructure
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button class='js-show-run-step-button' description='Provision infrastructure' step_no='1'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-1'>
+</span>
+/ 50
+</p>
+</div>
+</div>
+
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Upload files to the bucket
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button class='js-show-run-step-button' description='Upload files to the bucket' step_no='2'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-2'>
+</span>
+/ 50
+</p>
+</div>
+</div>
+
+</div>
+<ql-drawer-container class='js-lab-state' data-analytics-payload='{&quot;label&quot;:&quot;Interact with Terraform Modules&quot;,&quot;lab_name&quot;:&quot;Interact with Terraform Modules&quot;,&quot;classroom_name&quot;:null,&quot;deployment&quot;:&quot;googlecourses-run&quot;}' data-credits='0.0' data-focus-id='16373' data-lab-billing-limit='0.0' data-lab-duration='3600' data-parent='catalog' data-recaptcha-enabled id='lab-container'>
+<ql-drawer id='terminal-drawer' slot='drawer' style='width: calc(100% - 480px)'>
+<iframe allow='clipboard-read' class='terminal' id='embedded-resource'></iframe>
+</ql-drawer>
+<ql-drawer-content class='js-lab-wrapper' id='lab-content' slot='drawer-content'>
+<ql-drawer-container id='lab-content-container'>
+<ql-drawer id='control-panel-drawer' open slot='drawer' width='320'>
+<ql-lab-control-panel class='ql-lab-control-panel__max-height control-panel js-lab-control-panel' connectionFiles='[]' labControlButton='{&quot;disabled&quot;:false,&quot;pending&quot;:false,&quot;running&quot;:false}' labDetails='[]' labTimer='{&quot;ticking&quot;:false,&quot;secondsRemaining&quot;:3600}' studentResources='[]'>
+<script src="https://www.recaptcha.net/recaptcha/api.js?render=6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr"   ></script>
+        <script>
+          // Define function so that we can call it again later if we need to reset it
+          // This executes reCAPTCHA and then calls our callback.
+          function executeRecaptchaForStartLab() {
+            grecaptcha.ready(function() {
+              grecaptcha.execute('6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr', {action: 'start_lab'}).then(function(token) {
+                setInputWithRecaptchaResponseTokenForStartLab('g-recaptcha-response-data-start-lab', token)
+              });
+            });
+          };
+          // Invoke immediately
+          executeRecaptchaForStartLab()
+
+          // Async variant so you can await this function from another async function (no need for
+          // an explicit callback function then!)
+          // Returns a Promise that resolves with the response token.
+          async function executeRecaptchaForStartLabAsync() {
+            return new Promise((resolve, reject) => {
+             grecaptcha.ready(async function() {
+                resolve(await grecaptcha.execute('6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr', {action: 'start_lab'}))
+              });
+            })
+          };
+
+                    var setInputWithRecaptchaResponseTokenForStartLab = function(id, token) {
+            var element = document.getElementById(id);
+            element.value = token;
+          }
+
+        </script>
+<input type="hidden" name="g-recaptcha-response-data[start_lab]" id="g-recaptcha-response-data-start-lab" data-sitekey="6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr" class="g-recaptcha g-recaptcha-response "/>
+
+<div aria-live='polite' class='hidden' id='recaptcha-v2-start-lab' slot='recaptcha'>
+<script src="https://www.recaptcha.net/recaptcha/api.js" async defer ></script>
+<div data-sitekey="6LeOI8IUAAAAAPkHlMAE9NReCD_1WD81iYlBlCnV" data-callback="recaptchaComplete" data-expired-callback="expireV2Token" class="g-recaptcha "></div>
+          <noscript>
+            <div>
+              <div style="width: 302px; height: 422px; position: relative;">
+                <div style="width: 302px; height: 422px; position: absolute;">
+                  <iframe
+                    src="https://www.recaptcha.net/recaptcha/api/fallback?k=6LeOI8IUAAAAAPkHlMAE9NReCD_1WD81iYlBlCnV"
+                    name="ReCAPTCHA"
+                    style="width: 302px; height: 422px; border-style: none; border: 0; overflow: hidden;">
+                  </iframe>
+                </div>
+              </div>
+              <div style="width: 300px; height: 60px; border-style: none;
+                bottom: 12px; left: 25px; margin: 0px; padding: 0px; right: 25px;
+                background: #f9f9f9; border: 1px solid #c1c1c1; border-radius: 3px;">
+                <textarea id="g-recaptcha-response" name="g-recaptcha-response"
+                  class="g-recaptcha-response"
+                  style="width: 250px; height: 40px; border: 1px solid #c1c1c1;
+                  margin: 10px 25px; padding: 0px; resize: none;">
+                </textarea>
+              </div>
+            </div>
+          </noscript>
+
+</div>
+</ql-lab-control-panel>
+</ql-drawer>
+<ql-drawer-content id='lab-instructions' slot='drawer-content'>
+<ql-snackbar id='alert-snackbar'></ql-snackbar>
+<div class='alert alert--fake js-alert'>
+<p class='alert__message js-alert-message' role='alert'></p>
+<ql-icon-button class='alert__close js-alert-close' icon='clear'></ql-icon-button>
+<iframe class='l-ie-iframe-fix' tabindex='-1'></iframe>
+</div>
+<div class='lab-content__renderable-instructions js-lab-content'>
+<div class='lab-preamble'>
+<h1 class='lab-preamble__title'>
+Interact with Terraform Modules
+</h1>
+<div class='lab-preamble__details subtitle-headline-1'>
+<span>1 hour </span>
+<span>Free</span>
+<div class='lab__rating'>
+<a aria-label="Lab Reviews" href="/focuses/16373/reviews?parent=catalog"><div class='rateit' data-rateit-readonly='true' data-rateit-value='4.5396'></div>
+
+</a></div>
+</div>
+</div>
+<div class='lab-outline-place-holder'></div>
+
+<div class='markdown-lab-instructions js-markdown-instructions' id='markdown-lab-instructions'>
+
+<p><em>This lab was developed with our partner, <a href="https://hashicorp.com/" target="_blank">Hashicorp</a>. Your personal information may be shared with Hashicorp, the lab sponsor, if you have opted in to receive product updates, announcements, and offers in your Account Profile.</em></p>
+<h2 id="step1">GSP751</h2>
+<p><img alt="Google Cloud self-paced labs logo" src="https://cdn.qwiklabs.com/GMOHykaqmlTHiqEeQXTySaMXYPHeIvaqa2qHEzw6Occ%3D"></p>
+<h2 id="step2">Overview</h2>
+<p>As you manage your infrastructure with Terraform, increasingly complex configurations will be created. There is no intrinsic limit to the complexity of a single Terraform configuration file or directory, so it is possible to continue writing and updating your configuration files in a single directory. However, if you do, you may encounter one or more of the following problems:</p>
+<ul>
+<li>Understanding and navigating the configuration files will become increasingly difficult.</li>
+<li>Updating the configuration will become more risky, because an update to one block may cause unintended consequences to other blocks of your configuration.</li>
+<li>Duplication of similar blocks of configuration may increase, for example, when you configure separate dev/staging/production environments, which will cause an increasing burden when updating those parts of your configuration.</li>
+<li>If you want to share parts of your configuration between projects and teams, cutting and pasting blocks of configuration between projects could be error-prone and hard to maintain.</li>
+</ul>
+<p>In this lab, you will learn how modules can address these problems, the structure of a Terraform module, and best practices when using and creating modules.</p>
+<h3>What are modules for?</h3>
+<p>Here are some of the ways that modules help solve the problems listed above:</p>
+<ul>
+<li>
+<p><strong>Organize configuration:</strong> Modules make it easier to navigate, understand, and update your configuration by keeping related parts of your configuration together. Even moderately complex infrastructure can require hundreds or thousands of lines of configuration to implement. By using modules, you can organize your configuration into logical components.</p>
+</li>
+<li>
+<p><strong>Encapsulate configuration:</strong> Another benefit of using modules is to encapsulate configuration into distinct logical components. Encapsulation can help prevent unintended consequences—such as a change to one part of your configuration accidentally causing changes to other infrastructure—and reduce the chances of simple errors like using the same name for two different resources.</p>
+</li>
+<li>
+<p><strong>Re-use configuration:</strong> Writing all of your configuration without using existing code can be time-consuming and error-prone. Using modules can save time and reduce costly errors by re-using configuration written either by yourself, other members of your team, or other Terraform practitioners who have published modules for you to use. You can also share modules that you have written with your team or the general public, giving them the benefit of your hard work.</p>
+</li>
+<li>
+<p><strong>Provide consistency and ensure best practices:</strong> Modules also help to provide consistency in your configurations. Consistency makes complex configurations easier to understand, and it also helps to ensure that best practices are applied across all of your configuration. For example, cloud providers offer many options for configuring object storage services, such as Amazon S3 (Simple Storage Service) or Google's Cloud Storage buckets. Many high-profile security incidents have involved incorrectly secured object storage, and because of the number of complex configuration options involved, it's easy to accidentally misconfigure these services.</p>
+</li>
+</ul>
+<p>Using modules can help reduce these errors. For example, you might create a module to describe how all of your organization's public website buckets will be configured, and another module for private buckets used for logging applications. Also, if a configuration for a type of resource needs to be updated, using modules allows you to make that update in a single place and have it be applied to all cases where you use that module.</p>
+<h3>What you'll learn</h3>
+<p>In this lab, you will learn how to perform the following tasks:</p>
+<ul>
+<li>
+<p>Use a module from the Registry</p>
+</li>
+<li>
+<p>Build a module</p>
+</li>
+</ul>
+<h2 id="step3">Setup and requirements</h2>
+<h3>Before you click the Start Lab button</h3>
+<p>Read these instructions. Labs are timed and you cannot pause them. The timer, which starts when you click <strong>Start Lab</strong>, shows how long Google Cloud resources will be made available to you.</p>
+<p>This hands-on lab lets you do the lab activities yourself in a real cloud environment, not in a simulation or demo environment. It does so by giving you new, temporary credentials that you use to sign in and access Google Cloud for the duration of the lab.</p>
+<p>To complete this lab, you need:</p>
+<ul>
+<li>Access to a standard internet browser (Chrome browser recommended).</li>
+</ul>
+<ql-warningbox>
+<strong>Note:</strong> Use an Incognito or private browser window to run this lab. This prevents any conflicts between your personal account and the Student account, which may cause extra charges incurred to your personal account.
+</ql-warningbox>
+<ul>
+<li>Time to complete the lab---remember, once you start, you cannot pause a lab.</li>
+</ul>
+<ql-warningbox>
+<strong>Note:</strong> If you already have your own personal Google Cloud account or project, do not use it for this lab to avoid extra charges to your account.
+</ql-warningbox>
+<h3>How to start your lab and sign in to the Google Cloud Console</h3>
+<ol>
+<li>
+<p>Click the <strong>Start Lab</strong> button. If you need to pay for the lab, a pop-up opens for you to select your payment method.
+On the left is the <strong>Lab Details</strong> panel with the following:</p>
+<ul>
+<li>The <strong>Open Google Console</strong> button</li>
+<li>Time remaining</li>
+<li>The temporary credentials that you must use for this lab</li>
+<li>Other information, if needed, to step through this lab</li>
+</ul>
+</li>
+<li>
+<p>Click <strong>Open Google Console</strong>.
+The lab spins up resources, and then opens another tab that shows the <strong>Sign in</strong> page.</p>
+<p><strong><em>Tip:</em></strong> Arrange the tabs in separate windows, side-by-side.</p>
+<ql-infobox>
+<strong>Note: </strong>If you see the <strong>Choose an account</strong> dialog, click <strong>Use Another Account</strong>.        
+ </ql-infobox>
+</li>
+<li>
+<p>If necessary, copy the <strong>Username</strong> from the <strong>Lab Details</strong> panel and paste it into the <strong>Sign in</strong> dialog. Click <strong>Next</strong>.</p>
+</li>
+<li>
+<p>Copy the <strong>Password</strong> from the <strong>Lab Details</strong> panel and paste it into the <strong>Welcome</strong> dialog. Click <strong>Next</strong>.</p>
+<ql-infobox>
+<strong>Important: </strong>You must use the credentials from the left panel. Do not use your Google Cloud Skills Boost credentials. 
+ </ql-infobox>
+<ql-warningbox>
+<strong>Note: </strong>Using your own Google Cloud account for this lab may incur extra charges.
+ </ql-warningbox>
+</li>
+<li>
+<p>Click through the subsequent pages:</p>
+<ul>
+<li>Accept the terms and conditions.</li>
+<li>Do not add recovery options or two-factor authentication (because this is a temporary account).</li>
+<li>Do not sign up for free trials.</li>
+</ul>
+</li>
+</ol>
+<p>After a few moments, the Cloud Console opens in this tab.</p>
+<ql-infobox>
+<strong>Note:</strong> You can view the menu with a list of Google Cloud Products and Services by clicking the <strong>Navigation menu</strong> at the top-left.
+<img alt="Navigation menu icon" src="https://cdn.qwiklabs.com/nUxFb6oRFr435O3t6V7WYJAjeDFcrFb16G9wHWp5BzU%3D">
+</ql-infobox>
+<h3>Activate Cloud Shell</h3>
+<p>Cloud Shell is a virtual machine that is loaded with development tools. It offers a persistent 5GB home directory and runs on the Google Cloud. Cloud Shell provides command-line access to your Google Cloud resources.</p>
+<ol>
+<li>Click <strong>Activate Cloud Shell</strong> <img alt="Activate Cloud Shell icon" src="https://cdn.qwiklabs.com/ep8HmqYGdD%2FkUncAAYpV47OYoHwC8%2Bg0WK%2F8sidHquE%3D"> at the top of the Google Cloud console.</li>
+</ol>
+<p>When you are connected, you are already authenticated, and the project is set to your <strong>PROJECT_ID</strong>. The output contains a line that declares the <strong>PROJECT_ID</strong> for this session:</p>
+<ql-code-block output="">
+Your Cloud Platform project in this session is set to YOUR_PROJECT_ID
+</ql-code-block>
+<p><code>gcloud</code> is the command-line tool for Google Cloud. It comes pre-installed on Cloud Shell and supports tab-completion.</p>
+<ol start="2">
+<li>
+<p>(Optional) You can list the active account name with this command:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud auth list
+</ql-code-block>
+<ol start="3">
+<li>
+<p>Click <strong>Authorize</strong>.</p>
+</li>
+<li>
+<p>Your output should now look like this:</p>
+</li>
+</ol>
+<p><strong>Output:</strong></p>
+<ql-code-block language="plaintext" output="">
+ACTIVE: *
+ACCOUNT: student-01-xxxxxxxxxxxx@qwiklabs.net
+To set the active account, run:
+    $ gcloud config set account `ACCOUNT`
+</ql-code-block>
+<ol start="5">
+<li>
+<p>(Optional) You can list the project ID with this command:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud config list project
+</ql-code-block>
+<p><strong>Output:</strong></p>
+<ql-code-block language="plaintext" output="">
+[core]
+project = &lt;project_ID&gt;
+</ql-code-block>
+<p><strong>Example output:</strong></p>
+<ql-code-block language="plaintext" output="">
+[core]
+project = qwiklabs-gcp-44776a13dea667a6
+</ql-code-block>
+<ql-infobox>
+<strong>Note: </strong>For full documentation of <code>gcloud</code>, in Google Cloud, refer to <a href="https://cloud.google.com/sdk/gcloud" target="_blank">the gcloud CLI overview guide</a>.
+</ql-infobox>
+<h2 id="step4">What is a Terraform module?</h2>
+<p>A Terraform module is a set of Terraform configuration files in a single directory. Even a simple configuration consisting of a single directory with one or more <code>.tf</code> files is a module. When you run Terraform commands directly from such a directory, it is considered the <strong>root module</strong>. So in this sense, every Terraform configuration is part of a module. You may have a simple set of Terraform configuration files like this:</p>
+<ql-code-block output="">
+├── LICENSE
+├── README.md
+├── main.tf
+├── variables.tf
+├── outputs.tf
+</ql-code-block>
+<p>In this case, when you run Terraform commands from within the <code>minimal-module</code> directory, the contents of that directory are considered the root module.</p>
+<h3>Calling modules</h3>
+<p>Terraform commands will only directly use the configuration files in one directory, which is usually the current working directory. However, your configuration can use module blocks to call modules in other directories. When Terraform encounters a module block, it loads and processes that module's configuration files.</p>
+<p>A module that is called by another configuration is sometimes referred to as a "child module" of that configuration.</p>
+<h3>Local and remote modules</h3>
+<p>Modules can be loaded from either the local filesystem or a remote source. Terraform supports a variety of remote sources, including the Terraform Registry, most version control systems, HTTP URLs, and Terraform Cloud or Terraform Enterprise private module registries.</p>
+<h3>Module best practices</h3>
+<p>In many ways, Terraform modules are similar to the concepts of libraries, packages, or modules found in most programming languages, and they provide many of the same benefits. Just like almost any non-trivial computer program, real-world Terraform configurations should almost always use modules to provide the benefits mentioned above.</p>
+<p>It is recommended that every Terraform practitioner use modules by following these best practices:</p>
+<ul>
+<li>
+<p>Start writing your configuration with a plan for modules. Even for slightly complex Terraform configurations managed by a single person, the benefits of using modules outweigh the time it takes to use them properly.</p>
+</li>
+<li>
+<p>Use local modules to organize and encapsulate your code. Even if you aren't using or publishing remote modules, organizing your configuration in terms of modules from the beginning will significantly reduce the burden of maintaining and updating your configuration as your infrastructure grows in complexity.</p>
+</li>
+<li>
+<p>Use the public <a href="https://registry.terraform.io/" target="_blank">Terraform Registry</a> to find useful modules. This way you can quickly and confidently implement your configuration by relying on the work of others.</p>
+</li>
+<li>
+<p>Publish and share modules with your team. Most infrastructure is managed by a team of people, and modules are an important tool that teams can use to create and maintain infrastructure. As mentioned earlier, you can publish modules either publicly or privately. You will see how to do this in a later lab in this series.</p>
+</li>
+</ul>
+<h2 id="step5">Task 1. Use modules from the Registry</h2>
+<p>In this section, you use modules from the <a href="https://registry.terraform.io/" target="_blank">Terraform Registry</a> to provision an example environment in Google Cloud. The concepts you use here will apply to any modules from any source.</p>
+<ul>
+<li>Open the <a href="https://registry.terraform.io/modules/terraform-google-modules/network/google/3.3.0" target="_blank">Terraform Registry page</a> for the Terraform Network module in a new browser tab or window. The page will look like this:</li>
+</ul>
+<p><img alt="Terraform Registry page" src="https://cdn.qwiklabs.com/jcJ08UOeoo4KQarfhfiv4P334d9eFOqoG5QtPucIZuQ%3D"></p>
+<p>The page includes information about the module and a link to the source repository. The right side of the page includes a dropdown interface to select the module version and instructions for using the module to provision infrastructure.</p>
+<p>When you call a module, the <code>source</code> argument is required. In this example, Terraform will search for a module in the Terraform Registry that matches the given string. You could also use a URL or local file path for the source of your modules. See the <a href="https://www.terraform.io/docs/modules/sources.html" target="_blank">Terraform documentation</a> for a list of possible module sources.</p>
+<p>The other argument shown here is the <code>version</code>. For supported sources, the version will let you define what version or versions of the module will be loaded. In this lab, you will specify an exact version number for the modules you use. You can read about more ways to specify versions in the <a href="https://www.terraform.io/docs/configuration/modules.html#module-versions" target="_blank">module documentation</a>.</p>
+<p>Other arguments to module blocks are treated as input variables to the modules.</p>
+<h3>Create a Terraform configuration</h3>
+<ol>
+<li>
+<p>To start, run the following commands in Cloud Shell to clone the example simple project from the Google Terraform modules GitHub repository and switch to the <code>v6.0.1</code> branch:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+git clone https://github.com/terraform-google-modules/terraform-google-network
+cd terraform-google-network
+git checkout tags/v6.0.1 -b v6.0.1
+</ql-code-block>
+<p>This ensures that you're using the correct version number.</p>
+<ol start="2">
+<li>
+<p>On the Cloud Shell toolbar, click <strong>Open Editor</strong>. To switch between Cloud Shell and the code editor, click <strong>Open Editor</strong> or <strong>Open Terminal</strong> as required, or click <strong>Open in a new window</strong> to leave the Editor open in a separate tab.</p>
+</li>
+<li>
+<p>In the editor, navigate to <code>terraform-google-network/examples/simple_project</code>, and open the <code>main.tf</code> file. Your <code>main.tf</code> configuration will look like this:</p>
+</li>
+</ol>
+<ql-code-block output="">
+module "test-vpc-module" {
+  source       = "terraform-google-modules/network/google"
+  version      = "~&gt; 6.0"
+  project_id   = var.project_id # Replace this with your project ID
+  network_name = "my-custom-mode-network"
+  mtu          = 1460
+  subnets = [
+    {
+      subnet_name   = "subnet-01"
+      subnet_ip     = "10.10.10.0/24"
+      subnet_region = "us-west1"
+    },
+    {
+      subnet_name           = "subnet-02"
+      subnet_ip             = "10.10.20.0/24"
+      subnet_region         = "us-west1"
+      subnet_private_access = "true"
+      subnet_flow_logs      = "true"
+    },
+    {
+      subnet_name               = "subnet-03"
+      subnet_ip                 = "10.10.30.0/24"
+      subnet_region             = "us-west1"
+      subnet_flow_logs          = "true"
+      subnet_flow_logs_interval = "INTERVAL_10_MIN"
+      subnet_flow_logs_sampling = 0.7
+      subnet_flow_logs_metadata = "INCLUDE_ALL_METADATA"
+      subnet_flow_logs_filter   = "false"
+    }
+  ]
+}
+</ql-code-block>
+<p>This configuration includes one important block:</p>
+<ul>
+<li>
+<p><code>module "test-vpc-module"</code> defines a Virtual Private Cloud (VPC), which will provide networking services for the rest of your infrastructure.</p>
+</li>
+</ul>
+<h3>Set values for module input variables</h3>
+<p>Some input variables are <em>required</em>, which means that the module doesn't provide a default value; an explicit value must be provided in order for Terraform to run correctly.</p>
+<ul>
+<li>
+<p>Within the module <code>"test-vpc-module"</code> block, review the input variables you are setting. Each of these input variables is documented in the <a href="https://registry.terraform.io/modules/terraform-google-modules/network/google/3.3.0?tab=inputs" target="_blank">Terraform Registry</a>. The required inputs for this module are:</p>
+<ul>
+<li>
+<code>network_name</code>: The name of the network being created</li>
+<li>
+<code>project_id</code>: The ID of the project where this VPC will be created</li>
+<li>
+<code>subnets</code>: The list of subnets being created</li>
+</ul>
+</li>
+</ul>
+<p>In order to use most modules, you will need to pass input variables to the module configuration. The configuration that calls a module is responsible for setting its input values, which are passed as arguments to the module block. Aside from <code>source</code> and <code>version</code>, most of the arguments to a module block will set variable values.</p>
+<p>On the Terraform Registry page for the Google Cloud network module, an Inputs tab describes all of the <a href="https://registry.terraform.io/modules/terraform-google-modules/network/google/3.3.0?tab=inputs" target="_blank">input variables</a> that module supports.</p>
+<h3>Define root input variables</h3>
+<p>Using input variables with modules is very similar to how you use variables in any Terraform configuration. A common pattern is to identify which module input variables you might want to change in the future, and then create matching variables in your configuration's <code>variables.tf</code> file with sensible default values. Those variables can then be passed to the module block as arguments.</p>
+<ol>
+<li>
+<p>To retrieve your Project ID, run the following command in Cloud Shell:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud config list --format 'value(core.project)'
+</ql-code-block>
+<ol start="2">
+<li>
+<p>In the Editor, still in the same directory, navigate to <code>variables.tf</code>.</p>
+</li>
+<li>
+<p>Fill in the variable <code>project_id</code> with the output of the previous command. You must follow the format below and set the <code>default</code> value for the variable:</p>
+</li>
+</ol>
+<ql-code-block nowrap>
+variable "project_id" {
+  description = "The project ID to host the network in"
+  default     = "FILL IN YOUR PROJECT ID HERE"
+}
+</ql-code-block>
+<ol start="4">
+<li>In <code>variables.tf</code>, add in the variable <code>network_name</code>. You can use the name <code>example-vpc</code> or any other name you'd like. You must follow the format below and set the <code>default</code> value for the variable:</li>
+</ol>
+<ql-code-block nowrap>
+variable "network_name" {
+  description = "The name of the VPC network being created"
+  default     = "example-vpc"
+}
+</ql-code-block>
+<ol start="5">
+<li>Back in the <code>main.tf</code> file, update the <code>network_name</code> parameter to use the variable you just defined by setting the value to <code>var.network_name</code>.</li>
+</ol>
+<ql-code-block nowrap>
+module "test-vpc-module" {
+  ...
+  project_id   = var.project_id
+  network_name = var.network_name
+  ...
+</ql-code-block>
+<h3>Define root output values</h3>
+<p>Modules also have output values, which are defined within the module with the <code>output</code> keyword. You can access them by referring to <code>module.&lt;MODULE NAME&gt;.&lt;OUTPUT NAME&gt;</code>. Like input variables, module outputs are listed under the <code>outputs</code> tab in the <a href="https://registry.terraform.io/modules/terraform-google-modules/network/google/3.3.0?tab=inputs" target="_blank">Terraform Registry</a>.</p>
+<p>Module outputs are usually either passed to other parts of your configuration or defined as outputs in your root module. You will see both uses in this lab.</p>
+<ul>
+<li>Navigate to the <code>outputs.tf</code> file inside of your configuration's directory. Verify that the file contains the following:</li>
+</ul>
+<ql-code-block output="">
+output "network_name" {
+  value       = module.test-vpc-module.network_name
+  description = "The name of the VPC being created"
+}
+output "network_self_link" {
+  value       = module.test-vpc-module.network_self_link
+  description = "The URI of the VPC being created"
+}
+output "project_id" {
+  value       = module.test-vpc-module.project_id
+  description = "VPC project id"
+}
+output "subnets_names" {
+  value       = module.test-vpc-module.subnets_names
+  description = "The names of the subnets being created"
+}
+output "subnets_ips" {
+  value       = module.test-vpc-module.subnets_ips
+  description = "The IP and cidrs of the subnets being created"
+}
+output "subnets_regions" {
+  value       = module.test-vpc-module.subnets_regions
+  description = "The region where subnets will be created"
+}
+output "subnets_private_access" {
+  value       = module.test-vpc-module.subnets_private_access
+  description = "Whether the subnets will have access to Google API's without a public IP"
+}
+output "subnets_flow_logs" {
+  value       = module.test-vpc-module.subnets_flow_logs
+  description = "Whether the subnets will have VPC flow logs enabled"
+}
+output "subnets_secondary_ranges" {
+  value       = module.test-vpc-module.subnets_secondary_ranges
+  description = "The secondary ranges associated with these subnets"
+}
+output "route_names" {
+  value       = module.test-vpc-module.route_names
+  description = "The routes associated with this VPC"
+}
+</ql-code-block>
+<h3>Provision infrastructure</h3>
+<ol>
+<li>
+<p>In Cloud Shell, navigate to your <code>simple_project</code> directory:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+cd ~/terraform-google-network/examples/simple_project
+</ql-code-block>
+<ol start="2">
+<li>
+<p>Initialize your Terraform configuration:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+terraform init
+</ql-code-block>
+<ol start="3">
+<li>
+<p>Create your VPC:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+terraform apply
+</ql-code-block>
+<ol start="4">
+<li>To apply the changes and continue, respond to the prompt with <strong>yes</strong>.</li>
+</ol>
+<p>Great! You've just used your first module. Your configuration's output should look like this:</p>
+<ql-code-block nowrap output="">
+Outputs:
+network_name = "example-vpc"
+network_self_link = "https://www.googleapis.com/compute/v1/projects/qwiklabs-gcp-01-a68489b0625b/global/networks/example-vpc"
+project_id = ""
+route_names = []
+subnets_flow_logs = [
+  false,
+  true,
+  true,
+]
+subnets_ips = [
+  "10.10.10.0/24",
+  "10.10.20.0/24",
+  "10.10.30.0/24",
+]
+subnets_names = [
+  "subnet-01",
+  "subnet-02",
+  "subnet-03",
+]
+....
+....
+</ql-code-block>
+<h3>Understand how modules work</h3>
+<p>When using a new module for the first time, you must run either <code>terraform init</code> or <code>terraform get</code> to install the module. When either of these commands is run, Terraform will install any new modules in the <code>.terraform/modules</code> directory within your configuration's working directory. For local modules, Terraform will create a symlink to the module's directory. Because of this, any changes to local modules will be effective immediately, without your having to re-run <code>terraform get</code>.</p>
+<h3>Clean up your infrastructure</h3>
+<p>Now you have seen how to use modules from the Terraform Registry, how to configure those modules with input variables, and how to get output values from those modules.</p>
+<ol>
+<li>
+<p>Destroy the infrastructure you created:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+terraform destroy
+</ql-code-block>
+<ol start="2">
+<li>
+<p>Respond to the prompt with <code>yes</code>.
+Terraform will destroy the infrastructure you created.</p>
+</li>
+<li>
+<p>Once you've destroyed your resourced, delete the <code>terraform-google-network</code> folder.</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+rm -rd terraform-google-network -f
+</ql-code-block>
+<p>Click <em>Check my progress</em> to verify the objective.
+<ql-activity-tracking step="1">
+Provision infrastructure.
+</ql-activity-tracking></p>
+<h2 id="step6">Task 2. Build a module</h2>
+<p>In the last task, you used a module from the Terraform Registry to create a VPC network in Google Cloud. Although using existing Terraform modules correctly is an important skill, every Terraform practitioner will also benefit from learning how to create modules. We recommend that you create every Terraform configuration with the assumption that it may be used as a module, because this will help you design your configurations to be flexible, reusable, and composable.</p>
+<p>As you may already know, Terraform treats every configuration as a module. When you run <code>terraform</code> commands, or use Terraform Cloud or Terraform Enterprise to remotely run Terraform, the target directory containing Terraform configuration is treated as the root module.</p>
+<p>In this task, you create a module to manage Compute Storage buckets used to host static websites.</p>
+<h3>Module structure</h3>
+<p>Terraform treats any local directory referenced in the <code>source</code> argument of a <code>module</code> block as a module. A typical file structure for a new module is:</p>
+<ql-code-block output="">
+├── LICENSE
+├── README.md
+├── main.tf
+├── variables.tf
+├── outputs.tf
+</ql-code-block>
+<ql-infobox><strong>Note: </strong>None of these files are required or has any special meaning to Terraform when it uses your module. You can create a module with a single <code>.tf</code> file or use any other file structure you like.
+</ql-infobox>
+<p>Each of these files serves a purpose:</p>
+<ul>
+<li>
+<code>LICENSE</code> contains the license under which your module will be distributed. When you share your module, the LICENSE file will let people using it know the terms under which it has been made available. Terraform itself does not use this file.</li>
+<li>
+<code>README.md</code> contains documentation in markdown format that describes how to use your module. Terraform does not use this file, but services like the Terraform Registry and GitHub will display the contents of this file to visitors to your module's Terraform Registry or GitHub page.</li>
+<li>
+<code>main.tf</code> contains the main set of configurations for your module. You can also create other configuration files and organize them in a way that makes sense for your project.</li>
+<li>
+<code>variables.tf</code> contains the variable definitions for your module. When your module is used by others, the variables will be configured as arguments in the module block. Because all Terraform values must be defined, any variables that don't have a default value will become required arguments. A variable with a default value can also be provided as a module argument, thus overriding the default value.</li>
+<li>
+<code>outputs.tf</code> contains the output definitions for your module. Module outputs are made available to the configuration using the module, so they are often used to pass information about the parts of your infrastructure defined by the module to other parts of your configuration.</li>
+</ul>
+<p>Be aware of these files and ensure that you don't distribute them as part of your module:</p>
+<ul>
+<li>
+<code>terraform.tfstate</code> and <code>terraform.tfstate.backup</code> files contain your Terraform state and are how Terraform keeps track of the relationship between your configuration and the infrastructure provisioned by it.</li>
+<li>The <code>.terraform</code> directory contains the modules and plugins used to provision your infrastructure. These files are specific to an individual instance of Terraform when provisioning infrastructure, not the configuration of the infrastructure defined in <code>.tf</code> files.</li>
+<li>
+<code>*.tfvars</code>files don't need to be distributed with your module unless you are also using it as a standalone Terraform configuration because module input variables are set via arguments to the module block in your configuration.</li>
+</ul>
+<ql-infobox><strong>Note: </strong>If you are tracking changes to your module in a version control system such as Git, you will want to configure your version control system to ignore these files. For an example, see this <a href="https://github.com/github/gitignore/blob/master/Terraform.gitignore" target="_blank">.gitignore file</a> from GitHub.
+</ql-infobox>
+<h3>Create a module</h3>
+<p>Navigate to your home directory and create your root module by constructing a new <code>main.tf</code> configuration file. Then create a directory called <strong>modules</strong> that contains another folder called <code>gcs-static-website-bucket</code>. You will work with three Terraform configuration files inside the <code>gcs-static-website-bucket</code> directory: <code>website.tf</code>, <code>variables.tf</code>, and <code>outputs.tf</code>.</p>
+<ol>
+<li>
+<p>Create the directory for your new module:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+cd ~
+touch main.tf
+mkdir -p modules/gcs-static-website-bucket
+</ql-code-block>
+<ol start="2">
+<li>
+<p>Navigate to the module directory and run the following commands to create three empty files:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+cd modules/gcs-static-website-bucket
+touch website.tf variables.tf outputs.tf
+</ql-code-block>
+<ol start="3">
+<li>
+<p>Inside the <code>gcs-static-website-bucket</code> directory, run the following command to create a file called <code>README.md</code> with the following content:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+tee -a README.md &lt;&lt;EOF
+# GCS static website bucket
+This module provisions Cloud Storage buckets configured for static website hosting.
+EOF
+</ql-code-block>
+<ql-infobox><strong>Note: </strong>Choosing the correct license for your modules is out of the scope of this lab. This lab will use the Apache 2.0 open source license.
+</ql-infobox>
+<ol start="4">
+<li>
+<p>Create another file called <code>LICENSE</code> with the following content:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+tee -a LICENSE &lt;&lt;EOF
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+EOF
+</ql-code-block>
+<ql-infobox><strong>Note: </strong>
+Neither of these files is required or used by Terraform. Having them is a best practice for modules that might be shared with others.
+</ql-infobox>
+<p>Your current module directory structure should now look like this:</p>
+<ql-code-block language="plaintext" output="">
+main.tf
+modules/
+└── gcs-static-website-bucket
+    ├── LICENSE
+    ├── README.md
+    ├── website.tf
+    ├── outputs.tf
+    └── variables.tf
+</ql-code-block>
+<ol start="5">
+<li>Add this Cloud Storage bucket resource to your <code>website.tf</code> file inside the <code>modules/gcs-static-website-bucket</code> directory:</li>
+</ol>
+<ql-code-block nowrap>
+resource "google_storage_bucket" "bucket" {
+  name               = var.name
+  project            = var.project_id
+  location           = var.location
+  storage_class      = var.storage_class
+  labels             = var.labels
+  force_destroy      = var.force_destroy
+  uniform_bucket_level_access = true
+  versioning {
+    enabled = var.versioning
+  }
+  dynamic "retention_policy" {
+    for_each = var.retention_policy == null ? [] : [var.retention_policy]
+    content {
+      is_locked        = var.retention_policy.is_locked
+      retention_period = var.retention_policy.retention_period
+    }
+  }
+  dynamic "encryption" {
+    for_each = var.encryption == null ? [] : [var.encryption]
+    content {
+      default_kms_key_name = var.encryption.default_kms_key_name
+    }
+  }
+  dynamic "lifecycle_rule" {
+    for_each = var.lifecycle_rules
+    content {
+      action {
+        type          = lifecycle_rule.value.action.type
+        storage_class = lookup(lifecycle_rule.value.action, "storage_class", null)
+      }
+      condition {
+        age                   = lookup(lifecycle_rule.value.condition, "age", null)
+        created_before        = lookup(lifecycle_rule.value.condition, "created_before", null)
+        with_state            = lookup(lifecycle_rule.value.condition, "with_state", null)
+        matches_storage_class = lookup(lifecycle_rule.value.condition, "matches_storage_class", null)
+        num_newer_versions    = lookup(lifecycle_rule.value.condition, "num_newer_versions", null)
+      }
+    }
+  }
+}
+</ql-code-block>
+<p>The provider documentation is <a href="https://github.com/terraform-google-modules/terraform-google-cloud-storage/tree/master/modules/simple_bucket" target="_blank">GitHub</a>.</p>
+<ol start="6">
+<li>Navigate to the <code>variables.tf</code> file in your module and add the following code:</li>
+</ol>
+<ql-code-block nowrap>
+variable "name" {
+  description = "The name of the bucket."
+  type        = string
+}
+variable "project_id" {
+  description = "The ID of the project to create the bucket in."
+  type        = string
+}
+variable "location" {
+  description = "The location of the bucket."
+  type        = string
+}
+variable "storage_class" {
+  description = "The Storage Class of the new bucket."
+  type        = string
+  default     = null
+}
+variable "labels" {
+  description = "A set of key/value label pairs to assign to the bucket."
+  type        = map(string)
+  default     = null
+}
+variable "bucket_policy_only" {
+  description = "Enables Bucket Policy Only access to a bucket."
+  type        = bool
+  default     = true
+}
+variable "versioning" {
+  description = "While set to true, versioning is fully enabled for this bucket."
+  type        = bool
+  default     = true
+}
+variable "force_destroy" {
+  description = "When deleting a bucket, this boolean option will delete all contained objects. If false, Terraform will fail to delete buckets which contain objects."
+  type        = bool
+  default     = true
+}
+variable "iam_members" {
+  description = "The list of IAM members to grant permissions on the bucket."
+  type = list(object({
+    role   = string
+    member = string
+  }))
+  default = []
+}
+variable "retention_policy" {
+  description = "Configuration of the bucket's data retention policy for how long objects in the bucket should be retained."
+  type = object({
+    is_locked        = bool
+    retention_period = number
+  })
+  default = null
+}
+variable "encryption" {
+  description = "A Cloud KMS key that will be used to encrypt objects inserted into this bucket"
+  type = object({
+    default_kms_key_name = string
+  })
+  default = null
+}
+variable "lifecycle_rules" {
+  description = "The bucket's Lifecycle Rules configuration."
+  type = list(object({
+    # Object with keys:
+    # - type - The type of the action of this Lifecycle Rule. Supported values: Delete and SetStorageClass.
+    # - storage_class - (Required if action type is SetStorageClass) The target Storage Class of objects affected by this Lifecycle Rule.
+    action = any
+    # Object with keys:
+    # - age - (Optional) Minimum age of an object in days to satisfy this condition.
+    # - created_before - (Optional) Creation date of an object in RFC 3339 (e.g. 2017-06-13) to satisfy this condition.
+    # - with_state - (Optional) Match to live and/or archived objects. Supported values include: "LIVE", "ARCHIVED", "ANY".
+    # - matches_storage_class - (Optional) Storage Class of objects to satisfy this condition. Supported values include: MULTI_REGIONAL, REGIONAL, NEARLINE, COLDLINE, STANDARD, DURABLE_REDUCED_AVAILABILITY.
+    # - num_newer_versions - (Optional) Relevant only for versioned objects. The number of newer versions of an object to satisfy this condition.
+    condition = any
+  }))
+  default = []
+}
+</ql-code-block>
+<ol start="7">
+<li>Add an output to your module in the <code>outputs.tf</code> file inside your module:</li>
+</ol>
+<ql-code-block nowrap>
+output "bucket" {
+  description = "The created storage bucket"
+  value       = google_storage_bucket.bucket
+}
+</ql-code-block>
+<p>Like variables, outputs in modules perform the same function as they do in the root module but are accessed in a different way. A module's outputs can be accessed as read-only attributes on the module object, which is available within the configuration that calls the module.</p>
+<ol start="8">
+<li>Return to the <code>main.tf</code> in your <strong>root directory</strong> and add a reference to the new module:</li>
+</ol>
+<ql-code-block nowrap>
+module "gcs-static-website-bucket" {
+  source = "./modules/gcs-static-website-bucket"
+  name       = var.name
+  project_id = var.project_id
+  location   = "us-east1"
+  lifecycle_rules = [{
+    action = {
+      type = "Delete"
+    }
+    condition = {
+      age        = 365
+      with_state = "ANY"
+    }
+  }]
+}
+</ql-code-block>
+<ol start="9">
+<li>
+<p>In your <strong>root directory</strong>, create an <code>outputs.tf</code> file for your root module:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+cd ~
+touch outputs.tf
+</ql-code-block>
+<ol start="10">
+<li>
+<p>Add the following code in the <code>outputs.tf</code> file:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+output "bucket-name" {
+  description = "Bucket names."
+  value       = "module.gcs-static-website-bucket.bucket"
+}
+</ql-code-block>
+<ol start="11">
+<li>
+<p>In your <strong>root directory</strong>, create a <code>variables.tf</code> file:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+touch variables.tf
+</ql-code-block>
+<ol start="12">
+<li>Add the following code to the <code>variables.tf</code> file. Set the variables <code>project_id</code> and <code>name</code> to your</li>
+</ol>
+<ql-code-block nowrap>
+variable "project_id" {
+  description = "The ID of the project in which to provision resources."
+  type        = string
+  default     = "FILL IN YOUR PROJECT ID HERE"
+}
+variable "name" {
+  description = "Name of the buckets to create."
+  type        = string
+  default     = "FILL IN A (UNIQUE) BUCKET NAME HERE"
+}
+</ql-code-block>
+<ql-infobox>
+<strong>Note: </strong>The name of your storage bucket must be globally unique. Using your name and the date is usually a good way to create a unique bucket name. You can also use your Project ID.
+</ql-infobox>
+<h3>Install the local module</h3>
+<p>Whenever you add a new module to a configuration, Terraform must install the module before it can be used. Both the <code>terraform get</code> and <code>terraform init</code> commands will install and update modules. The <code>terraform init</code> command will also initialize backends and install plugins.</p>
+<ol>
+<li>
+<p>Install the module:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+terraform init
+</ql-code-block>
+<ol start="2">
+<li>
+<p>Provision your bucket:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+terraform apply
+</ql-code-block>
+<ol start="3">
+<li>
+<p>Respond <strong>yes</strong> to the prompt. Your bucket and other resources will be provisioned.</p>
+</li>
+</ol>
+<h3>Upload files to the bucket</h3>
+<p>You have now configured and used your own module to create a static website. You may want to visit this static website. Right now there is nothing inside your bucket, so there is nothing to see at the website. In order to see any content, you will need to upload objects to your bucket. You can upload the contents of the <code>www</code> directory  in the GitHub repository.</p>
+<ol>
+<li>
+<p>Download the sample contents to your home directory:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+cd ~
+curl https://raw.githubusercontent.com/hashicorp/learn-terraform-modules/master/modules/aws-s3-static-website-bucket/www/index.html &gt; index.html
+curl https://raw.githubusercontent.com/hashicorp/learn-terraform-modules/blob/master/modules/aws-s3-static-website-bucket/www/error.html &gt; error.html
+</ql-code-block>
+<ol start="2">
+<li>
+<p>Copy the files over to the bucket, replacing <code>YOUR-BUCKET-NAME</code> with the name of your storage bucket:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gsutil cp *.html gs://YOUR-BUCKET-NAME
+</ql-code-block>
+<ol start="3">
+<li>In a new tab in your browser, go to the website <code>https://storage.cloud.google.com/YOUR-BUCKET-NAME/index.html</code>, replacing <code>YOUR-BUCKET-NAME</code> with the name of your storage bucket.</li>
+</ol>
+<p>You should see a basic HTML web page that says <strong>Nothing to see here</strong>.</p>
+<p>Click <em>Check my progress</em> to verify the objective.
+<ql-activity-tracking step="2">
+Build a module.
+</ql-activity-tracking></p>
+<h3>Clean up the website and infrastructure</h3>
+<p>Lastly, you will clean up your project by destroying the infrastructure you just created.</p>
+<ol>
+<li>
+<p>Destroy your Terraform resources:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+terraform destroy
+</ql-code-block>
+<p>After you respond to the prompt with <code>yes</code>, Terraform will destroy all of the resources you created by following this lab.</p>
+<h2 id="step7">Congratulations!</h2>
+<p>In this lab, you learned the foundations of Terraform modules and how to use a pre-existing module from the Registry. You then built your own module to create a static website hosted on a Cloud Storage bucket. In doing so, you defined inputs, outputs, and variables for your configuration files and learned the best-practices for building modules.</p>
+<h3>Finish Your Quest</h3>
+<p>This self-paced lab is part of the <a href="https://google.qwiklabs.com/quests/159" target="_blank">Automating Infrastructure on Google Cloud with Terraform</a> quest. A quest is a series of related labs that form a learning path. Completing this quest earns you a badge to recognize your achievement. You can make your badge or badges public and link to them in your online resume or social media account. <a href="https://www.cloudskillsboost.google/quests/159/enroll" target="_blank">Enroll in this quest</a> or any quest that contains this lab and get immediate completion credit.  See the <a href="http://cloudskillsboost.google/catalog" target="_blank">Google Cloud Skills Boost catalog</a> to see all available quests.</p>
+<h3>Take your next lab</h3>
+<p>Continue your quest with the next Google Cloud Skills Boost lab, <a href="https://www.qwiklabs.com/catalog_lab/3363" target="_blank">Managing Terraform State</a>.</p>
+<h3>Next steps/Learn More</h3>
+<p>These links provide more hands-on practice with Terraform:</p>
+<ul>
+<li>
+<a href="https://console.cloud.google.com/marketplace/browse?q=Hashicorp&amp;utm_source=Hashicorp&amp;utm_medium=qwiklabs&amp;utm_campaign=Qwiklabs+to+Marketplace" target="_blank">Hashicorp</a> on the Google Cloud Marketplace!</li>
+<li><a href="https://learn.hashicorp.com/terraform" target="_blank">Hashicorp Learn</a></li>
+<li><a href="https://www.terraform.io/community.html" target="_blank">Terraform Community</a></li>
+<li><a href="https://github.com/GoogleCloudPlatform/terraform-google-examples" target="_blank">Terraform Google Examples</a></li>
+</ul>
+<h3>Google Cloud training and certification</h3>
+<p>...helps you make the most of Google Cloud technologies. <a href="https://cloud.google.com/training/courses" target="_blank">Our classes</a> include technical skills and best practices to help you get up to speed quickly and continue your learning journey. We offer fundamental to advanced level training, with on-demand, live, and virtual options to suit your busy schedule. <a href="https://cloud.google.com/certification/" target="_blank">Certifications</a> help you validate and prove your skill and expertise in Google Cloud technologies.</p>
+<p><strong>Manual Last Updated February 23, 2023</strong></p>
+<p><strong>Lab Last Tested February 23, 2023</strong></p>
+<p>Copyright 2023 Google LLC All rights reserved. Google and the Google logo are trademarks of Google LLC. All other company and product names may be trademarks of the respective companies with which they are associated.</p>
+
+</div>
+</div>
+
+
+<div class='lab-content__end-lab-button js-end-lab-button-container hidden'>
+<ql-lab-control-button class='js-end-lab-button' running></ql-lab-control-button>
+</div>
+<!-- / TODO: Move recommendations into the end lab modal -->
+<div class='lab-content__renderable-instructions'>
+<div class='lab-content__recommendation'>
+<!-- # TODO: Change classes so that this doesn't stack vertically -->
+<section class='upcoming-cards'>
+<h2 class='ql-headline-4'>Continue questing</h2>
+<div class='activity-cards'>
+<ql-activity-card aria-label='Interact with Terraform Modules' name='Interact with Terraform Modules' path='/focuses/16373?parent=catalog' progress='0.0' type='lab'></ql-activity-card>
+
+</div>
+</section>
+
+</div>
+
+</div>
+</ql-drawer-content>
+<ql-drawer end id='outline-drawer' open slot='drawer' width='320'>
+<div aria-label='Lab Table of Contents' role='navigation'>
+<ul class='lab-content__outline js-lab-content-outline'>
+<li><a href="#step1">GSP751</a></li><li><a href="#step2">Overview</a></li><li><a href="#step3">Setup and requirements</a></li><li><a href="#step4">What is a Terraform module?</a></li><li><a href="#step5">Task 1. Use modules from the Registry</a></li><li><a href="#step6">Task 2. Build a module</a></li><li><a href="#step7">Congratulations!</a></li>
+</ul>
+</div>
+</ql-drawer>
+</ql-drawer-container>
+</ql-drawer-content>
+</ql-drawer-container>
+
+
+
+</div>
+</main>
+
+<span class='hidden' id='flash-sibling-before'></span>
+<ql-snackbar></ql-snackbar>
+
+
+<div class='modal fade' id='lab-details-modal'>
+<div class='modal-container'>
+<div class='modal-content mdl-shadow--24dp'>
+<div class='modal-body'>
+<p class='l-mbm'>
+In this hands-on lab you will create and use Terraform modules to organize your cloud configuration.
+</p>
+<p>
+This lab is included in these quests:
+<a href="/quests/159">Automating Infrastructure on Google Cloud with Terraform</a>, <a href="/quests/212">Creating Infrastructure on Google Cloud with Terraform</a>, <a href="/quests/255">Qwiklabs Trivia January 2023</a>.
+If you complete this lab you&#39;ll receive credit for it when you enroll in one of these quests.
+</p>
+<p class='small-label l-mbs'>
+<strong>
+Duration:
+</strong>
+0m setup
+&middot;
+60m access
+&middot;
+60m completion
+</p>
+<p class='small-label l-mbs'>
+<strong>AWS Region:</strong>
+[] <strong></strong>
+</p>
+<p class='small-label l-mbs'>
+<span><strong>Levels: </strong>introductory</span>
+</p>
+<p class='small-label'>
+<strong>
+Permalink:
+</strong>
+<a href="https://partner.cloudskillsboost.google/catalog_lab/3358">https://partner.cloudskillsboost.google/catalog_lab/3358</a>
+</p>
+</div>
+<div class='modal-actions'>
+<a class='button button--text' data-dismiss='modal'>
+Got It
+</a>
+</div>
+
+
+</div>
+</div>
+<iframe class='l-ie-iframe-fix' tabindex='-1' title='modal'></iframe>
+</div>
+<ql-dialog headline='How satisfied are you with this lab?&lt;span aria-hidden=&quot;true&quot;&gt;*&lt;/span&gt;' id='lab-review-dialog'>
+<form class="simple_form js-lab-review-form" id="new_lab_review" action="/lab_reviews" accept-charset="UTF-8" data-remote="true" method="post"><input name="utf8" type="hidden" value="&#x2713;" autocomplete="off" /><div aria-labelledby='lab-review-dialog' aria-required='true' aria-valuemax='5' aria-valuemin='0' aria-valuenow='0' class='rateit js-rateit' data-rateit-max='5' data-rateit-min='0' data-rateit-resetable='false' data-rateit-step='1' data-rateit-value='0' id='lab-review-rateit' role='slider' tabindex='0'></div>
+<div class='l-mtm'>
+
+<div class="control-group hidden lab_review_user_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" value="11061062" name="lab_review[user_id]" id="lab_review_user_id" /></div></div>
+<div class="control-group hidden lab_review_classroom_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" name="lab_review[classroom_id]" id="lab_review_classroom_id" /></div></div>
+<div class="control-group hidden lab_review_lab_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" value="3358" name="lab_review[lab_id]" id="lab_review_lab_id" /></div></div>
+<div class="control-group hidden lab_review_focus_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" name="lab_review[focus_id]" id="lab_review_focus_id" /></div></div>
+<div class="control-group hidden lab_review_rating"><div class="controls"><input class="hidden js-rating-input" autocomplete="off" type="hidden" name="lab_review[rating]" id="lab_review_rating" /></div></div>
+<div class="control-group text optional lab_review_comment"><label class="text optional control-label" for="lab_review_comment">Additional Comments</label><div class="controls"><textarea class="text optional" name="lab_review[comment]" id="lab_review_comment">
+</textarea></div></div>
+</div>
+</form><ql-button disabled id='submit' label='Submit' slot='action' text></ql-button>
+</ql-dialog>
+
+<ql-dialog headline='All done? If you end this lab, you will lose all your work. You may not be able to restart the lab if there is a quota limit. Are you sure you want to end this lab?' icon='error_outline' id='js-lab-are-you-sure-dialog'>
+<ql-button id='js-are-you-sure-button' label='Submit' slot='action' text></ql-button>
+</ql-dialog>
+
+
+<script>
+  $(function() {
+    ql.initMaterialInputs();
+    initChosen();
+    initSearch();
+    initTabs();
+    ql.list.init();
+    ql.favoriting.init();
+    ql.header.myAccount.init();
+    initTooltips();
+    ql.autocomplete.init();
+    ql.modals.init();
+    ql.toggleButtons.init();
+    ql.analytics.init();
+    ql.favoriting.init();
+  ql.chat.init();
+  ql.jumpContent.init();
+  ql.labControlPanel.addRecaptchaErrorHandler();
+  initLabContent();
+  ql.labOutline.links.init();
+  initLabReviewModal();
+  initLabReviewTranslations( {"star_amount_1":"1 of 5 stars","star_amount_2":"2 of 5 stars","star_amount_3":"3 of 5 stars","star_amount_4":"4 of 5 stars","star_amount_5":"5 of 5 stars"} )
+  ql.labAssessment.init();
+  ql.labData.init();
+  initLabTranslations( {"are_you_sure":"All done? If you end this lab, you will lose all your work. You may not be able to restart the lab if there is a quota limit. Are you sure you want to end this lab?","in_progress":"*In Progress*","ending":"*Ending*","starting":"*Starting, please wait*","end_concurrent_labs":"Sorry, you can only run one lab at a time. To start this lab, please confirm that you want all of your existing labs to end.","copied":"Copied","no_resource":"Error retrieving resource.","no_support":"No Support","mac_press":"Press ⌘-C to copy","thanks_review":"Thanks for reviewing this lab.","windows_press":"Press Ctrl-C to copy","days":"days"} );
+  ql.labRun.init();
+  ql.navPanel.init();
+  ql.navigation.init();
+  
+  });
+</script>
+
+</body>
+</html>
+

@@ -1,0 +1,1404 @@
+
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<title>Configuring IAM Permissions with gcloud | Google Cloud Skills Boost for Partners</title>
+<meta name="action-cable-url" content="/cable" />
+<script>
+//<![CDATA[
+window.gon={};gon.deployment="googlecourses-run";
+//]]>
+</script>
+<script>
+  (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer',"GTM-5XSKHDX");
+</script>
+<script src="https://cdn.qwiklabs.com/assets/hallofmirrors/polyfills/webcomponents-loader-8583b47b01e40e6ea7bf1ad443a20b7e79bbdd5eafac009806a228c91a97282c.js"></script>
+<script src="https://cdn.qwiklabs.com/assets/vendor-beb958bea8eff6a4ad4cf8f36a0a676817a4857e214b17ae983796071a4a816d.js"></script>
+<script src="https://cdn.qwiklabs.com/assets/application-8194cda6ef3c11dc4405ed62cf7fc7697cbe39d472be22a7c9d4bd377a7b77f0.js"></script>
+<script src="https://cdn.qwiklabs.com/assets/hallofmirrors/hallofmirrors-f8d9fcf289db0acb0062699ca48080cfaf9b1703f4acd2d7d8bacd8bb0bedf3d.js"></script>
+<!--[if lt IE 9]>
+<script src='http://html5shim.googlecode.com/svn/trunk/html5.js' type='text/javascript'></script>
+<![endif]-->
+<!--[endif]>  <![endif]-->
+<script id='ze-snippet' src='https://static.zdassets.com/ekr/snippet.js?key=511e4158-0aec-4e3c-b2e6-4daa1769f51e'></script>
+<script>
+  ql.perfTest.init();
+</script>
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="m+5cGDzOasiyYCCqBv7KJeD9oV/b/kBEHbDlniLhuUc4dJ3PtcRYTOm8L+qhnLqyj20guNIhxjerbmdRgxbh0Q==" />
+<meta content='width=device-width, initial-scale=1.0, user-scalable=yes' name='viewport'>
+<meta content='1rRsY0INj8RvwB5EF5pwdxt2A2P9aDgAlsICaJ0d5w0' name='google-site-verification'>
+<meta content='#3681E4' property='msapplication-TileColor'>
+<meta content='/favicon-144.png' property='msapplication-TileImage'>
+<meta content='[{&quot;id&quot;:&quot;recaptcha_experiment&quot;,&quot;optimize_id&quot;:&quot;dpViOcLkT3qS4TvL2mRojA&quot;,&quot;title&quot;:&quot;No Recaptcha shown for trusted users&quot;,&quot;variant_index&quot;:0,&quot;variant&quot;:&quot;original&quot;}]' name='active-experiments'>
+<meta content='{&quot;userId&quot;:11061062,&quot;experimentIds&quot;:[&quot;programs&quot;,&quot;chat_off_for_signed_out_users&quot;,&quot;course_upgrade&quot;,&quot;program_learning_assignment&quot;,&quot;perf_test&quot;,&quot;program_groups&quot;,&quot;teams&quot;,&quot;canonical_domain_redirect&quot;,&quot;program_resources&quot;,&quot;used_in&quot;,&quot;community_forum&quot;,&quot;enforce_codebuild_verdicts&quot;,&quot;peer_assignment&quot;,&quot;oauth_risc_shutoff&quot;,&quot;show_annual_purchase_now&quot;,&quot;alexandria_show_bundle_errors&quot;,&quot;search_updates&quot;]}' name='help-api-product-data'>
+<meta content='{&quot;groupIds&quot;:[&quot;non_suadmins&quot;,&quot;students&quot;,&quot;non_organization&quot;,&quot;non_program&quot;]}' name='help-api-custom-data'>
+<meta content='In this lab introduces you will use the gcloud CLI tool to set up and configure command features of Cloud Identity and Access Management.' name='description'>
+<meta content='Qwiklabs' name='author'>
+<meta content='Configuring IAM Permissions with gcloud | Google Cloud Skills Boost for Partners' property='og:title'>
+<meta content='website' property='og:type'>
+<meta content='/favicon-144.png' property='og:image'>
+<meta content='Qwiklabs' property='og:site_name'>
+<meta content='In this lab introduces you will use the gcloud CLI tool to set up and configure command features of Cloud Identity and Access Management.' property='og:description'>
+<meta content='/qwiklabs_logo_900x887.png' property='og:logo' size='900x887'>
+<meta content='/qwiklabs_logo_994x187.png' property='og:logo' size='994x187'>
+
+
+<meta property="og:url" content="https://partner.cloudskillsboost.google/focuses/42345?parent=catalog" /><link href="https://partner.cloudskillsboost.google/focuses/42345?parent=catalog" rel="canonical" />
+<link color='#3681E4' href='/favicon-svg.svg' rel='mask-icon'>
+<link href='/favicon-180.png' rel='apple-touch-icon-precomposed'>
+<link href='https://cdn.qwiklabs.com/Vag5GK2J6rS6843Qvg8TQJ1kEbAsEmQoF0%2BdLRfcLRE%3D' rel='shortcut icon' type='image/x-icon'>
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oswald:400|Roboto+Mono:400,700|Roboto:300,400,500,700|Google+Sans:300,400,500,700|Google+Sans+Display:400|Material+Icons|Google+Material+Icons" media="screen" />
+
+<link rel="stylesheet" href="https://cdn.qwiklabs.com/assets/application-9c3b65b21d70e11e97ae9ab48dd150018a15c36cd951e52fe5574dfa177e8bc8.css" media="all" />
+
+
+<style>
+  :root {
+    --primary-text-on-surface-color: #1a73e8;
+    --primary-text-on-surface-color-dark: #1568d6;
+    --primary-text-on-surface-color-darker: #135ec1;
+    --primary-text-on-surface-color-darkest: #1154ac;
+    --primary-surface-color: #1a73e8;
+    --primary-surface-color-rgb: 26,115,232;
+    --primary-surface-color-light: #d1e3fa;
+    --primary-surface-color-lightest: #e8f1fd;
+    --text-on-primary-color: #ffffff;
+    --accent-text-on-surface-color: #f29900;
+    --accent-surface-color: #f9ab00;
+    --accent-surface-color-rgb: 249,171,0;
+    --accent-surface-color-light: #ffefcc;
+    --text-on-accent-color: #202124;
+  }
+</style>
+
+<style>
+  :root {
+    --navbar-height: 112px;
+  }
+</style>
+
+
+
+</head>
+<body class='lab-show l-full no-nav application-new focuses focuses-show lab-show l-full no-nav '>
+<div class='header-container'>
+<div class='header'>
+<ql-toolbar jumpEnabled>
+<div class='header__title' slot='title'>
+<ql-icon-button label="Back" href="https://partner.cloudskillsboost.google/quests/121" id="7961699181f2c436" target="_self" tip="Back">arrow_back</ql-icon-button>
+<h1 class='ql-headline-6'>Configuring IAM Permissions with gcloud</h1>
+</div>
+<div class='header__actions' slot='action'>
+<ql-icon-button icon='share' id='share_2058' label='Share on social media' tip='Share'></ql-icon-button>
+<ql-menu for='share_2058'>
+<ql-menu-item data-analytics-action='Shared to LinkedIn Feed.' data-analytics-category='Lab' data-analytics-label='Configuring IAM Permissions with gcloud' href='https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fpartner.cloudskillsboost.google%2Fcatalog_lab%2F2058%3Futm_medium%3Dsocial%26utm_source%3Dlinkedin%26utm_campaign%3Dql-social-share' icon='post_linkedin' label='Share on LinkedIn Feed' role='link' target='_blank'>
+<span class='label'>Share on LinkedIn Feed</span>
+</ql-menu-item>
+
+<ql-menu-item data-analytics-action='Shared to Twitter.' data-analytics-category='Lab' data-analytics-label='Configuring IAM Permissions with gcloud' href='https://twitter.com/intent/tweet?text=Learn%20cloud%20tech%20through%20hands-on%20training%20on%20%23Qwiklabs%21&amp;url=https%3A%2F%2Fpartner.cloudskillsboost.google%2Fcatalog_lab%2F2058%3Futm_medium%3Dsocial%26utm_source%3Dtwitter%26utm_campaign%3Dql-social-share&amp;hashtags=' icon='post_twitter' label='Twitter' role='link' target='_blank'>
+<span class='label'>Twitter</span>
+</ql-menu-item>
+
+<ql-menu-item data-analytics-action='Shared to Facebook.' data-analytics-category='Lab' data-analytics-label='Configuring IAM Permissions with gcloud' href='https://facebook.com/sharer.php?display=popup&amp;u=https%3A%2F%2Fpartner.cloudskillsboost.google%2Fcatalog_lab%2F2058%3Futm_medium%3Dsocial%26utm_source%3Dfacebook%26utm_campaign%3Dql-social-share' icon='post_facebook' label='Facebook' role='link' target='_blank'>
+<span class='label'>Facebook</span>
+</ql-menu-item>
+
+<ql-copyable-input label='Share Link' value='https://partner.cloudskillsboost.google/catalog_lab/2058'></ql-copyable-input>
+</ql-menu>
+
+<ql-icon-button class='icon-button js-favorite-button favorite-button' data-id='42345' data-name='Configuring IAM Permissions with gcloud' data-type='CatalogItem' href='/favorite.json?item_id=42345&amp;item_type=CatalogItem' id='CatalogItem-42345-favorite-button' label='Add to favorites' tip='Add to favorites'>
+favorite_border
+</ql-icon-button>
+
+
+
+<ql-icon-button id='control-panel-target' style='display: none;'>
+dashboard
+</ql-icon-button>
+<ql-menu for='control-panel-target' id='control-panel-menu'></ql-menu>
+<ql-icon-button class='mobile-hide' icon='help_outline' id='help-menu-button' label='Open help menu' tip='Help'></ql-icon-button>
+<ql-menu for='help-menu-button' id='help-menu'>
+<ql-menu-item data-analytics-action='opened_help' data-analytics-label='lab' label='Help Center' onclick='hallofmirrors.helpService.startHelp({&quot;productData&quot;:{&quot;userId&quot;:11061062},&quot;context&quot;:&quot;lab&quot;})'></ql-menu-item>
+<ql-menu-item href='mailto:support@qwiklabs.com' label='Email support'></ql-menu-item>
+<ql-menu-item label='Chat support' onClick='ql.chat.open()'></ql-menu-item>
+</ql-menu>
+
+<ql-icon-button class='mobile-hide' icon='language' id='language' label='Select your language preference' tip='Language'></ql-icon-button>
+<ql-menu for='language'>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='ar' href='/focuses/42345?locale=ar&amp;parent=catalog' label='العربية‬‎' lang='ar'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='de' href='/focuses/42345?locale=de&amp;parent=catalog' label='Deutsch' lang='de'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='en' href='/focuses/42345?locale=en&amp;parent=catalog' label='English' lang='en'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='es' href='/focuses/42345?locale=es&amp;parent=catalog' label='español (Latinoamérica)' lang='es'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='fr' href='/focuses/42345?locale=fr&amp;parent=catalog' label='français' lang='fr'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='fr_CA' href='/focuses/42345?locale=fr_CA&amp;parent=catalog' label='français (Canada)' lang='fr-CA'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='he' href='/focuses/42345?locale=he&amp;parent=catalog' label='עברית' lang='he'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='id' href='/focuses/42345?locale=id&amp;parent=catalog' label='bahasa Indonesia' lang='id'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='it' href='/focuses/42345?locale=it&amp;parent=catalog' label='Italiano' lang='it'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='ja' href='/focuses/42345?locale=ja&amp;parent=catalog' label='日本語' lang='ja'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='ko' href='/focuses/42345?locale=ko&amp;parent=catalog' label='한국어' lang='ko'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='pl' href='/focuses/42345?locale=pl&amp;parent=catalog' label='Polski' lang='pl'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='pt_BR' href='/focuses/42345?locale=pt_BR&amp;parent=catalog' label='português (Brasil)' lang='pt-BR'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='pt_PT' href='/focuses/42345?locale=pt_PT&amp;parent=catalog' label='português (Portugal)' lang='pt-PT'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='ru' href='/focuses/42345?locale=ru&amp;parent=catalog' label='русский' lang='ru'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='tr' href='/focuses/42345?locale=tr&amp;parent=catalog' label='Türkçe' lang='tr'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='uk' href='/focuses/42345?locale=uk&amp;parent=catalog' label='український' lang='uk'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='zh' href='/focuses/42345?locale=zh&amp;parent=catalog' label='简体中文' lang='zh'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='zh_TW' href='/focuses/42345?locale=zh_TW&amp;parent=catalog' label='繁體中文' lang='zh-TW'></ql-menu-item>
+</ql-menu>
+
+<ql-icon-button id='my_account' label='My account' tip='My account'>
+<ql-avatar></ql-avatar>
+</ql-icon-button>
+<ql-menu for='my_account' id='my_account_menu' style='max-height: 640px'>
+<div class='my-account-menu'>
+<ql-avatar class='l-mtl l-mbl' size='120'></ql-avatar>
+<div class='my-account-menu__user-info l-mbl'>
+<h4 class='ql-subhead-1'>Ausaf Khan</h4>
+<p class='ql-body-2 text--light'>ausaf.khan@rakuten.com</p>
+<p class='ql-body-2 text--light'>
+</p>
+<a class="text--green ql-subhead-2" href="/my_account/payments"><ql-chip positive>
+0 Credits
+</ql-chip>
+</a></div>
+<div class='buttons l-mbl'>
+<a class="button button--hairline l-mrm" id="profile" href="/public_profiles/1d61c1a3-8a07-4495-8abe-b57e519718e6">Public Profile</a>
+<a class="button button--hairline" id="settings" href="/my_account/profile">Settings</a>
+</div>
+<hr>
+<ql-button data-analytics-action='clicked_sign_out' href='/users/sign_out' method='delete'>
+Sign Out
+</ql-button>
+<div class='privacy l-mtl'>
+<a target="_blank" class="ql-caption text--light" href="/privacy_policy">Privacy</a>
+<span class='ql-caption text--light l-mls l-mrs'>&middot;</span>
+<a class="ql-caption text--light" href="/terms_of_service">Terms</a>
+</div>
+</div>
+</ql-menu>
+
+</div>
+</ql-toolbar>
+
+</div>
+</div>
+
+<nav class='nav-panel js-nav-panel'>
+<div class='nav-panel__logo'>
+<div class="custom-logo"><img alt="Google Cloud Skills Boost for Partners" height="24" aria-label="Google Cloud Skills Boost for Partners" src="https://cdn.qwiklabs.com/PGyhmgS3zZncIEGywnx5UXsKwepRRFQ9BhAg%2FWHNrlQ%3D" /></div>
+</div>
+<nav class='ql-sidenav'>
+<ql-sidenav-item href='/' icon='home' label='Paths'></ql-sidenav-item>
+
+<ql-sidenav-item active href='/catalog' icon='school' label='Explore'></ql-sidenav-item>
+
+<ql-sidenav-item href='/profile' icon='event_note' label='Profile'></ql-sidenav-item>
+
+</nav>
+
+</nav>
+<div class='nav-panel__overlay js-nav-toggle'></div>
+
+<main class='js-main' id='jump-content'>
+<div class='l-main-wrapper' id='main-wrapper'>
+
+
+
+
+<div class='lab-assessment__tab js-open-lab-assessment-panel'>
+<button class='js-lab-assessment-total-score'>
+—/100
+</button>
+</div>
+<div aria-labelledby='lab-assessment-checkpoint' class='lab-assessment__panel js-lab-assessment-panel' role='dialog'>
+<div class='lab-assessment__panel__header'>
+<h4 id='lab-assessment-checkpoint'>Checkpoints</h4>
+<ql-icon-button class='js-close-lab-assessment-panel' icon='arrow_forward' label='Close dialog'></ql-icon-button>
+</div>
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Create an instance with name as lab-1 in Project 1
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button class='js-show-run-step-button' description='Create an instance with name as lab-1 in Project 1' step_no='1'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-1'>
+</span>
+/ 10
+</p>
+</div>
+</div>
+
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Update the default zone
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button class='js-show-run-step-button' description='Update the default zone' step_no='2'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-2'>
+</span>
+/ 10
+</p>
+</div>
+</div>
+
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Create a configuration for Username 2 and name it as user2
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button class='js-show-run-step-button' description='Create a configuration for Username 2 and name it as user2' step_no='3'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-3'>
+</span>
+/ 10
+</p>
+</div>
+</div>
+
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Restricting Username 2  to roles/viewer in Project 2
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button class='js-show-run-step-button' description='Restricting Username 2  to roles/viewer in Project 2' step_no='4'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-4'>
+</span>
+/ 10
+</p>
+</div>
+</div>
+
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Create a new role with permissions for the devops team
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button class='js-show-run-step-button' description='Create a new role with permissions for the devops team' step_no='5'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-5'>
+</span>
+/ 10
+</p>
+</div>
+</div>
+
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Bound Username 2 to devops role
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button class='js-show-run-step-button' description='Bound Username 2 to devops role' step_no='6'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-6'>
+</span>
+/ 5
+</p>
+</div>
+</div>
+
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Create an instance with name as lab-2 in Project 1
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button class='js-show-run-step-button' description='Create an instance with name as lab-2 in Project 1' step_no='7'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-7'>
+</span>
+/ 5
+</p>
+</div>
+</div>
+
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Check binding to roles/iam.serviceAccountUser
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button class='js-show-run-step-button' description='Check binding to roles/iam.serviceAccountUser' step_no='8'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-8'>
+</span>
+/ 5
+</p>
+</div>
+</div>
+
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Check the created service account
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button class='js-show-run-step-button' description='Check the created service account' step_no='9'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-9'>
+</span>
+/ 5
+</p>
+</div>
+</div>
+
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Check the binding for the service account to roles/iam.serviceAccountUser
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button class='js-show-run-step-button' description='Check the binding for the service account to roles/iam.serviceAccountUser' step_no='10'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-10'>
+</span>
+/ 10
+</p>
+</div>
+</div>
+
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Check the binding for the service account to roles/compute.instanceAdmin
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button class='js-show-run-step-button' description='Check the binding for the service account to roles/compute.instanceAdmin' step_no='11'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-11'>
+</span>
+/ 10
+</p>
+</div>
+</div>
+
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Check lab-3 has the service account attached
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button class='js-show-run-step-button' description='Check lab-3 has the service account attached' step_no='12'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-12'>
+</span>
+/ 10
+</p>
+</div>
+</div>
+
+</div>
+<ql-drawer-container class='js-lab-state' data-analytics-payload='{&quot;label&quot;:&quot;Configuring IAM Permissions with gcloud&quot;,&quot;lab_name&quot;:&quot;Configuring IAM Permissions with gcloud&quot;,&quot;classroom_name&quot;:null,&quot;deployment&quot;:&quot;googlecourses-run&quot;}' data-credits='0.0' data-focus-id='42345' data-lab-billing-limit='0.0' data-lab-duration='5400' data-parent='catalog' data-recaptcha-enabled id='lab-container'>
+<ql-drawer id='terminal-drawer' slot='drawer' style='width: calc(100% - 480px)'>
+<iframe allow='clipboard-read' class='terminal' id='embedded-resource'></iframe>
+</ql-drawer>
+<ql-drawer-content class='js-lab-wrapper' id='lab-content' slot='drawer-content'>
+<ql-drawer-container id='lab-content-container'>
+<ql-drawer id='control-panel-drawer' open slot='drawer' width='320'>
+<ql-lab-control-panel class='ql-lab-control-panel__max-height control-panel js-lab-control-panel' connectionFiles='[]' labControlButton='{&quot;disabled&quot;:false,&quot;pending&quot;:false,&quot;running&quot;:false}' labDetails='[]' labTimer='{&quot;ticking&quot;:false,&quot;secondsRemaining&quot;:5400}' studentResources='[]'>
+<script src="https://www.recaptcha.net/recaptcha/api.js?render=6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr"   ></script>
+        <script>
+          // Define function so that we can call it again later if we need to reset it
+          // This executes reCAPTCHA and then calls our callback.
+          function executeRecaptchaForStartLab() {
+            grecaptcha.ready(function() {
+              grecaptcha.execute('6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr', {action: 'start_lab'}).then(function(token) {
+                setInputWithRecaptchaResponseTokenForStartLab('g-recaptcha-response-data-start-lab', token)
+              });
+            });
+          };
+          // Invoke immediately
+          executeRecaptchaForStartLab()
+
+          // Async variant so you can await this function from another async function (no need for
+          // an explicit callback function then!)
+          // Returns a Promise that resolves with the response token.
+          async function executeRecaptchaForStartLabAsync() {
+            return new Promise((resolve, reject) => {
+             grecaptcha.ready(async function() {
+                resolve(await grecaptcha.execute('6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr', {action: 'start_lab'}))
+              });
+            })
+          };
+
+                    var setInputWithRecaptchaResponseTokenForStartLab = function(id, token) {
+            var element = document.getElementById(id);
+            element.value = token;
+          }
+
+        </script>
+<input type="hidden" name="g-recaptcha-response-data[start_lab]" id="g-recaptcha-response-data-start-lab" data-sitekey="6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr" class="g-recaptcha g-recaptcha-response "/>
+
+<div aria-live='polite' class='hidden' id='recaptcha-v2-start-lab' slot='recaptcha'>
+<script src="https://www.recaptcha.net/recaptcha/api.js" async defer ></script>
+<div data-sitekey="6LeOI8IUAAAAAPkHlMAE9NReCD_1WD81iYlBlCnV" data-callback="recaptchaComplete" data-expired-callback="expireV2Token" class="g-recaptcha "></div>
+          <noscript>
+            <div>
+              <div style="width: 302px; height: 422px; position: relative;">
+                <div style="width: 302px; height: 422px; position: absolute;">
+                  <iframe
+                    src="https://www.recaptcha.net/recaptcha/api/fallback?k=6LeOI8IUAAAAAPkHlMAE9NReCD_1WD81iYlBlCnV"
+                    name="ReCAPTCHA"
+                    style="width: 302px; height: 422px; border-style: none; border: 0; overflow: hidden;">
+                  </iframe>
+                </div>
+              </div>
+              <div style="width: 300px; height: 60px; border-style: none;
+                bottom: 12px; left: 25px; margin: 0px; padding: 0px; right: 25px;
+                background: #f9f9f9; border: 1px solid #c1c1c1; border-radius: 3px;">
+                <textarea id="g-recaptcha-response" name="g-recaptcha-response"
+                  class="g-recaptcha-response"
+                  style="width: 250px; height: 40px; border: 1px solid #c1c1c1;
+                  margin: 10px 25px; padding: 0px; resize: none;">
+                </textarea>
+              </div>
+            </div>
+          </noscript>
+
+</div>
+</ql-lab-control-panel>
+</ql-drawer>
+<ql-drawer-content id='lab-instructions' slot='drawer-content'>
+<ql-snackbar id='alert-snackbar'></ql-snackbar>
+<div class='alert alert--fake js-alert'>
+<p class='alert__message js-alert-message' role='alert'></p>
+<ql-icon-button class='alert__close js-alert-close' icon='clear'></ql-icon-button>
+<iframe class='l-ie-iframe-fix' tabindex='-1'></iframe>
+</div>
+<div class='lab-content__renderable-instructions js-lab-content'>
+<div class='lab-preamble'>
+<h1 class='lab-preamble__title'>
+Configuring IAM Permissions with gcloud
+</h1>
+<div class='lab-preamble__details subtitle-headline-1'>
+<span>1 hour 30 minutes</span>
+<span>Free</span>
+<div class='lab__rating'>
+<a aria-label="Lab Reviews" href="/focuses/42345/reviews?parent=catalog"><div class='rateit' data-rateit-readonly='true' data-rateit-value='4.187'></div>
+
+</a><ql-button aria-label='Rate Lab' id='rate-lab-btn' label='Rate Lab' text></ql-button>
+</div>
+</div>
+</div>
+<div class='lab-outline-place-holder'></div>
+
+<div class='markdown-lab-instructions js-markdown-instructions' id='markdown-lab-instructions'>
+
+<h2 id="step1">GSP647</h2>
+<p><img alt="Google Cloud self-paced labs logo" src="https://cdn.qwiklabs.com/GMOHykaqmlTHiqEeQXTySaMXYPHeIvaqa2qHEzw6Occ%3D"></p>
+<h2 id="step2">Overview</h2>
+<p>This lab looks at three common areas to understand with regards to IAM and gcloud:</p>
+<ul>
+<li>the configuration of the gcloud environment</li>
+<li>the use of multiple gloud configurations</li>
+<li>the use of services accounts</li>
+</ul>
+<p>In this lab you will use the <code>gcloud</code> CLI tool to set up and configure command features of Cloud Identity and Access Management (IAM).</p>
+<h3>What you'll learn</h3>
+<ul>
+<li>
+<p>Learning the usage of <code>gcloud</code> client</p>
+</li>
+<li>
+<p>Create and switch between multiple IAM configurations</p>
+</li>
+<li>
+<p>Identify and assign correct IAM permissions</p>
+</li>
+<li>
+<p>Create and use a service account</p>
+</li>
+</ul>
+<h3>Starting environment</h3>
+<p>You start with two user accounts and two projects;</p>
+<ul>
+<li>
+<code>user1</code> is the "owner" of both projects</li>
+<li>
+<code>user2</code> is the "viewer" of only the first project.</li>
+</ul>
+<p>There is a Linux virtual machine (vm) running in the first project.</p>
+<p><img alt="Starting environment illustration" src="https://cdn.qwiklabs.com/YehpjydLBb6Xc1XP%2BLw9OpDXMkVQwkQYUqV27Vkt61w%3D"></p>
+<h2 id="step3">What is IAM?</h2>
+<p>Google Cloud offers Cloud Identity and Access Management (IAM), which lets you manage access control by defining who (identity) has what access (role) for which resource.</p>
+<p>In IAM, permission to access a resource isn't granted directly to the end user. Instead, permissions are grouped into roles, and roles are granted to authenticated principals. (In the past, IAM often referred to principals as members. Some APIs still use this term.)</p>
+<h3>Identities</h3>
+<p>In Cloud IAM, you grant access to <em>principals</em>. Principals can be of the following types:</p>
+<ul>
+<li>Google Account</li>
+<li>Service account</li>
+<li>Google group</li>
+<li>Google Workspace account</li>
+<li>Cloud Identity domain</li>
+<li>All authenticated users</li>
+<li>All users</li>
+</ul>
+<p>Learn more about these identity types from the <a href="https://cloud.google.com/iam/docs/overview#concepts_related_identity" target="_blank">Concepts related to identity Guide</a>.</p>
+<p>In this lab you will use Google accounts, service accounts, and Cloud Identity domain groups.</p>
+<h3>Roles</h3>
+<p>A role is a collection of permissions. You cannot assign a permission to the user directly; instead you grant them a role. When you grant a role to a user, you grant them all the permissions that the role contains.</p>
+<p>Learn more about roles from the <a href="https://cloud.google.com/iam/docs/overview#roles" target="_blank">Roles Guide</a>.</p>
+<h2 id="step4">What is gcloud?</h2>
+<p>The gcloud CLI is a part of the Cloud SDK. You must download and install the SDK on your system and initialize it before you can use the gcloud command-line tool. You can use this tool to perform many common platform tasks either from the command-line or in scripts and other automations.</p>
+<p>Learn more about gcloud from the <a href="https://cloud.google.com/sdk/gcloud/#what_is_the_gcloud_command-line_tool" target="_blank">gcloud CLI overview Guide</a>.</p>
+<h2 id="step5">Setup and requirements</h2>
+<h3>Before you click the Start Lab button</h3>
+<p>Read these instructions. Labs are timed and you cannot pause them. The timer, which starts when you click <strong>Start Lab</strong>, shows how long Google Cloud resources will be made available to you.</p>
+<p>This hands-on lab lets you do the lab activities yourself in a real cloud environment, not in a simulation or demo environment. It does so by giving you new, temporary credentials that you use to sign in and access Google Cloud for the duration of the lab.</p>
+<p>To complete this lab, you need:</p>
+<ul>
+<li>Access to a standard internet browser (Chrome browser recommended).</li>
+</ul>
+<ql-warningbox>
+<strong>Note:</strong> Use an Incognito or private browser window to run this lab. This prevents any conflicts between your personal account and the Student account, which may cause extra charges incurred to your personal account.
+</ql-warningbox>
+<ul>
+<li>Time to complete the lab---remember, once you start, you cannot pause a lab.</li>
+</ul>
+<ql-warningbox>
+<strong>Note:</strong> If you already have your own personal Google Cloud account or project, do not use it for this lab to avoid extra charges to your account.
+</ql-warningbox>
+<ql-infobox><strong>Note: </strong>For this lab, log in using <strong>Username 1</strong>.</ql-infobox>
+<h3>How to start your lab and sign in to the Google Cloud Console</h3>
+<ol>
+<li>
+<p>Click the <strong>Start Lab</strong> button. If you need to pay for the lab, a pop-up opens for you to select your payment method.
+On the left is the <strong>Lab Details</strong> panel with the following:</p>
+<ul>
+<li>The <strong>Open Google Console</strong> button</li>
+<li>Time remaining</li>
+<li>The temporary credentials that you must use for this lab</li>
+<li>Other information, if needed, to step through this lab</li>
+</ul>
+</li>
+<li>
+<p>Click <strong>Open Google Console</strong>.
+The lab spins up resources, and then opens another tab that shows the <strong>Sign in</strong> page.</p>
+<p><strong><em>Tip:</em></strong> Arrange the tabs in separate windows, side-by-side.</p>
+<ql-infobox>
+<strong>Note: </strong>If you see the <strong>Choose an account</strong> dialog, click <strong>Use Another Account</strong>.        
+ </ql-infobox>
+</li>
+<li>
+<p>If necessary, copy the <strong>Username</strong> from the <strong>Lab Details</strong> panel and paste it into the <strong>Sign in</strong> dialog. Click <strong>Next</strong>.</p>
+</li>
+<li>
+<p>Copy the <strong>Password</strong> from the <strong>Lab Details</strong> panel and paste it into the <strong>Welcome</strong> dialog. Click <strong>Next</strong>.</p>
+<ql-infobox>
+<strong>Important: </strong>You must use the credentials from the left panel. Do not use your Google Cloud Skills Boost credentials. 
+ </ql-infobox>
+<ql-warningbox>
+<strong>Note: </strong>Using your own Google Cloud account for this lab may incur extra charges.
+ </ql-warningbox>
+</li>
+<li>
+<p>Click through the subsequent pages:</p>
+<ul>
+<li>Accept the terms and conditions.</li>
+<li>Do not add recovery options or two-factor authentication (because this is a temporary account).</li>
+<li>Do not sign up for free trials.</li>
+</ul>
+</li>
+</ol>
+<p>After a few moments, the Cloud Console opens in this tab.</p>
+<ql-infobox>
+<strong>Note:</strong> You can view the menu with a list of Google Cloud Products and Services by clicking the <strong>Navigation menu</strong> at the top-left.
+<img alt="Navigation menu icon" src="https://cdn.qwiklabs.com/nUxFb6oRFr435O3t6V7WYJAjeDFcrFb16G9wHWp5BzU%3D">
+</ql-infobox>
+<h2 id="step6">Task 1. Configure the gcloud environment</h2>
+<p>This lab already has a Compute Engine instance called <strong>centos-clean</strong> that simulates an environment that doesn't have <code>gcloud</code> installed.  You will connect to this instance using the Cloud Console.</p>
+<ol>
+<li>
+<p>Open the list of compute instances by going to <strong>Navigation Menu</strong> &gt; <strong>Compute Engine</strong> &gt; <strong>VM instances</strong>.</p>
+</li>
+<li>
+<p>On the line with the compute instance named <strong>centos-clean</strong>, click <strong>SSH</strong>.</p>
+</li>
+</ol>
+<ql-infobox><strong>Note: </strong>
+About Compute Engine instances: There are Windows and Linux types of instances.  In this lab you will use the Linux instance type.  You can easily connect to Linux instances using the Secure Shell (SSH)
+client via the web browser.
+<p></p>
+You are automatically connected to the instance. Google Cloud manages the authentication keys for you, keeping them safe and available for only those you allow access.
+</ql-infobox>
+<ol start="3">
+<li>
+<p>First test, to confirm that <code>gcloud</code> is successfully installed. Inside the SSH session run:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud --version
+</ql-code-block>
+<h3>Creating a new instance and updating the default zone</h3>
+<p>After verification that <code>gcloud</code> command-line tool is installed , make some changes by creating a compute instance.</p>
+<ol>
+<li>First, authenticate in gcloud. Inside the SSH session, run:</li>
+</ol>
+<ql-code-block nowrap templated="">
+gcloud auth login
+</ql-code-block>
+<p>Press ENTER when you see the prompt <em>Do you want to continue (Y/n)?</em></p>
+<ol start="2">
+<li>
+<p>Navigate to the link displayed in a new tab.</p>
+</li>
+<li>
+<p>Click on your active username (<ql-variable key="user_0.username" placeholder="" start="">""&gt;</ql-variable>), and click <strong>Allow</strong>.</p>
+</li>
+<li>
+<p>When you see the prompt <strong>Enter the following verification code in gcloud CLI on the machine you want to log into</strong>, click on the copy button then go back to the SSH session, and paste the code into the prompt <strong>Enter authorization code:</strong>.</p>
+</li>
+<li>
+<p>Inside the SSH session run:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud compute instances create lab-1
+</ql-code-block>
+<ol start="6">
+<li>You can press ENTER to accept the default zone for this VM.</li>
+</ol>
+<p>If you have correctly set everything up, the command will create an instance.</p>
+<p>But what size? And where? What image will be used?</p>
+<p>There are a number of defaults the service uses. Some can be controlled in the <code>gcloud</code> configuration. For example, the location of the instance is controlled by the zone setting.</p>
+<ql-activity-tracking step="1">
+    Create an instance with name as lab-1 in Project 1
+</ql-activity-tracking>
+<ol start="7">
+<li>
+<p>Check your current gcloud configuration. Inside the SSH session run:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud config list
+</ql-code-block>
+<p>You will see a <code>compute</code> section, a <code>core</code> section, and an <code>active configuration</code>.  You can change each of these, but for this lab you'll only change the zone. Look at the zone your VM was created in.</p>
+<ol start="8">
+<li>
+<p>Now list all the zones available to use by running the following inside the SSH session run:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud compute zones list
+</ql-code-block>
+<ol start="9">
+<li>
+<p>Identify one of the other zones in the same region as you.  For example, if your current zone is <code>us-west2-a</code>, you could select <code>us-west2-b</code>.</p>
+</li>
+<li>
+<p>Change your current zone for another zone in the same region. Inside the SSH session run the following, replacing <code>ZONE</code> with the zone you selected:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud config set compute/zone ZONE
+</ql-code-block>
+<ol start="11">
+<li>
+<p>Verify the zone change was made. Inside the SSH session run:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud config list
+</ql-code-block>
+<p>You see the stated zone reflects the change you made.</p>
+<p>You can change other settings using the <code>gcloud config set</code> command.  Those changes are permanent; they are written to your home directory.</p>
+<p>The default configuration is stored in <strong>~/.config/gcloud/configurations/config_default</strong>.</p>
+<p>If you want to use a zone other than the default zone when creating an instance, you can use --zone switch.  For example, <code>gcloud compute instances create lab-1 --zone us-central1-f</code></p>
+<ql-activity-tracking step="2">
+    Update the default zone
+</ql-activity-tracking>
+<ol start="12">
+<li>
+<p>Verify the zone was written to the configuration file. Inside the SSH session run:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+cat ~/.config/gcloud/configurations/config_default
+</ql-code-block>
+<p>You can see the configuration is just stored as text and can be backed up or copied.</p>
+<h2 id="step7">Task 2. Create and switch between multiple IAM configurations</h2>
+<p>You have now set up one account. In situations when you need to work on different teams or access different accounts, you can also manage that with <code>gcloud config</code>.</p>
+<p>In your next task you learn how to create a second configuration and switch between both of them.</p>
+<h3>Create a new IAM configuration</h3>
+<p>In this lab you have a second Google account you can log on with.  This account has read-only (viewer) access to the first project.  You will create a new configuration for that user.</p>
+<ol>
+<li>
+<p>Start a new <code>gcloud</code> configuration for the second user account. Inside the SSH session run:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud init --no-launch-browser
+</ql-code-block>
+<ol start="2">
+<li>
+<p>Select option 2, <em>Create a new configuration</em>.</p>
+</li>
+<li>
+<p><em>configuration name</em>: Type <strong>user2</strong>.</p>
+</li>
+<li>
+<p><em>Log in with a new account</em>: select option 3 - you're logging in with the other provided user name.</p>
+</li>
+<li>
+<p>Press ENTER when you see the prompt <em>Do you want to continue (Y/n)?</em></p>
+</li>
+<li>
+<p>Navigate to the link displayed in a new tab.</p>
+</li>
+<li>
+<p>Click <em>Use another account</em></p>
+</li>
+<li>
+<p>Copy the second user account (<ql-variable key="user_1.username" placeholder="" start="">""&gt;</ql-variable>), and paste into the <em>email or phone</em> prompt.</p>
+</li>
+<li>
+<p>Copy the same password that you started the lab with, and paste into the <em>enter your password</em> prompt.</p>
+</li>
+<li>
+<p>Click <strong>Accept</strong>.</p>
+</li>
+<li>
+<p>Click <strong>Allow</strong>.</p>
+</li>
+</ol>
+<p>You are accepting that the Cloud SDK will have the same access as your Google account.</p>
+<ol start="12">
+<li>
+<p>When you see the prompt <strong>Enter the following verification code in gcloud CLI on the machine you want to log into</strong>, click on the copy button then go back to the SSH session and paste the code into the prompt <strong>Enter authorization code:</strong>.</p>
+</li>
+<li>
+<p>For <strong>Pick cloud project to use:</strong> locate your current project (<ql-variable key="project_0.project_id" placeholder="" start="">""&gt;</ql-variable>) and then type in the number that corresponds to the project.</p>
+</li>
+</ol>
+<p>The initialization will complete and you will see the zone and region are set for you.</p>
+<ql-activity-tracking step="3">
+    Check gcloud user2 configuration was created
+</ql-activity-tracking>
+<h3>Test the new account</h3>
+<p>This new account has viewer only access to the project, so you can test that you are indeed using this account by trying to view and then create some resources.</p>
+<ol>
+<li>
+<p>Check that you can view details in the first project. Inside the SSH session run:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud compute instances list
+</ql-code-block>
+<p>The second user account has viewer access so you will see <code>centos-clean</code> and <code>lab-1</code> instances listed.</p>
+<ol start="2">
+<li>
+<p>Check that you cannot create an instance in the first project, as your assigned role is basic viewer. Inside the SSH session run:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud compute instances create lab-2
+</ql-code-block>
+<p>Because the second user account has only viewer access, they are not allowed to create an instance, so this command will fail. It will take a little time to fail.</p>
+<ol start="3">
+<li>
+<p>Change back to your first user's configuration (<strong>default</strong>). Inside the SSH session run:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud config configurations activate default
+</ql-code-block>
+<p>You are now back to using your original user account credentials. Later you will need to switch between these two accounts as you learn about roles and permissions.</p>
+<p><ql-multiple-choice-probe answerindex="2" optiontitles='[
+"run the command &lt;code&gt;gcloud config set zone DIFFERENT_ZONE&lt;/code&gt; before you run the command.",
+"Add the switch --project YOUR_PROJECT_ID to the command",
+"Add the switch --zone DIFFERENT_ZONE to the command",
+"Add the switch -zone DIFFERENT_ZONE to the command"
+]' shuffle="" stem="When running a gcloud command, how do you override the configured zone for just that one time?">
+</ql-multiple-choice-probe></p>
+<h2 id="step8">Task 3. Identify and assign correct IAM permissions</h2>
+<p>You have been provided two user accounts for this project. The first user has complete control of both projects and can be thought of as the admin account.  The second user has viewer only access to the two projects. Call the second user a devops user and that user identity represents a typical devops level user.</p>
+<p>Next you will use <code>gcloud</code> to configure access to one project for the devops user by creating a custom role for the project that permits creation of buckets and instances.</p>
+<h3>Examine roles and permissions</h3>
+<ol>
+<li>
+<p>To view all the roles, run the following inside the SSH session run:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud iam roles list | grep "name:"
+</ql-code-block>
+<p>The list of roles is returned. The addition of <code>grep "name:"</code> to the command reduces the amount of data returned to just the names of the roles.</p>
+<p>Inspect one of these roles to see the permissions assigned to the role. To view the permissions use <code>gcloud iam roles describe</code>.  Try looking at the simple role <strong>roles/compute.instanceAdmin</strong>.</p>
+<ol start="2">
+<li>
+<p>Examine the <code>compute.instanceAdmin</code> predefined role. Inside the SSH session run:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud iam roles describe roles/compute.instanceAdmin
+</ql-code-block>
+<p>You can see <strong>roles/compute.instanceAdmin</strong> has many permissions, but these are the minimum needed for later:</p>
+<ul>
+<li>compute.instances.create</li>
+<li>compute.instances.delete</li>
+<li>compute.instances.start</li>
+<li>compute.instances.stop</li>
+<li>compute.instances.update</li>
+<li>compute.disks.create</li>
+<li>compute.subnetworks.use</li>
+<li>compute.subnetworks.useExternalIp</li>
+<li>compute.instances.setMetadata</li>
+<li>compute.instances.setServiceAccount</li>
+</ul>
+<p>To review the full list of roles and the permissions assigned, refer to the <a href="https://cloud.google.com/iam/docs/permissions-reference" target="_blank">IAM permissions reference Guide</a>.</p>
+<h3>Grant access to the second user to the second project</h3>
+<p>Now that you know that roles contain permissions, how do you assign a role (and therefore all the associated permissions), to a user account?</p>
+<p>There are two ways to attach a role:</p>
+<ul>
+<li>To the user and an organization</li>
+<li>To a user and a project</li>
+</ul>
+<p>Next you will attach the basic role of "viewer" to the second user onto the second project.</p>
+<h4>Test that the second user doesn't have access to the second project.</h4>
+<ol>
+<li>
+<p>Switch <code>gcloud</code> configuration back to the second user (<strong>user2</strong>). Inside the SSH session run:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud config configurations activate user2
+</ql-code-block>
+<p>Now you're back to <code>user2</code>.</p>
+<ol start="2">
+<li>Set <code>PROJECTID2</code> to the second project. Inside the SSH session, run the following:</li>
+</ol>
+<ql-code-block nowrap templated="">
+echo "export PROJECTID2={{{project_1.project_id | ""}}}" &gt;&gt; ~/.bashrc
+</ql-code-block>
+<ql-code-block nowrap templated="">
+. ~/.bashrc
+gcloud config set project $PROJECTID2
+</ql-code-block>
+<ql-infobox><strong>Note: </strong>This command appends the `bashrc` file, so be careful.</ql-infobox>
+<p>You will get a warning: <code>WARNING: You do not appear to have access to project [your 2nd project id] or it does not exist.</code></p>
+<ql-infobox><strong>Note: </strong> When prompted, <i>Do you want to continue (Y/n)?</i>, type N and press ENTER.</ql-infobox>
+<p>This means that user 2 doesn't have access to the PROJECTID2 project, which you will fix shortly.</p>
+<h4>Assign the viewer role to the second user in the second project</h4>
+<ol>
+<li>
+<p>Switch back to the <strong>default</strong> gcloud configuration, which has the permission to grant access to the second user. Inside the SSH session run:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud config configurations activate default
+</ql-code-block>
+<ol start="2">
+<li>
+<p>Install <code>jq</code>:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+sudo yum -y install epel-release
+sudo yum -y install jq
+</ql-code-block>
+<p>Next, set the value of <code>USERID2</code> to the second user name and bind the role of viewer to the second user onto the second project.</p>
+<ol start="3">
+<li>Inside the SSH session, run the following:</li>
+</ol>
+<ql-code-block nowrap templated="">
+echo "export USERID2={{{user_1.username | ""}}}" &gt;&gt; ~/.bashrc
+</ql-code-block>
+<ql-code-block nowrap templated="">
+. ~/.bashrc
+gcloud projects add-iam-policy-binding $PROJECTID2 --member user:$USERID2 --role=roles/viewer
+</ql-code-block>
+<p>Once you have run the command you will see (you might need to scroll up), the text that looks something like:</p>
+<ql-code-block output="">
+Updated IAM policy for project [qwiklabs-gcp-336e4f5b8aff1c01].
+bindings:
+...
+- members:
+  - serviceAccount:qwiklabs-gcp-01-a262cff86157@qwiklabs-gcp-01-a262cff86157.iam.gserviceaccount.com
+  - user:student-01-1b9999e9cc77@qwiklabs.net
+  - user:student-01-c831155b330a@qwiklabs.net
+  role: roles/viewer
+</ql-code-block>
+<ql-activity-tracking step="4">
+    Restricting Username 2  to roles/viewer in Project 2
+</ql-activity-tracking>
+<h2 id="step9">Task 4. Test that user2 has access</h2>
+<ol>
+<li>
+<p>Switch your gcloud configuration to <strong>user2</strong>. Inside the SSH session run:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud config configurations activate user2
+</ql-code-block>
+<ol start="2">
+<li>
+<p>Change the configuration for user2 to the second project. Inside the SSH session run:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud config set project $PROJECTID2
+</ql-code-block>
+<p>You should not see an error message this time.</p>
+<ol start="3">
+<li>
+<p>Verify you have viewer access. Inside the SSH session run:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud compute instances list
+</ql-code-block>
+<p>You will see 0 instances in this project.</p>
+<ol start="4">
+<li>
+<p>Try to create an instance in the second project as the second user. Inside the SSH session run:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud compute instances create lab-2
+</ql-code-block>
+<p>This command will fail because user2 only has viewer access to the project.</p>
+<ol start="5">
+<li>
+<p>Switch your gcloud configuration to <strong>default</strong>. Inside the SSH session run:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud config configurations activate default
+</ql-code-block>
+<p>You are now back to using your original user account credentials.</p>
+<h3>Create a new role with permissions</h3>
+<p>Next, create the new role with the set of permissions needed for the devops team.</p>
+<ul>
+<li>
+<p>Create a custom role called <code>devops</code> that has the permissions to create an instance. Inside the SSH session run:</p>
+</li>
+</ul>
+<ql-code-block language="plaintext">
+gcloud iam roles create devops --project $PROJECTID2 --permissions "compute.instances.create,compute.instances.delete,compute.instances.start,compute.instances.stop,compute.instances.update,compute.disks.create,compute.subnetworks.use,compute.subnetworks.useExternalIp,compute.instances.setMetadata,compute.instances.setServiceAccount"
+</ql-code-block>
+<p>This command creates a custom role in the project called <code>devops</code> with the permissions to create and manage instances.</p>
+<p>The full name of the role is listed, note the role is in the project so the path is in the pattern of <code>projects/PROJECT/roles/ROLENAME</code>.</p>
+<ql-activity-tracking step="5">
+    Create a new role with permissions for the devops team
+</ql-activity-tracking>
+<h3>Bind the role to the second account to both projects</h3>
+<p>You now have the role created and need to bind the user and the role to the project.  You will use <code>gcloud projects add-iam-policy-binding</code> to perform the binding.  To make this command easier to execute, set a couple of environment variables first; the project id and the user account.</p>
+<ol>
+<li>
+<p>Bind the role of <code>iam.serviceAccountUser</code> to the second user onto the second project. Inside the SSH session run:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud projects add-iam-policy-binding $PROJECTID2 --member user:$USERID2 --role=roles/iam.serviceAccountUser
+</ql-code-block>
+<p>You need permissions to create an instance with a service account attached.  The role <code>iam.serviceAccountUser</code> has those permissions, so use this pre-defined role.</p>
+<ql-activity-tracking step="6">
+    Check user2 is bound to project2 and the role roles/iam.serviceAccountUser
+</ql-activity-tracking>
+<ol start="2">
+<li>Bind the custom role <code>devops</code> to the second user onto the second project. You can find the second user account on the left of this page.  Make sure you set USERID to the second user account.</li>
+</ol>
+<p>Inside the SSH session run:</p>
+<ql-code-block language="plaintext">
+gcloud projects add-iam-policy-binding $PROJECTID2 --member user:$USERID2 --role=projects/$PROJECTID2/roles/devops
+</ql-code-block>
+<p>Once you have run the command you will see (you might need to scroll up), the text that looks something like the example below:</p>
+<ql-code-block output="">
+Updated IAM policy for project [qwiklabs-gcp-336e4f5b8affxxxx].
+bindings:
+- members:
+  - user:gcpstaginguser80_student@qwiklabs.net
+  role: projects/qwiklabs-gcp-336e4f5b8affxxxx/roles/devops
+</ql-code-block>
+<ql-activity-tracking step="7">
+    Bound Username 2 to devops role
+</ql-activity-tracking>
+<h3>Test the newly assigned permissions.</h3>
+<ol>
+<li>
+<p>Switch your gcloud configuration to <strong>user2</strong>. Inside the SSH session run:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud config configurations activate user2
+</ql-code-block>
+<p>Now you're back to user2.</p>
+<ol start="2">
+<li>
+<p>Try to create an instance called lab-2. Inside the SSH session run:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud compute instances create lab-2
+</ql-code-block>
+<p>Now the instance creation works for user2.</p>
+<ql-activity-tracking step="8">
+    Create an instance with name as lab-2 in Project 1
+</ql-activity-tracking>
+<ol start="3">
+<li>
+<p>Verify the instance exists. Inside the SSH session run:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud compute instances list
+</ql-code-block>
+<h3>Your environment</h3>
+<p>After these last changes your environment will look like this.</p>
+<p><img alt="Lab progress illustration" src="https://cdn.qwiklabs.com/vQmuNdGi2s6SF7kyAShW8L5eNnHBQCUwDwDtKTwWWmc%3D"></p>
+<p><ql-multiple-select-probe answerindices="[0,1]" optiontitles='[
+"project id",
+"account",
+"zone",
+"network",
+"service identifier"
+]' shuffle="" stem="What are two of the three items you need to provide when binding an IAM role to a project?">
+</ql-multiple-select-probe></p>
+<h2 id="step10">Task 5. Using a service account</h2>
+<p>You have seen how to authenticate and use <code>gcloud</code> to access Google Cloud services with roles. Now you'll look at a typical approach.</p>
+<p>You have an application that will use the Application Programming Interfaces (APIs) to read and write to Cloud Storage buckets. You don't want to have to authenticate every time you launch a new server, that would be both painful and not in the spirit of using the cloud! So, you will use <em><em>service accounts</em></em>.</p>
+<p>A service account is a special Google account that belongs to your application or a virtual machine (VM) instead of to an individual end user. Your application uses the service account to call the Google API of a service so that the users aren't directly involved.</p>
+<p>Learn more about service accounts from the <a href="https://cloud.google.com/iam/docs/service-accounts" target="_blank">Service accounts Guide</a>.</p>
+<p>Now you will create a service account, use that service account with a compute instance, then test that the service account allows the access you need.</p>
+<h3>Create a service account</h3>
+<ol>
+<li>
+<p>Switch your gcloud configuration to <strong>default</strong>,  <code>user2</code> doesn't have the rights to set up and configure service accounts. Inside the SSH session run:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud config configurations activate default
+</ql-code-block>
+<ol start="2">
+<li>
+<p>Set the project to <code>PROJECTID2</code> in your configuration. Inside the SSH session run:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud config set project $PROJECTID2
+</ql-code-block>
+<p>Make sure you are targeting the right project.</p>
+<ol start="3">
+<li>
+<p>Create the service account. Inside the SSH session run:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud iam service-accounts create devops --display-name devops
+</ql-code-block>
+<ql-activity-tracking step="9">
+    Check the created devops service account
+</ql-activity-tracking>
+<ol start="4">
+<li>
+<p>Get the service account email address. Inside the SSH session run:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud iam service-accounts list  --filter "displayName=devops"
+</ql-code-block>
+<ql-infobox><strong>Note: </strong>
+The filter shows only the line you are interested in.  Notice that the email address contains the role name and the project id.
+</ql-infobox>
+<ol start="5">
+<li>
+<p>Put the email address into a local variable called <code>SA</code>. Inside the SSH session run:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+SA=$(gcloud iam service-accounts list --format="value(email)" --filter "displayName=devops")
+</ql-code-block>
+<p>This command sets the SA local variable to the email address of the service account. Pretty useful right?</p>
+<ol start="6">
+<li>
+<p>Give the service account the role of <code>iam.serviceAccountUser</code>.  Inside the SSH session run:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud projects add-iam-policy-binding $PROJECTID2 --member serviceAccount:$SA --role=roles/iam.serviceAccountUser
+</ql-code-block>
+<p>This role allows the service account to assign a service account to a compute instance.</p>
+<ql-activity-tracking step="10">
+    Check devops service account is bound to project2 and the role roles/iam.serviceAccountUser
+</ql-activity-tracking>
+<h2 id="step11">Task 6. Using the service account with a compute instance</h2>
+<ol>
+<li>
+<p>Give the service account the role of <code>compute.instanceAdmin</code>. Inside the SSH session run:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud projects add-iam-policy-binding $PROJECTID2 --member serviceAccount:$SA --role=roles/compute.instanceAdmin
+</ql-code-block>
+<p>This role allows the service account to manage compute instances.</p>
+<ql-activity-tracking step="11">
+    Check devops service account is bound to project2 and the role roles/compute.instanceAdmin
+</ql-activity-tracking>
+<ol start="2">
+<li>
+<p>Create an instance with the devops service account attached.  You also have to specify an access scope that defines the API calls that the instance can make. Inside the SSH session run:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud compute instances create lab-3 --service-account $SA --scopes "https://www.googleapis.com/auth/compute"
+</ql-code-block>
+<p>Access scopes are the legacy method of specifying permissions for your instance. Access scopes are not a security mechanism. Instead, they define the default OAuth scopes used in requests from the <code>gcloud</code> tool or the client libraries. They have no effect when making requests not authenticated through OAuth, such as gRPC or the SignBlob APIs.</p>
+<p>You must set up access scopes when you configure an instance to run as a service account.</p>
+<p>A best practice is to set the full cloud-platform access scope on the instance, then securely limit the service account's API access with IAM roles.</p>
+<p>Access scopes apply on a per-instance basis. You set access scopes when creating an instance and the access scopes persist only for the life of the instance.</p>
+<p>Access scopes have no effect if you have not enabled the related API on the project that the service account belongs to. For example, granting an access scope for Cloud Storage on a virtual machine instance allows the instance to call the Cloud Storage API only if you have enabled the Cloud Storage API on the project.</p>
+<ql-activity-tracking step="12">
+    Check lab-3 has the service account attached
+</ql-activity-tracking>
+<h2 id="step12">Task 7. Test the service account</h2>
+<ol>
+<li>
+<p>Connect to the newly created instance using <code>gcloud compute ssh</code>. Inside the SSH session run:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud compute ssh lab-3
+</ql-code-block>
+<p>Press ENTER when asked if you want to continue.</p>
+<p>Press ENTER twice to skip making a password.</p>
+<ol start="2">
+<li>
+<p>The default image used already contains <code>gcloud</code> configuration. Inside the SSH session run:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud config list
+</ql-code-block>
+<p>You will see the configuration has the service account</p>
+<ol start="3">
+<li>
+<p>Create an instance. This tests that you have the necessary permissions via the service account:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud compute instances create lab-4
+</ql-code-block>
+<p>You can press ENTER to accept the default zone for this VM.</p>
+<ol start="4">
+<li>
+<p>Check roles attached are working. Inside the SSH session run:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud compute instances list
+</ql-code-block>
+<p>Because the service account has permissions, you can see the instances listed.</p>
+<h3>Your environment now looks like this</h3>
+<p><img alt="Final lab environment illustration" src="https://cdn.qwiklabs.com/AyqCEofP51v5FmgLJTb1TuWIRGxQEL6cwdItnGN32XM%3D"></p>
+<p><ql-multiple-choice-probe answerindex="2" optiontitles='[
+"It prevents a user from directly getting involved in setting up access on the instance.",
+"It allows automated deployments of resources.",
+"Service accounts always provide full admin rights to the project.",
+"Service accounts can be assigned only the rights necessary for the access required."
+]' shuffle="" stem="What is NOT true about service accounts?">
+</ql-multiple-choice-probe></p>
+<h2 id="step13">Congratulations!</h2>
+<p>You have completed the following tasks using the Cloud SDK tool, <code>gcloud</code>:</p>
+<ul>
+<li>Installed and configured the gcloud client</li>
+<li>Created and switched between multiple IAM configurations</li>
+<li>Identified and assigned correct IAM permissions</li>
+<li>Created and used a service account</li>
+</ul>
+<h3>Finish your quest</h3>
+<p>This self-paced lab is part of the <a href="https://google.qwiklabs.com/quests/95" target="_blank">Using the Cloud SDK Command Line</a> Quest. A quest is a series of related labs that form a learning path. Completing this quest earns you a badge to recognize your achievement. You can make your badge or badges public and link to them in your online resume or social media account.  <a href="https://google.qwiklabs.com/quests/95/enroll" target="_blank">Enroll in this quest</a> or any quest that contains this lab and get immediate completion credit.  See the <a href="http://cloudskillsboost.google/catalog" target="_blank">Google Cloud Skills Boost catalog</a> to see all available quests.</p>
+<h3>Take your next lab</h3>
+<p>Continue your quest with <a href="https://google.qwiklabs.com/catalog_lab/2048" target="_blank">Using gsutil to perform Operations on Buckets and Objects </a> or try one of these suggestions:</p>
+<ul>
+<li>
+<p><a href="https://google.qwiklabs.com/catalog_lab/684" target="_blank">BigQuery: Qwik Start - Command Line</a></p>
+</li>
+<li>
+<p><a href="https://google.qwiklabs.com/catalog_lab/2047" target="_blank">Configuring Networks via gcloud</a></p>
+</li>
+</ul>
+<h3>Next steps / Learn more</h3>
+<ul>
+<li>Documentation for <a href="https://cloud.google.com/iam/docs/overview" target="_blank">Cloud Identity and Access Management</a>
+</li>
+</ul>
+<h3>Google Cloud training and certification</h3>
+<p>...helps you make the most of Google Cloud technologies. <a href="https://cloud.google.com/training/courses" target="_blank">Our classes</a> include technical skills and best practices to help you get up to speed quickly and continue your learning journey. We offer fundamental to advanced level training, with on-demand, live, and virtual options to suit your busy schedule. <a href="https://cloud.google.com/certification/" target="_blank">Certifications</a> help you validate and prove your skill and expertise in Google Cloud technologies.</p>
+<p><strong>Manual Last Updated May 9, 2023</strong></p>
+<p><strong>Lab Last Tested May 9, 2023</strong></p>
+<p>Copyright 2023 Google LLC All rights reserved. Google and the Google logo are trademarks of Google LLC. All other company and product names may be trademarks of the respective companies with which they are associated.</p>
+
+</div>
+</div>
+
+
+<div class='lab-content__end-lab-button js-end-lab-button-container hidden'>
+<ql-lab-control-button class='js-end-lab-button' running></ql-lab-control-button>
+</div>
+<!-- / TODO: Move recommendations into the end lab modal -->
+<div class='lab-content__renderable-instructions'>
+<div class='lab-content__recommendation'>
+<!-- # TODO: Change classes so that this doesn't stack vertically -->
+<section class='upcoming-cards'>
+<h2 class='ql-headline-4'>Continue questing</h2>
+<div class='activity-cards'>
+<ql-activity-card aria-label='Hosting a Web App on Google Cloud Using Compute Engine' name='Hosting a Web App on Google Cloud Using Compute Engine' path='/focuses/13349?parent=catalog' progress='0.0' type='lab'></ql-activity-card>
+
+</div>
+</section>
+
+</div>
+
+</div>
+</ql-drawer-content>
+<ql-drawer end id='outline-drawer' open slot='drawer' width='320'>
+<div aria-label='Lab Table of Contents' role='navigation'>
+<ul class='lab-content__outline js-lab-content-outline'>
+<li><a href="#step1">GSP647</a></li><li><a href="#step2">Overview</a></li><li><a href="#step3">What is IAM?</a></li><li><a href="#step4">What is gcloud?</a></li><li><a href="#step5">Setup and requirements</a></li><li><a href="#step6">Task 1. Configure the gcloud environment</a></li><li><a href="#step7">Task 2. Create and switch between multiple IAM configurations</a></li><li><a href="#step8">Task 3. Identify and assign correct IAM permissions</a></li><li><a href="#step9">Task 4. Test that user2 has access</a></li><li><a href="#step10">Task 5. Using a service account</a></li><li><a href="#step11">Task 6. Using the service account with a compute instance</a></li><li><a href="#step12">Task 7. Test the service account</a></li><li><a href="#step13">Congratulations!</a></li>
+</ul>
+</div>
+</ql-drawer>
+</ql-drawer-container>
+</ql-drawer-content>
+</ql-drawer-container>
+
+
+
+</div>
+</main>
+
+<span class='hidden' id='flash-sibling-before'></span>
+<ql-snackbar></ql-snackbar>
+
+
+<div class='modal fade' id='lab-details-modal'>
+<div class='modal-container'>
+<div class='modal-content mdl-shadow--24dp'>
+<div class='modal-body'>
+<p class='l-mbm'>
+In this lab introduces you will use the gcloud CLI tool to set up and configure command features of Cloud Identity and Access Management.
+</p>
+<p>
+This lab is included in these quests:
+<a href="/quests/121">Deploy and Manage Cloud Environments with Google Cloud</a>, <a href="/quests/95">Using the Cloud SDK Command Line</a>, <a href="/quests/92">Using the Cloud SDK Command Line</a>, <a href="/quests/328">Configure Service Accounts and IAM Roles for Google Cloud</a>.
+If you complete this lab you&#39;ll receive credit for it when you enroll in one of these quests.
+</p>
+<p class='small-label l-mbs'>
+<strong>
+Duration:
+</strong>
+1m setup
+&middot;
+90m access
+&middot;
+60m completion
+</p>
+<p class='small-label l-mbs'>
+<strong>AWS Region:</strong>
+[] <strong></strong>
+</p>
+<p class='small-label l-mbs'>
+<span><strong>Levels: </strong>introductory</span>
+</p>
+<p class='small-label'>
+<strong>
+Permalink:
+</strong>
+<a href="https://partner.cloudskillsboost.google/catalog_lab/2058">https://partner.cloudskillsboost.google/catalog_lab/2058</a>
+</p>
+</div>
+<div class='modal-actions'>
+<a class='button button--text' data-dismiss='modal'>
+Got It
+</a>
+</div>
+
+
+</div>
+</div>
+<iframe class='l-ie-iframe-fix' tabindex='-1' title='modal'></iframe>
+</div>
+<ql-dialog headline='How satisfied are you with this lab?&lt;span aria-hidden=&quot;true&quot;&gt;*&lt;/span&gt;' id='lab-review-dialog'>
+<form class="simple_form js-lab-review-form" id="new_lab_review" action="/lab_reviews" accept-charset="UTF-8" data-remote="true" method="post"><input name="utf8" type="hidden" value="&#x2713;" autocomplete="off" /><div aria-labelledby='lab-review-dialog' aria-required='true' aria-valuemax='5' aria-valuemin='0' aria-valuenow='0' class='rateit js-rateit' data-rateit-max='5' data-rateit-min='0' data-rateit-resetable='false' data-rateit-step='1' data-rateit-value='0' id='lab-review-rateit' role='slider' tabindex='0'></div>
+<div class='l-mtm'>
+
+<div class="control-group hidden lab_review_user_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" value="11061062" name="lab_review[user_id]" id="lab_review_user_id" /></div></div>
+<div class="control-group hidden lab_review_classroom_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" name="lab_review[classroom_id]" id="lab_review_classroom_id" /></div></div>
+<div class="control-group hidden lab_review_lab_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" value="2058" name="lab_review[lab_id]" id="lab_review_lab_id" /></div></div>
+<div class="control-group hidden lab_review_focus_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" name="lab_review[focus_id]" id="lab_review_focus_id" /></div></div>
+<div class="control-group hidden lab_review_rating"><div class="controls"><input class="hidden js-rating-input" autocomplete="off" type="hidden" name="lab_review[rating]" id="lab_review_rating" /></div></div>
+<div class="control-group text optional lab_review_comment"><label class="text optional control-label" for="lab_review_comment">Additional Comments</label><div class="controls"><textarea class="text optional" name="lab_review[comment]" id="lab_review_comment">
+</textarea></div></div>
+</div>
+</form><ql-button disabled id='submit' label='Submit' slot='action' text></ql-button>
+</ql-dialog>
+
+<ql-dialog headline='All done? If you end this lab, you will lose all your work. You may not be able to restart the lab if there is a quota limit. Are you sure you want to end this lab?' icon='error_outline' id='js-lab-are-you-sure-dialog'>
+<ql-button id='js-are-you-sure-button' label='Submit' slot='action' text></ql-button>
+</ql-dialog>
+
+
+<script>
+  $(function() {
+    ql.initMaterialInputs();
+    initChosen();
+    initSearch();
+    initTabs();
+    ql.list.init();
+    ql.favoriting.init();
+    ql.header.myAccount.init();
+    initTooltips();
+    ql.autocomplete.init();
+    ql.modals.init();
+    ql.toggleButtons.init();
+    ql.analytics.init();
+    ql.favoriting.init();
+  ql.chat.init();
+  ql.jumpContent.init();
+  ql.labControlPanel.addRecaptchaErrorHandler();
+  initLabContent();
+  ql.labOutline.links.init();
+  initLabReviewModal();
+  initLabReviewTranslations( {"star_amount_1":"1 of 5 stars","star_amount_2":"2 of 5 stars","star_amount_3":"3 of 5 stars","star_amount_4":"4 of 5 stars","star_amount_5":"5 of 5 stars"} )
+  ql.labAssessment.init();
+  ql.labData.init();
+  initLabTranslations( {"are_you_sure":"All done? If you end this lab, you will lose all your work. You may not be able to restart the lab if there is a quota limit. Are you sure you want to end this lab?","in_progress":"*In Progress*","ending":"*Ending*","starting":"*Starting, please wait*","end_concurrent_labs":"Sorry, you can only run one lab at a time. To start this lab, please confirm that you want all of your existing labs to end.","copied":"Copied","no_resource":"Error retrieving resource.","no_support":"No Support","mac_press":"Press ⌘-C to copy","thanks_review":"Thanks for reviewing this lab.","windows_press":"Press Ctrl-C to copy","days":"days"} );
+  ql.labRun.init();
+  ql.navPanel.init();
+  ql.navigation.init();
+  
+  });
+</script>
+
+</body>
+</html>
+

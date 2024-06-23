@@ -1,0 +1,1280 @@
+
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<title>Managing Terraform State | Google Cloud Skills Boost for Partners</title>
+<script>
+//<![CDATA[
+window.gon={};gon.deployment="googlecourses-run";
+//]]>
+</script>
+<script>
+  (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer',"GTM-5XSKHDX");
+</script>
+<script src="https://cdn.qwiklabs.com/assets/hallofmirrors/polyfills/webcomponents-loader-8583b47b01e40e6ea7bf1ad443a20b7e79bbdd5eafac009806a228c91a97282c.js"></script>
+<script src="https://cdn.qwiklabs.com/assets/vendor-beb958bea8eff6a4ad4cf8f36a0a676817a4857e214b17ae983796071a4a816d.js"></script>
+<script src="https://cdn.qwiklabs.com/assets/application-e8cb972df3c4fe0610b31ae6c7b12d323456c1a96b7ef459da8d7e0b1334a507.js"></script>
+<script src="https://cdn.qwiklabs.com/assets/hallofmirrors/hallofmirrors-7a09cf7f89024ad118922f5e419d9f62ee3d22bc7ac2719228be7c19a37a1e4f.js"></script>
+<!--[if lt IE 9]>
+<script src='http://html5shim.googlecode.com/svn/trunk/html5.js' type='text/javascript'></script>
+<![endif]-->
+<!--[endif]>  <![endif]-->
+<script id='ze-snippet' src='https://static.zdassets.com/ekr/snippet.js?key=511e4158-0aec-4e3c-b2e6-4daa1769f51e'></script>
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="fpNXCG7Y714hWAazYdJ0S1ET17bkLYhxfPBwbwO3BvDdCZbf59Ld2nqECfPGsATcPoNWUe3yDgLKLvKgokBeZg==" />
+<meta content='width=device-width, initial-scale=1.0, user-scalable=yes' name='viewport'>
+<meta content='1rRsY0INj8RvwB5EF5pwdxt2A2P9aDgAlsICaJ0d5w0' name='google-site-verification'>
+<meta content='#3681E4' property='msapplication-TileColor'>
+<meta content='/favicon-144.png' property='msapplication-TileImage'>
+<meta content='[{&quot;id&quot;:&quot;recaptcha_experiment&quot;,&quot;optimize_id&quot;:&quot;dpViOcLkT3qS4TvL2mRojA&quot;,&quot;title&quot;:&quot;No Recaptcha shown for trusted users&quot;,&quot;variant_index&quot;:0,&quot;variant&quot;:&quot;original&quot;}]' name='active-experiments'>
+<meta content='{&quot;userId&quot;:11061062,&quot;experimentIds&quot;:[&quot;oauth_risc_shutoff&quot;,&quot;program_groups&quot;,&quot;program_learning_assignment&quot;,&quot;course_upgrade&quot;,&quot;enforce_codebuild_verdicts&quot;,&quot;canonical_domain_redirect&quot;,&quot;learning_center&quot;,&quot;alexandria_show_bundle_errors&quot;,&quot;used_in&quot;,&quot;show_annual_purchase_now&quot;,&quot;community_forum&quot;,&quot;program_resources&quot;,&quot;programs&quot;,&quot;chat_off_for_signed_out_users&quot;]}' name='help-api-product-data'>
+<meta content='{&quot;groupIds&quot;:[&quot;non_suadmins&quot;,&quot;students&quot;,&quot;non_organization&quot;,&quot;non_program&quot;]}' name='help-api-custom-data'>
+<meta content='In this hands-on lab you will import existing infrastructure, write Terraform configuration that matches that infrastructure, and manipulate state storage with Terraform.' name='description'>
+<meta content='Qwiklabs' name='author'>
+<meta content='Managing Terraform State | Google Cloud Skills Boost for Partners' property='og:title'>
+<meta content='website' property='og:type'>
+<meta content='/favicon-144.png' property='og:image'>
+<meta content='Qwiklabs' property='og:site_name'>
+<meta content='In this hands-on lab you will import existing infrastructure, write Terraform configuration that matches that infrastructure, and manipulate state storage with Terraform.' property='og:description'>
+<meta content='/qwiklabs_logo_900x887.png' property='og:logo' size='900x887'>
+<meta content='/qwiklabs_logo_994x187.png' property='og:logo' size='994x187'>
+
+
+<meta property="og:url" content="https://partner.cloudskillsboost.google/focuses/16375?parent=catalog" /><link href="https://partner.cloudskillsboost.google/focuses/16375?parent=catalog" rel="canonical" />
+<link color='#3681E4' href='/favicon-svg.svg' rel='mask-icon'>
+<link href='/favicon-180.png' rel='apple-touch-icon-precomposed'>
+<link href='https://cdn.qwiklabs.com/Vag5GK2J6rS6843Qvg8TQJ1kEbAsEmQoF0%2BdLRfcLRE%3D' rel='shortcut icon' type='image/x-icon'>
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oswald:400|Roboto+Mono:400,700|Roboto:300,400,500,700|Google+Sans:300,400,500,700|Google+Sans+Display:400|Material+Icons|Google+Material+Icons" media="screen" />
+
+<link rel="stylesheet" href="https://cdn.qwiklabs.com/assets/application-68068ef39e5c434ed33fece13d77f9c8a42264363c729ca27e5af35578a2813d.css" media="all" />
+
+
+<style>
+  :root {
+    --primary-text-on-surface-color: #1a73e8;
+    --primary-text-on-surface-color-dark: #1568d6;
+    --primary-text-on-surface-color-darker: #135ec1;
+    --primary-text-on-surface-color-darkest: #1154ac;
+    --primary-surface-color: #1a73e8;
+    --primary-surface-color-rgb: 26,115,232;
+    --primary-surface-color-light: #d1e3fa;
+    --primary-surface-color-lightest: #e8f1fd;
+    --text-on-primary-color: #ffffff;
+    --accent-text-on-surface-color: #f29900;
+    --accent-surface-color: #f9ab00;
+    --accent-surface-color-rgb: 249,171,0;
+    --accent-surface-color-light: #ffefcc;
+    --text-on-accent-color: #202124;
+  }
+</style>
+
+<style>
+  :root {
+    --navbar-height: 112px;
+  }
+</style>
+
+
+
+</head>
+<body class='lab-show l-full no-nav application-new focuses focuses-show lab-show l-full no-nav '>
+<div class='header-container'>
+<div class='header'>
+<ql-toolbar jumpEnabled>
+<div class='header__title' slot='title'>
+<ql-icon-button label="Back" href="https://partner.cloudskillsboost.google/quests/159" id="fd87cd709c10c089" target="_self" tip="Back">arrow_back</ql-icon-button>
+<h1 class='ql-headline-6'>Managing Terraform State</h1>
+</div>
+<div class='header__actions' slot='action'>
+<ql-icon-button icon='share' id='share_3363' label='Share on social media' tip='Share'></ql-icon-button>
+<ql-menu for='share_3363'>
+<ql-menu-item data-analytics-action='Shared to LinkedIn Feed.' data-analytics-category='Lab' data-analytics-label='Managing Terraform State' href='https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fpartner.cloudskillsboost.google%2Fcatalog_lab%2F3363%3Futm_medium%3Dsocial%26utm_source%3Dlinkedin%26utm_campaign%3Dql-social-share' icon='post_linkedin' label='Share on LinkedIn Feed' role='link' target='_blank'>
+<span class='label'>Share on LinkedIn Feed</span>
+</ql-menu-item>
+
+<ql-menu-item data-analytics-action='Shared to Twitter.' data-analytics-category='Lab' data-analytics-label='Managing Terraform State' href='https://twitter.com/intent/tweet?text=Learn%20cloud%20tech%20through%20hands-on%20training%20on%20%23Qwiklabs%21&amp;url=https%3A%2F%2Fpartner.cloudskillsboost.google%2Fcatalog_lab%2F3363%3Futm_medium%3Dsocial%26utm_source%3Dtwitter%26utm_campaign%3Dql-social-share&amp;hashtags=' icon='post_twitter' label='Twitter' role='link' target='_blank'>
+<span class='label'>Twitter</span>
+</ql-menu-item>
+
+<ql-menu-item data-analytics-action='Shared to Facebook.' data-analytics-category='Lab' data-analytics-label='Managing Terraform State' href='https://facebook.com/sharer.php?display=popup&amp;u=https%3A%2F%2Fpartner.cloudskillsboost.google%2Fcatalog_lab%2F3363%3Futm_medium%3Dsocial%26utm_source%3Dfacebook%26utm_campaign%3Dql-social-share' icon='post_facebook' label='Facebook' role='link' target='_blank'>
+<span class='label'>Facebook</span>
+</ql-menu-item>
+
+<ql-copyable-input label='Share Link' value='https://partner.cloudskillsboost.google/catalog_lab/3363'></ql-copyable-input>
+</ql-menu>
+
+<ql-icon-button class='icon-button js-favorite-button favorite-button' data-id='16375' data-name='Managing Terraform State' data-type='CatalogItem' href='/favorite.json?item_id=16375&amp;item_type=CatalogItem' id='CatalogItem-16375-favorite-button' label='Add to favorites' tip='Add to favorites'>
+favorite_border
+</ql-icon-button>
+
+
+
+<ql-icon-button id='control-panel-target' style='display: none;'>
+dashboard
+</ql-icon-button>
+<ql-menu for='control-panel-target' id='control-panel-menu'></ql-menu>
+<ql-icon-button class='mobile-hide' icon='help_outline' id='help-menu-button' label='Open help menu' tip='Help'></ql-icon-button>
+<ql-menu for='help-menu-button' id='help-menu'>
+<ql-menu-item data-analytics-action='opened_help' data-analytics-label='lab' label='Help Center' onclick='hallofmirrors.helpService.startHelp({&quot;productData&quot;:{&quot;userId&quot;:11061062},&quot;context&quot;:&quot;lab&quot;})'></ql-menu-item>
+<ql-menu-item href='mailto:support@qwiklabs.com' label='Email support'></ql-menu-item>
+<ql-menu-item label='Chat support' onClick='ql.chat.open()'></ql-menu-item>
+</ql-menu>
+
+<ql-icon-button class='mobile-hide' icon='language' id='language' label='Select your language preference' tip='Language'></ql-icon-button>
+<ql-menu for='language'>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='ar' href='/focuses/16375?locale=ar&amp;parent=catalog' label='العربية‬‎' lang='ar'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='de' href='/focuses/16375?locale=de&amp;parent=catalog' label='Deutsch' lang='de'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='en' href='/focuses/16375?locale=en&amp;parent=catalog' label='English' lang='en'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='es' href='/focuses/16375?locale=es&amp;parent=catalog' label='español (Latinoamérica)' lang='es'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='fr' href='/focuses/16375?locale=fr&amp;parent=catalog' label='français' lang='fr'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='fr_CA' href='/focuses/16375?locale=fr_CA&amp;parent=catalog' label='français (Canada)' lang='fr-CA'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='he' href='/focuses/16375?locale=he&amp;parent=catalog' label='עברית' lang='he'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='id' href='/focuses/16375?locale=id&amp;parent=catalog' label='bahasa Indonesia' lang='id'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='it' href='/focuses/16375?locale=it&amp;parent=catalog' label='Italiano' lang='it'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='ja' href='/focuses/16375?locale=ja&amp;parent=catalog' label='日本語' lang='ja'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='ko' href='/focuses/16375?locale=ko&amp;parent=catalog' label='한국어' lang='ko'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='pl' href='/focuses/16375?locale=pl&amp;parent=catalog' label='Polski' lang='pl'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='pt_BR' href='/focuses/16375?locale=pt_BR&amp;parent=catalog' label='português (Brasil)' lang='pt-BR'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='pt_PT' href='/focuses/16375?locale=pt_PT&amp;parent=catalog' label='português (Portugal)' lang='pt-PT'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='ru' href='/focuses/16375?locale=ru&amp;parent=catalog' label='русский' lang='ru'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='tr' href='/focuses/16375?locale=tr&amp;parent=catalog' label='Türkçe' lang='tr'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='uk' href='/focuses/16375?locale=uk&amp;parent=catalog' label='український' lang='uk'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='zh' href='/focuses/16375?locale=zh&amp;parent=catalog' label='简体中文' lang='zh'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='zh_TW' href='/focuses/16375?locale=zh_TW&amp;parent=catalog' label='繁體中文' lang='zh-TW'></ql-menu-item>
+</ql-menu>
+
+<ql-icon-button id='my_account' label='My account' tip='My account'>
+<ql-avatar></ql-avatar>
+</ql-icon-button>
+<ql-menu for='my_account' id='my_account_menu' style='max-height: 640px'>
+<div class='my-account-menu'>
+<ql-avatar class='l-mtl l-mbl' size='120'></ql-avatar>
+<div class='my-account-menu__user-info l-mbl'>
+<h4 class='ql-subhead-1'>Ausaf Khan</h4>
+<p class='ql-body-2 text--light'>ausaf.khan@rakuten.com</p>
+<p class='ql-body-2 text--light'>
+</p>
+<a class="text--green ql-subhead-2" href="/my_account/payments"><ql-chip positive>
+0 Credits
+</ql-chip>
+</a></div>
+<div class='buttons l-mbl'>
+<a class="button button--hairline" id="settings" href="/my_account/profile">Settings</a>
+</div>
+<hr>
+<ql-button data-analytics-action='clicked_sign_out' href='/users/sign_out' method='delete'>
+Sign Out
+</ql-button>
+<div class='privacy l-mtl'>
+<a target="_blank" class="ql-caption text--light" href="/privacy_policy">Privacy</a>
+<span class='ql-caption text--light l-mls l-mrs'>&middot;</span>
+<a class="ql-caption text--light" href="/terms_of_service">Terms</a>
+</div>
+</div>
+</ql-menu>
+
+</div>
+</ql-toolbar>
+
+</div>
+</div>
+
+<nav class='nav-panel js-nav-panel'>
+<div class='nav-panel__logo'>
+<div class="custom-logo"><img alt="Google Cloud Skills Boost for Partners" height="24" aria-label="Google Cloud Skills Boost for Partners" src="https://cdn.qwiklabs.com/PGyhmgS3zZncIEGywnx5UXsKwepRRFQ9BhAg%2FWHNrlQ%3D" /></div>
+</div>
+<nav class='ql-sidenav'>
+<ql-sidenav-item href='/' icon='home' label='Paths'></ql-sidenav-item>
+
+<ql-sidenav-item active href='/catalog' icon='school' label='Explore'></ql-sidenav-item>
+
+<ql-sidenav-item href='/profile' icon='event_note' label='Profile'></ql-sidenav-item>
+
+</nav>
+
+</nav>
+<div class='nav-panel__overlay js-nav-toggle'></div>
+
+<main class='js-main' id='jump-content'>
+<div class='l-main-wrapper' id='main-wrapper'>
+
+
+
+
+<div class='lab-assessment__tab js-open-lab-assessment-panel'>
+<button class='js-lab-assessment-total-score'>
+—/100
+</button>
+</div>
+<div aria-labelledby='lab-assessment-checkpoint' class='lab-assessment__panel js-lab-assessment-panel' role='dialog'>
+<div class='lab-assessment__panel__header'>
+<h4 id='lab-assessment-checkpoint'>Checkpoints</h4>
+<ql-icon-button class='js-close-lab-assessment-panel' icon='arrow_forward' label='Close dialog'></ql-icon-button>
+</div>
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Working with Backends
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button class='js-show-run-step-button' description='Working with Backends' step_no='1'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-1'>
+</span>
+/ 100
+</p>
+</div>
+</div>
+
+</div>
+<ql-drawer-container class='js-lab-state' data-analytics-payload='{&quot;label&quot;:&quot;Managing Terraform State&quot;,&quot;lab_name&quot;:&quot;Managing Terraform State&quot;,&quot;classroom_name&quot;:null,&quot;deployment&quot;:&quot;googlecourses-run&quot;}' data-credits='0.0' data-focus-id='16375' data-lab-billing-limit='0.0' data-lab-duration='3600' data-parent='catalog' data-recaptcha-enabled id='lab-container'>
+<ql-drawer id='terminal-drawer' slot='drawer' style='width: calc(100% - 480px)'>
+<iframe allow='clipboard-read' class='terminal' id='embedded-resource'></iframe>
+</ql-drawer>
+<ql-drawer-content class='js-lab-wrapper' id='lab-content' slot='drawer-content'>
+<ql-drawer-container id='lab-content-container'>
+<ql-drawer id='control-panel-drawer' open slot='drawer' width='320'>
+<ql-lab-control-panel class='ql-lab-control-panel__max-height control-panel js-lab-control-panel' connectionFiles='[]' labControlButton='{&quot;disabled&quot;:false,&quot;pending&quot;:false,&quot;running&quot;:false}' labDetails='[]' labTimer='{&quot;ticking&quot;:false,&quot;secondsRemaining&quot;:3600}' studentResources='[]'>
+<script src="https://www.recaptcha.net/recaptcha/api.js?render=6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr"   ></script>
+        <script>
+          // Define function so that we can call it again later if we need to reset it
+          // This executes reCAPTCHA and then calls our callback.
+          function executeRecaptchaForStartLab() {
+            grecaptcha.ready(function() {
+              grecaptcha.execute('6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr', {action: 'start_lab'}).then(function(token) {
+                setInputWithRecaptchaResponseTokenForStartLab('g-recaptcha-response-data-start-lab', token)
+              });
+            });
+          };
+          // Invoke immediately
+          executeRecaptchaForStartLab()
+
+          // Async variant so you can await this function from another async function (no need for
+          // an explicit callback function then!)
+          // Returns a Promise that resolves with the response token.
+          async function executeRecaptchaForStartLabAsync() {
+            return new Promise((resolve, reject) => {
+             grecaptcha.ready(async function() {
+                resolve(await grecaptcha.execute('6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr', {action: 'start_lab'}))
+              });
+            })
+          };
+
+                    var setInputWithRecaptchaResponseTokenForStartLab = function(id, token) {
+            var element = document.getElementById(id);
+            element.value = token;
+          }
+
+        </script>
+<input type="hidden" name="g-recaptcha-response-data[start_lab]" id="g-recaptcha-response-data-start-lab" data-sitekey="6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr" class="g-recaptcha g-recaptcha-response "/>
+
+<div aria-live='polite' class='hidden' id='recaptcha-v2-start-lab' slot='recaptcha'>
+<script src="https://www.recaptcha.net/recaptcha/api.js" async defer ></script>
+<div data-sitekey="6LeOI8IUAAAAAPkHlMAE9NReCD_1WD81iYlBlCnV" data-callback="recaptchaComplete" data-expired-callback="expireV2Token" class="g-recaptcha "></div>
+          <noscript>
+            <div>
+              <div style="width: 302px; height: 422px; position: relative;">
+                <div style="width: 302px; height: 422px; position: absolute;">
+                  <iframe
+                    src="https://www.recaptcha.net/recaptcha/api/fallback?k=6LeOI8IUAAAAAPkHlMAE9NReCD_1WD81iYlBlCnV"
+                    name="ReCAPTCHA"
+                    style="width: 302px; height: 422px; border-style: none; border: 0; overflow: hidden;">
+                  </iframe>
+                </div>
+              </div>
+              <div style="width: 300px; height: 60px; border-style: none;
+                bottom: 12px; left: 25px; margin: 0px; padding: 0px; right: 25px;
+                background: #f9f9f9; border: 1px solid #c1c1c1; border-radius: 3px;">
+                <textarea id="g-recaptcha-response" name="g-recaptcha-response"
+                  class="g-recaptcha-response"
+                  style="width: 250px; height: 40px; border: 1px solid #c1c1c1;
+                  margin: 10px 25px; padding: 0px; resize: none;">
+                </textarea>
+              </div>
+            </div>
+          </noscript>
+
+</div>
+</ql-lab-control-panel>
+</ql-drawer>
+<ql-drawer-content id='lab-instructions' slot='drawer-content'>
+<ql-snackbar id='alert-snackbar'></ql-snackbar>
+<div class='alert alert--fake js-alert'>
+<p class='alert__message js-alert-message' role='alert'></p>
+<ql-icon-button class='alert__close js-alert-close' icon='clear'></ql-icon-button>
+<iframe class='l-ie-iframe-fix' tabindex='-1'></iframe>
+</div>
+<div class='lab-content__renderable-instructions js-lab-content'>
+<div class='lab-preamble'>
+<h1 class='lab-preamble__title'>
+Managing Terraform State
+</h1>
+<div class='lab-preamble__details subtitle-headline-1'>
+<span>1 hour </span>
+<span>Free</span>
+<div class='lab__rating'>
+<a aria-label="Lab Reviews" href="/focuses/16375/reviews?parent=catalog"><div class='rateit' data-rateit-readonly='true' data-rateit-value='4.5912'></div>
+
+</a><ql-button aria-label='Rate Lab' id='rate-lab-btn' label='Rate Lab' text></ql-button>
+</div>
+</div>
+</div>
+<div class='lab-outline-place-holder'></div>
+
+<div class='markdown-lab-instructions js-markdown-instructions' id='markdown-lab-instructions'>
+
+<p><em>This lab was developed with our partner, <a href="https://hashicorp.com/" target="_blank">Hashicorp</a>. Your personal information may be shared with Hashicorp, the lab sponsor, if you have opted-in to receive product updates, announcements, and offers in your Account Profile.</em></p>
+<h2 id="step1">GSP752</h2>
+<p><img alt="Google Cloud self-paced labs logo" src="https://cdn.qwiklabs.com/GMOHykaqmlTHiqEeQXTySaMXYPHeIvaqa2qHEzw6Occ%3D"></p>
+<h2 id="step2">Overview</h2>
+<p>Terraform must store the state about your managed infrastructure and configuration. This state is used by Terraform to map real-world resources to your configuration, keep track of metadata, and improve performance for large infrastructures.</p>
+<p>This state is stored by default in a local file named <code>terraform.tfstate</code>, but it can also be stored remotely, which works better in a team environment.</p>
+<p>Terraform uses this local state to create plans and make changes to your infrastructure. Before any operation, Terraform does a <a href="https://www.terraform.io/docs/commands/refresh.html" target="_blank">refresh</a> to update the state with the real infrastructure.</p>
+<p>The primary purpose of Terraform state is to store bindings between objects in a remote system and resource instances declared in your configuration. When Terraform creates a remote object in response to a change of configuration, it will record the identity of that remote object against a particular resource instance and then potentially update or delete that object in response to future configuration changes.</p>
+<h3>Objectives</h3>
+<p>In this lab, you will learn how to perform the following tasks:</p>
+<ul>
+<li>
+<p>Create a local backend.</p>
+</li>
+<li>
+<p>Create a Cloud Storage backend.</p>
+</li>
+<li>
+<p>Refresh your Terraform state.</p>
+</li>
+<li>
+<p>Import a Terraform configuration.</p>
+</li>
+<li>
+<p>Manage the imported configuration with Terraform.</p>
+</li>
+</ul>
+<h2 id="step3">Setup and requirements</h2>
+<h3>Before you click the Start Lab button</h3>
+<p>Read these instructions. Labs are timed and you cannot pause them. The timer, which starts when you click <strong>Start Lab</strong>, shows how long Google Cloud resources will be made available to you.</p>
+<p>This hands-on lab lets you do the lab activities yourself in a real cloud environment, not in a simulation or demo environment. It does so by giving you new, temporary credentials that you use to sign in and access Google Cloud for the duration of the lab.</p>
+<p>To complete this lab, you need:</p>
+<ul>
+<li>Access to a standard internet browser (Chrome browser recommended).</li>
+</ul>
+<ql-warningbox>
+<strong>Note:</strong> Use an Incognito or private browser window to run this lab. This prevents any conflicts between your personal account and the Student account, which may cause extra charges incurred to your personal account.
+</ql-warningbox>
+<ul>
+<li>Time to complete the lab---remember, once you start, you cannot pause a lab.</li>
+</ul>
+<ql-warningbox>
+<strong>Note:</strong> If you already have your own personal Google Cloud account or project, do not use it for this lab to avoid extra charges to your account.
+</ql-warningbox>
+<h3>How to start your lab and sign in to the Google Cloud Console</h3>
+<ol>
+<li>
+<p>Click the <strong>Start Lab</strong> button. If you need to pay for the lab, a pop-up opens for you to select your payment method.
+On the left is the <strong>Lab Details</strong> panel with the following:</p>
+<ul>
+<li>The <strong>Open Google Console</strong> button</li>
+<li>Time remaining</li>
+<li>The temporary credentials that you must use for this lab</li>
+<li>Other information, if needed, to step through this lab</li>
+</ul>
+</li>
+<li>
+<p>Click <strong>Open Google Console</strong>.
+The lab spins up resources, and then opens another tab that shows the <strong>Sign in</strong> page.</p>
+<p><strong><em>Tip:</em></strong> Arrange the tabs in separate windows, side-by-side.</p>
+<ql-infobox>
+<strong>Note: </strong>If you see the <strong>Choose an account</strong> dialog, click <strong>Use Another Account</strong>.        
+ </ql-infobox>
+</li>
+<li>
+<p>If necessary, copy the <strong>Username</strong> from the <strong>Lab Details</strong> panel and paste it into the <strong>Sign in</strong> dialog. Click <strong>Next</strong>.</p>
+</li>
+<li>
+<p>Copy the <strong>Password</strong> from the <strong>Lab Details</strong> panel and paste it into the <strong>Welcome</strong> dialog. Click <strong>Next</strong>.</p>
+<ql-infobox>
+<strong>Important: </strong>You must use the credentials from the left panel. Do not use your Google Cloud Skills Boost credentials. 
+ </ql-infobox>
+<ql-warningbox>
+<strong>Note: </strong>Using your own Google Cloud account for this lab may incur extra charges.
+ </ql-warningbox>
+</li>
+<li>
+<p>Click through the subsequent pages:</p>
+<ul>
+<li>Accept the terms and conditions.</li>
+<li>Do not add recovery options or two-factor authentication (because this is a temporary account).</li>
+<li>Do not sign up for free trials.</li>
+</ul>
+</li>
+</ol>
+<p>After a few moments, the Cloud Console opens in this tab.</p>
+<ql-infobox>
+<strong>Note:</strong> You can view the menu with a list of Google Cloud Products and Services by clicking the <strong>Navigation menu</strong> at the top-left.
+<img alt="Navigation menu icon" src="https://cdn.qwiklabs.com/nUxFb6oRFr435O3t6V7WYJAjeDFcrFb16G9wHWp5BzU%3D">
+</ql-infobox>
+<h3>Activate Cloud Shell</h3>
+<p>Cloud Shell is a virtual machine that is loaded with development tools. It offers a persistent 5GB home directory and runs on the Google Cloud. Cloud Shell provides command-line access to your Google Cloud resources.</p>
+<ol>
+<li>Click <strong>Activate Cloud Shell</strong> <img alt="Activate Cloud Shell icon" src="https://cdn.qwiklabs.com/ep8HmqYGdD%2FkUncAAYpV47OYoHwC8%2Bg0WK%2F8sidHquE%3D"> at the top of the Google Cloud console.</li>
+</ol>
+<p>When you are connected, you are already authenticated, and the project is set to your <strong>PROJECT_ID</strong>. The output contains a line that declares the <strong>PROJECT_ID</strong> for this session:</p>
+<ql-code-block output="">
+Your Cloud Platform project in this session is set to YOUR_PROJECT_ID
+</ql-code-block>
+<p><code>gcloud</code> is the command-line tool for Google Cloud. It comes pre-installed on Cloud Shell and supports tab-completion.</p>
+<ol start="2">
+<li>
+<p>(Optional) You can list the active account name with this command:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud auth list
+</ql-code-block>
+<ol start="3">
+<li>
+<p>Click <strong>Authorize</strong>.</p>
+</li>
+<li>
+<p>Your output should now look like this:</p>
+</li>
+</ol>
+<p><strong>Output:</strong></p>
+<ql-code-block language="plaintext" output="">
+ACTIVE: *
+ACCOUNT: student-01-xxxxxxxxxxxx@qwiklabs.net
+To set the active account, run:
+    $ gcloud config set account `ACCOUNT`
+</ql-code-block>
+<ol start="5">
+<li>
+<p>(Optional) You can list the project ID with this command:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud config list project
+</ql-code-block>
+<p><strong>Output:</strong></p>
+<ql-code-block language="plaintext" output="">
+[core]
+project = &lt;project_ID&gt;
+</ql-code-block>
+<p><strong>Example output:</strong></p>
+<ql-code-block language="plaintext" output="">
+[core]
+project = qwiklabs-gcp-44776a13dea667a6
+</ql-code-block>
+<ql-infobox>
+<strong>Note: </strong>For full documentation of <code>gcloud</code>, in Google Cloud, refer to <a href="https://cloud.google.com/sdk/gcloud" target="_blank">the gcloud CLI overview guide</a>.
+</ql-infobox>
+<h2 id="step4">Purpose of Terraform state</h2>
+<p>State is a necessary requirement for Terraform to function. People sometimes ask whether Terraform can work without state or not use state and just inspect cloud resources on every run. In the scenarios where Terraform may be able to get away without state, doing so would require shifting massive amounts of complexity from one place (state) to another place (the replacement concept). This section will help explain why Terraform state is required.</p>
+<h3>Mapping to the real world</h3>
+<p>Terraform requires some sort of database to map Terraform config to the real world. When your configuration contains a <code>resource resource "google_compute_instance" "foo"</code>, Terraform uses this map to know that instance <code>i-abcd1234</code> is represented by that resource.</p>
+<p>Terraform expects that each remote object is bound to only one resource instance, which is normally guaranteed because Terraform is responsible for creating the objects and recording their identities in the state. If you instead import objects that were created outside of Terraform, you must verify that each distinct object is imported to only one resource instance.</p>
+<p>If one remote object is bound to two or more resource instances, Terraform may take unexpected actions against those objects because the mapping from configuration to the remote object state has become ambiguous.</p>
+<h3>Metadata</h3>
+<p>In addition to tracking the mappings between resources and remote objects, Terraform must also track metadata such as resource dependencies.</p>
+<p>Terraform typically uses the configuration to determine dependency order. However, when you remove a resource from a Terraform configuration, Terraform must know how to delete that resource. Terraform can see that a mapping exists for a resource that is not in your configuration file and plan to destroy. However, because the resource no longer exists, the order cannot be determined from the configuration alone.</p>
+<p>To ensure correct operation, Terraform retains a copy of the most recent set of dependencies within the state. Now Terraform can still determine the correct order for destruction from the state when you delete one or more items from the configuration.</p>
+<p>This could be avoided if Terraform knew a required ordering between resource types. For example, Terraform could know that servers must be deleted before the subnets they are a part of. The complexity for this approach quickly becomes unmanageable, however: in addition to understanding the ordering semantics of every resource for every cloud, Terraform must also understand the ordering across providers.</p>
+<p>Terraform also stores other metadata for similar reasons, such as a pointer to the provider configuration that was most recently used with the resource in situations where multiple aliased providers are present.</p>
+<h3>Performance</h3>
+<p>In addition to basic mapping, Terraform stores a cache of the attribute values for all resources in the state. This is an optional feature of Terraform state and is used only as a performance improvement.</p>
+<p>When running a <code>terraform plan</code>, Terraform must know the current state of resources in order to effectively determine the changes needed to reach your desired configuration.</p>
+<p>For small infrastructures, Terraform can query your providers and sync the latest attributes from all your resources. This is the default behavior of Terraform: for every <code>plan</code> and <code>apply</code>, Terraform will sync all resources in your state.</p>
+<p>For larger infrastructures, querying every resource is too slow. Many cloud providers do not provide APIs to query multiple resources at the same time, and the round trip time for each resource is hundreds of milliseconds. In addition, cloud providers almost always have API rate limiting, so Terraform can only request a limited number of resources in a period of time. Larger users of Terraform frequently use both the <code>-refresh=false</code> flag and the <code>-target</code> flag in order to work around this. In these scenarios, the cached state is treated as the record of truth.</p>
+<h3>Syncing</h3>
+<p>In the default configuration, Terraform stores the state in a file in the current working directory where Terraform was run. This works when you are getting started, but when Terraform is used in a team, it is important for everyone to be working with the same state so that operations will be applied to the same remote objects.</p>
+<p><a href="https://www.terraform.io/docs/state/remote.html" target="_blank">Remote state</a> is the recommended solution to this problem. With a fully featured state backend, Terraform can use remote locking as a measure to avoid multiple different users accidentally running Terraform at the same time; this ensures that each Terraform run begins with the most recent updated state.</p>
+<h3>State locking</h3>
+<p>If supported by your <a href="https://www.terraform.io/docs/backends/" target="_blank">backend</a>, Terraform will lock your state for all operations that could write state. This prevents others from acquiring the lock and potentially corrupting your state.</p>
+<p>State locking happens automatically on all operations that could write state. You won't see any message that it is happening. If state locking fails, Terraform will not continue. You can disable state locking for most commands with the <code>-lock</code> flag, but it is not recommended.</p>
+<p>If acquiring the lock is taking longer than expected, Terraform will output a status message. If Terraform doesn't output a message, state locking is still occurring.</p>
+<p>Not all backends support locking. View the list of <a href="https://www.terraform.io/language/settings/backends/configuration#backend-types" target="_blank">backend types</a> for details on whether a backend supports locking.</p>
+<h3>Workspaces</h3>
+<p>Each Terraform configuration has an associated <a href="https://www.terraform.io/docs/backends/index.html" target="_blank">backend</a> that defines how operations are executed and where persistent data such as the Terraform state is stored.</p>
+<p>The persistent data stored in the backend belongs to a <em>workspace</em>. Initially the backend has only one workspace, called <em>default</em>, and thus only one Terraform state is associated with that configuration.</p>
+<p>Certain backends support <em>multiple</em> named workspaces, which allows multiple states to be associated with a single configuration. The configuration still has only one backend, but multiple distinct instances of that configuration can be deployed without configuring a new backend or changing authentication credentials</p>
+<h2 id="step5">Task 1. Working with backends</h2>
+<p>A <em>backend</em> in Terraform determines how state is loaded and how an operation such as <code>apply</code> is executed. This abstraction enables non-local file state storage, remote execution, etc.</p>
+<p>By default, Terraform uses the "local" backend, which is the normal behavior of Terraform you're used to. This is the backend that was being invoked throughout the previous labs.</p>
+<p>Here are some of the benefits of backends:</p>
+<ul>
+<li>
+<strong>Working in a team:</strong> Backends can store their state remotely and protect that state with locks to prevent corruption. Some backends, such as Terraform Cloud, even automatically store a history of all state revisions.</li>
+<li>
+<strong>Keeping sensitive information off disk:</strong> State is retrieved from backends on demand and only stored in memory.</li>
+<li>
+<strong>Remote operations:</strong> For larger infrastructures or certain changes, <code>terraform apply</code> can take a long time. Some backends support remote operations, which enable the operation to execute remotely. You can then turn off your computer, and your operation will still complete. Combined with remote state storage and locking (described above), this also helps in team environments.</li>
+</ul>
+<p><strong>Backends are completely optional:</strong> You can successfully use Terraform without ever having to learn or use backends. However, they do solve pain points that afflict teams at a certain scale. If you're working as an individual, you can probably succeed without ever using backends.</p>
+<p>Even if you only intend to use the "local" backend, it may be useful to learn about backends because you can also change the behavior of the local backend.</p>
+<h3>Add a local backend</h3>
+<p>In this section, you will configure a local backend.</p>
+<p>When configuring a backend for the first time (moving from no defined backend to explicitly configuring one), Terraform will give you the option to migrate your state to the new backend. This lets you adopt backends without losing any existing state.</p>
+<p>To be extra careful, we always recommend that you also manually back up your state. You can do this by simply copying your <code>terraform.tfstate</code> file to another location. The initialization process should also create a backup, but it never hurts to be safe!</p>
+<p>Configuring a backend for the first time is no different from changing a configuration in the future: create the new configuration and run <code>terraform init</code>. Terraform will guide you the rest of the way.</p>
+
+<ol>
+<li>
+<p>In a new Cloud Shell window, create your <code>main.tf</code> configuration file:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+touch main.tf
+</ql-code-block>
+<ol start="2">
+<li>
+<p>To retrieve your Project ID, run the following command:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud config list --format 'value(core.project)'
+</ql-code-block>
+<ol start="3">
+<li>On the Cloud Shell toolbar, click <strong>Open Editor</strong>. To switch between Cloud Shell and the code editor, click <strong>Open Editor</strong> or <strong>Open Terminal</strong> as required, or click <strong>Open in new window</strong> to leave the Editor open in a separate tab.</li>
+</ol>
+
+<ol start="4">
+<li>
+<p>Copy the Cloud Storage bucket resource code into your <code>main.tf</code> configuration file, replacing the <code>project</code> and <code>name</code> variable definitions with your Project ID:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+provider "google" {
+  project     = "# REPLACE WITH YOUR PROJECT ID"
+  region      = "us-central-1"
+}
+resource "google_storage_bucket" "test-bucket-for-state" {
+  name        = "# REPLACE WITH YOUR PROJECT ID"
+  location    = "US"
+  uniform_bucket_level_access = true
+}
+</ql-code-block>
+<p>Learn more about Cloud Storage resources from the <a href="https://www.terraform.io/docs/providers/google/r/storage_bucket" target="_blank">Terraform Documentation</a>.</p>
+<ol start="5">
+<li>
+<p>Add a local backend to your <code>main.tf</code> file:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+terraform {
+  backend "local" {
+    path = "terraform/state/terraform.tfstate"
+  }
+}
+</ql-code-block>
+<p>This will reference a <code>terraform.tfstate</code> file in the <code>terraform/state</code> directory. To specify a different file path, change the <code>path</code> variable.</p>
+<p>The local backend stores state on the local filesystem, locks that state using system APIs, and performs operations locally.</p>
+<p>Terraform must initialize any configured backend before use. To do this, you will run <code>terraform init</code>. The <code>terraform init</code> command should be run by any member of your team on any Terraform configuration as a first step. It is safe to execute multiple times and performs all the setup actions required for a Terraform environment, including initializing the backend.</p>
+<p>The <code>init</code> command must be called:</p>
+<ul>
+<li>On any new environment that configures a backend</li>
+<li>On any change of the backend configuration (including type of backend)</li>
+<li>On removing backend configuration completely</li>
+</ul>
+<p>You don't need to remember these exact cases. Terraform will detect when initialization is required and present an error message in that situation. Terraform doesn't auto-initialize because it might require additional information from the user or perform state migrations, etc.</p>
+<ol start="6">
+<li>On the Cloud Shell toolbar, click <strong>Open Terminal</strong>, then initialize Terraform:</li>
+</ol>
+
+<ql-code-block language="plaintext">
+terraform init
+</ql-code-block>
+<ol start="7">
+<li>
+<p>Apply the changes. Type <strong>yes</strong> at the prompt to confirm:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+terraform apply
+</ql-code-block>
+<p>The Cloud Shell Editor should now display the state file called <code>terraform.tfstate</code> in the <code>terraform/state</code> directory.</p>
+<ol start="8">
+<li>
+<p>Examine your state file:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+terraform show
+</ql-code-block>
+<p>Your <code>google_storage_bucket.test-bucket-for-state</code> resource should be displayed.</p>
+<h3>Add a Cloud Storage backend</h3>
+<p>A Cloud Storage backend stores the state as an object in a configurable prefix in a given bucket on Cloud Storage. This backend also supports <a href="https://www.terraform.io/docs/state/locking.html" target="_blank">state locking</a>. This will lock your state for all operations that could write state. This prevents others from acquiring the lock and potentially corrupting your state.</p>
+<p>State locking happens automatically on all operations that could write state. You won't see any message that it is happening. If state locking fails, Terraform will not continue. You can disable state locking for most commands with the <code>-lock</code> flag, but this is not recommended.</p>
+<ol>
+<li>
+<p>Navigate back to your <code>main.tf</code> file in the editor. You will now replace the current local backend with a <code>gcs</code> backend.</p>
+</li>
+<li>
+<p>To change the existing local backend configuration, copy the following configuration into your file, replacing the <code>local</code> backend:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+terraform {
+  backend "gcs" {
+    bucket  = "# REPLACE WITH YOUR BUCKET NAME"
+    prefix  = "terraform/state"
+  }
+}
+</ql-code-block>
+<ql-infobox>
+<strong>Note:</strong> Be sure to update the variable definition of the <code>bucket</code>. If you didn't change the configuration, it will be the <code>name</code> from the <code>google_storage_bucket</code> resource. This bucket will be used to host the state file.
+</ql-infobox>
+<ol start="3">
+<li>
+<p>Initialize your backend again, this time to automatically migrate the state:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+terraform init -migrate-state
+</ql-code-block>
+<p>Type <strong>yes</strong> at the prompt to confirm.</p>
+<ol start="4">
+<li>
+<p>In the Cloud Console, in the <strong>Navigation menu</strong>, click <strong>Cloud Storage &gt; Buckets</strong>.</p>
+</li>
+<li>
+<p>Click on your bucket and navigate to the file <code>terraform/state/default.tfstate</code>. Your state file now exists in a Cloud Storage bucket!</p>
+</li>
+</ol>
+<ql-infobox><strong>Note: </strong>
+If you no longer want to use any backend, you can simply remove the configuration from the file. Terraform will detect this like any other change and prompt you to reinitialize.
+<p></p>
+As part of the reinitialization, Terraform will ask whether you want to migrate your state back down to normal local state. When this is complete, Terraform returns to behaving as it does by default.
+</ql-infobox>
+<h3>Refresh the state</h3>
+<p>The <code>terraform refresh</code> command is used to reconcile the state Terraform knows about (via its state file) with the real-world infrastructure. This can be used to detect any drift from the last-known state and to update the state file.</p>
+<p>This does not modify infrastructure, but does modify the state file. If the state is changed, this may cause changes to occur during the next plan or apply.</p>
+<ol>
+<li>
+<p>Return to your storage bucket in the Cloud Console. Select the check box next to the name.</p>
+</li>
+<li>
+<p>Click the <strong>Labels</strong> tab.</p>
+</li>
+<li>
+<p>Click <strong>Add Label</strong>. Set the <strong>Key 1</strong> = <code>key</code> and <strong>Value 1</strong> = <code>value</code>.</p>
+</li>
+<li>
+<p>Click <strong>Save</strong>.</p>
+</li>
+<li>
+<p>Return to Cloud Shell and use the following command to update the state file:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+terraform refresh
+</ql-code-block>
+<ol start="6">
+<li>
+<p>Examine the updates:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+terraform show
+</ql-code-block>
+<p>The <code>"key" = "value"</code> key-value pair should be displayed in the labels attribute of the configuration.</p>
+<p>Click <em>Check my progress</em> to verify the objective.
+<ql-activity-tracking step="1">
+Working with backends
+</ql-activity-tracking></p>
+<h3>Clean up your workspace</h3>
+<p>Before continuing to the next task, destroy your provisioned infrastructure.</p>
+<ol>
+<li>
+<p>First, revert your backend to <code>local</code> so you can delete the storage bucket. Copy and replace the <code>gcs</code> configuration with the following:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+terraform {
+  backend "local" {
+    path = "terraform/state/terraform.tfstate"
+  }
+}
+</ql-code-block>
+<ol start="2">
+<li>
+<p>Initialize the <code>local</code> backend again:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+terraform init -migrate-state
+</ql-code-block>
+<p>Type <strong>yes</strong> at the prompt to confirm.</p>
+<ol start="3">
+<li>
+<p>In the <code>main.tf</code> file, add the <code>force_destroy = true</code> argument to your <code>google_storage_bucket</code> resource. When you delete a bucket, this boolean option will <a href="https://www.terraform.io/docs/providers/google/r/storage_bucket#force_destroy" target="_blank">delete all contained objects</a>. If you try to delete a bucket that contains objects, Terraform will fail that run. Your resource configuration should resemble the following:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+resource "google_storage_bucket" "test-bucket-for-state" {
+  name        = "qwiklabs-gcp-03-c26136e27648"
+  location    = "US"
+  uniform_bucket_level_access = true
+  force_destroy = true
+}
+</ql-code-block>
+<ol start="4">
+<li>
+<p>Apply the changes:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+terraform apply
+</ql-code-block>
+<p>Type <code>yes</code> at the prompt to confirm.</p>
+<ol start="5">
+<li>
+<p>You can now successfully destroy your infrastructure:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+terraform destroy
+</ql-code-block>
+<p>Type <strong>yes</strong> at the prompt to confirm.</p>
+<h2 id="step6">Task 2. Import Terraform configuration</h2>
+<p>In this section, you will import an existing Docker container and image into an empty Terraform workspace. By doing so, you will learn strategies and considerations for importing real-world infrastructure into Terraform.</p>
+<p>The default Terraform workflow involves creating and managing infrastructure entirely with Terraform.</p>
+<ul>
+<li>
+<p>Write a Terraform configuration that defines the infrastructure you want to create.</p>
+</li>
+<li>
+<p>Review the Terraform plan to ensure that the configuration will result in the expected state and infrastructure.</p>
+</li>
+<li>
+<p>Apply the configuration to create your Terraform state and infrastructure.</p>
+</li>
+</ul>
+<p><img alt="Terraform workflow diagram" src="https://cdn.qwiklabs.com/aRZeb32%2B2mvoQlsw8BFZO%2BalSG9fMx9mElFoMGB6mc0%3D"></p>
+<p>After you create infrastructure with Terraform, you can update the configuration and plan and apply those changes. Eventually you will use Terraform to destroy the infrastructure when it is no longer needed. This workflow assumes that Terraform will create an entirely new infrastructure.</p>
+<p>However, you may need to manage infrastructure that wasn’t created by Terraform. Terraform import solves this problem by loading supported resources into your Terraform workspace’s state.</p>
+<p>The import command doesn’t automatically generate the configuration to manage the infrastructure, though. Because of this, importing existing infrastructure into Terraform is a multi-step process.</p>
+<p>Bringing existing infrastructure under Terraform’s control involves five main steps:</p>
+<ul>
+<li>Identify the existing infrastructure to be imported.</li>
+<li>Import the infrastructure into your Terraform state.</li>
+<li>Write a Terraform configuration that matches that infrastructure.</li>
+<li>Review the Terraform plan to ensure that the configuration matches the expected state and infrastructure.</li>
+<li>Apply the configuration to update your Terraform state.</li>
+</ul>
+<p><img alt="Terraform import workflow diagram" src="https://cdn.qwiklabs.com/feQ3c7%2Fby0X%2FS1RV9%2FMzQCVzbg30%2FYCHQairKWXjHF4%3D"></p>
+<p>In this section, first you will create a Docker container with the Docker CLI. Next, you will import it into a new Terraform workspace. Then you will update the container’s configuration using Terraform before finally destroying it when you are done.</p>
+<ql-warningbox>
+<b>Warning</b>: Importing infrastructure manipulates Terraform state in ways that could leave existing Terraform projects in an invalid state. Make a backup of your <code>terraform.tfstate</code> file and <code>.terraform</code> directory before using Terraform import on a real Terraform project, and store them securely.
+</ql-warningbox>
+<h3>Create a Docker container</h3>
+<ol>
+<li>
+<p>Create a container named <code>hashicorp-learn</code> using the latest NGINX image from Docker Hub, and preview the container on the Cloud Shell virtual machine over port 80 (HTTP):</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+docker run --name hashicorp-learn --detach --publish 8080:80 nginx:latest
+</ql-code-block>
+<ol start="2">
+<li>
+<p>Verify that the container is running:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+docker ps
+</ql-code-block>
+<ol start="3">
+<li>In the Cloud Shell pane, click <strong>Web Preview</strong>, and then click <strong>Preview on port 8080</strong>.</li>
+</ol>
+<p><img alt=" Web Preview options" src="https://cdn.qwiklabs.com/U3JuQ7kIog9oK2LV3y0kSIMOY3WMMCRzc5yN%2FoU4jw4%3D"></p>
+<p>Cloud Shell opens the preview URL on its proxy service in a new browser window and displays the NGINX default index page. Now you have a Docker image and container to import into your workspace and manage with Terraform.</p>
+<h3>Import the container into Terraform</h3>
+<ol>
+<li>
+<p>Clone the example repository:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+git clone https://github.com/hashicorp/learn-terraform-import.git
+</ql-code-block>
+<ol start="2">
+<li>
+<p>Change into that directory:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+cd learn-terraform-import
+</ql-code-block>
+<p>This directory contains two Terraform configuration files that make up the configuration you will use in this guide:</p>
+<ul>
+<li>
+<p><code>main.tf</code> file configures the Docker provider.</p>
+</li>
+<li>
+<p><code>docker.tf</code> file will contain the configuration necessary to manage the Docker container you created in an earlier step.</p>
+</li>
+</ul>
+<ol start="3">
+<li>
+<p>Initialize your Terraform workspace:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+terraform init
+</ql-code-block>
+<ql-infobox>
+<b>Note:</b> If you are getting an error like <b>Error: Failed to query available provider packages</b> then run this command: <code>terraform init -upgrade</code>
+</ql-infobox>
+<ol start="4">
+<li>
+<p>In the Cloud Shell Editor, navigate to <code>learn-terraform-import/main.tf</code>.</p>
+</li>
+<li>
+<p>Find the <code>provider: docker</code> resource and <strong>comment out or delete</strong> the <code>host</code> argument:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+provider "docker" {
+#   host    = "npipe:////.//pipe//docker_engine"
+}
+</ql-code-block>
+<ql-infobox><strong>Note: </strong>
+This is a current workaround for a known issue with a Docker initialization error.
+</ql-infobox>
+<ol start="6">
+<li>
+<p>Next, navigate to <code>learn-terraform-import/docker.tf</code>.</p>
+</li>
+<li>
+<p>Under the commented-out code, define an empty <code>docker_container</code> resource in your <code>docker.tf</code> file, which represents a Docker container with the Terraform resource ID <code>docker_container.web</code>:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+resource "docker_container" "web" {}
+</ql-code-block>
+<ol start="8">
+<li>
+<p>Find the name of the container you want to import: in this case, the container you created in the previous step:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+docker ps
+</ql-code-block>
+<ol start="9">
+<li>
+<p>Run the following <code>terraform import</code> command to attach the existing Docker container to the <code>docker_container.web</code> resource you just created. Terraform import requires this Terraform resource ID and the full Docker container ID. The command <code>docker inspect -f {{.ID}} hashicorp-learn</code> returns the full SHA256 container ID:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+terraform import docker_container.web $(docker inspect -f {{.ID}} hashicorp-learn)
+</ql-code-block>
+<ql-infobox>
+<strong>Note:</strong> The ID accepted by <code>terraform import</code> varies by resource type and is documented in the provider documentation for any resource that can be imported to Terraform. For this example, consult the <a href="https://www.terraform.io/docs/providers/docker/r/container#import" target="_blank">Docker provider documentation</a>
+</ql-infobox>
+<ol start="10">
+<li>
+<p>Verify that the container has been imported into your Terraform state:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+terraform show
+</ql-code-block>
+<p>This state contains everything that Terraform knows about the Docker container you just imported. However, Terraform import does <strong>not</strong> create the configuration for the resource.</p>
+<h3>Create configuration</h3>
+<p>You’ll need to create Terraform configuration before you can use Terraform to manage this container.</p>
+<ol>
+<li>
+<p>Run the following code:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+terraform plan
+</ql-code-block>
+<ql-warningbox><strong>Note: </strong>
+<b>Terraform will show errors</b> for the missing required arguments <code>image</code> and <code>name</code>. Terraform cannot generate a plan for a resource that is missing required arguments.
+</ql-warningbox>
+<p>There are two approaches to update the configuration in <code>docker.tf</code> to match the state you imported. You can either accept the entire current state of the resource into your configuration as-is or select the required attributes into your configuration individually. Each of these approaches can be useful in different circumstances.</p>
+<ul>
+<li>
+<p>Using the current state is often faster, but can result in an overly verbose configuration because every attribute is included in the state, whether it is necessary to include in your configuration or not.</p>
+</li>
+<li>
+<p>Individually selecting the required attributes can lead to more manageable configuration, but requires you to understand which attributes need to be set in the configuration.</p>
+</li>
+</ul>
+<p>For this lab's purposes, you will use the current state as the resource.</p>
+<ol start="2">
+<li>
+<p>Copy your Terraform state into your <code>docker.tf</code> file:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+terraform show -no-color &gt; docker.tf
+</ql-code-block>
+<ql-infobox>
+<b>Note:</b> The <code>&gt;</code> symbol will replace the entire contents of docker.tf with the output of the <code>terraform show</code> command. Although this works for this example, importing a resource into a configuration that already manages resources will require you to edit the output of <code>terraform show</code> to remove existing resources whose configuration you do not want to replace completely and merge the new resources into your existing configuration.
+</ql-infobox>
+<ol start="3">
+<li>
+<p>Inspect the <code>docker.tf</code> file to see that its contents have been replaced with the output of the terraform show command you just ran.</p>
+</li>
+<li>
+<p>Run the following code:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+terraform plan
+</ql-code-block>
+<p>Terraform will show warnings and errors about a deprecated argument ('links'), and several read-only arguments (<code>ip_address</code>, <code>network_data</code>, <code>gateway</code>, <code>ip_prefix_length</code>, <code>id</code>).</p>
+<p>These read-only arguments are values that Terraform stores in its state for Docker containers but that it cannot set via configuration because they are managed internally by Docker. Terraform can set the links argument with configuration, but still displays a warning because it is deprecated and might not be supported by future versions of the Docker provider.</p>
+<p>Because the approach shown here loads all of the attributes represented in Terraform state, your configuration includes optional attributes whose values are the same as their defaults. Which attributes are optional, and their default values, will vary from provider to provider, and are listed in the <a href="https://www.terraform.io/docs/providers/docker/r/container" target="_blank">provider documentation</a>.</p>
+<ol start="5">
+<li>
+<p>You can now selectively remove these optional attributes. <strong>Remove</strong> all of these attributes, <em>keeping only the required attributes</em>: <code>image</code>, <code>name</code>, and <code>ports</code>. After removing these optional attributes, your configuration should match the following:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+resource "docker_container" "web" {
+    image = "sha256:87a94228f133e2da99cb16d653cd1373c5b4e8689956386c1c12b60a20421a02"
+    name  = "hashicorp-learn"
+    ports {
+        external = 8080
+        internal = 80
+        ip       = "0.0.0.0"
+        protocol = "tcp"
+    }
+}
+</ql-code-block>
+<p>When importing real infrastructure, consult the provider documentation to learn what each argument does. This will help you to determine how to handle any errors or warnings from the plan step. For instance, the documentation for the <code>links</code> argument is in the <a href="https://www.terraform.io/docs/providers/docker/r/container#links" target="_blank">Docker provider documentation</a>.</p>
+<ol start="6">
+<li>
+<p>Verify that the errors have been resolved:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+terraform plan
+</ql-code-block>
+<p>The plan should now execute successfully. Notice that the plan indicates that Terraform will update the container to add the <code>attach</code>, <code>logs</code>, <code>must_run</code>, and <code>start</code> attributes.</p>
+<p>Terraform uses these attributes to create Docker containers, but Docker doesn’t store them. As a result, <code>terraform import</code> didn’t load their values into state. When you plan and apply your configuration, the Docker provider will assign the default values for these attributes and save them in state, but they won’t affect the running container.</p>
+<ol start="7">
+<li>
+<p>Apply the changes and finish the process of syncing your updated Terraform configuration and state with the Docker container they represent. Type <strong>yes</strong> at the prompt to confirm.</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+terraform apply
+</ql-code-block>
+<p>Now your configuration file, Terraform state, and the container are all in sync, and you can use Terraform to manage the Terraform container as you normally would.</p>
+<h3>Create image resource</h3>
+<p>In some cases, you can bring resources under Terraform's control without using the <code>terraform import</code> command. This is often the case for resources that are defined by a single unique ID or tag, such as Docker images.</p>
+<p>In your <code>docker.tf</code> file, the <code>docker_container.web</code> resource specifies the SHA256 hash ID of the image used to create the container. This is how docker stores the image ID internally, and so <code>terraform import</code> loaded the image ID directly into your state. However the image ID is not as human readable as the image tag or name, and it may not match your intent. For example, you might want to use the latest version of the "nginx" image.</p>
+<ol>
+<li>
+<p>To retrieve the image's tag name, run the following command, replacing <code>&lt;IMAGE-ID&gt;</code> with the image ID from <code>docker.tf</code>:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+docker image inspect &lt;IMAGE-ID&gt; -f {{.RepoTags}}
+</ql-code-block>
+<ol start="2">
+<li>
+<p>Add the following configuration to your <code>docker.tf</code> file to represent this image as a resource:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+resource "docker_image" "nginx" {
+  name         = "nginx:latest"
+}
+</ql-code-block>
+<ql-infobox>
+<strong>Note:</strong> Do not replace the image value in the <code>docker_container.web</code> resource yet, or Terraform will destroy and recreate your container. Because Terraform hasn’t loaded the <code>docker_image.nginx</code> resource into state yet, it does not have an image ID to compare with the hardcoded one, which will cause Terraform to assume the container must be replaced. To work around this situation, create the image first, and then update the container to use it, as shown in this lab.
+</ql-infobox>
+<ol start="3">
+<li>
+<p>Create an image resource in state:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+terraform apply
+</ql-code-block>
+<p>Now that Terraform has created a resource for the image, you can reference it in your container’s configuration.</p>
+<ol start="4">
+<li>
+<p>Change the image value for <code>docker_container.web</code> to reference the new image resource:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+resource "docker_container" "web" {
+    image = docker_image.nginx.latest
+    name  = "hashicorp-learn"
+    ports {
+        external = 8080
+        internal = 80
+        ip       = "0.0.0.0"
+        protocol = "tcp"
+    }
+}
+</ql-code-block>
+<ol start="5">
+<li>
+<p>Look for changes:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+terraform apply
+</ql-code-block>
+<p>Because <code>docker_image.nginx.latest</code> will match the hardcoded image ID you replaced, running <code>terraform apply</code> at this point will show no changes.</p>
+<ql-infobox>
+<strong>Note:</strong> If the image ID for the tag "nginx:latest" changed between the time you first created the Docker container and when you run this command, the container will be destroyed and recreated with the new image.
+</ql-infobox>
+<h3>Manage the container with Terraform</h3>
+<p>Now that Terraform manages the Docker container, use Terraform to change the configuration.</p>
+<ol>
+<li>
+<p>In your <code>docker.tf</code> file, change the container's external port from <code>8080</code> to <code>8081</code>:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+resource "docker_container" "web" {
+  name  = "hashicorp-learn"
+  image = docker_image.nginx.latest
+  ports {
+    external = 8081
+    internal = 80
+    ip       = "0.0.0.0"
+    protocol = "tcp"
+  }
+}
+</ql-code-block>
+<ol start="2">
+<li>
+<p>Apply the change:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+terraform apply
+</ql-code-block>
+<p>Type <code>yes</code> at the prompt to confirm.</p>
+<p>This will cause Terraform to destroy and recreate the container with the new port configuration.</p>
+<ol start="3">
+<li>
+<p>Verify that the container has been replaced with a new one with the new configuration:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+docker ps
+</ql-code-block>
+<p>Notice that the container ID has changed. Because changing the port configuration required destroying and recreating it, this is a completely new container.</p>
+
+<h3>Destroy infrastructure</h3>
+<p>You have now imported your Docker container and the image used to create it into Terraform.</p>
+<ol>
+<li>
+<p>Destroy the container and image:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+terraform destroy
+</ql-code-block>
+<p>Type <code>yes</code> at the prompt to confirm.</p>
+<ol start="2">
+<li>
+<p>Validate that the container was destroyed:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+docker ps --filter "name=hashicorp-learn"
+</ql-code-block>
+<ql-infobox>
+<strong>Note: </strong>Because you added the image to both your Terraform configuration and the container, the image will be removed from both Docker and the container. If  another container was using the same image, the destroy step would fail. Remember that importing a resource into Terraform means that Terraform will manage the entire lifecycle of the resource, including destruction.
+</ql-infobox>
+<h2 id="step7">Limitations and other considerations</h2>
+<p>There are several important things to consider when importing resources into Terraform.</p>
+<p>Terraform import can only know the current state of infrastructure as reported by the Terraform provider. It does not know:</p>
+<ul>
+<li>Whether the infrastructure is working correctly.</li>
+<li>The intent of the infrastructure.</li>
+<li>Changes you've made to the infrastructure that aren't controlled by Terraform; for example, the state of a Docker container's filesystem.</li>
+</ul>
+<p>Importing involves manual steps which can be error-prone, especially if the person importing resources lacks the context of how and why those resources were created originally.</p>
+<p>Importing manipulates the Terraform state file; you may want to create a backup before importing new infrastructure.</p>
+<p>Terraform import doesn’t detect or generate relationships between infrastructure.</p>
+<p>Terraform doesn’t detect default attributes that don’t need to be set in your configuration.</p>
+<p>Not all providers and resources support Terraform import.</p>
+<p>Importing infrastructure into Terraform does not mean that it can be destroyed and recreated by Terraform. For example, the imported infrastructure could rely on other unmanaged infrastructure or configuration.</p>
+<p>Following infrastructure as code (IaC) best practices such as <a href="https://www.hashicorp.com/resources/what-is-mutable-vs-immutable-infrastructure" target="_blank">immutable infrastructure</a> can help prevent many of these problems, but infrastructure created manually is unlikely to follow IaC best practices.</p>
+<p>Tools such as <a href="https://github.com/GoogleCloudPlatform/terraformer" target="_blank">Terraformer</a> can automate some manual steps associated with importing infrastructure. However, these tools are not part of Terraform itself and are not endorsed or supported by HashiCorp.</p>
+<h2 id="step8">Congratulations!</h2>
+<p>In this lab, you learned how to manage backends and state with Terraform. You created local and Cloud Storage backends to manage your state file, refreshed your state, and imported configuration into Terraform. You then updated the configuration and manually edited to fully manage the Docker container with Terraform.</p>
+<h3>Finish your quest</h3>
+<p>This self-paced lab is part of the <a href="https://google.qwiklabs.com/quests/159" target="_blank">Automating Infrastructure on Google Cloud with Terraform</a> quest. A quest is a series of related labs that form a learning path. Completing this quest earns you a badge to recognize your achievement. You can make your badge or badges public and link to them in your online resume or social media account. <a href="https://www.cloudskillsboost.google/quests/159/enroll" target="_blank">Enroll in this quest</a>  and get immediate completion credit.  See the <a href="http://cloudskillsboost.google/catalog" target="_blank">Google Cloud Skills Boost catalog</a> to see all available quests.</p>
+<h3>Take your next lab</h3>
+<p>Continue your quest with the next lab, <a href="https://google.qwiklabs.com/catalog_lab/3505" target="_blank">Automating Infrastructure on Google Cloud with Terraform: Challenge Lab</a>.</p>
+<h3>Next steps / Learn more</h3>
+<p>Be sure to check out the following to receive more hands-on practice with Terraform:</p>
+<ul>
+<li>
+<a href="https://console.cloud.google.com/marketplace/browse?q=Hashicorp&amp;utm_source=Hashicorp&amp;utm_medium=qwiklabs&amp;utm_campaign=Qwiklabs+to+Marketplace" target="_blank">Hashicorp</a> on the Google Cloud Marketplace!</li>
+<li><a href="https://learn.hashicorp.com/terraform" target="_blank">Hashicorp Learn</a></li>
+<li><a href="https://www.terraform.io/community.html" target="_blank">Terraform Community</a></li>
+<li><a href="https://github.com/GoogleCloudPlatform/terraform-google-examples" target="_blank">Terraform Google Examples</a></li>
+</ul>
+<h3>Google Cloud training and certification</h3>
+<p>...helps you make the most of Google Cloud technologies. <a href="https://cloud.google.com/training/courses" target="_blank">Our classes</a> include technical skills and best practices to help you get up to speed quickly and continue your learning journey. We offer fundamental to advanced level training, with on-demand, live, and virtual options to suit your busy schedule. <a href="https://cloud.google.com/certification/" target="_blank">Certifications</a> help you validate and prove your skill and expertise in Google Cloud technologies.</p>
+<p><strong>Manual Last Updated November 30, 2022</strong></p>
+<p><strong>Lab Last Tested November 30, 2022</strong></p>
+<p>Copyright 2022 Google LLC All rights reserved. Google and the Google logo are trademarks of Google LLC. All other company and product names may be trademarks of the respective companies with which they are associated.</p>
+
+</div>
+</div>
+
+
+<div class='lab-content__end-lab-button js-end-lab-button-container hidden'>
+<ql-lab-control-button class='js-end-lab-button' running></ql-lab-control-button>
+</div>
+<!-- / TODO: Move recommendations into the end lab modal -->
+<div class='lab-content__renderable-instructions'>
+<div class='lab-content__recommendation'>
+<!-- # TODO: Change classes so that this doesn't stack vertically -->
+<section class='upcoming-cards'>
+<h2 class='ql-headline-4'>Continue questing</h2>
+<div class='activity-cards'>
+<ql-activity-card aria-label='Automating Infrastructure on Google Cloud with Terraform: Challenge Lab' name='Automating Infrastructure on Google Cloud with Terraform: Challenge Lab' path='/focuses/16515?parent=catalog' progress='0.0' type='lab'></ql-activity-card>
+
+</div>
+</section>
+
+</div>
+
+</div>
+</ql-drawer-content>
+<ql-drawer end id='outline-drawer' open slot='drawer' width='320'>
+<div aria-label='Lab Table of Contents' role='navigation'>
+<ul class='lab-content__outline js-lab-content-outline'>
+<li><a href="#step1">GSP752</a></li><li><a href="#step2">Overview</a></li><li><a href="#step3">Setup and requirements</a></li><li><a href="#step4">Purpose of Terraform state</a></li><li><a href="#step5">Task 1. Working with backends</a></li><li><a href="#step6">Task 2. Import Terraform configuration</a></li><li><a href="#step7">Limitations and other considerations</a></li><li><a href="#step8">Congratulations!</a></li>
+</ul>
+</div>
+</ql-drawer>
+</ql-drawer-container>
+</ql-drawer-content>
+</ql-drawer-container>
+
+
+
+</div>
+</main>
+
+<span class='hidden' id='flash-sibling-before'></span>
+<ql-snackbar></ql-snackbar>
+
+
+<div class='modal fade' id='lab-details-modal'>
+<div class='modal-container'>
+<div class='modal-content mdl-shadow--24dp'>
+<div class='modal-body'>
+<p class='l-mbm'>
+In this hands-on lab you will import existing infrastructure, write Terraform configuration that matches that infrastructure, and manipulate state storage with Terraform.
+</p>
+<p>
+This lab is included in these quests:
+<a href="/quests/159">Automating Infrastructure on Google Cloud with Terraform</a>, <a href="/quests/212">Creating Infrastructure on Google Cloud with Terraform</a>, <a href="/quests/250">Qwiklabs Trivia December 2022</a>.
+If you complete this lab you&#39;ll receive credit for it when you enroll in one of these quests.
+</p>
+<p class='small-label l-mbs'>
+<strong>
+Duration:
+</strong>
+0m setup
+&middot;
+60m access
+&middot;
+60m completion
+</p>
+<p class='small-label l-mbs'>
+<strong>AWS Region:</strong>
+[] <strong></strong>
+</p>
+<p class='small-label l-mbs'>
+<span><strong>Levels: </strong>introductory</span>
+</p>
+<p class='small-label'>
+<strong>
+Permalink:
+</strong>
+<a href="https://partner.cloudskillsboost.google/catalog_lab/3363">https://partner.cloudskillsboost.google/catalog_lab/3363</a>
+</p>
+</div>
+<div class='modal-actions'>
+<a class='button button--text' data-dismiss='modal'>
+Got It
+</a>
+</div>
+
+
+</div>
+</div>
+<iframe class='l-ie-iframe-fix' tabindex='-1' title='modal'></iframe>
+</div>
+<ql-dialog headline='How satisfied are you with this lab?&lt;span aria-hidden=&quot;true&quot;&gt;*&lt;/span&gt;' id='lab-review-dialog'>
+<form class="simple_form js-lab-review-form" id="edit_lab_review_29047965" action="/lab_reviews/29047965" accept-charset="UTF-8" data-remote="true" method="post"><input name="utf8" type="hidden" value="&#x2713;" autocomplete="off" /><input type="hidden" name="_method" value="patch" autocomplete="off" /><div aria-labelledby='lab-review-dialog' aria-required='true' aria-valuemax='5' aria-valuemin='0' aria-valuenow='5' class='rateit js-rateit' data-rateit-max='5' data-rateit-min='0' data-rateit-resetable='false' data-rateit-step='1' data-rateit-value='5' id='lab-review-rateit' role='slider' tabindex='0'></div>
+<div class='l-mtm'>
+
+<div class="control-group hidden lab_review_user_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" value="11061062" name="lab_review[user_id]" id="lab_review_user_id" /></div></div>
+<div class="control-group hidden lab_review_classroom_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" name="lab_review[classroom_id]" id="lab_review_classroom_id" /></div></div>
+<div class="control-group hidden lab_review_lab_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" value="3363" name="lab_review[lab_id]" id="lab_review_lab_id" /></div></div>
+<div class="control-group hidden lab_review_focus_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" name="lab_review[focus_id]" id="lab_review_focus_id" /></div></div>
+<div class="control-group hidden lab_review_rating"><div class="controls"><input class="hidden js-rating-input" autocomplete="off" type="hidden" value="2" name="lab_review[rating]" id="lab_review_rating" /></div></div>
+<div class="control-group text optional lab_review_comment"><label class="text optional control-label" for="lab_review_comment">Additional Comments</label><div class="controls"><textarea class="text optional" name="lab_review[comment]" id="lab_review_comment">
+</textarea></div></div>
+</div>
+</form><ql-button disabled id='submit' label='Submit' slot='action' text></ql-button>
+</ql-dialog>
+
+<ql-dialog headline='All done? If you end this lab, you will lose all your work. You may not be able to restart the lab if there is a quota limit. Are you sure you want to end this lab?' icon='error_outline' id='js-lab-are-you-sure-dialog'>
+<ql-button id='js-are-you-sure-button' label='Submit' slot='action' text></ql-button>
+</ql-dialog>
+
+
+<script>
+  $(function() {
+    ql.initMaterialInputs();
+    initChosen();
+    initSearch();
+    initTabs();
+    ql.list.init();
+    ql.favoriting.init();
+    ql.header.myAccount.init();
+    initTooltips();
+    ql.autocomplete.init();
+    ql.modals.init();
+    ql.toggleButtons.init();
+    ql.analytics.init();
+    ql.favoriting.init();
+  ql.chat.init();
+  ql.jumpContent.init();
+  ql.labControlPanel.addRecaptchaErrorHandler();
+  initLabContent();
+  ql.labOutline.links.init();
+  initLabReviewModal();
+  initLabReviewTranslations( {"star_amount_1":"1 of 5 stars","star_amount_2":"2 of 5 stars","star_amount_3":"3 of 5 stars","star_amount_4":"4 of 5 stars","star_amount_5":"5 of 5 stars"} )
+  ql.labAssessment.init();
+  ql.labData.init();
+  initLabTranslations( {"are_you_sure":"All done? If you end this lab, you will lose all your work. You may not be able to restart the lab if there is a quota limit. Are you sure you want to end this lab?","in_progress":"*In Progress*","ending":"*Ending*","starting":"*Starting, please wait*","end_concurrent_labs":"Sorry, you can only run one lab at a time. To start this lab, please confirm that you want all of your existing labs to end.","copied":"Copied","no_resource":"Error retrieving resource.","no_support":"No Support","mac_press":"Press ⌘-C to copy","thanks_review":"Thanks for reviewing this lab.","windows_press":"Press Ctrl-C to copy","days":"days"} );
+  ql.labRun.init();
+  ql.navPanel.init();
+  ql.navigation.init();
+  
+  });
+</script>
+
+</body>
+</html>
+

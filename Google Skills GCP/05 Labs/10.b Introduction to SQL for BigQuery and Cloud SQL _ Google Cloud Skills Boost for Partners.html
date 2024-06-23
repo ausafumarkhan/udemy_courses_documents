@@ -1,0 +1,1244 @@
+
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<title>Introduction to SQL for BigQuery and Cloud SQL | Google Cloud Skills Boost for Partners</title>
+<meta name="action-cable-url" content="/cable" />
+<script>
+//<![CDATA[
+window.gon={};gon.deployment="googlecourses-run";
+//]]>
+</script>
+<script>
+  (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer',"GTM-5XSKHDX");
+</script>
+<script src="https://cdn.qwiklabs.com/assets/hallofmirrors/polyfills/webcomponents-loader-8583b47b01e40e6ea7bf1ad443a20b7e79bbdd5eafac009806a228c91a97282c.js"></script>
+<script src="https://cdn.qwiklabs.com/assets/vendor-beb958bea8eff6a4ad4cf8f36a0a676817a4857e214b17ae983796071a4a816d.js"></script>
+<script src="https://cdn.qwiklabs.com/assets/application-8194cda6ef3c11dc4405ed62cf7fc7697cbe39d472be22a7c9d4bd377a7b77f0.js"></script>
+<script src="https://cdn.qwiklabs.com/assets/hallofmirrors/hallofmirrors-f8d9fcf289db0acb0062699ca48080cfaf9b1703f4acd2d7d8bacd8bb0bedf3d.js"></script>
+<!--[if lt IE 9]>
+<script src='http://html5shim.googlecode.com/svn/trunk/html5.js' type='text/javascript'></script>
+<![endif]-->
+<!--[endif]>  <![endif]-->
+<script id='ze-snippet' src='https://static.zdassets.com/ekr/snippet.js?key=511e4158-0aec-4e3c-b2e6-4daa1769f51e'></script>
+<script>
+  ql.perfTest.init();
+</script>
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="QJJWZ7vX98Eb/o05ElDe6p7OmMSqw5wFd5f59nlzlCbjCJewMt3FRUAignm1Mq598V4ZI6McGnbBSXs52ITMsA==" />
+<meta content='width=device-width, initial-scale=1.0, user-scalable=yes' name='viewport'>
+<meta content='1rRsY0INj8RvwB5EF5pwdxt2A2P9aDgAlsICaJ0d5w0' name='google-site-verification'>
+<meta content='#3681E4' property='msapplication-TileColor'>
+<meta content='/favicon-144.png' property='msapplication-TileImage'>
+<meta content='[{&quot;id&quot;:&quot;recaptcha_experiment&quot;,&quot;optimize_id&quot;:&quot;dpViOcLkT3qS4TvL2mRojA&quot;,&quot;title&quot;:&quot;No Recaptcha shown for trusted users&quot;,&quot;variant_index&quot;:0,&quot;variant&quot;:&quot;original&quot;}]' name='active-experiments'>
+<meta content='{&quot;userId&quot;:11061062,&quot;experimentIds&quot;:[&quot;programs&quot;,&quot;chat_off_for_signed_out_users&quot;,&quot;course_upgrade&quot;,&quot;program_learning_assignment&quot;,&quot;perf_test&quot;,&quot;program_groups&quot;,&quot;teams&quot;,&quot;canonical_domain_redirect&quot;,&quot;program_resources&quot;,&quot;used_in&quot;,&quot;community_forum&quot;,&quot;enforce_codebuild_verdicts&quot;,&quot;peer_assignment&quot;,&quot;oauth_risc_shutoff&quot;,&quot;show_annual_purchase_now&quot;,&quot;alexandria_show_bundle_errors&quot;,&quot;search_updates&quot;]}' name='help-api-product-data'>
+<meta content='{&quot;groupIds&quot;:[&quot;non_suadmins&quot;,&quot;students&quot;,&quot;non_organization&quot;,&quot;non_program&quot;]}' name='help-api-custom-data'>
+<meta content='In this lab you will learn fundamental SQL clauses and will get hands on practice running structured  queries on BigQuery and Cloud SQL. ' name='description'>
+<meta content='Qwiklabs' name='author'>
+<meta content='Introduction to SQL for BigQuery and Cloud SQL | Google Cloud Skills Boost for Partners' property='og:title'>
+<meta content='website' property='og:type'>
+<meta content='/favicon-144.png' property='og:image'>
+<meta content='Qwiklabs' property='og:site_name'>
+<meta content='In this lab you will learn fundamental SQL clauses and will get hands on practice running structured  queries on BigQuery and Cloud SQL. ' property='og:description'>
+<meta content='/qwiklabs_logo_900x887.png' property='og:logo' size='900x887'>
+<meta content='/qwiklabs_logo_994x187.png' property='og:logo' size='994x187'>
+
+
+<meta property="og:url" content="https://partner.cloudskillsboost.google/focuses/11575?parent=catalog" /><link href="https://partner.cloudskillsboost.google/focuses/11575?parent=catalog" rel="canonical" />
+<link color='#3681E4' href='/favicon-svg.svg' rel='mask-icon'>
+<link href='/favicon-180.png' rel='apple-touch-icon-precomposed'>
+<link href='https://cdn.qwiklabs.com/Vag5GK2J6rS6843Qvg8TQJ1kEbAsEmQoF0%2BdLRfcLRE%3D' rel='shortcut icon' type='image/x-icon'>
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oswald:400|Roboto+Mono:400,700|Roboto:300,400,500,700|Google+Sans:300,400,500,700|Google+Sans+Display:400|Material+Icons|Google+Material+Icons" media="screen" />
+
+<link rel="stylesheet" href="https://cdn.qwiklabs.com/assets/application-9c3b65b21d70e11e97ae9ab48dd150018a15c36cd951e52fe5574dfa177e8bc8.css" media="all" />
+
+
+<style>
+  :root {
+    --primary-text-on-surface-color: #1a73e8;
+    --primary-text-on-surface-color-dark: #1568d6;
+    --primary-text-on-surface-color-darker: #135ec1;
+    --primary-text-on-surface-color-darkest: #1154ac;
+    --primary-surface-color: #1a73e8;
+    --primary-surface-color-rgb: 26,115,232;
+    --primary-surface-color-light: #d1e3fa;
+    --primary-surface-color-lightest: #e8f1fd;
+    --text-on-primary-color: #ffffff;
+    --accent-text-on-surface-color: #f29900;
+    --accent-surface-color: #f9ab00;
+    --accent-surface-color-rgb: 249,171,0;
+    --accent-surface-color-light: #ffefcc;
+    --text-on-accent-color: #202124;
+  }
+</style>
+
+<style>
+  :root {
+    --navbar-height: 112px;
+  }
+</style>
+
+
+
+</head>
+<body class='lab-show l-full no-nav application-new focuses focuses-show lab-show l-full no-nav '>
+<div class='header-container'>
+<div class='header'>
+<ql-toolbar jumpEnabled>
+<div class='header__title' slot='title'>
+<ql-icon-button label="Back" href="https://partner.cloudskillsboost.google/quests/119" id="832f08555fd8c2f2" target="_self" tip="Back">arrow_back</ql-icon-button>
+<h1 class='ql-headline-6'>Introduction to SQL for BigQuery and Cloud SQL</h1>
+</div>
+<div class='header__actions' slot='action'>
+<ql-icon-button icon='share' id='share_1282' label='Share on social media' tip='Share'></ql-icon-button>
+<ql-menu for='share_1282'>
+<ql-menu-item data-analytics-action='Shared to LinkedIn Feed.' data-analytics-category='Lab' data-analytics-label='Introduction to SQL for BigQuery and Cloud SQL' href='https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fpartner.cloudskillsboost.google%2Fcatalog_lab%2F1282%3Futm_medium%3Dsocial%26utm_source%3Dlinkedin%26utm_campaign%3Dql-social-share' icon='post_linkedin' label='Share on LinkedIn Feed' role='link' target='_blank'>
+<span class='label'>Share on LinkedIn Feed</span>
+</ql-menu-item>
+
+<ql-menu-item data-analytics-action='Shared to Twitter.' data-analytics-category='Lab' data-analytics-label='Introduction to SQL for BigQuery and Cloud SQL' href='https://twitter.com/intent/tweet?text=Learn%20cloud%20tech%20through%20hands-on%20training%20on%20%23Qwiklabs%21&amp;url=https%3A%2F%2Fpartner.cloudskillsboost.google%2Fcatalog_lab%2F1282%3Futm_medium%3Dsocial%26utm_source%3Dtwitter%26utm_campaign%3Dql-social-share&amp;hashtags=' icon='post_twitter' label='Twitter' role='link' target='_blank'>
+<span class='label'>Twitter</span>
+</ql-menu-item>
+
+<ql-menu-item data-analytics-action='Shared to Facebook.' data-analytics-category='Lab' data-analytics-label='Introduction to SQL for BigQuery and Cloud SQL' href='https://facebook.com/sharer.php?display=popup&amp;u=https%3A%2F%2Fpartner.cloudskillsboost.google%2Fcatalog_lab%2F1282%3Futm_medium%3Dsocial%26utm_source%3Dfacebook%26utm_campaign%3Dql-social-share' icon='post_facebook' label='Facebook' role='link' target='_blank'>
+<span class='label'>Facebook</span>
+</ql-menu-item>
+
+<ql-copyable-input label='Share Link' value='https://partner.cloudskillsboost.google/catalog_lab/1282'></ql-copyable-input>
+</ql-menu>
+
+<ql-icon-button class='icon-button js-favorite-button favorite-button' data-id='11575' data-name='Introduction to SQL for BigQuery and Cloud SQL' data-type='CatalogItem' href='/favorite.json?item_id=11575&amp;item_type=CatalogItem' id='CatalogItem-11575-favorite-button' label='Add to favorites' tip='Add to favorites'>
+favorite_border
+</ql-icon-button>
+
+
+
+<ql-icon-button id='control-panel-target' style='display: none;'>
+dashboard
+</ql-icon-button>
+<ql-menu for='control-panel-target' id='control-panel-menu'></ql-menu>
+<ql-icon-button class='mobile-hide' icon='help_outline' id='help-menu-button' label='Open help menu' tip='Help'></ql-icon-button>
+<ql-menu for='help-menu-button' id='help-menu'>
+<ql-menu-item data-analytics-action='opened_help' data-analytics-label='lab' label='Help Center' onclick='hallofmirrors.helpService.startHelp({&quot;productData&quot;:{&quot;userId&quot;:11061062},&quot;context&quot;:&quot;lab&quot;})'></ql-menu-item>
+<ql-menu-item href='mailto:support@qwiklabs.com' label='Email support'></ql-menu-item>
+<ql-menu-item label='Chat support' onClick='ql.chat.open()'></ql-menu-item>
+</ql-menu>
+
+<ql-icon-button class='mobile-hide' icon='language' id='language' label='Select your language preference' tip='Language'></ql-icon-button>
+<ql-menu for='language'>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='ar' href='/focuses/11575?locale=ar&amp;parent=catalog' label='العربية‬‎' lang='ar'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='de' href='/focuses/11575?locale=de&amp;parent=catalog' label='Deutsch' lang='de'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='en' href='/focuses/11575?locale=en&amp;parent=catalog' label='English' lang='en'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='es' href='/focuses/11575?locale=es&amp;parent=catalog' label='español (Latinoamérica)' lang='es'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='fr' href='/focuses/11575?locale=fr&amp;parent=catalog' label='français' lang='fr'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='fr_CA' href='/focuses/11575?locale=fr_CA&amp;parent=catalog' label='français (Canada)' lang='fr-CA'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='he' href='/focuses/11575?locale=he&amp;parent=catalog' label='עברית' lang='he'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='id' href='/focuses/11575?locale=id&amp;parent=catalog' label='bahasa Indonesia' lang='id'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='it' href='/focuses/11575?locale=it&amp;parent=catalog' label='Italiano' lang='it'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='ja' href='/focuses/11575?locale=ja&amp;parent=catalog' label='日本語' lang='ja'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='ko' href='/focuses/11575?locale=ko&amp;parent=catalog' label='한국어' lang='ko'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='pl' href='/focuses/11575?locale=pl&amp;parent=catalog' label='Polski' lang='pl'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='pt_BR' href='/focuses/11575?locale=pt_BR&amp;parent=catalog' label='português (Brasil)' lang='pt-BR'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='pt_PT' href='/focuses/11575?locale=pt_PT&amp;parent=catalog' label='português (Portugal)' lang='pt-PT'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='ru' href='/focuses/11575?locale=ru&amp;parent=catalog' label='русский' lang='ru'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='tr' href='/focuses/11575?locale=tr&amp;parent=catalog' label='Türkçe' lang='tr'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='uk' href='/focuses/11575?locale=uk&amp;parent=catalog' label='український' lang='uk'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='zh' href='/focuses/11575?locale=zh&amp;parent=catalog' label='简体中文' lang='zh'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='zh_TW' href='/focuses/11575?locale=zh_TW&amp;parent=catalog' label='繁體中文' lang='zh-TW'></ql-menu-item>
+</ql-menu>
+
+<ql-icon-button id='my_account' label='My account' tip='My account'>
+<ql-avatar></ql-avatar>
+</ql-icon-button>
+<ql-menu for='my_account' id='my_account_menu' style='max-height: 640px'>
+<div class='my-account-menu'>
+<ql-avatar class='l-mtl l-mbl' size='120'></ql-avatar>
+<div class='my-account-menu__user-info l-mbl'>
+<h4 class='ql-subhead-1'>Ausaf Khan</h4>
+<p class='ql-body-2 text--light'>ausaf.khan@rakuten.com</p>
+<p class='ql-body-2 text--light'>
+</p>
+<a class="text--green ql-subhead-2" href="/my_account/payments"><ql-chip positive>
+0 Credits
+</ql-chip>
+</a></div>
+<div class='buttons l-mbl'>
+<a class="button button--hairline l-mrm" id="profile" href="/public_profiles/1d61c1a3-8a07-4495-8abe-b57e519718e6">Public Profile</a>
+<a class="button button--hairline" id="settings" href="/my_account/profile">Settings</a>
+</div>
+<hr>
+<ql-button data-analytics-action='clicked_sign_out' href='/users/sign_out' method='delete'>
+Sign Out
+</ql-button>
+<div class='privacy l-mtl'>
+<a target="_blank" class="ql-caption text--light" href="/privacy_policy">Privacy</a>
+<span class='ql-caption text--light l-mls l-mrs'>&middot;</span>
+<a class="ql-caption text--light" href="/terms_of_service">Terms</a>
+</div>
+</div>
+</ql-menu>
+
+</div>
+</ql-toolbar>
+
+</div>
+</div>
+
+<nav class='nav-panel js-nav-panel'>
+<div class='nav-panel__logo'>
+<div class="custom-logo"><img alt="Google Cloud Skills Boost for Partners" height="24" aria-label="Google Cloud Skills Boost for Partners" src="https://cdn.qwiklabs.com/PGyhmgS3zZncIEGywnx5UXsKwepRRFQ9BhAg%2FWHNrlQ%3D" /></div>
+</div>
+<nav class='ql-sidenav'>
+<ql-sidenav-item href='/' icon='home' label='Paths'></ql-sidenav-item>
+
+<ql-sidenav-item active href='/catalog' icon='school' label='Explore'></ql-sidenav-item>
+
+<ql-sidenav-item href='/profile' icon='event_note' label='Profile'></ql-sidenav-item>
+
+</nav>
+
+</nav>
+<div class='nav-panel__overlay js-nav-toggle'></div>
+
+<main class='js-main' id='jump-content'>
+<div class='l-main-wrapper' id='main-wrapper'>
+
+
+
+
+<div class='lab-assessment__tab js-open-lab-assessment-panel'>
+<button class='js-lab-assessment-total-score'>
+—/100
+</button>
+</div>
+<div aria-labelledby='lab-assessment-checkpoint' class='lab-assessment__panel js-lab-assessment-panel' role='dialog'>
+<div class='lab-assessment__panel__header'>
+<h4 id='lab-assessment-checkpoint'>Checkpoints</h4>
+<ql-icon-button class='js-close-lab-assessment-panel' icon='arrow_forward' label='Close dialog'></ql-icon-button>
+</div>
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Create a cloud storage bucket
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button class='js-show-run-step-button' description='Create a cloud storage bucket' step_no='1'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-1'>
+</span>
+/ 25
+</p>
+</div>
+</div>
+
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Upload CSV files to Cloud Storage
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button class='js-show-run-step-button' description='Upload CSV files to Cloud Storage' step_no='2'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-2'>
+</span>
+/ 25
+</p>
+</div>
+</div>
+
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Create a Cloud SQL instance
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button class='js-show-run-step-button' description='Create a Cloud SQL instance' step_no='3'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-3'>
+</span>
+/ 25
+</p>
+</div>
+</div>
+
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Create a database
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button class='js-show-run-step-button' description='Create a database' step_no='4'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-4'>
+</span>
+/ 25
+</p>
+</div>
+</div>
+
+</div>
+<ql-drawer-container class='js-lab-state' data-analytics-payload='{&quot;label&quot;:&quot;Introduction to SQL for BigQuery and Cloud SQL&quot;,&quot;lab_name&quot;:&quot;Introduction to SQL for BigQuery and Cloud SQL&quot;,&quot;classroom_name&quot;:null,&quot;deployment&quot;:&quot;googlecourses-run&quot;}' data-credits='0.0' data-focus-id='11575' data-lab-billing-limit='0.0' data-lab-duration='4500' data-parent='catalog' data-recaptcha-enabled id='lab-container'>
+<ql-drawer id='terminal-drawer' slot='drawer' style='width: calc(100% - 480px)'>
+<iframe allow='clipboard-read' class='terminal' id='embedded-resource'></iframe>
+</ql-drawer>
+<ql-drawer-content class='js-lab-wrapper' id='lab-content' slot='drawer-content'>
+<ql-drawer-container id='lab-content-container'>
+<ql-drawer id='control-panel-drawer' open slot='drawer' width='320'>
+<ql-lab-control-panel class='ql-lab-control-panel__max-height control-panel js-lab-control-panel' connectionFiles='[]' labControlButton='{&quot;disabled&quot;:false,&quot;pending&quot;:false,&quot;running&quot;:false}' labDetails='[]' labTimer='{&quot;ticking&quot;:false,&quot;secondsRemaining&quot;:4500}' studentResources='[]'>
+<script src="https://www.recaptcha.net/recaptcha/api.js?render=6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr"   ></script>
+        <script>
+          // Define function so that we can call it again later if we need to reset it
+          // This executes reCAPTCHA and then calls our callback.
+          function executeRecaptchaForStartLab() {
+            grecaptcha.ready(function() {
+              grecaptcha.execute('6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr', {action: 'start_lab'}).then(function(token) {
+                setInputWithRecaptchaResponseTokenForStartLab('g-recaptcha-response-data-start-lab', token)
+              });
+            });
+          };
+          // Invoke immediately
+          executeRecaptchaForStartLab()
+
+          // Async variant so you can await this function from another async function (no need for
+          // an explicit callback function then!)
+          // Returns a Promise that resolves with the response token.
+          async function executeRecaptchaForStartLabAsync() {
+            return new Promise((resolve, reject) => {
+             grecaptcha.ready(async function() {
+                resolve(await grecaptcha.execute('6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr', {action: 'start_lab'}))
+              });
+            })
+          };
+
+                    var setInputWithRecaptchaResponseTokenForStartLab = function(id, token) {
+            var element = document.getElementById(id);
+            element.value = token;
+          }
+
+        </script>
+<input type="hidden" name="g-recaptcha-response-data[start_lab]" id="g-recaptcha-response-data-start-lab" data-sitekey="6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr" class="g-recaptcha g-recaptcha-response "/>
+
+<div aria-live='polite' class='hidden' id='recaptcha-v2-start-lab' slot='recaptcha'>
+<script src="https://www.recaptcha.net/recaptcha/api.js" async defer ></script>
+<div data-sitekey="6LeOI8IUAAAAAPkHlMAE9NReCD_1WD81iYlBlCnV" data-callback="recaptchaComplete" data-expired-callback="expireV2Token" class="g-recaptcha "></div>
+          <noscript>
+            <div>
+              <div style="width: 302px; height: 422px; position: relative;">
+                <div style="width: 302px; height: 422px; position: absolute;">
+                  <iframe
+                    src="https://www.recaptcha.net/recaptcha/api/fallback?k=6LeOI8IUAAAAAPkHlMAE9NReCD_1WD81iYlBlCnV"
+                    name="ReCAPTCHA"
+                    style="width: 302px; height: 422px; border-style: none; border: 0; overflow: hidden;">
+                  </iframe>
+                </div>
+              </div>
+              <div style="width: 300px; height: 60px; border-style: none;
+                bottom: 12px; left: 25px; margin: 0px; padding: 0px; right: 25px;
+                background: #f9f9f9; border: 1px solid #c1c1c1; border-radius: 3px;">
+                <textarea id="g-recaptcha-response" name="g-recaptcha-response"
+                  class="g-recaptcha-response"
+                  style="width: 250px; height: 40px; border: 1px solid #c1c1c1;
+                  margin: 10px 25px; padding: 0px; resize: none;">
+                </textarea>
+              </div>
+            </div>
+          </noscript>
+
+</div>
+</ql-lab-control-panel>
+</ql-drawer>
+<ql-drawer-content id='lab-instructions' slot='drawer-content'>
+<ql-snackbar id='alert-snackbar'></ql-snackbar>
+<div class='alert alert--fake js-alert'>
+<p class='alert__message js-alert-message' role='alert'></p>
+<ql-icon-button class='alert__close js-alert-close' icon='clear'></ql-icon-button>
+<iframe class='l-ie-iframe-fix' tabindex='-1'></iframe>
+</div>
+<div class='lab-content__renderable-instructions js-lab-content'>
+<div class='lab-preamble'>
+<h1 class='lab-preamble__title'>
+Introduction to SQL for BigQuery and Cloud SQL
+</h1>
+<div class='lab-preamble__details subtitle-headline-1'>
+<span>1 hour 15 minutes</span>
+<span>Free</span>
+<div class='lab__rating'>
+<a aria-label="Lab Reviews" href="/focuses/11575/reviews?parent=catalog"><div class='rateit' data-rateit-readonly='true' data-rateit-value='4.5625'></div>
+
+</a></div>
+</div>
+</div>
+<div class='lab-outline-place-holder'></div>
+
+<div class='markdown-lab-instructions js-markdown-instructions' id='markdown-lab-instructions'>
+
+<h2 id="step1">GSP281</h2>
+<p><img alt="Google Cloud self-paced labs logo" src="https://cdn.qwiklabs.com/GMOHykaqmlTHiqEeQXTySaMXYPHeIvaqa2qHEzw6Occ%3D"></p>
+<h2 id="step2">Overview</h2>
+<p>SQL (Structured Query Language) is a standard language for data operations that allows you to ask questions and get insights from structured datasets. It's commonly used in database management and allows you to perform tasks like transaction record writing into relational databases and petabyte-scale data analysis.</p>
+<p>This lab serves as an introduction to SQL and is intended to prepare you for the many labs and quests in Google Cloud Skills Boost on data science topics. This lab is divided into two parts: in the first half, you will learn fundamental SQL querying keywords, which you will run in the BigQuery console on a public dataset that contains information on London bikeshares.</p>
+<p>In the second half, you will learn how to export subsets of the London bikeshare dataset into CSV files, which you will then upload to Cloud SQL. From there you will learn how to use Cloud SQL to create and manage databases and tables. Towards the end, you will get hands-on practice with additional SQL keywords that manipulate and edit data.</p>
+<h3>What you'll learn</h3>
+<p>In this lab, you will learn how to:</p>
+<ul>
+<li>Distinguish databases from tables and projects.</li>
+<li>Use the <code>SELECT</code>, <code>FROM</code>, and <code>WHERE</code> keywords to construct simple queries.</li>
+<li>Identify the different components and hierarchies within the BigQuery console.</li>
+<li>Load databases and tables into BigQuery.</li>
+<li>Execute simple queries on tables.</li>
+<li>Learn about the <code>COUNT</code>, <code>GROUP BY</code>, <code>AS</code>, and <code>ORDER BY</code> keywords.</li>
+<li>Execute and chain the above commands to pull meaningful data from datasets.</li>
+<li>Export a subset of data into a CSV file and store that file into a new Cloud Storage bucket.</li>
+<li>Create a new Cloud SQL instance and load your exported CSV file as a new table.</li>
+<li>Run <code>CREATE DATABASE</code>, <code>CREATE TABLE</code>, <code>DELETE</code>, <code>INSERT INTO</code>, and <code>UNION</code> queries in Cloud SQL.</li>
+</ul>
+<h3>Prerequisites</h3>
+<p><strong>Very Important:</strong> Before starting this lab, log out of your personal or corporate gmail account.</p>
+<p>This is an <strong>introductory level</strong> lab. This assumes little to no prior experience with SQL. Familiarity with Cloud Storage and Cloud Shell is recommended, but not required. This lab will teach you the basics of reading and writing queries in SQL, which you will apply by using BigQuery and Cloud SQL.</p>
+<p>Before taking this lab, consider your proficiency in SQL. Below are more challenging labs that will let you apply your knowledge to more advanced use cases:</p>
+<ul>
+<li><a href="https://google.qwiklabs.com/catalog_lab/476" target="_blank">Weather Data in BigQuery</a></li>
+<li><a href="https://google.qwiklabs.com/catalog_lab/479" target="_blank">Analyzing Natality Data Using Vertex AI and BigQuery</a></li>
+</ul>
+<p>Once you're ready, scroll down and follow the steps below to get your lab environment set up.</p>
+<h2 id="step3">Setup and requirements</h2>
+<h3>Before you click the Start Lab button</h3>
+<p>Read these instructions. Labs are timed and you cannot pause them. The timer, which starts when you click <strong>Start Lab</strong>, shows how long Google Cloud resources will be made available to you.</p>
+<p>This hands-on lab lets you do the lab activities yourself in a real cloud environment, not in a simulation or demo environment. It does so by giving you new, temporary credentials that you use to sign in and access Google Cloud for the duration of the lab.</p>
+<p>To complete this lab, you need:</p>
+<ul>
+<li>Access to a standard internet browser (Chrome browser recommended).</li>
+</ul>
+<ql-warningbox>
+<strong>Note:</strong> Use an Incognito or private browser window to run this lab. This prevents any conflicts between your personal account and the Student account, which may cause extra charges incurred to your personal account.
+</ql-warningbox>
+<ul>
+<li>Time to complete the lab---remember, once you start, you cannot pause a lab.</li>
+</ul>
+<ql-warningbox>
+<strong>Note:</strong> If you already have your own personal Google Cloud account or project, do not use it for this lab to avoid extra charges to your account.
+</ql-warningbox>
+<h3>How to start your lab and sign in to the Google Cloud Console</h3>
+<ol>
+<li>
+<p>Click the <strong>Start Lab</strong> button. If you need to pay for the lab, a pop-up opens for you to select your payment method.
+On the left is the <strong>Lab Details</strong> panel with the following:</p>
+<ul>
+<li>The <strong>Open Google Console</strong> button</li>
+<li>Time remaining</li>
+<li>The temporary credentials that you must use for this lab</li>
+<li>Other information, if needed, to step through this lab</li>
+</ul>
+</li>
+<li>
+<p>Click <strong>Open Google Console</strong>.
+The lab spins up resources, and then opens another tab that shows the <strong>Sign in</strong> page.</p>
+<p><strong><em>Tip:</em></strong> Arrange the tabs in separate windows, side-by-side.</p>
+<ql-infobox>
+<strong>Note: </strong>If you see the <strong>Choose an account</strong> dialog, click <strong>Use Another Account</strong>.        
+ </ql-infobox>
+</li>
+<li>
+<p>If necessary, copy the <strong>Username</strong> from the <strong>Lab Details</strong> panel and paste it into the <strong>Sign in</strong> dialog. Click <strong>Next</strong>.</p>
+</li>
+<li>
+<p>Copy the <strong>Password</strong> from the <strong>Lab Details</strong> panel and paste it into the <strong>Welcome</strong> dialog. Click <strong>Next</strong>.</p>
+<ql-infobox>
+<strong>Important: </strong>You must use the credentials from the left panel. Do not use your Google Cloud Skills Boost credentials. 
+ </ql-infobox>
+<ql-warningbox>
+<strong>Note: </strong>Using your own Google Cloud account for this lab may incur extra charges.
+ </ql-warningbox>
+</li>
+<li>
+<p>Click through the subsequent pages:</p>
+<ul>
+<li>Accept the terms and conditions.</li>
+<li>Do not add recovery options or two-factor authentication (because this is a temporary account).</li>
+<li>Do not sign up for free trials.</li>
+</ul>
+</li>
+</ol>
+<p>After a few moments, the Cloud Console opens in this tab.</p>
+<ql-infobox>
+<strong>Note:</strong> You can view the menu with a list of Google Cloud Products and Services by clicking the <strong>Navigation menu</strong> at the top-left.
+<img alt="Navigation menu icon" src="https://cdn.qwiklabs.com/nUxFb6oRFr435O3t6V7WYJAjeDFcrFb16G9wHWp5BzU%3D">
+</ql-infobox>
+<h2 id="step4">Task 1. The basics of SQL</h2>
+<h3>Databases and tables</h3>
+<p>As mentioned earlier, SQL allows you to get information from "structured datasets". Structured datasets have clear rules and formatting and often times are organized into tables, or data that's formatted in rows and columns.</p>
+<p>An example of <em>unstructured data</em> would be an image file. Unstructured data is inoperable with SQL and cannot be stored in BigQuery datasets or tables (at least natively.) To work with image data (for instance), you would use a service like <a href="https://google.qwiklabs.com/catalog_lab/1112" target="_blank">Cloud Vision</a>, perhaps through its <a href="https://google.qwiklabs.com/catalog_lab/1241" target="_blank">API</a> directly.</p>
+<p>The following is an example of a structured dataset—a simple table:</p>
+<table>
+<tr>
+<td colspan="1" rowspan="1">
+<p><strong>User</strong></p>
+</td>
+<td colspan="1" rowspan="1">
+<p><strong>Price</strong></p>
+</td>
+<td colspan="1" rowspan="1">
+<p><strong>Shipped</strong></p>
+</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="1">
+<p>Sean</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>$35</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>Yes</p>
+</td>
+</tr>
+<tr>
+<td colspan="1" rowspan="1">
+<p>Rocky</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>$50</p>
+</td>
+<td colspan="1" rowspan="1">
+<p>No</p>
+</td>
+</tr>
+</table>
+<p>If you've had experience with Google Sheets, then the above should look quite similar. As we see, the table has columns for User, Price, and Shipped and two rows that are composed of filled in column values.</p>
+<p>A Database is essentially a <em>collection of one or more tables</em>. SQL is a structured database management tool, but quite often (and in this lab) you will be running queries on one or a few tables joined together—not on whole databases.</p>
+<h3>SELECT and FROM</h3>
+<p>SQL is phonetic by nature and before running a query, it's always helpful to first figure out what question you want to ask your data (unless you're just exploring for fun.)</p>
+<p>SQL has predefined <em>keywords</em> which you use to translate your question into the pseudo-english SQL syntax so you can get the database engine to return the answer you want.</p>
+<p>The most essential keywords are <code>SELECT</code> and <code>FROM</code>:</p>
+<ul>
+<li>Use <code>SELECT</code> to specify what fields you want to pull from your dataset.</li>
+<li>Use <code>FROM</code> to specify what table or tables we want to pull our data from.</li>
+</ul>
+<p>An example may help understanding. Assume that we have the following table <code>example_table</code>, which has columns USER, PRICE, and SHIPPED:</p>
+<p><img alt="Example table" src="https://cdn.qwiklabs.com/XOxiZPGbXJ2GBjG164aXcFmKI35BtpMO0%2FiWcbIYLfQ%3D"></p>
+<p>And let's say that we want to just pull the data that's found in the USER column. We can do this by running the following query that uses <code>SELECT</code> and <code>FROM</code>:</p>
+<ql-code-block language="plaintext">
+SELECT USER FROM example_table
+</ql-code-block>
+<p>If we executed the above command, we would select all the names from the <code>USER</code> column that are found in <code>example_table</code>.</p>
+<p>You can also select multiple columns with the SQL <code>SELECT</code> keyword. Say that you want to pull the data that's found in the USER and SHIPPED columns. To do this, modify the previous query by adding another column value to our <code>SELECT</code> query (making sure it's separated by a comma!):</p>
+<ql-code-block language="plaintext">
+SELECT USER, SHIPPED FROM example_table
+</ql-code-block>
+<p>Running the above retrieves the <code>USER</code> and the <code>SHIPPED</code> data from memory:</p>
+<p><img alt="Example table" src="https://cdn.qwiklabs.com/u4knQcxxNRrBjThYXtSccEq9%2BroxOz0FL0Jg6zCzIAE%3D"></p>
+<p>And just like that you've covered two fundamental SQL keywords! Now to make things a bit more interesting.</p>
+<h3>WHERE</h3>
+<p>The <code>WHERE</code> keyword is another SQL command that filters tables for specific column values. Say that you want to pull the names from <code>example_table</code> whose packages were shipped. You can supplement the query with a <code>WHERE</code>, like the following:</p>
+<ql-code-block language="plaintext">
+SELECT USER FROM example_table WHERE SHIPPED='YES'
+</ql-code-block>
+<p>Running the above returns all USERs whose packages have been SHIPPED from memory:</p>
+<p><img alt="Example table" src="https://cdn.qwiklabs.com/wst%2BjF1gd%2FvqJaN8OPxTgoWdUbT%2BcWKMVipwc2wlYWw%3D"></p>
+<p>Now that you have a baseline understanding of SQL's core keywords, apply what you've learned by running these types of queries in the BigQuery console.</p>
+<h3>Test your understanding</h3>
+<p>The following are some multiple choice questions to reinforce your understanding of the concepts covered so far. Answer them to the best of your abilities.</p>
+<p><ql-multiple-choice-probe answerindex="0" optiontitles='[
+"SELECT",
+"FROM",
+"WHERE"
+]' shuffle="" stem="A keyword that specifies the fields (e.g. column values) that you want to pull from your dataset.">
+</ql-multiple-choice-probe></p>
+<p><ql-multiple-choice-probe answerindex="1" optiontitles='[
+"SELECT",
+"FROM",
+"WHERE"
+]' shuffle="" stem="Specifies what table or tables we want to pull our data from.">
+</ql-multiple-choice-probe></p>
+<p><ql-multiple-choice-probe answerindex="2" optiontitles='[
+"SELECT",
+"FROM",
+"WHERE"
+]' shuffle="" stem="Allows us to filter tables for specific column values.">
+</ql-multiple-choice-probe></p>
+<h2 id="step5">Task 2. Exploring the BigQuery console</h2>
+<h3>The BigQuery paradigm</h3>
+<p><a href="https://cloud.google.com/bigquery/" target="_blank">BigQuery</a> is a fully-managed petabyte-scale data warehouse that runs on the Google Cloud. Data analysts and data scientists can quickly query and filter large datasets, aggregate results, and perform complex operations without having to worry about setting up and managing servers. It comes in the form of a command line tool (pre installed in cloudshell) or a web console—both ready for managing and querying data housed in Google Cloud projects.</p>
+<p>In this lab, you use the web console to run SQL queries.</p>
+<h3>Open the BigQuery console</h3>
+<ol>
+<li>In the Google Cloud Console, select <strong>Navigation menu</strong> &gt; <strong>BigQuery</strong>.</li>
+</ol>
+<p>The <strong>Welcome to BigQuery in the Cloud Console</strong> message box opens. This message box provides a link to the quickstart guide and the release notes.</p>
+<ol start="2">
+<li>Click <strong>Done</strong>.</li>
+</ol>
+<p>The BigQuery console opens.</p>
+<p>Take a moment to note some important features of the UI. The right-hand side of the console houses the query "Editor". This is where you write and run SQL commands like the examples we covered earlier. Below that is "Query history", which is a list of queries you ran previously.</p>
+<p>The left pane of the console is the "Navigation panel". Apart from the self-explanatory query history, saved queries, and job history, there is the <em>Explorer</em> tab.</p>
+<p>The highest level of resources in the <em>Explorer</em> tab contain Google Cloud projects, which are just like the temporary Google Cloud projects you sign into and use with each Google Cloud Skills Boost lab. As you can see in your console and in the last screenshot, we only have our project housed in the Explorer tab. If you try clicking on the arrow next to the project name, nothing will show up.</p>
+<p>This is because your project contains no datasets or tables, you have nothing that can be queried. Earlier you learned datasets contain tables. When you add data to your project, note that in BigQuery, <em>projects contain datasets, and datasets contain tables</em>.
+Now that you better understand the project &gt; dataset &gt; table paradigm and the intricacies of the console, you can load up some queryable data.</p>
+<h3>Uploading queryable data</h3>
+<p>In this section you pull in some public data into your project so you can practice running SQL commands in BigQuery.</p>
+<ol>
+<li>
+<p>Click on <strong>+ ADD</strong>.</p>
+</li>
+<li>
+<p>Choose <strong>Star a project by name</strong>.</p>
+</li>
+<li>
+<p>Enter project name as <strong>bigquery-public-data</strong>.</p>
+</li>
+<li>
+<p>Click <strong>STAR</strong>.</p>
+</li>
+</ol>
+<p>It's important to note that you are still working out of your lab project in this new tab.
+All you did was pull a publicly accessible project that contains datasets and tables into BigQuery for analysis — you didn't <em>switch over</em> to that project.
+All of your jobs and services are still tied to your Google Cloud Skills Boost account. You can see this for yourself by inspecting the project field near the top of the console:</p>
+<p><img alt="Project field displaying Google Cloud Skills Boost project name" src="https://cdn.qwiklabs.com/5xOdRcr0NoYnrbkV3eLRSKNEBbLX1Bfy2Kd3M3VZ6Vs%3D"></p>
+<ol start="5">
+<li>
+<p>You now have access to the following data:</p>
+</li>
+</ol>
+<ul>
+<li>
+<p>Google Cloud Project → <code>bigquery-public-data</code></p>
+</li>
+<li>
+<p>Dataset → <code>london_bicycles</code></p>
+</li>
+</ul>
+<ol start="6">
+<li>
+<p>Click on the <strong>london bicycles</strong> dataset to reveal the associated tables</p>
+</li>
+</ol>
+<ul>
+<li>Table → <code>cycle_hire</code>
+</li>
+<li>Table → <code>cycle_stations</code>
+</li>
+</ul>
+<p>In this lab we will use the data from <strong>cycle_hire</strong>.
+Open the <code>cycle_hire</code> table, then click the <strong>Preview</strong> tab.
+Your page should resemble the following:</p>
+<p><img alt="cycle_hire table, preview tab" src="https://cdn.qwiklabs.com/YjOJfPjv1k8LWACFDRKAq4OfN%2FaVGU5e%2BAyIvMUa%2FWY%3D"></p>
+<p>Inspect the columns and values populated in the rows. You are now ready to run some SQL queries on the <code>cycle_hire</code> table.</p>
+<h3>Running SELECT, FROM, and WHERE in BigQuery</h3>
+<p>You now have a basic understanding of SQL querying keywords and the BigQuery data paradigm and some data to work with. Run some SQL commands using this service.</p>
+<p>If you look at the bottom right corner of the console, you will notice that there are <strong>24,369,201</strong> rows of data, or individual bikeshare trips taken in London between 2015 and 2017 (not a small amount by any means!)</p>
+<p>Now take note of the seventh column key: <code>end_station_name</code>, which specifies the end destination of bikeshare rides. Before we get too deep, let's first run a simple query to isolate  the <code>end_station_name</code> column.</p>
+<ol>
+<li>
+<p>Copy and paste the following command into the query <strong>Editor</strong>:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+SELECT end_station_name FROM `bigquery-public-data.london_bicycles.cycle_hire`;
+</ql-code-block>
+<ol start="2">
+<li>Then click <strong>Run</strong>.</li>
+</ol>
+<p>After ~20 seconds, you should be returned with 24369201 rows that contain the single column you queried for: <code>end_station_name</code>.</p>
+<p>Why don't you find out how many bike trips were 20 minutes or longer?</p>
+<ol start="3">
+<li>
+<p>Clear the query from the editor, then run the following query that utilizes the <code>WHERE</code> keyword:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+SELECT * FROM `bigquery-public-data.london_bicycles.cycle_hire` WHERE duration&gt;=1200;
+</ql-code-block>
+<p>This query may take a minute or so to run.</p>
+<p><code>SELECT *</code> returns all column values from the table. Duration is measured in seconds, which is why you used the value 1200 (60 * 20).</p>
+<p>If you look in the bottom right corner you see that <strong>7,334,890</strong> rows were returned. As a fraction of the total (7334890/24369201), this means that ~30% of London bikeshare rides lasted 20 minutes or longer (they're in it for the long haul!)</p>
+<h3>Test your understanding</h3>
+<p>The following are some multiple choice questions to reinforce your understanding of the concepts we've covered so far. Answer them to the best of your abilities.</p>
+<p><ql-multiple-choice-probe answerindex="0" optiontitles='[
+"BigQuery",
+"Cloud SQL",
+"Google Cloud",
+"Cloud Storage bucket"
+]' shuffle="" stem="A fully-managed petabyte-scale data warehouse that runs on the Google Cloud.">
+</ql-multiple-choice-probe></p>
+<p><ql-multiple-choice-probe answerindex="0" optiontitles='[
+"True",
+"False"
+]' shuffle="" stem="Projects contain datasets, and datasets contain tables.">
+</ql-multiple-choice-probe></p>
+<p><ql-multiple-choice-probe answerindex="0" optiontitles='[
+"True",
+"False"
+]' shuffle="" stem="With BigQuery, you can access datasets shared publicly from other Google Cloud projects.">
+</ql-multiple-choice-probe></p>
+<h2 id="step6">Task 3. More SQL Keywords: GROUP BY, COUNT, AS, and ORDER BY</h2>
+<h3>GROUP BY</h3>
+<p>The <code>GROUP BY</code> keyword will aggregate result-set rows that share common criteria (e.g. a column value) and will return all of the unique entries found for such criteria.</p>
+<p>This is a useful keyword for figuring out categorical information on tables.</p>
+<ol>
+<li>
+<p>To get a better picture of what this keyword does, clear the query from the editor, then copy and paste the following command:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+SELECT start_station_name FROM `bigquery-public-data.london_bicycles.cycle_hire` GROUP BY start_station_name;
+</ql-code-block>
+<ol start="2">
+<li>Click <strong>Run</strong>.</li>
+</ol>
+<p>Your results are a list of unique (non-duplicate) column values.</p>
+<p>Without the <code>GROUP BY</code>, the query would have returned the full <strong>24,369,201</strong> rows. <code>GROUP BY</code> will output the unique  column values found in the table. You can see this for yourself by looking in the bottom right corner. You will see <strong>880</strong> rows, meaning there are 880 distinct London bikeshare starting points.</p>
+<h3>COUNT</h3>
+<p>The <code>COUNT()</code> function will return the number of rows that share the same criteria (e.g. column value). This can be very useful in tandem with a <code>GROUP BY</code>.</p>
+<p>Add the <code>COUNT</code> function to our previous query to figure out how many rides begin at each starting point.</p>
+<ul>
+<li>
+<p>Clear the query from the editor, then copy and paste the following command and then click <strong>Run</strong>:</p>
+</li>
+</ul>
+<ql-code-block language="plaintext">
+SELECT start_station_name, COUNT(*) FROM `bigquery-public-data.london_bicycles.cycle_hire` GROUP BY start_station_name;
+</ql-code-block>
+<p>Your output shows how many bikeshare rides begin at each starting location.</p>
+<h3>AS</h3>
+<p>SQL also has an <code>AS</code> keyword, which creates an <em>alias</em> of a table or column. An alias is a new name that's given to the returned column or table—whatever <code>AS</code> specifies.</p>
+<ol>
+<li>
+<p>Add an <code>AS</code> keyword to the last query we ran to see this in action. Clear the query from the editor, then copy and paste the following command:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+SELECT start_station_name, COUNT(*) AS num_starts FROM `bigquery-public-data.london_bicycles.cycle_hire` GROUP BY start_station_name;
+</ql-code-block>
+<ol start="2">
+<li>Click <strong>Run</strong>.</li>
+</ol>
+<p>For Results, the right column name changed from <code>COUNT(*)</code> to <code>num_starts</code>.</p>
+<p>As you see, the <code>COUNT(*)</code> column in the returned table is now set to the alias name <code>num_starts</code>. This is a handy keyword to use especially if you are dealing with large sets of data — forgetting that an ambiguous table or column name happens more often than you think!</p>
+<h3>ORDER BY</h3>
+<p>The <code>ORDER BY</code> keyword sorts the returned data from a query in ascending or descending order based on a specified criteria or column value. We will add this keyword to our previous query to do the following:</p>
+<ul>
+<li>Return a table that contains the number of bikeshare rides that begin at each starting station, organized alphabetically by the starting station.</li>
+<li>Return a table that contains the number of bikeshare rides that begin at each starting station, organized numerically from lowest to highest.</li>
+<li>Return a table that contains the number of bikeshare rides that begin at each starting station, organized numerically from highest to lowest.</li>
+</ul>
+<p>Each of the commands below is a separate query. For each command:</p>
+<ol>
+<li>
+<p>Clear the query <strong>Editor</strong>.</p>
+</li>
+<li>
+<p>Copy and paste the command into the query <strong>Editor</strong>.</p>
+</li>
+<li>
+<p>Click <strong>Run</strong>. Examine the results.</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+SELECT start_station_name, COUNT(*) AS num FROM `bigquery-public-data.london_bicycles.cycle_hire` GROUP BY start_station_name ORDER BY start_station_name;
+</ql-code-block>
+<ql-code-block language="plaintext">
+SELECT start_station_name, COUNT(*) AS num FROM `bigquery-public-data.london_bicycles.cycle_hire` GROUP BY start_station_name ORDER BY num;
+</ql-code-block>
+<ql-code-block language="plaintext">
+SELECT start_station_name, COUNT(*) AS num FROM `bigquery-public-data.london_bicycles.cycle_hire` GROUP BY start_station_name ORDER BY num DESC;
+</ql-code-block>
+<p>The results of the last query lists start locations by the number of starts from that location.</p>
+<p>We see that "Belgrove Street, King's Cross" has the highest number of starts. However, as a fraction of the total (234458/24369201), we see that &lt; 1% of rides start from this station.</p>
+<h3>Test your understanding</h3>
+<p>The following are some multiple choice questions to reinforce your understanding of the concepts we've covered so far. Answer them to the best of your abilities.</p>
+<p><ql-multiple-choice-probe answerindex="0" optiontitles='[
+"GROUP BY",
+"COUNT",
+"AS",
+"ORDER BY"
+]' shuffle="" stem="Aggregates rows that share common criteria (e.g. a column value) and will return all of the unique entries found for such criteria.">
+</ql-multiple-choice-probe></p>
+<p><ql-multiple-choice-probe answerindex="1" optiontitles='[
+"GROUP BY",
+"COUNT",
+"AS",
+"ORDER BY"
+]' shuffle="" stem="A SQL function will count and return the number of rows that share common criteria.">
+</ql-multiple-choice-probe></p>
+<p><ql-multiple-choice-probe answerindex="2" optiontitles='[
+"GROUP BY",
+"COUNT",
+"AS",
+"ORDER BY"
+]' shuffle="" stem="Creates an alias of a table or column.">
+</ql-multiple-choice-probe></p>
+<p><ql-multiple-choice-probe answerindex="3" optiontitles='[
+"GROUP BY",
+"COUNT",
+"AS",
+"ORDER BY"
+]' shuffle="" stem="Sorts the returned data from a query in ascending or descending order based on a specified criteria or column value.">
+</ql-multiple-choice-probe></p>
+<h2 id="step7">Task 4. Working with Cloud SQL</h2>
+<h3>Exporting queries as CSV files</h3>
+<p><a href="https://cloud.google.com/sql/" target="_blank">Cloud SQL</a> is a fully-managed database service that makes it easy to set up, maintain, manage, and administer your relational PostgreSQL and MySQL databases in the cloud. There are two formats of data accepted by Cloud SQL: dump files (.sql) or CSV files (.csv). You will learn how to export subsets of the <code>cycle_hire</code> table into CSV files and upload them to Cloud Storage as an intermediate location.</p>
+<p>Back in the BigQuery Console, this should have been the last command that you ran:</p>
+<ql-code-block language="plaintext">
+SELECT start_station_name, COUNT(*) AS num FROM `bigquery-public-data.london_bicycles.cycle_hire` GROUP BY start_station_name ORDER BY num DESC;
+</ql-code-block>
+<ol>
+<li>
+<p>In the Query Results section click <strong>SAVE RESULTS</strong> &gt; <strong>CSV(local file)</strong>. This initiates a download, which saves this query as a CSV file. Note the location and the name of this downloaded file—you will need it soon.</p>
+</li>
+<li>
+<p>Clear the query Editor, then copy and run the following in the query editor:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+SELECT end_station_name, COUNT(*) AS num FROM `bigquery-public-data.london_bicycles.cycle_hire` GROUP BY end_station_name ORDER BY num DESC;
+</ql-code-block>
+<p>This returns a table that contains the number of bikeshare rides that finish in each ending station and is organized numerically from highest to lowest number of rides.</p>
+<ol start="3">
+<li>
+<p>In the Query Results section click <strong>SAVE RESULTS</strong> &gt; <strong>CSV(local file)</strong>. This initiates a download, which saves this query as a CSV file. Note the location and the name of this downloaded file—you will need it in the following section.</p>
+</li>
+</ol>
+<h3>Upload CSV files to Cloud Storage</h3>
+<ol>
+<li>
+<p>Go to the Cloud Console where you'll create a storage bucket where you can upload the files you just created.</p>
+</li>
+<li>
+<p>Select <strong>Navigation menu</strong> &gt; <strong>Cloud Storage</strong> &gt; <strong>Buckets</strong>, and then click <strong>CREATE BUCKET</strong>.</p>
+</li>
+</ol>
+<ql-infobox><strong>Note: </strong> If prompted, click <strong>LEAVE</strong> for Unsaved work.</ql-infobox>
+<ol start="3">
+<li>
+<p>Enter a unique name for your bucket, keep all other settings as default, and click <strong>Create</strong>.</p>
+</li>
+<li>
+<p>If prompted, click <strong>Confirm</strong> for <code>Public access will be prevented</code> dialog.</p>
+</li>
+</ol>
+<h3>Test completed task</h3>
+<p>Click <strong>Check my progress</strong> below to check your lab progress. If you successfully created your bucket, you'll see an assessment score.</p>
+<ql-activity-tracking step="1">
+    Create a cloud storage bucket.
+</ql-activity-tracking>
+<p>You should now be in the Cloud Console looking at your newly created Cloud Storage Bucket.</p>
+<ol>
+<li>
+<p>Click <strong>UPLOAD FILES</strong> and select the CSV that contains <code>start_station_name</code> data.</p>
+</li>
+<li>
+<p>Then click <strong>Open</strong>. Repeat this for the <code>end_station_name</code> data.</p>
+</li>
+<li>
+<p>Rename your <code>start_station_name</code> file by clicking on the three dots next to on the far side of the file and click <strong>rename</strong>. Rename the file to <code>start_station_data.csv</code>.</p>
+</li>
+<li>
+<p>Rename your <code>end_station_name</code> file by clicking on the three dots next to on the far side of the file and click <strong>rename</strong>. Rename the file to <code>end_station_data.csv</code>.</p>
+</li>
+</ol>
+<p>You should now see <code>start_station_name.csv</code> and <code>end_station_data.csv</code> in the <strong>Objects</strong> list on the <strong>Bucket details</strong> page.</p>
+<h3>Test completed task</h3>
+<p>Click <strong>Check my progress</strong> to verify your performed task. If you have successfully uploaded CSV objects to your bucket, you will see an assessment score.</p>
+<ql-activity-tracking step="2">
+    Upload CSV files to Cloud Storage.
+</ql-activity-tracking>
+<h2 id="step8">Task 5. Create a Cloud SQL instance</h2>
+<p>In the console, select <strong>Navigation menu</strong> &gt; <strong>SQL</strong>.</p>
+<ol>
+<li>
+<p>Click <strong>CREATE INSTANCE &gt; Choose MySQL</strong> .</p>
+</li>
+<li>
+<p>Enter instance id as <strong>my-demo</strong>.</p>
+</li>
+<li>
+<p>Enter a secure password in the <strong>Password</strong> field (remember it!).</p>
+</li>
+<li>
+<p>Select the database version as <strong>MySQL 5.7</strong>.</p>
+</li>
+<li>
+<p>Set the <strong>Multi zones (Highly available)</strong> field as <ql-variable key="project_0.startup_script.project_region" placeholder="&lt;Lab Region&gt;"></ql-variable></p>
+</li>
+<li>
+<p>Click <strong>CREATE INSTANCE</strong>.</p>
+</li>
+</ol>
+<p>It might take a few minutes for the instance to be created. Once it is, you will see a green checkmark next to the instance name.</p>
+<ol start="7">
+<li>
+<p>Click on the Cloud SQL instance. The <strong>SQL Overview</strong> page opens.</p>
+</li>
+</ol>
+<h3>Test completed task</h3>
+<p>To check out your lab progress, click <strong>Check my progress</strong> below.
+If you have successfully set up your Cloud SQL instance, you will see an assessment score.</p>
+<ql-activity-tracking step="3">
+    Create a CloudSQL Instance.
+</ql-activity-tracking>
+<h2 id="step9">Task 6. New queries in Cloud SQL</h2>
+<h3>CREATE keyword (databases and tables)</h3>
+<p>Now that you have a Cloud SQL instance up and running, create a database inside of it using the Cloud Shell Command Line.
+Copy the Cloud Shell link below and paste in a new browser incognito tab.</p>
+<ql-code-block language="plaintext">
+https://shell.cloud.google.com/?show=terminal
+</ql-code-block>
+<p>Set your project ID:</p>
+<ql-code-block language="plaintext">
+gcloud config set project [PROJECT_ID]
+</ql-code-block>
+<h3>Create a database in Cloud Shell</h3>
+<ol>
+<li>
+<p>Run the following command in Cloud Shell to setup auth without opening up a browser</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+gcloud auth login --no-launch-browser
+</ql-code-block>
+<p>This will give you a link to open in your browser. Open the link in the same browser where you are logged in to the qwiklabs account. Once you login you will get a verification code to copy. Paste that code in the cloud shell.</p>
+<p>Configure your project</p>
+<ql-code-block language="bash">
+gcloud config set project [PROJECT_ID]
+</ql-code-block>
+<ol start="2">
+<li>
+<p>Run the following command to connect to your SQL instance, replacing <code>my-demo</code> if you used a different name for your instance:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+gcloud sql connect my-demo --user=root --quiet
+</ql-code-block>
+<ql-infobox>
+<strong>Note: </strong>It may take a minute to connect to your instance.
+</ql-infobox>
+<ol start="3">
+<li>When prompted, enter the root password you set for the instance.</li>
+</ol>
+<p>You should see similar output:</p>
+<ql-code-block language="plaintext" output="">
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 494
+Server version: 5.7.14-google-log (Google)
+Copyright (c) 2000, 2017, Oracle, MariaDB Corporation Ab and others.
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+mysql&gt;
+</ql-code-block>
+<p>A Cloud SQL instance comes with pre-configured databases, but you will create your own to store the London bikeshare data.</p>
+<ol start="4">
+<li>
+<p>Run the following command at the MySQL server prompt to create a database called <code>bike</code>:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+CREATE DATABASE bike;
+</ql-code-block>
+<p>You should receive the following output:</p>
+<ql-code-block language="plaintext" output="">
+Query OK, 1 row affected (0.05 sec)
+mysql&gt;
+</ql-code-block>
+<h3>Test completed task</h3>
+<p>Check your progress by clicking  <strong>Check my progress</strong> to verify your performed task. If you have successfully created a database in the Cloud SQL instance, you will see an assessment score.</p>
+<ql-activity-tracking step="4">
+    Create a database.
+</ql-activity-tracking>
+<h3>Create a table in Cloud Shell</h3>
+<ol>
+<li>
+<p>Make a table inside of the bike database by running the following command:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+USE bike;
+CREATE TABLE london1 (start_station_name VARCHAR(255), num INT);
+</ql-code-block>
+<p>This statement uses the <code>CREATE</code> keyword, but this time it uses the <code>TABLE</code> clause to specify that it wants to build a table instead of a database. The <code>USE</code> keyword specifies a database that you want to connect to. You now have a table named "london1" that contains two columns, "start_station_name" and "num". <code>VARCHAR(255)</code> specifies variable length string column that can hold up to 255 characters and <code>INT</code> is a column of type integer.</p>
+<ol start="2">
+<li>
+<p>Create another table named "london2" by running the following command:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+USE bike;
+CREATE TABLE london2 (end_station_name VARCHAR(255), num INT);
+</ql-code-block>
+<ol start="3">
+<li>
+<p>Now confirm that your empty tables were created. Run the following commands at the MySQL server prompt:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+SELECT * FROM london1;
+SELECT * FROM london2;
+</ql-code-block>
+<p>You should receive the following output for both commands:</p>
+<ql-code-block language="plaintext" output="">
+Empty set (0.04 sec)
+</ql-code-block>
+<p>You see "empty set" because you haven't yet loaded the data.</p>
+<h3>Upload CSV files to tables</h3>
+<p>Return to the Cloud SQL console. You will now upload the <code>start_station_name</code> and <code>end_station_name</code> CSV files into your newly created london1 and london2 tables.</p>
+<ol>
+<li>In your Cloud SQL instance page, click <strong>IMPORT</strong>.</li>
+<li>In the Cloud Storage file field, click <strong>Browse</strong>, and then click the arrow next to your bucket name, and then click <code>start_station_data.csv</code>. Click <strong>Select</strong>.</li>
+<li>Select <strong>CSV</strong> as File format.</li>
+<li>Select the <code>bike</code> database and type in "<code>london1</code>" as your table.</li>
+<li>Click <strong>Import</strong>.</li>
+</ol>
+<p>Do the same for the other CSV file.</p>
+<ol>
+<li>In your Cloud SQL instance page, click <strong>IMPORT</strong>.</li>
+<li>In the Cloud Storage file field, click <strong>Browse</strong>, and then click the arrow next to your bucket name, and then click <code>end_station_data.csv</code> Click <strong>Select</strong>.</li>
+<li>Select <strong>CSV</strong> as File format.</li>
+<li>Select the bike database and type in "<code>london2</code>" as your table.</li>
+<li>Click <strong>Import</strong>.</li>
+</ol>
+<p>You should now have both CSV files uploaded to tables in the <code>bike</code> database.</p>
+<ol>
+<li>
+<p>Return to your Cloud Shell session and run the following command at the MySQL server prompt to inspect the contents of london1:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+SELECT * FROM london1;
+</ql-code-block>
+<p>You should receive 881 lines of output, one for each unique station name.</p>
+<ol start="2">
+<li>
+<p>Run the following command to make sure that london2 has been populated:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+SELECT * FROM london2;
+</ql-code-block>
+<p>You should receive 883 lines of output, one more each unique station name.</p>
+<h3>DELETE keyword</h3>
+<p>Here are a couple more SQL keywords that help us with data management. The first is the <code>DELETE</code> keyword.</p>
+<ul>
+<li>
+<p>Run the following commands in your MySQL session to delete the first row of the london1 and london2:</p>
+</li>
+</ul>
+<ql-code-block language="plaintext">
+DELETE FROM london1 WHERE num=0;
+DELETE FROM london2 WHERE num=0;
+</ql-code-block>
+<p>You should receive the following output after running both commands:</p>
+<ql-code-block language="plaintext" output="">
+Query OK, 1 row affected (0.04 sec)
+</ql-code-block>
+<p>The rows deleted were the column headers from the CSV files. The <code>DELETE</code> keyword will not remove the first row of the file per se, but all <em>rows</em> of the table where the column name (in this case "num") contains a specified value (in this case "0"). If you run the <code>SELECT * FROM london1;</code> and <code>SELECT * FROM london2;</code> queries and scroll to the top of the table, you will see that those rows no longer exist.</p>
+<h3>INSERT INTO keyword</h3>
+<p>You can also insert values into tables with the <code>INSERT INTO</code> keyword.</p>
+<ul>
+<li>
+<p>Run the following command to insert a new row into london1, which sets <code>start_station_name</code> to "test destination" and <code>num</code> to "1":</p>
+</li>
+</ul>
+<ql-code-block language="plaintext">
+INSERT INTO london1 (start_station_name, num) VALUES ("test destination", 1);
+</ql-code-block>
+<p>The <code>INSERT INTO</code> keyword requires a table (london1) and will create a new row with columns specified by the terms in the first parenthesis (in this case "start_station_name" and "num"). Whatever comes after the "VALUES" clause will be inserted as values in the new row.</p>
+<p>You should receive the following output:</p>
+<ql-code-block language="plaintext" output="">
+Query OK, 1 row affected (0.05 sec)
+</ql-code-block>
+<p>If you run the query <code>SELECT * FROM london1;</code> you will see an additional row added at the bottom of the "london1" table.</p>
+<h3>UNION keyword</h3>
+<p>The last SQL keyword that you'll learn about is <code>UNION</code>. This keyword combines the output of two or more <code>SELECT</code> queries into a result-set. You use <code>UNION</code> to combine subsets of the "london1" and "london2" tables.</p>
+<p>The following chained query pulls specific data from both tables and combines them with the <code>UNION</code> operator.</p>
+<ul>
+<li>
+<p>Run the following command at the MySQL server prompt:</p>
+</li>
+</ul>
+<ql-code-block language="plaintext">
+SELECT start_station_name AS top_stations, num FROM london1 WHERE num&gt;100000
+UNION
+SELECT end_station_name, num FROM london2 WHERE num&gt;100000
+ORDER BY top_stations DESC;
+</ql-code-block>
+<p>The first <code>SELECT</code> query selects the two columns from the "london1" table and creates an alias for "start_station_name", which gets set to "top_stations". It uses the <code>WHERE</code> keyword to only pull rideshare station names where over 100,000 bikes start their journey.</p>
+<p>The second <code>SELECT</code> query selects the two columns from the "london2" table and uses the <code>WHERE</code> keyword to only pull rideshare station names where over 100,000 bikes end their journey.</p>
+<p>The <code>UNION</code> keyword in between combines the output of these queries by assimilating the "london2" data with "london1". Since "london1" is being unioned with "london2", the column values that take precedence are "top_stations" and "num".</p>
+<p><code>ORDER BY</code> will order the final, unioned table by the "top_stations" column value alphabetically and in descending order.</p>
+<p>You should receive the following output:</p>
+<p><img alt="Output table with columns for top_stations and num" src="https://cdn.qwiklabs.com/WbDqTqRleeMoM8my3TAgh5JVLVY7NnGbs3cTxwBojSw%3D"></p>
+<p>As you see, 13/14 stations share the top spots for rideshare starting and ending points. With some basic SQL keywords you were able to query a sizable dataset, which returned data points and answers to specific questions.</p>
+<h2 id="step10">Congratulations!</h2>
+<p>In this lab, you learned the fundamentals of SQL and how you can apply keywords and run queries in BigQuery and CloudSQL. You were taught the core concepts behind projects, databases, and tables. You practiced with keywords that manipulated and edited data. You learned how to load datasets into BigQuery and you practiced running queries on tables. You learned how to create instances in Cloud SQL and practiced transferring subsets of data into tables contained in databases. You chained and ran queries in Cloud SQL to arrive at some interesting conclusions about London bikesharing starting and ending stations.</p>
+<h3>Finish you quest</h3>
+<p>This self-paced lab is part of the  <a href="https://google.qwiklabs.com/quests/43" target="_blank">Data Science on Google Cloud</a>, <a href="https://google.qwiklabs.com/quests/28" target="_blank">Scientific Data Processing</a>, <a href="https://google.qwiklabs.com/quests/52" target="_blank">Cloud SQL</a>, <a href="https://google.qwiklabs.com/quests/69" target="_blank">BigQuery Basics for Data Analysts</a>, <a href="https://google.qwiklabs.com/quests/58/" target="_blank">NCAA® March Madness®: Bracketology with Google Cloud</a>, <a href="https://google.qwiklabs.com/quests/66" target="_blank">Cloud Engineering</a>, <a href="https://google.qwiklabs.com/quests/134" target="_blank">Data Catalog Fundamentals</a> and <a href="https://google.qwiklabs.com/quests/162" target="_blank">Applying BQML's Classification, Regression, and Demand Forecasting for Retail Applications</a> quests. A quest is a series of related labs that form a learning path. Completing a quest earns you a badge to recognize your achievement. You can make your badge or badges public and link to them in your online resume or social media account. Enroll in any quest that contains this lab and get immediate completion credit.  See the <a href="http://cloudskillsboost.google/catalog" target="_blank">Google Cloud Skills Boost catalog</a> to see all available quests.</p>
+<h3>Next steps / Learn more</h3>
+<p>Continue to learn and practice with Cloud SQL and BigQuery with these Google Cloud Skill Boost labs:</p>
+<ul>
+<li><a href="https://google.qwiklabs.com/catalog_lab/476" target="_blank">Weather Data in BigQuery</a></li>
+<li><a href="https://google.qwiklabs.com/catalog_lab/815" target="_blank">Exploring NCAA Data with BigQuery</a></li>
+<li><a href="https://google.qwiklabs.com/catalog_lab/996" target="_blank">Loading Data into Google Cloud SQL</a></li>
+<li><a href="https://google.qwiklabs.com/catalog_lab/1018" target="_blank">Cloud SQL with Terraform</a></li>
+</ul>
+<p>Learn more about Data Science with <a href="https://www.oreilly.com/library/view/data-science-on/9781098118945/" target="_blank">Data Science on the Google Cloud Platform, 2nd Edition: O'Reilly Media, Inc.</a>.</p>
+<h3>Google Cloud training and certification</h3>
+<p>...helps you make the most of Google Cloud technologies. <a href="https://cloud.google.com/training/courses" target="_blank">Our classes</a> include technical skills and best practices to help you get up to speed quickly and continue your learning journey. We offer fundamental to advanced level training, with on-demand, live, and virtual options to suit your busy schedule. <a href="https://cloud.google.com/certification/" target="_blank">Certifications</a> help you validate and prove your skill and expertise in Google Cloud technologies.</p>
+<p><strong>Manual Last Updated April 4, 2023</strong></p>
+<p><strong>Lab Last Tested March 22, 2023</strong></p>
+<p>Copyright 2023 Google LLC All rights reserved. Google and the Google logo are trademarks of Google LLC. All other company and product names may be trademarks of the respective companies with which they are associated.</p>
+
+</div>
+</div>
+
+
+<div class='lab-content__end-lab-button js-end-lab-button-container hidden'>
+<ql-lab-control-button class='js-end-lab-button' running></ql-lab-control-button>
+</div>
+<!-- / TODO: Move recommendations into the end lab modal -->
+<div class='lab-content__renderable-instructions'>
+<div class='lab-content__recommendation'>
+<!-- # TODO: Change classes so that this doesn't stack vertically -->
+<section class='upcoming-cards'>
+<h2 class='ql-headline-4'>Continue questing</h2>
+<div class='activity-cards'>
+<ql-activity-card aria-label='Introduction to SQL for BigQuery and Cloud SQL' name='Introduction to SQL for BigQuery and Cloud SQL' path='/focuses/11575?parent=catalog' progress='0.0' type='lab'></ql-activity-card>
+
+</div>
+</section>
+
+</div>
+
+</div>
+</ql-drawer-content>
+<ql-drawer end id='outline-drawer' open slot='drawer' width='320'>
+<div aria-label='Lab Table of Contents' role='navigation'>
+<ul class='lab-content__outline js-lab-content-outline'>
+<li><a href="#step1">GSP281</a></li><li><a href="#step2">Overview</a></li><li><a href="#step3">Setup and requirements</a></li><li><a href="#step4">Task 1. The basics of SQL</a></li><li><a href="#step5">Task 2. Exploring the BigQuery console</a></li><li><a href="#step6">Task 3. More SQL Keywords: GROUP BY, COUNT, AS, and ORDER BY</a></li><li><a href="#step7">Task 4. Working with Cloud SQL</a></li><li><a href="#step8">Task 5. Create a Cloud SQL instance</a></li><li><a href="#step9">Task 6. New queries in Cloud SQL</a></li><li><a href="#step10">Congratulations!</a></li>
+</ul>
+</div>
+</ql-drawer>
+</ql-drawer-container>
+</ql-drawer-content>
+</ql-drawer-container>
+
+
+
+</div>
+</main>
+
+<span class='hidden' id='flash-sibling-before'></span>
+<ql-snackbar></ql-snackbar>
+
+
+<div class='modal fade' id='lab-details-modal'>
+<div class='modal-container'>
+<div class='modal-content mdl-shadow--24dp'>
+<div class='modal-body'>
+<p class='l-mbm'>
+In this lab you will learn fundamental SQL clauses and will get hands on practice running structured  queries on BigQuery and Cloud SQL. 
+</p>
+<p>
+This lab is included in these quests:
+<a href="/quests/123">Insights from Data with BigQuery</a>, <a href="/quests/34">Baseline: Data, ML, AI</a>, <a href="/quests/66">Cloud Engineering</a>, <a href="/quests/119">Set Up and Configure a Cloud Environment in Google Cloud</a>, <a href="/quests/69">BigQuery Basics for Data Analysts</a>, <a href="/quests/101">Applied Data: Blockchain</a>, <a href="/quests/162">Applying BigQuery ML's Classification, Regression, and Demand Forecasting for Retail Applications</a>, <a href="/quests/58">NCAA® March Madness®: Bracketology with Google Cloud</a>, <a href="/quests/55">DEPRECATED BigQuery for Data Analysis</a>, <a href="/quests/43">Data Science on Google Cloud</a>, <a href="/quests/52">Cloud SQL</a>, <a href="/quests/134">Data Catalog Fundamentals</a>, <a href="/quests/28">Scientific Data Processing</a>.
+If you complete this lab you&#39;ll receive credit for it when you enroll in one of these quests.
+</p>
+<p class='small-label l-mbs'>
+<strong>
+Duration:
+</strong>
+1m setup
+&middot;
+75m access
+&middot;
+60m completion
+</p>
+<p class='small-label l-mbs'>
+<strong>AWS Region:</strong>
+[] <strong></strong>
+</p>
+<p class='small-label l-mbs'>
+<span><strong>Levels: </strong>introductory</span>
+</p>
+<p class='small-label'>
+<strong>
+Permalink:
+</strong>
+<a href="https://partner.cloudskillsboost.google/catalog_lab/1282">https://partner.cloudskillsboost.google/catalog_lab/1282</a>
+</p>
+</div>
+<div class='modal-actions'>
+<a class='button button--text' data-dismiss='modal'>
+Got It
+</a>
+</div>
+
+
+</div>
+</div>
+<iframe class='l-ie-iframe-fix' tabindex='-1' title='modal'></iframe>
+</div>
+<ql-dialog headline='How satisfied are you with this lab?&lt;span aria-hidden=&quot;true&quot;&gt;*&lt;/span&gt;' id='lab-review-dialog'>
+<form class="simple_form js-lab-review-form" id="new_lab_review" action="/lab_reviews" accept-charset="UTF-8" data-remote="true" method="post"><input name="utf8" type="hidden" value="&#x2713;" autocomplete="off" /><div aria-labelledby='lab-review-dialog' aria-required='true' aria-valuemax='5' aria-valuemin='0' aria-valuenow='0' class='rateit js-rateit' data-rateit-max='5' data-rateit-min='0' data-rateit-resetable='false' data-rateit-step='1' data-rateit-value='0' id='lab-review-rateit' role='slider' tabindex='0'></div>
+<div class='l-mtm'>
+
+<div class="control-group hidden lab_review_user_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" value="11061062" name="lab_review[user_id]" id="lab_review_user_id" /></div></div>
+<div class="control-group hidden lab_review_classroom_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" name="lab_review[classroom_id]" id="lab_review_classroom_id" /></div></div>
+<div class="control-group hidden lab_review_lab_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" value="1282" name="lab_review[lab_id]" id="lab_review_lab_id" /></div></div>
+<div class="control-group hidden lab_review_focus_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" name="lab_review[focus_id]" id="lab_review_focus_id" /></div></div>
+<div class="control-group hidden lab_review_rating"><div class="controls"><input class="hidden js-rating-input" autocomplete="off" type="hidden" name="lab_review[rating]" id="lab_review_rating" /></div></div>
+<div class="control-group text optional lab_review_comment"><label class="text optional control-label" for="lab_review_comment">Additional Comments</label><div class="controls"><textarea class="text optional" name="lab_review[comment]" id="lab_review_comment">
+</textarea></div></div>
+</div>
+</form><ql-button disabled id='submit' label='Submit' slot='action' text></ql-button>
+</ql-dialog>
+
+<ql-dialog headline='All done? If you end this lab, you will lose all your work. You may not be able to restart the lab if there is a quota limit. Are you sure you want to end this lab?' icon='error_outline' id='js-lab-are-you-sure-dialog'>
+<ql-button id='js-are-you-sure-button' label='Submit' slot='action' text></ql-button>
+</ql-dialog>
+
+
+<script>
+  $(function() {
+    ql.initMaterialInputs();
+    initChosen();
+    initSearch();
+    initTabs();
+    ql.list.init();
+    ql.favoriting.init();
+    ql.header.myAccount.init();
+    initTooltips();
+    ql.autocomplete.init();
+    ql.modals.init();
+    ql.toggleButtons.init();
+    ql.analytics.init();
+    ql.favoriting.init();
+  ql.chat.init();
+  ql.jumpContent.init();
+  ql.labControlPanel.addRecaptchaErrorHandler();
+  initLabContent();
+  ql.labOutline.links.init();
+  initLabReviewModal();
+  initLabReviewTranslations( {"star_amount_1":"1 of 5 stars","star_amount_2":"2 of 5 stars","star_amount_3":"3 of 5 stars","star_amount_4":"4 of 5 stars","star_amount_5":"5 of 5 stars"} )
+  ql.labAssessment.init();
+  ql.labData.init();
+  initLabTranslations( {"are_you_sure":"All done? If you end this lab, you will lose all your work. You may not be able to restart the lab if there is a quota limit. Are you sure you want to end this lab?","in_progress":"*In Progress*","ending":"*Ending*","starting":"*Starting, please wait*","end_concurrent_labs":"Sorry, you can only run one lab at a time. To start this lab, please confirm that you want all of your existing labs to end.","copied":"Copied","no_resource":"Error retrieving resource.","no_support":"No Support","mac_press":"Press ⌘-C to copy","thanks_review":"Thanks for reviewing this lab.","windows_press":"Press Ctrl-C to copy","days":"days"} );
+  ql.labRun.init();
+  ql.navPanel.init();
+  ql.navigation.init();
+  
+  });
+</script>
+
+</body>
+</html>
+

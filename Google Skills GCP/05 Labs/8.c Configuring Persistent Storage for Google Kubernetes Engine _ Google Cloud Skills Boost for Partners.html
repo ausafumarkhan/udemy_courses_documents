@@ -1,0 +1,1078 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<title>Configuring Persistent Storage for Google Kubernetes Engine | Google Cloud Skills Boost for Partners</title>
+<script>
+//<![CDATA[
+window.gon={};gon.deployment="googlecourses-run";
+//]]>
+</script>
+<script>
+  (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer',"GTM-5XSKHDX");
+</script>
+<script src="https://cdn.qwiklabs.com/assets/hallofmirrors/polyfills/webcomponents-loader-8583b47b01e40e6ea7bf1ad443a20b7e79bbdd5eafac009806a228c91a97282c.js"></script>
+<script src="https://cdn.qwiklabs.com/assets/vendor-beb958bea8eff6a4ad4cf8f36a0a676817a4857e214b17ae983796071a4a816d.js"></script>
+<script src="https://cdn.qwiklabs.com/assets/application-3120f058991567f3906a2b96e46758fe3aeede76b5781fa030c25ae64f3349f2.js"></script>
+<script src="https://cdn.qwiklabs.com/assets/hallofmirrors/hallofmirrors-3126bcc4ac2b348f343ac9dc711ef138393d2f3e3cc98c722bd19f6b9d0b4b6e.js"></script>
+<!--[if lt IE 9]>
+<script src='http://html5shim.googlecode.com/svn/trunk/html5.js' type='text/javascript'></script>
+<![endif]-->
+<!--[endif]>  <![endif]-->
+<script id='ze-snippet' src='https://static.zdassets.com/ekr/snippet.js?key=511e4158-0aec-4e3c-b2e6-4daa1769f51e'></script>
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="jQcRUCiWpQlsJw1rwA9EcAAFdoF21Xn+2iDt4T4/vpIundCHoZyXjTf7AitnbTTnb5X3Zn8K/41s/m8un8jmBA==" />
+<meta content='width=device-width, initial-scale=1.0, user-scalable=yes' name='viewport'>
+<meta content='1rRsY0INj8RvwB5EF5pwdxt2A2P9aDgAlsICaJ0d5w0' name='google-site-verification'>
+<meta content='#3681E4' property='msapplication-TileColor'>
+<meta content='/favicon-144.png' property='msapplication-TileImage'>
+<meta content='[{&quot;id&quot;:&quot;recaptcha_experiment&quot;,&quot;optimize_id&quot;:&quot;dpViOcLkT3qS4TvL2mRojA&quot;,&quot;title&quot;:&quot;No Recaptcha shown for trusted users&quot;,&quot;variant_index&quot;:0,&quot;variant&quot;:&quot;original&quot;}]' name='active-experiments'>
+<meta content='{&quot;userId&quot;:11061062,&quot;experimentIds&quot;:[&quot;oauth_risc_shutoff&quot;,&quot;program_groups&quot;,&quot;program_learning_assignment&quot;,&quot;course_upgrade&quot;,&quot;enforce_codebuild_verdicts&quot;,&quot;canonical_domain_redirect&quot;,&quot;alexandria_show_bundle_errors&quot;,&quot;used_in&quot;,&quot;show_annual_purchase_now&quot;,&quot;program_resources&quot;,&quot;programs&quot;,&quot;teams&quot;,&quot;chat_off_for_signed_out_users&quot;]}' name='help-api-product-data'>
+<meta content='{&quot;groupIds&quot;:[&quot;non_suadmins&quot;,&quot;students&quot;,&quot;non_organization&quot;,&quot;non_program&quot;]}' name='help-api-custom-data'>
+<meta content='Architecting with Google Kubernetes Engine: Configuring Persistent Storage for Kubernetes Engine' name='description'>
+<meta content='Qwiklabs' name='author'>
+<meta content='Configuring Persistent Storage for Google Kubernetes Engine | Google Cloud Skills Boost for Partners' property='og:title'>
+<meta content='website' property='og:type'>
+<meta content='/favicon-144.png' property='og:image'>
+<meta content='Qwiklabs' property='og:site_name'>
+<meta content='Architecting with Google Kubernetes Engine: Configuring Persistent Storage for Kubernetes Engine' property='og:description'>
+<meta content='/qwiklabs_logo_900x887.png' property='og:logo' size='900x887'>
+<meta content='/qwiklabs_logo_994x187.png' property='og:logo' size='994x187'>
+
+
+<meta property="og:url" content="https://partner.cloudskillsboost.google/course_sessions/3568565/labs/381746" /><link href="https://partner.cloudskillsboost.google/course_sessions/3568565/labs/381746" rel="canonical" />
+<link color='#3681E4' href='/favicon-svg.svg' rel='mask-icon'>
+<link href='/favicon-180.png' rel='apple-touch-icon-precomposed'>
+<link href='https://cdn.qwiklabs.com/Vag5GK2J6rS6843Qvg8TQJ1kEbAsEmQoF0%2BdLRfcLRE%3D' rel='shortcut icon' type='image/x-icon'>
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oswald:400|Roboto+Mono:400,700|Roboto:300,400,500,700|Google+Sans:300,400,500,700|Google+Sans+Display:400|Material+Icons|Google+Material+Icons" media="screen" />
+
+<link rel="stylesheet" href="https://cdn.qwiklabs.com/assets/application-9ff670d4fe0d403d921ffc3c9f4362793f1df46bf496cf49078238b5cb1bc5a4.css" media="all" />
+
+
+<style>
+  :root {
+    --primary-text-on-surface-color: #1a73e8;
+    --primary-text-on-surface-color-dark: #1568d6;
+    --primary-text-on-surface-color-darker: #135ec1;
+    --primary-text-on-surface-color-darkest: #1154ac;
+    --primary-surface-color: #1a73e8;
+    --primary-surface-color-rgb: 26,115,232;
+    --primary-surface-color-light: #d1e3fa;
+    --primary-surface-color-lightest: #e8f1fd;
+    --text-on-primary-color: #ffffff;
+    --accent-text-on-surface-color: #f29900;
+    --accent-surface-color: #f9ab00;
+    --accent-surface-color-rgb: 249,171,0;
+    --accent-surface-color-light: #ffefcc;
+    --text-on-accent-color: #202124;
+  }
+</style>
+
+<style>
+  :root {
+    --navbar-height: 112px;
+  }
+</style>
+
+
+
+</head>
+<body class='lab-show l-full no-nav course-layout-body l-full no-nav  application-new course_sessions-labs course_sessions-labs-show lab-show l-full no-nav course-layout-body l-full no-nav  '>
+<ql-toolbar centered class='course-header'>
+<div class='course-header-navigation' role='navigation' slot='navigation'>
+<ul>
+<li>
+<ql-icon-button href='/course_templates/2' icon='home' label='Course home' tip='Home'></ql-icon-button>
+</li>
+<li>
+<ql-toggle-button class='course-side-toggle' data-analytics-action='Toggled course outline panel' data-analytics-category='Course' data-analytics-label='Getting Started with Google Kubernetes Engine' expandable for='course-outline-drawer' icon='list' id='toggle-outline' label='Toggle course outline' on tip='Toggle course outline'></ql-toggle-button>
+</li>
+<li>
+<ql-icon-button href='/course_sessions/3568565/video/381745' icon='arrow_back' label='Previous activity' tip='Previous activity'></ql-icon-button>
+</li>
+<li>
+<ql-icon-button href='/course_sessions/3568565/video/381747' icon='arrow_forward' label='Next activity' tip='Next activity'></ql-icon-button>
+</li>
+</ul>
+</div>
+<h1 class='ql-headline-6' slot='title'>
+Configuring Persistent Storage for Google Kubernetes Engine
+</h1>
+<div class='course-header-actions' slot='action'>
+<ql-icon-button id='control-panel-target' style='display: none;'>
+dashboard
+</ql-icon-button>
+<ql-menu for='control-panel-target' id='control-panel-menu'></ql-menu>
+
+<ql-icon-button class='mobile-hide' icon='help_outline' id='help-menu-button' label='Open help menu' tip='Help'></ql-icon-button>
+<ql-menu for='help-menu-button' id='help-menu'>
+<ql-menu-item data-analytics-action='opened_help' data-analytics-label='course' label='Help Center' onclick='hallofmirrors.helpService.startHelp({&quot;productData&quot;:{&quot;userId&quot;:11061062},&quot;context&quot;:&quot;course&quot;})'></ql-menu-item>
+<ql-menu-item href='mailto:support@qwiklabs.com' label='Email support'></ql-menu-item>
+<ql-menu-item label='Chat support' onClick='ql.chat.open()'></ql-menu-item>
+</ql-menu>
+
+</div>
+</ql-toolbar>
+
+
+<nav class='nav-panel js-nav-panel'>
+<div class='nav-panel__logo'>
+<div class="custom-logo"><img alt="Google Cloud Skills Boost for Partners" height="24" aria-label="Google Cloud Skills Boost for Partners" src="https://cdn.qwiklabs.com/PGyhmgS3zZncIEGywnx5UXsKwepRRFQ9BhAg%2FWHNrlQ%3D" /></div>
+</div>
+<nav class='ql-sidenav'>
+<ql-sidenav-item href='/' icon='home' label='Paths'></ql-sidenav-item>
+
+<ql-sidenav-item href='/catalog' icon='school' label='Explore'></ql-sidenav-item>
+
+<ql-sidenav-item href='/profile' icon='event_note' label='Profile'></ql-sidenav-item>
+
+</nav>
+
+</nav>
+<div class='nav-panel__overlay js-nav-toggle'></div>
+
+<main class='js-main' id='jump-content'>
+<div class='l-main-wrapper' id='main-wrapper'>
+<ql-drawer-container class='course-container'>
+<ql-drawer aria-labelledby='toggle-outline' id='course-outline-drawer' localStorageid='course-outline' open slot='drawer' width='240'>
+<ql-course-outline activeActivityId='381746' modules='[{&quot;id&quot;:&quot;59708&quot;,&quot;title&quot;:&quot;Course Introduction&quot;,&quot;description&quot;:&quot;\u003cp\u003eIn this module you will learn how to interact with this course.\u003c/p\u003e&quot;,&quot;steps&quot;:[{&quot;id&quot;:&quot;389027&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;381678&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/video/381678&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:97000,&quot;title&quot;:&quot;Course Introduction&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false}],&quot;expanded&quot;:false},{&quot;id&quot;:&quot;59709&quot;,&quot;title&quot;:&quot;Introduction to Google Cloud&quot;,&quot;description&quot;:&quot;\u003cp\u003eThis module helps you start off with the right framework of concepts. After a review of fundamentals cloud computing, you will learn about how Google Cloud&#39;s resources around the world are organized into regions and zones. You&#39;ll also learn how you can organize the resources you use in Google Cloud, so that you can manage them. Finally, you&#39;ll meet the tools that let you connect to Google Cloud and allocate, change, and release resources.\u003c/p\u003e&quot;,&quot;steps&quot;:[{&quot;id&quot;:&quot;389028&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;381679&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/video/381679&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:58000,&quot;title&quot;:&quot;Introduction&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389029&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;381680&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/video/381680&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:254000,&quot;title&quot;:&quot;Cloud Computing and Google Cloud&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389030&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;381681&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/quizzes/381681&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Cloud Computing and Google Cloud&quot;,&quot;type&quot;:&quot;quiz&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389031&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;381682&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/video/381682&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:461000,&quot;title&quot;:&quot;Resource Management&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389032&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;381683&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/quizzes/381683&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Resource Management&quot;,&quot;type&quot;:&quot;quiz&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389033&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;381684&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/video/381684&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:253000,&quot;title&quot;:&quot;Billing&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389034&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;381685&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/quizzes/381685&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Billing&quot;,&quot;type&quot;:&quot;quiz&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389035&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;381686&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/video/381686&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:258000,&quot;title&quot;:&quot;Interacting with Google Cloud&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389036&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;381687&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/quizzes/381687&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Interacting with Google Cloud&quot;,&quot;type&quot;:&quot;quiz&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389037&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;381688&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/documents/381688&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Computing Options&quot;,&quot;type&quot;:&quot;document&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389038&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;381689&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/video/381689&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:30000,&quot;title&quot;:&quot;Lab Intro&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389039&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;381690&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/labs/381690&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:3600000,&quot;title&quot;:&quot;Accessing the Google Cloud Console and Cloud Shell&quot;,&quot;type&quot;:&quot;lab&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389040&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;381691&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/video/381691&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:857000,&quot;title&quot;:&quot;Lab solution&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389041&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;381692&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/video/381692&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:69000,&quot;title&quot;:&quot;Summary&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389042&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;381693&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/quizzes/381693&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Introduction to Google Cloud&quot;,&quot;type&quot;:&quot;quiz&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false}],&quot;expanded&quot;:false},{&quot;id&quot;:&quot;59710&quot;,&quot;title&quot;:&quot;Introduction to Containers and Kubernetes&quot;,&quot;description&quot;:&quot;\u003cp\u003eIn this module you will learn about software containers and their benefits are for application deployment. You&#39;ll configure and build containers. You&#39;ll also learn about the functions container that management solutions like Kubernetes provide. You&#39;ll encounter the advantages of Google Kubernetes Engine compared to building your own container-management infrastructure.\u003c/p\u003e&quot;,&quot;steps&quot;:[{&quot;id&quot;:&quot;389043&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;381694&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/video/381694&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:33000,&quot;title&quot;:&quot;Introduction&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389044&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;381695&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/video/381695&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:359000,&quot;title&quot;:&quot;Introduction to Containers&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389045&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;381696&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/quizzes/381696&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Introduction to Containers&quot;,&quot;type&quot;:&quot;quiz&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389046&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;381697&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/video/381697&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:404000,&quot;title&quot;:&quot;Containers and Container Images&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389047&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;381698&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/quizzes/381698&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Containers and Container Images&quot;,&quot;type&quot;:&quot;quiz&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389048&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;381699&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/video/381699&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:34000,&quot;title&quot;:&quot;Lab Intro&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389049&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;381700&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/labs/381700&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:3600000,&quot;title&quot;:&quot;Working with Cloud Build&quot;,&quot;type&quot;:&quot;lab&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389050&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;381701&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/video/381701&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:321000,&quot;title&quot;:&quot;Lab Solution&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389051&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;381702&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/video/381702&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:220000,&quot;title&quot;:&quot;Introduction to Kubernetes&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389052&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;381703&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/quizzes/381703&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Introduction to Kubernetes&quot;,&quot;type&quot;:&quot;quiz&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389053&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;381704&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/video/381704&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:188000,&quot;title&quot;:&quot;Introduction to Google Kubernetes Engine&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389054&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;381705&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/quizzes/381705&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Introduction to Google Kubernetes Engine&quot;,&quot;type&quot;:&quot;quiz&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389055&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;381706&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/video/381706&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:605000,&quot;title&quot;:&quot;Compute Options Detail&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389056&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;381707&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/video/381707&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:73000,&quot;title&quot;:&quot;Summary&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389057&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;381708&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/quizzes/381708&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Containers and Kubernetes in Google Cloud&quot;,&quot;type&quot;:&quot;quiz&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false}],&quot;expanded&quot;:false},{&quot;id&quot;:&quot;59711&quot;,&quot;title&quot;:&quot;Kubernetes Architecture&quot;,&quot;description&quot;:&quot;\u003cp\u003eIn this module you’ll learn the components of a Kubernetes cluster and how they work together. You&#39;ll deploy a Kubernetes cluster using Google Kubernetes Engine and deploy Pods to a GKE cluster. You&#39;ll also view and manage several very useful kinds of Kubernetes objects.\u003c/p\u003e&quot;,&quot;steps&quot;:[{&quot;id&quot;:&quot;389058&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;381709&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/video/381709&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:38000,&quot;title&quot;:&quot;Introduction&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389059&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;381710&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/video/381710&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:269000,&quot;title&quot;:&quot;Kubernetes Concepts&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389060&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;381711&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/quizzes/381711&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Kubernetes Concepts&quot;,&quot;type&quot;:&quot;quiz&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389061&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;381712&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/video/381712&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:381000,&quot;title&quot;:&quot;Kubernetes Control Plane&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389062&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;381713&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/quizzes/381713&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Kubernetes Control Plane&quot;,&quot;type&quot;:&quot;quiz&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389063&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;381714&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/video/381714&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:380000,&quot;title&quot;:&quot;Google Kubernetes Engine Concepts&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389064&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;381715&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/quizzes/381715&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Google Kubernetes Engine Concepts&quot;,&quot;type&quot;:&quot;quiz&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389065&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;381716&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/video/381716&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:660000,&quot;title&quot;:&quot;Kubernetes Object Management&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389066&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;381717&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/documents/381717&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;A note about Deployments and ReplicaSets&quot;,&quot;type&quot;:&quot;document&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389067&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;381718&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/quizzes/381718&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Kubernetes Object Management&quot;,&quot;type&quot;:&quot;quiz&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389068&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;381719&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/documents/381719&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;A note about Services&quot;,&quot;type&quot;:&quot;document&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389069&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;381720&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/documents/381720&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Controller objects to know about&quot;,&quot;type&quot;:&quot;document&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389070&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;381721&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/quizzes/381721&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Kubernetes Controller Objects&quot;,&quot;type&quot;:&quot;quiz&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389071&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;381722&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/video/381722&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:31000,&quot;title&quot;:&quot;Lab Intro&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389072&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;381723&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/labs/381723&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:3600000,&quot;title&quot;:&quot;Deploying Google Kubernetes Engine&quot;,&quot;type&quot;:&quot;lab&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389073&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;381724&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/video/381724&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:58000,&quot;title&quot;:&quot;Migrate for Anthos introduction&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389074&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;381725&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/video/381725&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:58000,&quot;title&quot;:&quot;Migrate for Anthos Architecture&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389075&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;381726&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/video/381726&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:65000,&quot;title&quot;:&quot;Migration Path&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389076&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;381727&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/video/381727&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:192000,&quot;title&quot;:&quot;Migrate for Anthos Installation&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389077&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;381728&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/video/381728&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:66000,&quot;title&quot;:&quot;Summary&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389078&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;381729&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/quizzes/381729&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Kubernetes Architecture&quot;,&quot;type&quot;:&quot;quiz&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false}],&quot;expanded&quot;:false},{&quot;id&quot;:&quot;59712&quot;,&quot;title&quot;:&quot;Introduction to Kubernetes Workloads&quot;,&quot;description&quot;:&quot;\u003cp\u003eIn this module you’ll learn the components that are used to manage Kubernetes workloads. You&#39;ll learn about the kubectl command and creating Kubernetes workloads called deployments. You&#39;ll examine networking services within Kubernetes and the different types of Kubernetes storage abstractions.\u003c/p\u003e&quot;,&quot;steps&quot;:[{&quot;id&quot;:&quot;389079&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;381730&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/video/381730&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:47000,&quot;title&quot;:&quot;Introduction&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389080&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;381731&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/video/381731&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:412000,&quot;title&quot;:&quot;The kubectl Command&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389081&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;381732&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/video/381732&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:249000,&quot;title&quot;:&quot;Deployments&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389082&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;381733&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/video/381733&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:168000,&quot;title&quot;:&quot;Ways to Create Deployments&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389083&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;381734&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/video/381734&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:83000,&quot;title&quot;:&quot;Services and Scaling&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389084&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;381735&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/video/381735&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:115000,&quot;title&quot;:&quot;Updating Deployments&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389085&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;381736&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/video/381736&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:130000,&quot;title&quot;:&quot;Blue-Green Deployments&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389086&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;381737&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/video/381737&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:494000,&quot;title&quot;:&quot;Canary Deployments&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389087&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;381738&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/video/381738&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:64000,&quot;title&quot;:&quot;Managing Deployments&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389088&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;381739&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/video/381739&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:40000,&quot;title&quot;:&quot;Lab Intro&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389089&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;381740&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/labs/381740&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:4200000,&quot;title&quot;:&quot;Creating Google Kubernetes Engine Deployments&quot;,&quot;type&quot;:&quot;lab&quot;,&quot;isComplete&quot;:false,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:false,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389090&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;381741&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/video/381741&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:286000,&quot;title&quot;:&quot;Pod Networking&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:false,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:false,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389091&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;381742&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/video/381742&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:125000,&quot;title&quot;:&quot;Volumes&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:false,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:false,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389092&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;381743&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/video/381743&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:237000,&quot;title&quot;:&quot;Volume Types&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:false,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:false,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389093&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;381744&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/video/381744&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:290000,&quot;title&quot;:&quot;The PersistentVolume abstraction&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:false,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:false,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389094&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;381745&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/video/381745&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:57000,&quot;title&quot;:&quot;Lab Intro&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389095&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;381746&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/labs/381746&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:4200000,&quot;title&quot;:&quot;Configuring Persistent Storage for Google Kubernetes Engine&quot;,&quot;type&quot;:&quot;lab&quot;,&quot;isComplete&quot;:false,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:false,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;389096&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;381747&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/video/381747&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:17000,&quot;title&quot;:&quot;Summary&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:false,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:false,&quot;allActivitiesRequired&quot;:false}],&quot;expanded&quot;:false},{&quot;id&quot;:&quot;59713&quot;,&quot;title&quot;:&quot;Course Resources&quot;,&quot;description&quot;:&quot;\u003cp\u003ePDF links to all modules\u003c/p\u003e&quot;,&quot;steps&quot;:[{&quot;id&quot;:&quot;389097&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;381748&quot;,&quot;href&quot;:&quot;/course_sessions/3568565/documents/381748&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Course Resources&quot;,&quot;type&quot;:&quot;document&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false}],&quot;expanded&quot;:false}]' open></ql-course-outline>
+</ql-drawer>
+<ql-drawer-content class='course-activity' slot='drawer-content'>
+
+
+<div class='lab-assessment__tab js-open-lab-assessment-panel'>
+<button class='js-lab-assessment-total-score'>
+—/30
+</button>
+</div>
+<div aria-labelledby='lab-assessment-checkpoint' class='lab-assessment__panel js-lab-assessment-panel' role='dialog'>
+<div class='lab-assessment__panel__header'>
+<h4 id='lab-assessment-checkpoint'>Checkpoints</h4>
+<ql-icon-button class='js-close-lab-assessment-panel' icon='arrow_forward' label='Close dialog'></ql-icon-button>
+</div>
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Create PVs and PVCs
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button class='js-show-run-step-button' description='Create PVs and PVCs' step_no='1'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-1'>
+</span>
+/ 10
+</p>
+</div>
+</div>
+
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Mount and verify Google Cloud persistent disk PVCs in Pods
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button class='js-show-run-step-button' description='Mount and verify Google Cloud persistent disk PVCs in Pods' step_no='2'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-2'>
+</span>
+/ 10
+</p>
+</div>
+</div>
+
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Create StatefulSets with PVCs
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button class='js-show-run-step-button' description='Create StatefulSets with PVCs' step_no='3'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-3'>
+</span>
+/ 10
+</p>
+</div>
+</div>
+
+</div>
+<ql-drawer-container class='js-lab-state' data-analytics-payload='{&quot;label&quot;:&quot;Configuring Persistent Storage for Google Kubernetes Engine&quot;,&quot;lab_name&quot;:&quot;Configuring Persistent Storage for Google Kubernetes Engine&quot;,&quot;classroom_name&quot;:null,&quot;deployment&quot;:&quot;googlecourses-run&quot;}' data-credits='0.0' data-focus-id='157525794' data-lab-billing-limit='0.0' data-lab-duration='3600' data-parent='course_session' data-recaptcha-enabled id='lab-container'>
+<ql-drawer id='terminal-drawer' slot='drawer' style='width: calc(100% - 480px)'>
+<iframe allow='clipboard-read' class='terminal' id='embedded-resource'></iframe>
+</ql-drawer>
+<ql-drawer-content class='js-lab-wrapper' id='lab-content' slot='drawer-content'>
+<ql-drawer-container id='lab-content-container'>
+<ql-drawer id='control-panel-drawer' open slot='drawer' width='320'>
+<ql-lab-control-panel class='ql-lab-control-panel__max-height control-panel js-lab-control-panel' connectionFiles='[]' labControlButton='{&quot;disabled&quot;:false,&quot;pending&quot;:false,&quot;running&quot;:false}' labDetails='[]' labTimer='{&quot;ticking&quot;:false,&quot;secondsRemaining&quot;:3600}' studentResources='[]'>
+<script src="https://www.recaptcha.net/recaptcha/api.js?render=6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr"   ></script>
+        <script>
+          // Define function so that we can call it again later if we need to reset it
+          // This executes reCAPTCHA and then calls our callback.
+          function executeRecaptchaForStartLab() {
+            grecaptcha.ready(function() {
+              grecaptcha.execute('6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr', {action: 'start_lab'}).then(function(token) {
+                setInputWithRecaptchaResponseTokenForStartLab('g-recaptcha-response-data-start-lab', token)
+              });
+            });
+          };
+          // Invoke immediately
+          executeRecaptchaForStartLab()
+
+          // Async variant so you can await this function from another async function (no need for
+          // an explicit callback function then!)
+          // Returns a Promise that resolves with the response token.
+          async function executeRecaptchaForStartLabAsync() {
+            return new Promise((resolve, reject) => {
+             grecaptcha.ready(async function() {
+                resolve(await grecaptcha.execute('6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr', {action: 'start_lab'}))
+              });
+            })
+          };
+
+                    var setInputWithRecaptchaResponseTokenForStartLab = function(id, token) {
+            var element = document.getElementById(id);
+            element.value = token;
+          }
+
+        </script>
+<input type="hidden" name="g-recaptcha-response-data[start_lab]" id="g-recaptcha-response-data-start-lab" data-sitekey="6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr" class="g-recaptcha g-recaptcha-response "/>
+
+<div aria-live='polite' class='hidden' id='recaptcha-v2-start-lab' slot='recaptcha'>
+<script src="https://www.recaptcha.net/recaptcha/api.js" async defer ></script>
+<div data-sitekey="6LeOI8IUAAAAAPkHlMAE9NReCD_1WD81iYlBlCnV" data-callback="recaptchaComplete" data-expired-callback="expireV2Token" class="g-recaptcha "></div>
+          <noscript>
+            <div>
+              <div style="width: 302px; height: 422px; position: relative;">
+                <div style="width: 302px; height: 422px; position: absolute;">
+                  <iframe
+                    src="https://www.recaptcha.net/recaptcha/api/fallback?k=6LeOI8IUAAAAAPkHlMAE9NReCD_1WD81iYlBlCnV"
+                    name="ReCAPTCHA"
+                    style="width: 302px; height: 422px; border-style: none; border: 0; overflow: hidden;">
+                  </iframe>
+                </div>
+              </div>
+              <div style="width: 300px; height: 60px; border-style: none;
+                bottom: 12px; left: 25px; margin: 0px; padding: 0px; right: 25px;
+                background: #f9f9f9; border: 1px solid #c1c1c1; border-radius: 3px;">
+                <textarea id="g-recaptcha-response" name="g-recaptcha-response"
+                  class="g-recaptcha-response"
+                  style="width: 250px; height: 40px; border: 1px solid #c1c1c1;
+                  margin: 10px 25px; padding: 0px; resize: none;">
+                </textarea>
+              </div>
+            </div>
+          </noscript>
+
+</div>
+</ql-lab-control-panel>
+</ql-drawer>
+<ql-drawer-content id='lab-instructions' slot='drawer-content'>
+<ql-snackbar id='alert-snackbar'></ql-snackbar>
+<div class='alert alert--fake js-alert'>
+<p class='alert__message js-alert-message' role='alert'></p>
+<ql-icon-button class='alert__close js-alert-close' icon='clear'></ql-icon-button>
+<iframe class='l-ie-iframe-fix' tabindex='-1'></iframe>
+</div>
+<div class='lab-content__renderable-instructions js-lab-content'>
+<div class='lab-preamble'>
+<h1 class='lab-preamble__title'>
+Configuring Persistent Storage for Google Kubernetes Engine
+</h1>
+<div class='lab-preamble__details subtitle-headline-1'>
+<span>1 hour </span>
+<span>Free</span>
+<div class='lab__rating'>
+<a aria-label="Lab Reviews" href="/focuses/157525794/reviews?parent=course_session"><div class='rateit' data-rateit-readonly='true' data-rateit-value='4.5375'></div>
+
+</a></div>
+</div>
+</div>
+<div class='lab-outline-place-holder'></div>
+
+<div class='markdown-lab-instructions js-markdown-instructions' id='markdown-lab-instructions'>
+
+<h2 id="step1">Overview</h2>
+<p>In this lab, you set up PersistentVolumes and PersistentVolumeClaims. PersistentVolumes are storage that is available to a Kubernetes cluster. PersistentVolumeClaims enable Pods to access PersistentVolumes. Without PersistentVolumeClaims Pods are mostly ephemeral, so you should use PersistentVolumeClaims for any data that you expect to survive Pod scaling, updating, or migrating.</p>
+<h2 id="step2">Objectives</h2>
+<p>In this lab, you learn how to perform the following tasks:</p>
+<ul>
+<li>
+<p>Create manifests for PersistentVolumes (PVs) and PersistentVolumeClaims (PVCs) for Google Cloud persistent disks (dynamically created or existing)</p>
+</li>
+<li>
+<p>Mount Google Cloud persistent disk PVCs as volumes in Pods</p>
+</li>
+<li>
+<p>Use manifests to create StatefulSets</p>
+</li>
+<li>
+<p>Mount Google Cloud persistent disk PVCs as volumes in StatefulSets</p>
+</li>
+<li>
+<p>Verify the connection of Pods in StatefulSets to particular PVs as the Pods are stopped and restarted</p>
+</li>
+</ul>
+<h2 id="step3">Lab setup</h2>
+<h3>Access the lab</h3>
+<p>For each lab, you get a new Google Cloud project and set of resources for a fixed time at no cost.</p>
+<ol>
+<li>
+<p>Sign in to Qwiklabs using an <strong>incognito window</strong>.</p>
+</li>
+<li>
+<p>Note the lab's access time (for example, <code>1:15:00</code>), and make sure you can finish within that time.<br>
+There is no pause feature. You can restart if needed, but you have to start at the beginning.</p>
+</li>
+<li>
+<p>When ready, click <strong>Start lab</strong>.</p>
+</li>
+<li>
+<p>Note your lab credentials (<strong>Username</strong> and <strong>Password</strong>). You will use them to sign in to the Google Cloud Console.</p>
+</li>
+<li>
+<p>Click <strong>Open Google Console</strong>.</p>
+</li>
+<li>
+<p>Click <strong>Use another account</strong> and copy/paste credentials for <strong>this</strong> lab into the prompts.<br>
+If you use other credentials, you'll receive errors or <strong>incur charges</strong>.</p>
+</li>
+<li>
+<p>Accept the terms and skip the recovery resource page.</p>
+</li>
+</ol>
+<aside class="warning"><p><strong>Note:</strong> Do not click <strong>End Lab</strong> unless you have finished the lab or want to restart it. This clears your work and removes the project.
+  </p>
+</aside>
+<h3>Activate Google Cloud Shell</h3>
+<p>Google Cloud Shell is a virtual machine that is loaded with development tools. It offers a persistent 5GB home directory and runs on the Google Cloud.</p>
+<p>Google Cloud Shell provides command-line access to your Google Cloud resources.</p>
+<ol>
+<li>
+<p>In Cloud console, on the top right toolbar, click the Open Cloud Shell button.</p>
+<p><img alt="Highlighted Cloud Shell icon" src="https://cdn.qwiklabs.com/00tA48qOVOyHrSa1DA7LwccfwQ9Z%2BE6dkvQ1MYPHzhQ%3D"></p>
+</li>
+<li>
+<p>Click <strong>Continue</strong>.</p>
+</li>
+</ol>
+<p>It takes a few moments to provision and connect to the environment. When you are connected, you are already authenticated, and the project is set to your <em>PROJECT_ID</em>. For example:</p>
+<p><img alt="Project ID highlighted in the Cloud Shell Terminal" src="https://cdn.qwiklabs.com/hmMK0W41Txk%2B20bQyuDP9g60vCdBajIS%2B52iI2f4bYk%3D"></p>
+<p><strong>gcloud</strong> is the command-line tool for Google Cloud. It comes pre-installed on Cloud Shell and supports tab-completion.</p>
+<ul>
+<li>You can list the active account name with this command:</li>
+</ul>
+<ql-code-block language="plaintext">
+gcloud auth list
+</ql-code-block>
+<p><strong>Output:</strong></p>
+<ql-code-block output="">
+Credentialed accounts:
+ - @.com (active)
+</ql-code-block>
+<p><strong>Example output:</strong></p>
+<ql-code-block output="">
+Credentialed accounts:
+ - google1623327_student@qwiklabs.net
+ </ql-code-block>
+<ul>
+<li>You can list the project ID with this command:</li>
+</ul>
+<ql-code-block language="plaintext">
+gcloud config list project
+</ql-code-block>
+<p><strong>Output:</strong></p>
+<ql-code-block output="">
+[core]
+project = 
+</ql-code-block>
+<p><strong>Example output:</strong></p>
+<ql-code-block output="">
+[core]
+project = qwiklabs-gcp-44776a13dea667a6
+</ql-code-block>
+<ql-infobox><strong>Note: </strong>
+  Full documentation of <strong>gcloud</strong> is available in the
+  <a href="https://cloud.google.com/sdk/gcloud" target="_blank">
+    gcloud CLI overview guide
+  </a>.
+</ql-infobox>
+<h2 id="step4">Task 1. Create PVs and PVCs</h2>
+<p>In this task, you create a PVC, which triggers Kubernetes to automatically create a PV.</p>
+<h3>Connect to the lab GKE cluster</h3>
+<ol>
+<li>
+<p>In Cloud Shell, type the following command to set the environment variable for the zone and cluster name:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+export my_zone=us-central1-a
+export my_cluster=standard-cluster-1
+</ql-code-block>
+<ol start="2">
+<li>
+<p>Configure tab completion for the  kubectl command-line tool:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+source &lt;(kubectl completion bash)
+</ql-code-block>
+<ol start="3">
+<li>
+<p>Configure access to your cluster for kubectl:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud container clusters get-credentials $my_cluster --zone $my_zone
+</ql-code-block>
+<h3>Create and apply a manifest with a PVC</h3>
+<p>Most of the time, you don't need to directly configure PV objects or create Compute Engine persistent disks. Instead, you can create a PVC, and Kubernetes automatically provisions a persistent disk for you.</p>
+<p>You create the PVC in this task using the <code>pvc-demo.yaml</code> manifest file that has been provided for you. This creates a 30 gigabyte PVC called <code>hello-web-disk</code>  that can be mounted as a read-write volume on a single node at a time.</p>
+<ql-code-block output="">
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: hello-web-disk
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 30Gi
+</ql-code-block>
+<ol>
+<li>
+<p>In Cloud Shell, enter the following command  to clone the repository to the lab Cloud Shell:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+git clone https://github.com/GoogleCloudPlatform/training-data-analyst
+</ql-code-block>
+<ol start="2">
+<li>
+<p>Create a soft link as a shortcut to the working directory:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+ln -s ~/training-data-analyst/courses/ak8s/v1.1 ~/ak8s
+</ql-code-block>
+<ol start="3">
+<li>
+<p>Change to the directory that contains the sample files for this lab:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+cd ~/ak8s/Storage/
+</ql-code-block>
+<ol start="4">
+<li>
+<p>To show that you currently have no PVCs, execute the following command:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+kubectl get persistentvolumeclaim
+</ql-code-block>
+<p><strong>Output:</strong></p>
+<ql-code-block output="">
+No resources found in default namespace.
+</ql-code-block>
+<ol start="5">
+<li>
+<p>To create the PVC, execute the following command:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+kubectl apply -f pvc-demo.yaml
+</ql-code-block>
+<ol start="6">
+<li>
+<p>To show your newly created PVC, execute the following command:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+kubectl get persistentvolumeclaim
+</ql-code-block>
+<p><strong>Partial output:</strong></p>
+<ql-code-block output="">
+NAME           STATUS    VOLUME       CAPACITY   ACCESS MODES   STORAGE CLASS   AGE
+hello-web-disk Pending                                          standard-rwo    15s
+</ql-code-block>
+<ql-infobox><strong>Note:</strong> The status will remain pending until after the next step.</ql-infobox>
+<p>Click <strong>Check my progress</strong> to verify the objective.</p>
+<ql-activity-tracking step="1">
+      Create PVs and PVCs
+  </ql-activity-tracking>
+<h2 id="step5">Task 2. Mount and verify Google Cloud persistent disk PVCs in Pods</h2>
+<p>In this task, you attach your persistent disk PVC to a Pod. You mount the PVC as a volume as part of the manifest for the Pod.</p>
+<h3>Mount the PVC to a Pod</h3>
+<p>The manifest file <code>pod-volume-demo.yaml</code> deploys an nginx container, attaches the <code>pvc-demo-volume</code> to the Pod and mounts that volume to the path <code>/var/www/html</code> inside the nginx container.  Files saved to this directory inside the container will be saved to the persistent volume and persist even if the Pod and the container are shutdown and recreated.</p>
+<ql-code-block output="">
+kind: Pod
+apiVersion: v1
+metadata:
+  name: pvc-demo-pod
+spec:
+  containers:
+    - name: frontend
+      image: nginx
+      volumeMounts:
+      - mountPath: "/var/www/html"
+        name: pvc-demo-volume
+  volumes:
+    - name: pvc-demo-volume
+      persistentVolumeClaim:
+        claimName: hello-web-disk
+</ql-code-block>
+<ol>
+<li>
+<p>To create the Pod with the volume, execute the following command:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+kubectl apply -f pod-volume-demo.yaml
+</ql-code-block>
+<ol start="2">
+<li>
+<p>List the Pods in the cluster:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+kubectl get pods
+</ql-code-block>
+<p><strong>Output:</strong></p>
+<ql-code-block output="">
+NAME          READY    STATUS              RESTARTS   AGE
+pvc-demo-pod  0/1      ContainerCreating   0          18s
+</ql-code-block>
+<p>If you do this quickly after creating the Pod, you will see the status listed as "ContainerCreating" while the volume is mounted before the status changes to "Running".</p>
+<ol start="3">
+<li>
+<p>To verify the PVC is accessible within the Pod, you must gain shell access to your Pod. To start the shell session, execute the following command:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+kubectl exec -it pvc-demo-pod -- sh
+</ql-code-block>
+<ol start="4">
+<li>
+<p>To create a simple text message as a web page in the Pod enter the following commands:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+echo Test webpage in a persistent volume!&gt;/var/www/html/index.html
+chmod +x /var/www/html/index.html
+</ql-code-block>
+<ol start="5">
+<li>
+<p>Verify the text file contains your message:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+cat /var/www/html/index.html
+</ql-code-block>
+<p><strong>Output:</strong></p>
+<ql-code-block output="">
+Test webpage in a persistent volume!
+</ql-code-block>
+<ol start="6">
+<li>
+<p>Enter the following command to leave the interactive shell on the nginx container:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+exit
+</ql-code-block>
+<h3>Test the persistence of the PV</h3>
+<p>You will now delete the Pod from the cluster, confirm that the PV still exists, then redeploy the Pod and verify the contents of the PV remain intact.</p>
+<ol>
+<li>
+<p>Delete the pvc-demo-pod:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+kubectl delete pod pvc-demo-pod
+</ql-code-block>
+<ol start="2">
+<li>
+<p>List the Pods in the cluster:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+kubectl get pods
+</ql-code-block>
+<p><strong>Output:</strong></p>
+<ql-code-block output="">
+No resources found in default namespace.
+</ql-code-block>
+<p>There should be no Pods on the cluster.</p>
+<ol start="3">
+<li>
+<p>To show your PVC, execute the following command:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+kubectl get persistentvolumeclaim
+</ql-code-block>
+<p><strong>Partial output:</strong></p>
+<ql-code-block output="">
+NAME           STATUS    VOLUME       CAPACITY   ACCESS MODES   STORAGE CLASS   AGE
+hello-web-disk Bound     pvc-8...34   30Gi       RWO            standard-rwo    22m
+</ql-code-block>
+<p>Your PVC still exists, and was not deleted when the Pod was deleted.</p>
+<ol start="4">
+<li>
+<p>Redeploy the pvc-demo-pod:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+kubectl apply -f pod-volume-demo.yaml
+</ql-code-block>
+<ol start="5">
+<li>
+<p>List the Pods in the cluster:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+kubectl get pods
+</ql-code-block>
+<p><strong>Output:</strong></p>
+<ql-code-block output="">
+NAME           READY     STATUS    RESTARTS   AGE
+pvc-demo-pod   1/1       Running   0          15s
+</ql-code-block>
+<p>The Pod will deploy and the status will change to "Running" faster this time because the PV already exists and does not need to be created.</p>
+<ol start="6">
+<li>
+<p>To verify the PVC is still accessible within the Pod, you must gain shell access to your Pod. To start the shell session, execute the following command:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+kubectl exec -it pvc-demo-pod -- sh
+</ql-code-block>
+<ol start="7">
+<li>
+<p>To verify that the text file still contains your message execute the following command:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+cat /var/www/html/index.html
+</ql-code-block>
+<p><strong>Output:</strong></p>
+<ql-code-block output="">
+Test webpage in a persistent volume!
+</ql-code-block>
+<p>The contents of the persistent volume were not removed, even though the Pod was deleted from the cluster and recreated.</p>
+<ol start="8">
+<li>
+<p>Enter the following command to leave the interactive shell on the nginx container:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+exit
+</ql-code-block>
+<p>Click <strong>Check my progress</strong> to verify the objective.</p>
+<ql-activity-tracking step="2">
+      Mount and verify Google Cloud persistent disk PVCs in Pods
+  </ql-activity-tracking>
+<h2 id="step6">Task 3. Create StatefulSets with PVCs</h2>
+<p>In this task, you use your PVC in a StatefulSet. A StatefulSet is like a Deployment, except that the Pods are given unique identifiers.</p>
+<h3>Release the PVC</h3>
+<ol>
+<li>
+<p>Before you can use the PVC with the statefulset, you must delete the Pod that is currently using it. Execute the following command to delete the Pod:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+kubectl delete pod pvc-demo-pod
+</ql-code-block>
+<ol start="2">
+<li>
+<p>Confirm the Pod has been removed:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+kubectl get pods
+</ql-code-block>
+<p><strong>Output:</strong></p>
+<ql-code-block output="">
+No resources found in default namespace.
+</ql-code-block>
+<h3>Create a StatefulSet</h3>
+<p>The manifest file <code>statefulset-demo.yaml</code> creates a StatefulSet that includes a LoadBalancer service and three replicas of a Pod containing an nginx container and a volumeClaimTemplate for 30 gigabyte PVCs with the name <code>hello-web-disk</code>. The nginx containers mount the PVC called <code>hello-web-disk</code> at <code>/var/www/html</code> as in the previous task.</p>
+<ql-code-block output="">
+kind: Service
+apiVersion: v1
+metadata:
+  name: statefulset-demo-service
+spec:
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 9376
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: statefulset-demo
+spec:
+  selector:
+    matchLabels:
+      app: MyApp
+  serviceName: statefulset-demo-service
+  replicas: 3
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: MyApp
+    spec:
+      containers:
+      - name: stateful-set-container
+        image: nginx
+        ports:
+        - containerPort: 80
+          name: http
+        volumeMounts:
+        - name: hello-web-disk
+          mountPath: "/var/www/html"
+  volumeClaimTemplates:
+  - metadata:
+      name: hello-web-disk
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 30Gi
+</ql-code-block>
+<ul>
+<li>
+<p>To create the StatefulSet with the volume, execute the following command:</p>
+</li>
+</ul>
+<ql-code-block language="plaintext">
+kubectl apply -f statefulset-demo.yaml
+</ql-code-block>
+<p><strong>Output:</strong></p>
+<ql-code-block output="">
+service "statefulset-demo-service" created
+statefulset.apps "statefulset-demo" created
+</ql-code-block>
+<p>You now have a statefulset running behind a service named <code>statefulset-demo-service</code>.</p>
+<h3>Verify the connection of Pods in StatefulSets</h3>
+<ol>
+<li>
+<p>Use "kubectl describe" to view the details of the StatefulSet:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+kubectl describe statefulset statefulset-demo
+</ql-code-block>
+<p>Note the event status at the end of the output. The service and statefulset created successfully.</p>
+<ql-code-block output="">
+Normal  SuccessfulCreate  10s   statefulset-controller
+Message: create Claim hello-web-disk-statefulset-demo-0 Pod statefulset-demo-0 in StatefulSet statefulset-demo success
+Normal  SuccessfulCreate  10s   statefulset-controller
+Message: create Pod statefulset-demo-0 in StatefulSet statefulset-demo successful
+</ql-code-block>
+<ol start="2">
+<li>
+<p>List the Pods in the cluster:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+kubectl get pods
+</ql-code-block>
+<p><strong>Output:</strong></p>
+<ql-code-block output="">
+NAME                 READY     STATUS    RESTARTS   AGE
+statefulset-demo-0   1/1       Running   0          6m
+statefulset-demo-1   1/1       Running   0          3m
+statefulset-demo-2   1/1       Running   0          2m
+</ql-code-block>
+<ol start="3">
+<li>
+<p>To list the PVCs, execute the following command:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+kubectl get pvc
+</ql-code-block>
+<p><strong>Output:</strong></p>
+<ql-code-block output="">
+NAME                          STATUS    VOLUME           CAPACITY ACCESS
+hello-web-disk                Bound     pvc-86117ea6-...34   30Gi    RWO
+hello-web-disk-st...-demo-0   Bound     pvc-92d21d0f-...34   30Gi    RWO
+hello-web-disk-st...-demo-1   Bound     pvc-9bc84d92-...34   30Gi    RWO
+hello-web-disk-st...-demo-2   Bound     pvc-a526ecdf-...34   30Gi    RWO
+</ql-code-block>
+<p>The original hello-web-disk is still there and you can now see the individual PVCs that were created for each Pod in the new statefulset Pod.</p>
+<ol start="4">
+<li>
+<p>Use "kubectl describe" to view the details of the first PVC in the StatefulSet:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+kubectl describe pvc hello-web-disk-statefulset-demo-0
+</ql-code-block>
+<p>Click <strong>Check my progress</strong> to verify the objective.
+<ql-activity-tracking step="3">
+Create StatefulSets with PVCs
+</ql-activity-tracking></p>
+<h2 id="step7">Task 4. Verify the persistence of Persistent Volume connections to Pods managed by StatefulSets</h2>
+<p>In this task, you verify the connection of Pods in StatefulSets to particular PVs as the Pods are stopped and restarted.</p>
+<ol>
+<li>
+<p>To verify that the PVC is accessible within the Pod, you must gain shell access to your Pod. To start the shell session, execute the following command:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+kubectl exec -it statefulset-demo-0 -- sh
+</ql-code-block>
+<ol start="2">
+<li>
+<p>Verify that there is no <code>index.html</code> text file in the <code>/var/www/html</code> directory:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+cat /var/www/html/index.html
+</ql-code-block>
+<ol start="3">
+<li>
+<p>To create a simple text message as a web page in the Pod enter the following commands:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+echo Test webpage in a persistent volume!&gt;/var/www/html/index.html
+chmod +x /var/www/html/index.html
+</ql-code-block>
+<ol start="4">
+<li>
+<p>Verify the text file contains your message:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+cat /var/www/html/index.html
+</ql-code-block>
+<p><strong>Output:</strong></p>
+<ql-code-block output="">
+Test webpage in a persistent volume!
+</ql-code-block>
+<ol start="5">
+<li>
+<p>Enter the following command to leave the interactive shell on the nginx container:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+exit
+</ql-code-block>
+<ol start="6">
+<li>
+<p>Delete the Pod where you updated the file on the PVC:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+kubectl delete pod statefulset-demo-0
+</ql-code-block>
+<ol start="7">
+<li>
+<p>List the Pods in the cluster:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+kubectl get pods
+</ql-code-block>
+<p>You will see that the StatefulSet is automatically restarting the <code>statefulset-demo-0</code> Pod.</p>
+<ql-infobox><strong>Note:</strong> You need to wait until the Pod status shows that it is running again.</ql-infobox>
+<ol start="8">
+<li>
+<p>Connect to the shell on the new <code>statefulset-demo-0</code> Pod:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+kubectl exec -it statefulset-demo-0 -- sh
+</ql-code-block>
+<ol start="9">
+<li>
+<p>Verify that the text file still contains your message:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+cat /var/www/html/index.html
+</ql-code-block>
+<p><strong>Output:</strong></p>
+<ql-code-block output="">
+Test webpage in a persistent volume!
+</ql-code-block>
+<p>The StatefulSet restarts the Pod and reconnects the existing dedicated PVC to the new Pod, ensuring that the data for that Pod is preserved.</p>
+<ol start="10">
+<li>
+<p>Enter the following command to leave the interactive shell on the nginx container:</p>
+</li>
+</ol>
+<ql-code-block language="plaintext">
+exit
+</ql-code-block>
+<h2 id="step8">End your lab</h2>
+<p>When you have completed your lab, click <strong>End Lab</strong>. Google Cloud Skills Boost removes the resources you’ve used and cleans the account for you.</p>
+<p>You will be given an opportunity to rate the lab experience. Select the applicable number of stars, type a comment, and then click <strong>Submit</strong>.</p>
+<p>The number of stars indicates the following:</p>
+<ul>
+<li>1 star = Very dissatisfied</li>
+<li>2 stars = Dissatisfied</li>
+<li>3 stars = Neutral</li>
+<li>4 stars = Satisfied</li>
+<li>5 stars = Very satisfied</li>
+</ul>
+<p>You can close the dialog box if you don't want to provide feedback.</p>
+<p>For feedback, suggestions, or corrections, please use the <strong>Support</strong> tab.</p>
+<p>Copyright 2022 Google LLC All rights reserved. Google and the Google logo are trademarks of Google LLC. All other company and product names may be trademarks of the respective companies with which they are associated.</p>
+
+</div>
+</div>
+
+
+<div class='lab-content__end-lab-button js-end-lab-button-container hidden'>
+<ql-lab-control-button class='js-end-lab-button' running></ql-lab-control-button>
+</div>
+<!-- / TODO: Move recommendations into the end lab modal -->
+</ql-drawer-content>
+<ql-drawer end id='outline-drawer' open slot='drawer' width='320'>
+<div aria-label='Lab Table of Contents' role='navigation'>
+<ul class='lab-content__outline js-lab-content-outline'>
+<li><a href="#step1">Overview</a></li><li><a href="#step2">Objectives</a></li><li><a href="#step3">Lab setup</a></li><li><a href="#step4">Task 1. Create PVs and PVCs</a></li><li><a href="#step5">Task 2. Mount and verify Google Cloud persistent disk PVCs in Pods</a></li><li><a href="#step6">Task 3. Create StatefulSets with PVCs</a></li><li><a href="#step7">Task 4. Verify the persistence of Persistent Volume connections to Pods managed by StatefulSets</a></li><li><a href="#step8">End your lab</a></li>
+</ul>
+</div>
+</ql-drawer>
+</ql-drawer-container>
+</ql-drawer-content>
+</ql-drawer-container>
+
+
+
+</ql-drawer-content>
+</ql-drawer-container>
+
+</div>
+</main>
+
+<span class='hidden' id='flash-sibling-before'></span>
+<ql-snackbar></ql-snackbar>
+
+
+<div class='modal fade' id='lab-details-modal'>
+<div class='modal-container'>
+<div class='modal-content mdl-shadow--24dp'>
+<div class='modal-body'>
+<p class='l-mbm'>
+Architecting with Google Kubernetes Engine: Configuring Persistent Storage for Kubernetes Engine
+</p>
+<p class='small-label l-mbs'>
+<strong>
+Duration:
+</strong>
+8m setup
+&middot;
+60m access
+&middot;
+60m completion
+</p>
+<p class='small-label l-mbs'>
+<strong>AWS Region:</strong>
+[] <strong></strong>
+</p>
+<p class='small-label l-mbs'>
+<span><strong>Levels: </strong>fundamental</span>
+</p>
+<p class='small-label'>
+<strong>
+Permalink:
+</strong>
+<a href="https://partner.cloudskillsboost.google/catalog_lab/2303">https://partner.cloudskillsboost.google/catalog_lab/2303</a>
+</p>
+</div>
+<div class='modal-actions'>
+<a class='button button--text' data-dismiss='modal'>
+Got It
+</a>
+</div>
+
+
+</div>
+</div>
+<iframe class='l-ie-iframe-fix' tabindex='-1' title='modal'></iframe>
+</div>
+<ql-dialog headline='How satisfied are you with this lab?&lt;span aria-hidden=&quot;true&quot;&gt;*&lt;/span&gt;' id='lab-review-dialog'>
+<form class="simple_form js-lab-review-form" id="new_lab_review" action="/lab_reviews" accept-charset="UTF-8" data-remote="true" method="post"><input name="utf8" type="hidden" value="&#x2713;" autocomplete="off" /><div aria-labelledby='lab-review-dialog' aria-required='true' aria-valuemax='5' aria-valuemin='0' aria-valuenow='0' class='rateit js-rateit' data-rateit-max='5' data-rateit-min='0' data-rateit-resetable='false' data-rateit-step='1' data-rateit-value='0' id='lab-review-rateit' role='slider' tabindex='0'></div>
+<div class='l-mtm'>
+
+<div class="control-group hidden lab_review_user_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" value="11061062" name="lab_review[user_id]" id="lab_review_user_id" /></div></div>
+<div class="control-group hidden lab_review_classroom_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" name="lab_review[classroom_id]" id="lab_review_classroom_id" /></div></div>
+<div class="control-group hidden lab_review_lab_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" value="2303" name="lab_review[lab_id]" id="lab_review_lab_id" /></div></div>
+<div class="control-group hidden lab_review_focus_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" name="lab_review[focus_id]" id="lab_review_focus_id" /></div></div>
+<div class="control-group hidden lab_review_rating"><div class="controls"><input class="hidden js-rating-input" autocomplete="off" type="hidden" name="lab_review[rating]" id="lab_review_rating" /></div></div>
+<div class="control-group text optional lab_review_comment"><label class="text optional control-label" for="lab_review_comment">Additional Comments</label><div class="controls"><textarea class="text optional" name="lab_review[comment]" id="lab_review_comment">
+</textarea></div></div>
+</div>
+</form><ql-button disabled id='submit' label='Submit' slot='action' text></ql-button>
+</ql-dialog>
+
+<ql-dialog headline='All done? If you end this lab, you will lose all your work. You may not be able to restart the lab if there is a quota limit. Are you sure you want to end this lab?' icon='error_outline' id='js-lab-are-you-sure-dialog'>
+<ql-button id='js-are-you-sure-button' label='Submit' slot='action' text></ql-button>
+</ql-dialog>
+<ql-dialog dismissalLabel='Cancel' headline='A newer version of this course is available. Your progress will carry over if you choose to upgrade. However, your completion percentage may change if the new version has added or removed any learning activities. Click the preview button to see the course changes before upgrading.' icon='error' id='course-session-upgrade-modal'>
+<ql-button href='/course_templates/2/preview' label='Preview' slot='action'>
+Preview
+</ql-button>
+</ql-dialog>
+
+
+
+<script>
+  $(function() {
+    ql.initMaterialInputs();
+    initChosen();
+    initSearch();
+    initTabs();
+    ql.list.init();
+    ql.favoriting.init();
+    ql.header.myAccount.init();
+    initTooltips();
+    ql.autocomplete.init();
+    ql.modals.init();
+    ql.toggleButtons.init();
+    ql.analytics.init();
+    ql.labControlPanel.addRecaptchaErrorHandler();
+  initLabContent();
+  ql.labOutline.links.init();
+  initLabReviewModal();
+  initLabReviewTranslations( {"star_amount_1":"1 of 5 stars","star_amount_2":"2 of 5 stars","star_amount_3":"3 of 5 stars","star_amount_4":"4 of 5 stars","star_amount_5":"5 of 5 stars"} )
+  ql.labAssessment.init();
+  ql.labData.init();
+  initLabTranslations( {"are_you_sure":"All done? If you end this lab, you will lose all your work. You may not be able to restart the lab if there is a quota limit. Are you sure you want to end this lab?","in_progress":"*In Progress*","ending":"*Ending*","starting":"*Starting, please wait*","end_concurrent_labs":"Sorry, you can only run one lab at a time. To start this lab, please confirm that you want all of your existing labs to end.","copied":"Copied","no_resource":"Error retrieving resource.","no_support":"No Support","mac_press":"Press ⌘-C to copy","thanks_review":"Thanks for reviewing this lab.","windows_press":"Press Ctrl-C to copy","days":"days"} );
+  ql.labRun.init();
+  ql.chat.init();
+  ql.navPanel.init();
+  ql.navigation.init();
+  
+  });
+</script>
+
+</body>
+</html>
+
+

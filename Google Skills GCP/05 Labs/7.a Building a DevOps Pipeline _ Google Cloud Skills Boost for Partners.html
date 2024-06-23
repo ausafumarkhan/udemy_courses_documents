@@ -1,0 +1,976 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<title>Building a DevOps Pipeline | Google Cloud Skills Boost for Partners</title>
+<script>
+//<![CDATA[
+window.gon={};gon.deployment="googlecourses-run";
+//]]>
+</script>
+<script>
+  (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer',"GTM-5XSKHDX");
+</script>
+<script src="https://cdn.qwiklabs.com/assets/hallofmirrors/polyfills/webcomponents-loader-8583b47b01e40e6ea7bf1ad443a20b7e79bbdd5eafac009806a228c91a97282c.js"></script>
+<script src="https://cdn.qwiklabs.com/assets/vendor-beb958bea8eff6a4ad4cf8f36a0a676817a4857e214b17ae983796071a4a816d.js"></script>
+<script src="https://cdn.qwiklabs.com/assets/application-648e9f742b46fc585eb8d3e6f0919fff625e14b5ee466223593475cc9b141138.js"></script>
+<script src="https://cdn.qwiklabs.com/assets/hallofmirrors/hallofmirrors-3126bcc4ac2b348f343ac9dc711ef138393d2f3e3cc98c722bd19f6b9d0b4b6e.js"></script>
+<!--[if lt IE 9]>
+<script src='http://html5shim.googlecode.com/svn/trunk/html5.js' type='text/javascript'></script>
+<![endif]-->
+<!--[endif]>  <![endif]-->
+<script id='ze-snippet' src='https://static.zdassets.com/ekr/snippet.js?key=511e4158-0aec-4e3c-b2e6-4daa1769f51e'></script>
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="3iY8i53+keucWrdDpxca2qd/uddzCIYYXAN2icaA2O19vP1cFPSjb8eGuAMAdWpNyO84MHrXAGvq3fRGZ3eAew==" />
+<meta content='width=device-width, initial-scale=1.0, user-scalable=yes' name='viewport'>
+<meta content='1rRsY0INj8RvwB5EF5pwdxt2A2P9aDgAlsICaJ0d5w0' name='google-site-verification'>
+<meta content='#3681E4' property='msapplication-TileColor'>
+<meta content='/favicon-144.png' property='msapplication-TileImage'>
+<meta content='[{&quot;id&quot;:&quot;recaptcha_experiment&quot;,&quot;optimize_id&quot;:&quot;dpViOcLkT3qS4TvL2mRojA&quot;,&quot;title&quot;:&quot;No Recaptcha shown for trusted users&quot;,&quot;variant_index&quot;:0,&quot;variant&quot;:&quot;original&quot;}]' name='active-experiments'>
+<meta content='{&quot;userId&quot;:11061062,&quot;experimentIds&quot;:[&quot;oauth_risc_shutoff&quot;,&quot;program_groups&quot;,&quot;program_learning_assignment&quot;,&quot;course_upgrade&quot;,&quot;enforce_codebuild_verdicts&quot;,&quot;canonical_domain_redirect&quot;,&quot;alexandria_show_bundle_errors&quot;,&quot;used_in&quot;,&quot;show_annual_purchase_now&quot;,&quot;community_forum&quot;,&quot;program_resources&quot;,&quot;programs&quot;,&quot;teams&quot;,&quot;chat_off_for_signed_out_users&quot;]}' name='help-api-product-data'>
+<meta content='{&quot;groupIds&quot;:[&quot;non_suadmins&quot;,&quot;students&quot;,&quot;non_organization&quot;,&quot;non_program&quot;]}' name='help-api-custom-data'>
+<meta content='In this lab, you will build a continuous integration pipeline using Cloud Source Repositories, Cloud Build, Build Triggers and Container Registry.' name='description'>
+<meta content='Qwiklabs' name='author'>
+<meta content='Building a DevOps Pipeline | Google Cloud Skills Boost for Partners' property='og:title'>
+<meta content='website' property='og:type'>
+<meta content='/favicon-144.png' property='og:image'>
+<meta content='Qwiklabs' property='og:site_name'>
+<meta content='In this lab, you will build a continuous integration pipeline using Cloud Source Repositories, Cloud Build, Build Triggers and Container Registry.' property='og:description'>
+<meta content='/qwiklabs_logo_900x887.png' property='og:logo' size='900x887'>
+<meta content='/qwiklabs_logo_994x187.png' property='og:logo' size='994x187'>
+
+
+<meta property="og:url" content="https://partner.cloudskillsboost.google/course_sessions/3437591/labs/372682" /><link href="https://partner.cloudskillsboost.google/course_sessions/3437591/labs/372682" rel="canonical" />
+<link color='#3681E4' href='/favicon-svg.svg' rel='mask-icon'>
+<link href='/favicon-180.png' rel='apple-touch-icon-precomposed'>
+<link href='https://cdn.qwiklabs.com/Vag5GK2J6rS6843Qvg8TQJ1kEbAsEmQoF0%2BdLRfcLRE%3D' rel='shortcut icon' type='image/x-icon'>
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oswald:400|Roboto+Mono:400,700|Roboto:300,400,500,700|Google+Sans:300,400,500,700|Google+Sans+Display:400|Material+Icons|Google+Material+Icons" media="screen" />
+
+<link rel="stylesheet" href="https://cdn.qwiklabs.com/assets/application-9ff670d4fe0d403d921ffc3c9f4362793f1df46bf496cf49078238b5cb1bc5a4.css" media="all" />
+
+
+<style>
+  :root {
+    --primary-text-on-surface-color: #1a73e8;
+    --primary-text-on-surface-color-dark: #1568d6;
+    --primary-text-on-surface-color-darker: #135ec1;
+    --primary-text-on-surface-color-darkest: #1154ac;
+    --primary-surface-color: #1a73e8;
+    --primary-surface-color-rgb: 26,115,232;
+    --primary-surface-color-light: #d1e3fa;
+    --primary-surface-color-lightest: #e8f1fd;
+    --text-on-primary-color: #ffffff;
+    --accent-text-on-surface-color: #f29900;
+    --accent-surface-color: #f9ab00;
+    --accent-surface-color-rgb: 249,171,0;
+    --accent-surface-color-light: #ffefcc;
+    --text-on-accent-color: #202124;
+  }
+</style>
+
+<style>
+  :root {
+    --navbar-height: 112px;
+  }
+</style>
+
+
+
+</head>
+<body class='lab-show l-full no-nav course-layout-body l-full no-nav  application-new course_sessions-labs course_sessions-labs-show lab-show l-full no-nav course-layout-body l-full no-nav  '>
+<ql-toolbar centered class='course-header'>
+<div class='course-header-navigation' role='navigation' slot='navigation'>
+<ul>
+<li>
+<ql-icon-button href='/course_templates/41' icon='home' label='Course home' tip='Home'></ql-icon-button>
+</li>
+<li>
+<ql-toggle-button class='course-side-toggle' data-analytics-action='Toggled course outline panel' data-analytics-category='Course' data-analytics-label='Reliable Google Cloud Infrastructure: Design and Process' expandable for='course-outline-drawer' icon='list' id='toggle-outline' label='Toggle course outline' on tip='Toggle course outline'></ql-toggle-button>
+</li>
+<li>
+<ql-icon-button href='/course_sessions/3437591/video/372681' icon='arrow_back' label='Previous activity' tip='Previous activity'></ql-icon-button>
+</li>
+<li>
+<ql-icon-button href='/course_sessions/3437591/video/372683' icon='arrow_forward' label='Next activity' tip='Next activity'></ql-icon-button>
+</li>
+</ul>
+</div>
+<h1 class='ql-headline-6' slot='title'>
+Building a DevOps Pipeline
+</h1>
+<div class='course-header-actions' slot='action'>
+<ql-icon-button id='control-panel-target' style='display: none;'>
+dashboard
+</ql-icon-button>
+<ql-menu for='control-panel-target' id='control-panel-menu'></ql-menu>
+
+<ql-icon-button class='mobile-hide' icon='help_outline' id='help-menu-button' label='Open help menu' tip='Help'></ql-icon-button>
+<ql-menu for='help-menu-button' id='help-menu'>
+<ql-menu-item data-analytics-action='opened_help' data-analytics-label='course' label='Help Center' onclick='hallofmirrors.helpService.startHelp({&quot;productData&quot;:{&quot;userId&quot;:11061062},&quot;context&quot;:&quot;course&quot;})'></ql-menu-item>
+<ql-menu-item href='mailto:support@qwiklabs.com' label='Email support'></ql-menu-item>
+<ql-menu-item label='Chat support' onClick='ql.chat.open()'></ql-menu-item>
+</ql-menu>
+
+</div>
+</ql-toolbar>
+
+
+<nav class='nav-panel js-nav-panel'>
+<div class='nav-panel__logo'>
+<div class="custom-logo"><img alt="Google Cloud Skills Boost for Partners" height="24" aria-label="Google Cloud Skills Boost for Partners" src="https://cdn.qwiklabs.com/PGyhmgS3zZncIEGywnx5UXsKwepRRFQ9BhAg%2FWHNrlQ%3D" /></div>
+</div>
+<nav class='ql-sidenav'>
+<ql-sidenav-item href='/' icon='home' label='Paths'></ql-sidenav-item>
+
+<ql-sidenav-item href='/catalog' icon='school' label='Explore'></ql-sidenav-item>
+
+<ql-sidenav-item href='/profile' icon='event_note' label='Profile'></ql-sidenav-item>
+
+</nav>
+
+</nav>
+<div class='nav-panel__overlay js-nav-toggle'></div>
+
+<main class='js-main' id='jump-content'>
+<div class='l-main-wrapper' id='main-wrapper'>
+<ql-drawer-container class='course-container'>
+<ql-drawer aria-labelledby='toggle-outline' id='course-outline-drawer' localStorageid='course-outline' open slot='drawer' width='240'>
+<ql-course-outline activeActivityId='372682' modules='[{&quot;id&quot;:&quot;58070&quot;,&quot;title&quot;:&quot;Introduction&quot;,&quot;description&quot;:&quot;\u003cp\u003eWelcome to the Reliable Google Cloud Infrastructure: Design and Process course. Learn about the course structure and it&#39;s content.\u003c/p\u003e&quot;,&quot;steps&quot;:[{&quot;id&quot;:&quot;380013&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372652&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372652&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:348000,&quot;title&quot;:&quot;Course Introduction&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380014&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372653&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/documents/372653&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Workbook&quot;,&quot;type&quot;:&quot;document&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380015&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372654&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372654&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:80000,&quot;title&quot;:&quot;Activity Intro: Defining your case study&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380016&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372655&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372655&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:72000,&quot;title&quot;:&quot;Activity Review: Defining your case study&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false}],&quot;expanded&quot;:false},{&quot;id&quot;:&quot;58071&quot;,&quot;title&quot;:&quot;Defining Services&quot;,&quot;description&quot;:&quot;\u003cp\u003eIn this module, you will learn to describe users of a system in terms of the roles and personas they take. You will learn how to measure success using Key performance indicators (KPIs) and you will examine service level objectives (SLOs), service level indicators (SLIs), and service level agreements (SLAs).\u003c/p\u003e&quot;,&quot;steps&quot;:[{&quot;id&quot;:&quot;380017&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372656&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372656&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:92000,&quot;title&quot;:&quot;Module Overview&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380018&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372657&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372657&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:405000,&quot;title&quot;:&quot;Requirements, Analysis, and Design&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380019&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372658&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372658&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:139000,&quot;title&quot;:&quot;Activity Intro: Analyzing your case study&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380020&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372659&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372659&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:94000,&quot;title&quot;:&quot;Activity Review: Analyzing your case study&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380021&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372660&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372660&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:421000,&quot;title&quot;:&quot;KPIs and SLIs&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380022&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372661&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372661&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:326000,&quot;title&quot;:&quot;SLOs and SLAs&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380023&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372662&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372662&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:64000,&quot;title&quot;:&quot;Activity Intro: Defining SLIs and SLOs&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380024&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372663&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372663&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:40000,&quot;title&quot;:&quot;Activity Review: Defining SLIs and SLOs&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380025&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;372664&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/quizzes/372664&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Module Quiz&quot;,&quot;type&quot;:&quot;quiz&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380026&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372665&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372665&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:42000,&quot;title&quot;:&quot;Module Review&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false}],&quot;expanded&quot;:false},{&quot;id&quot;:&quot;58072&quot;,&quot;title&quot;:&quot;Microservice Design and Architecture&quot;,&quot;description&quot;:&quot;\u003cp\u003eIn this module, we introduce application architecture and microservice design.\u003c/p\u003e&quot;,&quot;steps&quot;:[{&quot;id&quot;:&quot;380027&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372666&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372666&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:65000,&quot;title&quot;:&quot;Module Overview&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380028&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372667&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372667&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Microservices&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380029&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372668&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372668&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:345000,&quot;title&quot;:&quot;Microservices Best Practices&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380030&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372669&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372669&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:35000,&quot;title&quot;:&quot;Activity Intro: Designing microservices for your application&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380031&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372670&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372670&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:101000,&quot;title&quot;:&quot;Activity Review: Designing microservices for your application&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380032&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372671&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372671&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:282000,&quot;title&quot;:&quot;REST&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380033&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372672&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372672&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:283000,&quot;title&quot;:&quot;HTTP&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380034&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372673&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372673&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:225000,&quot;title&quot;:&quot;APIs&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380035&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372674&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372674&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:55000,&quot;title&quot;:&quot;Activity Intro: Designing REST APIs&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380036&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372675&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372675&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:64000,&quot;title&quot;:&quot;Activity Review: Designing REST APIs&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380037&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;372676&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/quizzes/372676&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Module Quiz&quot;,&quot;type&quot;:&quot;quiz&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380038&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372677&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372677&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:20000,&quot;title&quot;:&quot;Module Review&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false}],&quot;expanded&quot;:false},{&quot;id&quot;:&quot;58073&quot;,&quot;title&quot;:&quot;DevOps Automation&quot;,&quot;description&quot;:&quot;\u003cp\u003eThis module introduces DevOps automation, a key factor in achieving consistency, reliability, and speed of deployment.\u003c/p\u003e&quot;,&quot;steps&quot;:[{&quot;id&quot;:&quot;380039&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372678&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372678&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:56000,&quot;title&quot;:&quot;Module Overview&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380040&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372679&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372679&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:447000,&quot;title&quot;:&quot;Continuous Integration Pipelines&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380041&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372680&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372680&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:357000,&quot;title&quot;:&quot;Infrastructure as Code&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380042&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372681&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372681&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:39000,&quot;title&quot;:&quot;Lab Intro: Building a DevOps Pipeline&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380043&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;372682&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/labs/372682&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:3600000,&quot;title&quot;:&quot;Building a DevOps Pipeline&quot;,&quot;type&quot;:&quot;lab&quot;,&quot;isComplete&quot;:false,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:false,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380044&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372683&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372683&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:1408000,&quot;title&quot;:&quot;Lab Review: Building a DevOps Pipeline&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380045&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;372684&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/quizzes/372684&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Module Quiz&quot;,&quot;type&quot;:&quot;quiz&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380046&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372685&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372685&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:32000,&quot;title&quot;:&quot;Module Review&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false}],&quot;expanded&quot;:false},{&quot;id&quot;:&quot;58074&quot;,&quot;title&quot;:&quot;Choosing Storage Solutions&quot;,&quot;description&quot;:&quot;\u003cp\u003eIn this module, we discuss Google Cloud storage and data solutions and how to select the most suitable one to meet your business and technical requirements.\u003c/p\u003e&quot;,&quot;steps&quot;:[{&quot;id&quot;:&quot;380047&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372686&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372686&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:43000,&quot;title&quot;:&quot;Module Overview&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380048&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372687&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372687&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:317000,&quot;title&quot;:&quot;Key Storage Characteristics&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380049&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372688&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372688&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:45000,&quot;title&quot;:&quot;Activity Intro: Defining storage characteristics&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380050&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372689&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372689&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:28000,&quot;title&quot;:&quot;Activity Review: Defining storage characteristics&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380051&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372690&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372690&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:487000,&quot;title&quot;:&quot;Choosing Google Cloud Storage and Data Solutions&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380052&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372691&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372691&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:36000,&quot;title&quot;:&quot;Activity Intro: Choosing Google Cloud storage and data services&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380053&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372692&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372692&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:35000,&quot;title&quot;:&quot;Activity Review: Choosing Google Cloud storage and data services&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380054&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;372693&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/quizzes/372693&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Module Quiz&quot;,&quot;type&quot;:&quot;quiz&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380055&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372694&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372694&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:25000,&quot;title&quot;:&quot;Module Review&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false}],&quot;expanded&quot;:false},{&quot;id&quot;:&quot;58075&quot;,&quot;title&quot;:&quot;Google Cloud and Hybrid Network Architecture&quot;,&quot;description&quot;:&quot;\u003cp\u003eIn this module, we discuss Google Cloud network architectures, including hybrid architectures.\u003c/p\u003e&quot;,&quot;steps&quot;:[{&quot;id&quot;:&quot;380056&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372695&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372695&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:41000,&quot;title&quot;:&quot;Module Overview&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380057&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372696&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372696&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:289000,&quot;title&quot;:&quot;Designing Google Cloud Networks&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380058&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372697&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372697&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:248000,&quot;title&quot;:&quot;Designing Google Cloud Load Balancers&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380059&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372698&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372698&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:53000,&quot;title&quot;:&quot;Activity Intro: Defining network characteristics&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380060&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372699&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372699&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:47000,&quot;title&quot;:&quot;Activity Review: Defining network characteristics&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380061&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372700&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372700&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:745000,&quot;title&quot;:&quot;Connecting Networks&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380062&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372701&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372701&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:31000,&quot;title&quot;:&quot;Activity Intro: Diagramming your network&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380063&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372702&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372702&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:43000,&quot;title&quot;:&quot;Activity Review: Diagramming your network&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380064&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;372703&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/quizzes/372703&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Module Quiz&quot;,&quot;type&quot;:&quot;quiz&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380065&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372704&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372704&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:17000,&quot;title&quot;:&quot;Module Review&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false}],&quot;expanded&quot;:false},{&quot;id&quot;:&quot;58076&quot;,&quot;title&quot;:&quot;Deploying Applications to Google Cloud&quot;,&quot;description&quot;:&quot;\u003cp\u003eIn this module, we discuss the different options of deploying applications to Google Cloud. Google Cloud offers many possible deployment platforms, and the choice is not always immediately obvious.\u003c/p\u003e&quot;,&quot;steps&quot;:[{&quot;id&quot;:&quot;380066&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372705&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372705&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:53000,&quot;title&quot;:&quot;Module Overview&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380067&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372706&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372706&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:77000,&quot;title&quot;:&quot;Google Cloud Infrastructure as a Service&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380068&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372707&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372707&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:286000,&quot;title&quot;:&quot;Google Cloud Deployment Platforms&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380069&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372708&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372708&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:120000,&quot;title&quot;:&quot;Lab Intro: Deploying Apps to Google Cloud&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380070&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;372709&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/labs/372709&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:2700000,&quot;title&quot;:&quot;Deploying Apps to Google Cloud&quot;,&quot;type&quot;:&quot;lab&quot;,&quot;isComplete&quot;:false,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:false,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380071&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372710&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372710&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:1054000,&quot;title&quot;:&quot;Lab Review Deploying Apps to Google Cloud&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380072&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;372711&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/quizzes/372711&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Module Quiz&quot;,&quot;type&quot;:&quot;quiz&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380073&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372712&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372712&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:30000,&quot;title&quot;:&quot;Module Review&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false}],&quot;expanded&quot;:false},{&quot;id&quot;:&quot;58077&quot;,&quot;title&quot;:&quot;Designing Reliable Systems&quot;,&quot;description&quot;:&quot;\u003cp\u003eIn this module, we talk about how to design reliable systems.\u003c/p\u003e&quot;,&quot;steps&quot;:[{&quot;id&quot;:&quot;380074&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372713&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372713&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:53000,&quot;title&quot;:&quot;Module Overview&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380075&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372714&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372714&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:82000,&quot;title&quot;:&quot;Key Performance Metrics&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380076&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372715&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372715&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:458000,&quot;title&quot;:&quot;Designing for Reliability&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380077&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372716&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372716&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:78000,&quot;title&quot;:&quot;Activity Intro: Designing Reliable, Scalable Applications&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380078&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372717&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372717&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:86000,&quot;title&quot;:&quot;Activity Review: Designing Reliable, Scalable Applications&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380079&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372718&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372718&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:396000,&quot;title&quot;:&quot;Disaster Planning&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380080&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372719&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372719&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:96000,&quot;title&quot;:&quot;Activity Intro: Disaster planning&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380081&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372720&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372720&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:59000,&quot;title&quot;:&quot;Activity Review: Disaster planning&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380082&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;372721&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/quizzes/372721&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Module Quiz&quot;,&quot;type&quot;:&quot;quiz&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380083&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372722&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372722&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:31000,&quot;title&quot;:&quot;Module Review&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false}],&quot;expanded&quot;:false},{&quot;id&quot;:&quot;58078&quot;,&quot;title&quot;:&quot;Security&quot;,&quot;description&quot;:&quot;\u003cp\u003eIn this module, we cover security. Google has been operating securely in the cloud for 20 years. There is a strong belief that security empowers innovation. The approach of the cloud architect should be that security should be put first; everything else will follow from this.\u003c/p\u003e&quot;,&quot;steps&quot;:[{&quot;id&quot;:&quot;380084&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372723&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372723&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:85000,&quot;title&quot;:&quot;Module Overview&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380085&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372724&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372724&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:241000,&quot;title&quot;:&quot;Security Concepts&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380086&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372725&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372725&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:185000,&quot;title&quot;:&quot;Securing People&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380087&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372726&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372726&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:177000,&quot;title&quot;:&quot;Securing Machine Access&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380088&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372727&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372727&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:320000,&quot;title&quot;:&quot;Network Security&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380089&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372728&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372728&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:167000,&quot;title&quot;:&quot;Encryption&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380090&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372729&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372729&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:64000,&quot;title&quot;:&quot;Activity Intro: Modeling Secure Google Cloud Services&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380091&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372730&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372730&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:82000,&quot;title&quot;:&quot;Activity Review: Modeling Secure Google Cloud Services&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380092&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;372731&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/quizzes/372731&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Module Quiz&quot;,&quot;type&quot;:&quot;quiz&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380093&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372732&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372732&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:22000,&quot;title&quot;:&quot;Module Review&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false}],&quot;expanded&quot;:false},{&quot;id&quot;:&quot;58079&quot;,&quot;title&quot;:&quot;Maintenance and Monitoring&quot;,&quot;description&quot;:&quot;\u003cp\u003eIn this final module of this course, we cover application maintenance and monitoring.\u003c/p\u003e&quot;,&quot;steps&quot;:[{&quot;id&quot;:&quot;380094&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372733&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372733&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:51000,&quot;title&quot;:&quot;Module Overview&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380095&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372734&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372734&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:195000,&quot;title&quot;:&quot;Managing Versions&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380096&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372735&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372735&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:401000,&quot;title&quot;:&quot;Cost Planning&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380097&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372736&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372736&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:157000,&quot;title&quot;:&quot;Monitoring Dashboards&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380098&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372737&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372737&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:58000,&quot;title&quot;:&quot;Activity Intro: Cost estimating and planning&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380099&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372738&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372738&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:42000,&quot;title&quot;:&quot;Activity Review: Cost estimating and planning&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380100&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372739&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372739&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:35000,&quot;title&quot;:&quot;Lab Intro: Monitoring Applications in Google Cloud&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380101&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;372740&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/labs/372740&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:2700000,&quot;title&quot;:&quot;Monitoring Applications in Google Cloud&quot;,&quot;type&quot;:&quot;lab&quot;,&quot;isComplete&quot;:false,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:false,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380102&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372741&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372741&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:1185000,&quot;title&quot;:&quot;Lab Review: Monitoring Applications in Google Cloud&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380103&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;372742&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/quizzes/372742&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Module Quiz&quot;,&quot;type&quot;:&quot;quiz&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380104&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372743&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372743&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:38000,&quot;title&quot;:&quot;Module Review&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380105&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372744&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/video/372744&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:28000,&quot;title&quot;:&quot;Course Review&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380106&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372745&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/documents/372745&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;What’s Next? Get Certified&quot;,&quot;type&quot;:&quot;document&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;380107&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372746&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/documents/372746&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Workbook Example Solution&quot;,&quot;type&quot;:&quot;document&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false}],&quot;expanded&quot;:false},{&quot;id&quot;:&quot;58080&quot;,&quot;title&quot;:&quot;Course Resources&quot;,&quot;description&quot;:&quot;\u003cp\u003ePDF links to all modules\u003c/p\u003e&quot;,&quot;steps&quot;:[{&quot;id&quot;:&quot;380108&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;372747&quot;,&quot;href&quot;:&quot;/course_sessions/3437591/documents/372747&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Course Resources&quot;,&quot;type&quot;:&quot;document&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false}],&quot;expanded&quot;:false}]' open></ql-course-outline>
+</ql-drawer>
+<ql-drawer-content class='course-activity' slot='drawer-content'>
+
+
+<div class='lab-assessment__tab js-open-lab-assessment-panel'>
+<button class='js-lab-assessment-total-score'>
+—/20
+</button>
+</div>
+<div aria-labelledby='lab-assessment-checkpoint' class='lab-assessment__panel js-lab-assessment-panel' role='dialog'>
+<div class='lab-assessment__panel__header'>
+<h4 id='lab-assessment-checkpoint'>Checkpoints</h4>
+<ql-icon-button class='js-close-lab-assessment-panel' icon='arrow_forward' label='Close dialog'></ql-icon-button>
+</div>
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Create a git repository
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button class='js-show-run-step-button' description='Create a git repository' step_no='1'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-1'>
+</span>
+/ 5
+</p>
+</div>
+</div>
+
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Manage Docker images with Cloud Build and Container Registry
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button class='js-show-run-step-button' description='Manage Docker images with Cloud Build and Container Registry' step_no='2'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-2'>
+</span>
+/ 5
+</p>
+</div>
+</div>
+
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Automate Builds with Trigger
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button class='js-show-run-step-button' description='Automate Builds with Trigger' step_no='3'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-3'>
+</span>
+/ 5
+</p>
+</div>
+</div>
+
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Test your Build Changes
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button class='js-show-run-step-button' description='Test your Build Changes' step_no='4'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-4'>
+</span>
+/ 5
+</p>
+</div>
+</div>
+
+</div>
+<ql-drawer-container class='js-lab-state' data-analytics-payload='{&quot;label&quot;:&quot;Building a DevOps Pipeline&quot;,&quot;lab_name&quot;:&quot;Building a DevOps Pipeline&quot;,&quot;classroom_name&quot;:null,&quot;deployment&quot;:&quot;googlecourses-run&quot;}' data-credits='0.0' data-focus-id='155718112' data-lab-billing-limit='0.0' data-lab-duration='7200' data-parent='course_session' data-recaptcha-enabled id='lab-container'>
+<ql-drawer id='terminal-drawer' slot='drawer' style='width: calc(100% - 480px)'>
+<iframe allow='clipboard-read' class='terminal' id='embedded-resource'></iframe>
+</ql-drawer>
+<ql-drawer-content class='js-lab-wrapper' id='lab-content' slot='drawer-content'>
+<ql-drawer-container id='lab-content-container'>
+<ql-drawer id='control-panel-drawer' open slot='drawer' width='320'>
+<ql-lab-control-panel class='ql-lab-control-panel__max-height control-panel js-lab-control-panel' connectionFiles='[]' labControlButton='{&quot;disabled&quot;:false,&quot;pending&quot;:false,&quot;running&quot;:false}' labDetails='[]' labTimer='{&quot;ticking&quot;:false,&quot;secondsRemaining&quot;:7200}' studentResources='[]'>
+<script src="https://www.recaptcha.net/recaptcha/api.js?render=6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr"   ></script>
+        <script>
+          // Define function so that we can call it again later if we need to reset it
+          // This executes reCAPTCHA and then calls our callback.
+          function executeRecaptchaForStartLab() {
+            grecaptcha.ready(function() {
+              grecaptcha.execute('6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr', {action: 'start_lab'}).then(function(token) {
+                setInputWithRecaptchaResponseTokenForStartLab('g-recaptcha-response-data-start-lab', token)
+              });
+            });
+          };
+          // Invoke immediately
+          executeRecaptchaForStartLab()
+
+          // Async variant so you can await this function from another async function (no need for
+          // an explicit callback function then!)
+          // Returns a Promise that resolves with the response token.
+          async function executeRecaptchaForStartLabAsync() {
+            return new Promise((resolve, reject) => {
+             grecaptcha.ready(async function() {
+                resolve(await grecaptcha.execute('6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr', {action: 'start_lab'}))
+              });
+            })
+          };
+
+                    var setInputWithRecaptchaResponseTokenForStartLab = function(id, token) {
+            var element = document.getElementById(id);
+            element.value = token;
+          }
+
+        </script>
+<input type="hidden" name="g-recaptcha-response-data[start_lab]" id="g-recaptcha-response-data-start-lab" data-sitekey="6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr" class="g-recaptcha g-recaptcha-response "/>
+
+<div aria-live='polite' class='hidden' id='recaptcha-v2-start-lab' slot='recaptcha'>
+<script src="https://www.recaptcha.net/recaptcha/api.js" async defer ></script>
+<div data-sitekey="6LeOI8IUAAAAAPkHlMAE9NReCD_1WD81iYlBlCnV" data-callback="recaptchaComplete" data-expired-callback="expireV2Token" class="g-recaptcha "></div>
+          <noscript>
+            <div>
+              <div style="width: 302px; height: 422px; position: relative;">
+                <div style="width: 302px; height: 422px; position: absolute;">
+                  <iframe
+                    src="https://www.recaptcha.net/recaptcha/api/fallback?k=6LeOI8IUAAAAAPkHlMAE9NReCD_1WD81iYlBlCnV"
+                    name="ReCAPTCHA"
+                    style="width: 302px; height: 422px; border-style: none; border: 0; overflow: hidden;">
+                  </iframe>
+                </div>
+              </div>
+              <div style="width: 300px; height: 60px; border-style: none;
+                bottom: 12px; left: 25px; margin: 0px; padding: 0px; right: 25px;
+                background: #f9f9f9; border: 1px solid #c1c1c1; border-radius: 3px;">
+                <textarea id="g-recaptcha-response" name="g-recaptcha-response"
+                  class="g-recaptcha-response"
+                  style="width: 250px; height: 40px; border: 1px solid #c1c1c1;
+                  margin: 10px 25px; padding: 0px; resize: none;">
+                </textarea>
+              </div>
+            </div>
+          </noscript>
+
+</div>
+</ql-lab-control-panel>
+</ql-drawer>
+<ql-drawer-content id='lab-instructions' slot='drawer-content'>
+<ql-snackbar id='alert-snackbar'></ql-snackbar>
+<div class='alert alert--fake js-alert'>
+<p class='alert__message js-alert-message' role='alert'></p>
+<ql-icon-button class='alert__close js-alert-close' icon='clear'></ql-icon-button>
+<iframe class='l-ie-iframe-fix' tabindex='-1'></iframe>
+</div>
+<div class='lab-content__renderable-instructions js-lab-content'>
+<div class='lab-preamble'>
+<h1 class='lab-preamble__title'>
+Building a DevOps Pipeline
+</h1>
+<div class='lab-preamble__details subtitle-headline-1'>
+<span>2 hours </span>
+<span>Free</span>
+<div class='lab__rating'>
+<a aria-label="Lab Reviews" href="/focuses/155718112/reviews?parent=course_session"><div class='rateit' data-rateit-readonly='true' data-rateit-value='4.4166'></div>
+
+</a></div>
+</div>
+</div>
+<div class='lab-outline-place-holder'></div>
+
+<div class='markdown-lab-instructions js-markdown-instructions' id='markdown-lab-instructions'>
+
+<h2 id="step1">Overview</h2>
+<p>In this lab, you will build a continuous integration pipeline using Cloud Source Repositories, Cloud Build, build triggers, and Container Registry.</p>
+<p><img alt="Continuous integration pipeline architecture" src="https://cdn.qwiklabs.com/0hYrmLCtV96fbLY7rct7Ue94xgf6OUG%2BO930FbxOeuA%3D"></p>
+<h2 id="step2">Objectives</h2>
+<p>In this lab, you will learn how to perform the following tasks:</p>
+<ul>
+<li>
+<p>Create a Git repository</p>
+</li>
+<li>
+<p>Create a simple Python application</p>
+</li>
+<li>
+<p>Test Your web application in Cloud Shell</p>
+</li>
+<li>
+<p>Define a Docker build</p>
+</li>
+<li>
+<p>Manage Docker images with Cloud Build and Container Registry</p>
+</li>
+<li>
+<p>Automate builds with triggers</p>
+</li>
+<li>
+<p>Test your build changes</p>
+</li>
+</ul>
+<h2 id="step3">Set up your lab environment</h2>
+<p>For each lab, you get a new Google Cloud project and set of resources for a fixed time at no cost.</p>
+<ol>
+<li>
+<p>Sign in to Qwiklabs using an <strong>incognito window</strong>.</p>
+</li>
+<li>
+<p>Note the lab's access time (for example, <code>1:15:00</code>), and make sure you can finish within that time.<br>
+There is no pause feature. You can restart if needed, but you have to start at the beginning.</p>
+</li>
+<li>
+<p>When ready, click <strong>Start lab</strong>.</p>
+</li>
+<li>
+<p>Note your lab credentials (<strong>Username</strong> and <strong>Password</strong>). You will use them to sign in to the Google Cloud Console.</p>
+</li>
+<li>
+<p>Click <strong>Open Google Console</strong>.</p>
+</li>
+<li>
+<p>Click <strong>Use another account</strong> and copy/paste credentials for <strong>this</strong> lab into the prompts.<br>
+If you use other credentials, you'll receive errors or <strong>incur charges</strong>.</p>
+</li>
+<li>
+<p>Accept the terms and skip the recovery resource page.</p>
+</li>
+</ol>
+<aside class="warning"><p><strong>Note:</strong> Do not click <strong>End Lab</strong> unless you have finished the lab or want to restart it. This clears your work and removes the project.
+  </p>
+</aside>
+<h2 id="step4">Task 1. Create a Git repository</h2>
+<p>First, you will create a Git repository using the Cloud Source Repositories service in Google Cloud. This Git repository will be used to store your source code. Eventually, you will create a build trigger that starts a continuous integration pipeline when code is pushed to it.</p>
+<ol>
+<li>
+<p>In the Cloud Console, on the <strong>Navigation menu</strong>, click <strong>Source Repositories</strong>. A new tab will open.</p>
+</li>
+<li>
+<p>Click <strong>Add repository</strong>.</p>
+</li>
+<li>
+<p>Select <strong>Create new repository</strong> and click <strong>Continue</strong>.</p>
+</li>
+<li>
+<p>Name the repository <strong>devops-repo</strong>.</p>
+</li>
+<li>
+<p>Select your current project ID from the list.</p>
+</li>
+<li>
+<p>Click <strong>Create</strong>.</p>
+</li>
+<li>
+<p>Return to the Cloud Console, and click <strong>Activate Cloud Shell</strong> (<img alt="Cloud Shell icon" src="https://cdn.qwiklabs.com/ep8HmqYGdD%2FkUncAAYpV47OYoHwC8%2Bg0WK%2F8sidHquE%3D" title="Cloud Shell">).</p>
+</li>
+<li>
+<p>If prompted, click <strong>Continue</strong>.</p>
+</li>
+<li>
+<p>Enter the following command in Cloud Shell to create a folder called <code>gcp-course</code>:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+mkdir gcp-course
+</ql-code-block>
+<ol start="10">
+<li>
+<p>Change to the folder you just created:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+cd gcp-course
+</ql-code-block>
+<ol start="11">
+<li>
+<p>Now clone the empty repository you just created:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+gcloud source repos clone devops-repo
+</ql-code-block>
+<ql-warningbox><strong>Note: </strong>You will see a warning that you have cloned an empty repository. That is expected at this point.</ql-warningbox>
+<ol start="12">
+<li>
+<p>The previous command created an empty folder called <code>devops-repo</code>.  Change to that folder:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+cd devops-repo
+</ql-code-block>
+<p>Click <em>Check my progress</em> to verify the objective.
+<ql-activity-tracking step="1">
+Create a git repository.
+</ql-activity-tracking></p>
+<h2 id="step5">Task 2. Create a simple Python application</h2>
+<p>You need some source code to manage. So, you will create a simple Python Flask web application. The application will be only slightly better than "hello world", but it will be good enough to test the pipeline you will build.</p>
+<ol>
+<li>
+<p>In Cloud Shell, click <strong>Open Editor</strong> (<img alt="Editor icon" src="https://cdn.qwiklabs.com/zxK8nW520maN72Qq6D1Lt9gCeDh7QOMGWCwhny5S8sQ%3D">) to open the code editor. If prompted click <strong>Open in a new window</strong>.</p>
+</li>
+<li>
+<p>Select the <strong>gcp-course &gt; devops-repo</strong> folder in the explorer tree on the left.</p>
+</li>
+<li>
+<p>Click on <strong>devops-repo</strong></p>
+</li>
+<li>
+<p>On the <strong>File menu</strong>, click <strong>New File</strong></p>
+</li>
+<li>
+<p>Paste the following code into the file you just created:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+from flask import Flask, render_template, request
+app = Flask(__name__)
+@app.route("/")
+def main():
+    model = {"title": "Hello DevOps Fans."}
+    return render_template('index.html', model=model)
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=8080, debug=True, threaded=True)
+</ql-code-block>
+<ol start="6">
+<li>
+<p>To save your changes. Press <em><em>CTRL + S</em>,</em>  and name the file as <code>main.py</code>.</p>
+</li>
+<li>
+<p>Click on <strong>SAVE</strong></p>
+</li>
+<li>
+<p>Click on the <code>devops-repo</code> folder.</p>
+</li>
+<li>
+<p>Click on the <strong>File menu</strong>, click <strong>New Folder</strong>, Enter folder name as <code>templates</code>.</p>
+</li>
+<li>
+<p>Click <strong>OK</strong></p>
+</li>
+<li>
+<p>Right-click on the <code>templates</code> folder and create a new file called <code>layout.html</code>.</p>
+</li>
+<li>
+<p>Add the following code and save the file as you did before:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;title&gt;{{model.title}}&lt;/title&gt;
+    &lt;!-- Bootstrap CSS --&gt;
+    &lt;link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class="container"&gt;
+        {% block content %}{% endblock %}
+        &lt;footer&gt;&lt;/footer&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</ql-code-block>
+<ol start="12">
+<li>
+<p>Also in the templates folder, add another new file called <code>index.html</code>.</p>
+</li>
+<li>
+<p>Add the following code and save the file as you did before:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+{% extends "layout.html" %}
+{% block content %}
+&lt;div class="jumbotron"&gt;
+    &lt;div class="container"&gt;
+        &lt;h1&gt;{{model.title}}&lt;/h1&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+{% endblock %}
+</ql-code-block>
+<ol start="14">
+<li>
+<p>In Python, application prerequisites are managed using pip. Now you will add a file that lists the requirements for this application.</p>
+</li>
+<li>
+<p>In the <strong>devops-repo</strong> folder (<em>not the templates folder</em>), create a <strong>New File</strong> and add the following to that file and save it as <code>requirements.txt</code>:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+Flask==2.0.3
+</ql-code-block>
+<ol start="16">
+<li>
+<p>You have some files now, so save them to the repository. First, you need to add all the files you created to your local Git repo. In Cloud Shell, enter the following code:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+cd ~/gcp-course/devops-repo
+git add --all
+</ql-code-block>
+<ol start="17">
+<li>
+<p>To commit changes to the repository, you have to identify yourself. Enter the following commands, but with your information (<em>you can just use your Gmail address or any other email address</em>):</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+git config --global user.email "you@example.com"
+git config --global user.name "Your Name"
+</ql-code-block>
+<ol start="18">
+<li>
+<p>Now, commit the changes locally:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+git commit -a -m "Initial Commit"
+</ql-code-block>
+<ol start="19">
+<li>
+<p>You committed the changes locally, but have not updated the Git repository you created in Cloud Source Repositories. Enter the following command to push your changes to the cloud:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+git push origin master
+</ql-code-block>
+<ol start="20">
+<li>
+<p>Refresh the <strong>Source Repositories</strong> web page. You should see the files you just created.</p>
+</li>
+</ol>
+<h2 id="step6">Task 3. Define a Docker build</h2>
+<p>The first step to using Docker is to create a file called <strong>Dockerfile</strong>. This file defines how a Docker container is constructed. You will do that now.</p>
+<ol>
+<li>In the Cloud Shell Code Editor, expand the <strong>gcp-course/devops-repo</strong> folder. With the <strong>devops-repo</strong> folder selected, on the <strong>File</strong> menu, click <strong>New File</strong> and name the new file <strong>Dockerfile</strong>.</li>
+</ol>
+<p>The file <em>Dockerfile</em> is used to define how the container is built.</p>
+<ol start="2">
+<li>
+<p>At the top of the file, enter the following:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+FROM python:3.7
+</ql-code-block>
+<p>This is the base image. You could choose many base images. In this case, you are using one with Python already installed on it.</p>
+<ol start="3">
+<li>
+<p>Enter the following:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+WORKDIR /app
+COPY . .
+</ql-code-block>
+<p>These lines copy the source code from the current folder into the /app folder in the container image.</p>
+<ol start="4">
+<li>
+<p>Enter the following:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+RUN pip install gunicorn
+RUN pip install -r requirements.txt
+</ql-code-block>
+<p>This uses pip to install the requirements of the Python application into the container. Gunicorn is a Python web server that will be used to run the web app.</p>
+<ol start="5">
+<li>
+<p>Enter the following:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+ENV PORT=80
+CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 main:app
+</ql-code-block>
+<p>The environment variable sets the port that the application will run on (in this case, 80). The last line runs the web app using the gunicorn web server.</p>
+<ol start="6">
+<li>
+<p>Verify that the completed file looks as follows and save it:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+FROM python:3.7
+WORKDIR /app
+COPY . .
+RUN pip install gunicorn
+RUN pip install -r requirements.txt
+ENV PORT=80
+CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 main:app
+</ql-code-block>
+<h2 id="step7">Task 4. Manage Docker images with Cloud Build and Container Registry</h2>
+<p>The Docker image has to be built and then stored somewhere. You will use <strong>Cloud Build</strong> and <strong>Container Registry</strong>.</p>
+<ol>
+<li>
+<p>Return to Cloud Shell. Make sure you are in the right folder:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+cd ~/gcp-course/devops-repo
+</ql-code-block>
+<ol start="2">
+<li>
+<p>The Cloud Shell environment variable DEVSHELL_PROJECT_ID automatically has your current project ID stored. The project ID is required to store images in Container Registry. Enter the following command to view your project ID:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+echo $DEVSHELL_PROJECT_ID
+</ql-code-block>
+<ol start="3">
+<li>
+<p>Enter the following command to use Cloud Build to build your image:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+gcloud builds submit --tag gcr.io/$DEVSHELL_PROJECT_ID/devops-image:v0.1 .
+</ql-code-block>
+<p><em>Notice the environment variable in the command</em>. The image will be stored in Container Registry.</p>
+<ol start="4">
+<li>If asked to enable Cloud Build in your project, type <strong>Yes</strong>. Wait for the build to complete successfully.</li>
+</ol>
+<ql-warningbox><strong>Note: </strong>If you receive the error "INVALID_ARGUMENT: unable to resolve source", wait a few minutes and try again.
+</ql-warningbox>
+<ql-infobox><p><strong>Note</strong>: In Container Registry, the image name always begins with <strong><code>gcr.io/</code></strong>, followed by the project ID of the project you are working in, followed by the image name and version.</p>
+The period at the end of the command represents the path to the Dockerfile: in this case, the current directory.</ql-infobox>
+<ol start="5">
+<li>
+<p>Return to the <strong>Cloud Console</strong> and on the <strong>Navigation menu</strong> ( <img alt="Navigation menu icon" src="https://cdn.qwiklabs.com/tkgw1TDgj4Q%2BYKQUW4jUFd0O5OEKlUMBRYbhlCrF0WY%3D">), click <strong>Container Registry</strong>. Your image should be on the list.</p>
+</li>
+<li>
+<p>Now navigate to the <strong>Cloud Build</strong> service, and your build should be listed in the history.</p>
+</li>
+</ol>
+<p>You will now try running this image from a Compute Engine virtual machine.</p>
+<ol start="7">
+<li>
+<p>Navigate to the <strong>Compute Engine</strong> service.</p>
+</li>
+<li>
+<p>Click <strong>Create Instance</strong> to create a VM.</p>
+</li>
+<li>
+<p>On the <strong>Create an instance</strong> page, specify the following, and leave the remaining settings as their defaults:</p>
+</li>
+</ol>
+<table>
+
+<tr>
+<th><strong>Property</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+
+
+<tr>
+<td><strong>Container</strong></td>
+<td>Click DEPLOY CONTAINER</td>
+</tr>
+<tr>
+<td><strong>Container image</strong></td>
+<td>
+<code>gcr.io/&lt;your-project-id-here&gt;/devops-image:v0.1</code> (change the project ID where indicated) and click SELECT</td>
+</tr>
+<tr>
+<td><strong>Firewall</strong></td>
+<td>Allow HTTP traffic</td>
+</tr>
+
+</table>
+<ol start="10">
+<li>
+<p>Click <strong>Create</strong>.</p>
+</li>
+<li>
+<p>Once the VM starts, create a browser tab and make a request to this new VM's external IP address. The program should work as before.</p>
+</li>
+</ol>
+<ql-warningbox><strong>Note: </strong>You might have to wait a minute or so after the VM is created for the Docker container to start.</ql-warningbox>
+<ol start="12">
+<li>
+<p>You will now save your changes to your Git repository. In Cloud Shell, enter the following to make sure you are in the right folder and add your new Dockerfile to Git:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+cd ~/gcp-course/devops-repo
+git add --all
+</ql-code-block>
+<ol start="13">
+<li>
+<p>Commit your changes locally:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+git commit -am "Added Docker Support"
+</ql-code-block>
+<ol start="14">
+<li>
+<p>Push your changes to Cloud Source Repositories:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+git push origin master
+</ql-code-block>
+<ol start="15">
+<li>Return to Cloud Source Repositories and verify that your changes were added to source control.</li>
+</ol>
+<p>Click <em>Check my progress</em> to verify the objective.
+<ql-activity-tracking step="2">
+Manage Docker images with Cloud Build and Container Registry.
+</ql-activity-tracking></p>
+<h2 id="step8">Task 5. Automate builds with triggers</h2>
+<ol>
+<li>On the <strong>Navigation menu</strong> (<img alt="Navigation menu icon" src="https://cdn.qwiklabs.com/tkgw1TDgj4Q%2BYKQUW4jUFd0O5OEKlUMBRYbhlCrF0WY%3D">), click <strong>Container Registry</strong>.  At this point, you should have a folder named <strong>devops-image</strong> with at least one container in it.</li>
+<li>On the <strong>Navigation menu</strong>, click <strong>Cloud Build</strong>. The <strong>Build history</strong> page should open, and one or more builds should be in your history.</li>
+<li>Click the <strong>Triggers</strong> link on the left.</li>
+<li>Click <strong>Create trigger</strong>.</li>
+<li>Name the trigger <code>devops-trigger</code>.</li>
+<li>Select your <strong>devops-repo</strong> Git repository under repository dropdown.</li>
+<li>Select <strong>.*(any branch)</strong> for the branch.</li>
+<li>Choose <strong>Dockerfile</strong> for <strong>Configuration</strong> and select the default image.</li>
+<li>Accept the rest of the defaults, and click <strong>Create</strong>.</li>
+<li>To test the trigger, click <strong>Run</strong> and then <strong>Run trigger</strong>.</li>
+<li>Click the <strong>History</strong> link and you should see a build running. Wait for the build to finish, and then click the link to it to see its details.</li>
+<li>Scroll down and look at the logs. The output of the build here is what you would have seen if you were running it on your machine.</li>
+<li>Return to the Container Registry service. You should see a new folder, <strong>devops-repo</strong>, with a new image in it.</li>
+<li>Return to the <strong>Cloud Shell Code Editor</strong>. Find the file <code>main.py</code> in the <code>gcp-course/devops-repo</code> folder.</li>
+<li>In the main() function, change the title property to <code>"Hello Build Trigger."</code> as shown below:</li>
+</ol>
+<ql-code-block output="">
+@app.route("/")
+def main():
+    model = {"title":  "Hello Build Trigger."}
+    return render_template(`index.html`, model=model)
+</ql-code-block>
+<ol start="16">
+<li>
+<p>Commit the change with the following command:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+cd ~/gcp-course/devops-repo
+git commit -a -m "Testing Build Trigger"
+</ql-code-block>
+<ol start="17">
+<li>
+<p>Enter the following to push your changes to Cloud Source Repositories:</p>
+</li>
+</ol>
+<ql-code-block language="bash">
+git push origin master
+</ql-code-block>
+<ol start="18">
+<li>Return to the Cloud Console and the <strong>Cloud Build</strong> service. You should see another build running.</li>
+</ol>
+<p>Click <em>Check my progress</em> to verify the objective.
+<ql-activity-tracking step="3">
+Automate Builds with Trigger.
+</ql-activity-tracking></p>
+<h2 id="step9">Task 6. Test your build changes</h2>
+<ol>
+<li>
+<p>When the build completes, click on it to see its details. Under <strong>Execution Details</strong>, copy the <strong>Image</strong> link, format should be <code>gcr.io/qwiklabs-gcp-00-f23112/devops-repoxx34345xx</code>.</p>
+</li>
+<li>
+<p>Go to the <strong>Compute Engine</strong> service. As you did earlier, create a new virtual machine to test this image. Click <strong>DEPLOY CONTAINER</strong> and paste the image you just copied.</p>
+</li>
+<li>
+<p>Select <strong>Allow HTTP traffic</strong>.</p>
+</li>
+<li>
+<p>When the machine is created, test your change by making a request to the VM's external IP address in your browser. Your new message should be displayed.</p>
+</li>
+</ol>
+<ql-warningbox><strong>Note: </strong>You might have to wait a few minutes after the VM is created for the Docker container to start.</ql-warningbox>
+<p>Click <em>Check my progress</em> to verify the objective.
+<ql-activity-tracking step="4">
+Test your Build Changes.
+</ql-activity-tracking></p>
+<h2 id="step10">Congratulations!</h2>
+<p>In this lab, you built a continuous integration pipeline using the Google Cloud tools Cloud Source Repositories, Cloud Build, build triggers, and Container Registry.</p>
+<h2 id="step11">End your lab</h2>
+<p>When you have completed your lab, click <strong>End Lab</strong>. Google Cloud Skills Boost removes the resources you’ve used and cleans the account for you.</p>
+<p>You will be given an opportunity to rate the lab experience. Select the applicable number of stars, type a comment, and then click <strong>Submit</strong>.</p>
+<p>The number of stars indicates the following:</p>
+<ul>
+<li>1 star = Very dissatisfied</li>
+<li>2 stars = Dissatisfied</li>
+<li>3 stars = Neutral</li>
+<li>4 stars = Satisfied</li>
+<li>5 stars = Very satisfied</li>
+</ul>
+<p>You can close the dialog box if you don't want to provide feedback.</p>
+<p>For feedback, suggestions, or corrections, please use the <strong>Support</strong> tab.</p>
+<p>Copyright 2022 Google LLC All rights reserved. Google and the Google logo are trademarks of Google LLC. All other company and product names may be trademarks of the respective companies with which they are associated.</p>
+
+</div>
+</div>
+
+
+<div class='lab-content__end-lab-button js-end-lab-button-container hidden'>
+<ql-lab-control-button class='js-end-lab-button' running></ql-lab-control-button>
+</div>
+<!-- / TODO: Move recommendations into the end lab modal -->
+</ql-drawer-content>
+<ql-drawer end id='outline-drawer' open slot='drawer' width='320'>
+<div aria-label='Lab Table of Contents' role='navigation'>
+<ul class='lab-content__outline js-lab-content-outline'>
+<li><a href="#step1">Overview</a></li><li><a href="#step2">Objectives</a></li><li><a href="#step3">Set up your lab environment</a></li><li><a href="#step4">Task 1. Create a Git repository</a></li><li><a href="#step5">Task 2. Create a simple Python application</a></li><li><a href="#step6">Task 3. Define a Docker build</a></li><li><a href="#step7">Task 4. Manage Docker images with Cloud Build and Container Registry</a></li><li><a href="#step8">Task 5. Automate builds with triggers</a></li><li><a href="#step9">Task 6. Test your build changes</a></li><li><a href="#step10">Congratulations!</a></li><li><a href="#step11">End your lab</a></li>
+</ul>
+</div>
+</ql-drawer>
+</ql-drawer-container>
+</ql-drawer-content>
+</ql-drawer-container>
+
+
+
+</ql-drawer-content>
+</ql-drawer-container>
+
+</div>
+</main>
+
+<span class='hidden' id='flash-sibling-before'></span>
+<ql-snackbar></ql-snackbar>
+
+
+<div class='modal fade' id='lab-details-modal'>
+<div class='modal-container'>
+<div class='modal-content mdl-shadow--24dp'>
+<div class='modal-body'>
+<p class='l-mbm'>
+In this lab, you will build a continuous integration pipeline using Cloud Source Repositories, Cloud Build, Build Triggers and Container Registry.
+</p>
+<p class='small-label l-mbs'>
+<strong>
+Duration:
+</strong>
+0m setup
+&middot;
+120m access
+&middot;
+60m completion
+</p>
+<p class='small-label l-mbs'>
+<strong>AWS Region:</strong>
+[] <strong></strong>
+</p>
+<p class='small-label l-mbs'>
+<span><strong>Levels: </strong>introductory</span>
+</p>
+<p class='small-label'>
+<strong>
+Permalink:
+</strong>
+<a href="https://partner.cloudskillsboost.google/catalog_lab/2461">https://partner.cloudskillsboost.google/catalog_lab/2461</a>
+</p>
+</div>
+<div class='modal-actions'>
+<a class='button button--text' data-dismiss='modal'>
+Got It
+</a>
+</div>
+
+
+</div>
+</div>
+<iframe class='l-ie-iframe-fix' tabindex='-1' title='modal'></iframe>
+</div>
+<ql-dialog headline='How satisfied are you with this lab?&lt;span aria-hidden=&quot;true&quot;&gt;*&lt;/span&gt;' id='lab-review-dialog'>
+<form class="simple_form js-lab-review-form" id="new_lab_review" action="/lab_reviews" accept-charset="UTF-8" data-remote="true" method="post"><input name="utf8" type="hidden" value="&#x2713;" autocomplete="off" /><div aria-labelledby='lab-review-dialog' aria-required='true' aria-valuemax='5' aria-valuemin='0' aria-valuenow='0' class='rateit js-rateit' data-rateit-max='5' data-rateit-min='0' data-rateit-resetable='false' data-rateit-step='1' data-rateit-value='0' id='lab-review-rateit' role='slider' tabindex='0'></div>
+<div class='l-mtm'>
+
+<div class="control-group hidden lab_review_user_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" value="11061062" name="lab_review[user_id]" id="lab_review_user_id" /></div></div>
+<div class="control-group hidden lab_review_classroom_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" name="lab_review[classroom_id]" id="lab_review_classroom_id" /></div></div>
+<div class="control-group hidden lab_review_lab_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" value="2461" name="lab_review[lab_id]" id="lab_review_lab_id" /></div></div>
+<div class="control-group hidden lab_review_focus_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" name="lab_review[focus_id]" id="lab_review_focus_id" /></div></div>
+<div class="control-group hidden lab_review_rating"><div class="controls"><input class="hidden js-rating-input" autocomplete="off" type="hidden" name="lab_review[rating]" id="lab_review_rating" /></div></div>
+<div class="control-group text optional lab_review_comment"><label class="text optional control-label" for="lab_review_comment">Additional Comments</label><div class="controls"><textarea class="text optional" name="lab_review[comment]" id="lab_review_comment">
+</textarea></div></div>
+</div>
+</form><ql-button disabled id='submit' label='Submit' slot='action' text></ql-button>
+</ql-dialog>
+
+<ql-dialog headline='All done? If you end this lab, you will lose all your work. You may not be able to restart the lab if there is a quota limit. Are you sure you want to end this lab?' icon='error_outline' id='js-lab-are-you-sure-dialog'>
+<ql-button id='js-are-you-sure-button' label='Submit' slot='action' text></ql-button>
+</ql-dialog>
+<ql-dialog dismissalLabel='Cancel' headline='A newer version of this course is available. Your progress will carry over if you choose to upgrade. However, your completion percentage may change if the new version has added or removed any learning activities. Click the preview button to see the course changes before upgrading.' icon='error' id='course-session-upgrade-modal'>
+<ql-button href='/course_templates/41/preview' label='Preview' slot='action'>
+Preview
+</ql-button>
+</ql-dialog>
+
+
+
+<script>
+  $(function() {
+    ql.initMaterialInputs();
+    initChosen();
+    initSearch();
+    initTabs();
+    ql.list.init();
+    ql.favoriting.init();
+    ql.header.myAccount.init();
+    initTooltips();
+    ql.autocomplete.init();
+    ql.modals.init();
+    ql.toggleButtons.init();
+    ql.analytics.init();
+    ql.labControlPanel.addRecaptchaErrorHandler();
+  initLabContent();
+  ql.labOutline.links.init();
+  initLabReviewModal();
+  initLabReviewTranslations( {"star_amount_1":"1 of 5 stars","star_amount_2":"2 of 5 stars","star_amount_3":"3 of 5 stars","star_amount_4":"4 of 5 stars","star_amount_5":"5 of 5 stars"} )
+  ql.labAssessment.init();
+  ql.labData.init();
+  initLabTranslations( {"are_you_sure":"All done? If you end this lab, you will lose all your work. You may not be able to restart the lab if there is a quota limit. Are you sure you want to end this lab?","in_progress":"*In Progress*","ending":"*Ending*","starting":"*Starting, please wait*","end_concurrent_labs":"Sorry, you can only run one lab at a time. To start this lab, please confirm that you want all of your existing labs to end.","copied":"Copied","no_resource":"Error retrieving resource.","no_support":"No Support","mac_press":"Press ⌘-C to copy","thanks_review":"Thanks for reviewing this lab.","windows_press":"Press Ctrl-C to copy","days":"days"} );
+  ql.labRun.init();
+  ql.chat.init();
+  ql.navPanel.init();
+  ql.navigation.init();
+  
+  });
+</script>
+
+</body>
+</html>
+
+

@@ -1,0 +1,873 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<title>Optimizing Applications Using Cloud Profiler | Google Cloud Skills Boost for Partners</title>
+<meta name="action-cable-url" content="/cable" />
+<script>
+//<![CDATA[
+window.gon={};gon.deployment="googlecourses-run";
+//]]>
+</script>
+<script>
+  (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer',"GTM-5XSKHDX");
+</script>
+<script src="https://cdn.qwiklabs.com/assets/hallofmirrors/polyfills/webcomponents-loader-8583b47b01e40e6ea7bf1ad443a20b7e79bbdd5eafac009806a228c91a97282c.js"></script>
+<script src="https://cdn.qwiklabs.com/assets/vendor-613520545532a2795a401a8168ca8b698b9ee765a66f5ad9ead806b5c32eabe8.js"></script>
+<script src="https://cdn.qwiklabs.com/assets/application-f774d7f788672b60e7430061ab4632e13f46fdd1ad8ccce2fd4fddb685975d96.js"></script>
+<script src="https://cdn.qwiklabs.com/assets/hallofmirrors/hallofmirrors-afbc6f4d1914ab897958ffbcf5a79eeb9551aa4cd32fc55ccc4596af39c08749.js"></script>
+<!--[if lt IE 9]>  <![endif]-->
+<script src='http://html5shim.googlecode.com/svn/trunk/html5.js' type='text/javascript'></script>
+<!--[endif]>  <![endif]-->
+<script id='ze-snippet' src='https://static.zdassets.com/ekr/snippet.js?key=511e4158-0aec-4e3c-b2e6-4daa1769f51e'></script>
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="EVRFZ0Uqcy8TFFbNhD23LZjqyy1UJkLbbnzK0mKQHDGxG4IOCkWECmQ2Gm8+Ksjh/LQ1UAgvEsiYJL3tJNMK6g==" />
+<meta content='width=device-width, initial-scale=1.0, user-scalable=yes' name='viewport'>
+<meta content='1rRsY0INj8RvwB5EF5pwdxt2A2P9aDgAlsICaJ0d5w0' name='google-site-verification'>
+<meta content='#3681E4' property='msapplication-TileColor'>
+<meta content='/favicon-144.png' property='msapplication-TileImage'>
+<meta content='[{&quot;id&quot;:&quot;recaptcha_experiment&quot;,&quot;optimize_id&quot;:&quot;dpViOcLkT3qS4TvL2mRojA&quot;,&quot;title&quot;:&quot;No Recaptcha shown for trusted users&quot;,&quot;variant_index&quot;:0,&quot;variant&quot;:&quot;original&quot;}]' name='active-experiments'>
+<meta content='{&quot;userId&quot;:11061062,&quot;experimentIds&quot;:[&quot;teams&quot;,&quot;community_forum&quot;,&quot;alexandria_show_bundle_errors&quot;,&quot;program_learning_assignment&quot;,&quot;search_updates&quot;,&quot;barker&quot;,&quot;program_groups&quot;,&quot;show_annual_purchase_now&quot;,&quot;programs&quot;,&quot;course_upgrade&quot;,&quot;canonical_domain_redirect&quot;,&quot;enforce_codebuild_verdicts&quot;,&quot;chat_off_for_signed_out_users&quot;,&quot;program_resources&quot;,&quot;oauth_risc_shutoff&quot;,&quot;used_in&quot;,&quot;peer_assignment&quot;]}' name='help-api-product-data'>
+<meta content='{&quot;groupIds&quot;:[&quot;non_suadmins&quot;,&quot;students&quot;,&quot;non_organization&quot;,&quot;non_program&quot;]}' name='help-api-custom-data'>
+<meta content='In this lab, you will learn how to use the Cloud Operations Tracing and Profiler tools to diagnose and correct application latencies.' name='description'>
+<meta content='Qwiklabs' name='author'>
+<meta content='Optimizing Applications Using Cloud Profiler | Google Cloud Skills Boost for Partners' property='og:title'>
+<meta content='website' property='og:type'>
+<meta content='/favicon-144.png' property='og:image'>
+<meta content='Qwiklabs' property='og:site_name'>
+<meta content='In this lab, you will learn how to use the Cloud Operations Tracing and Profiler tools to diagnose and correct application latencies.' property='og:description'>
+<meta content='/qwiklabs_logo_900x887.png' property='og:logo' size='900x887'>
+<meta content='/qwiklabs_logo_994x187.png' property='og:logo' size='994x187'>
+
+
+<meta property="og:url" content="https://partner.cloudskillsboost.google/course_sessions/4031204/labs/385022" /><link href="https://partner.cloudskillsboost.google/course_sessions/4031204/labs/385022" rel="canonical" />
+<link color='#3681E4' href='/favicon-svg.svg' rel='mask-icon'>
+<link href='/favicon-180.png' rel='apple-touch-icon-precomposed'>
+<link href='https://cdn.qwiklabs.com/Vag5GK2J6rS6843Qvg8TQJ1kEbAsEmQoF0%2BdLRfcLRE%3D' rel='shortcut icon' type='image/x-icon'>
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oswald:400|Roboto+Mono:400,700|Roboto:300,400,500,700|Google+Sans:300,400,500,700|Google+Sans+Display:400|Material+Icons|Google+Material+Icons|Google+Sans+Text:400,500,700" media="screen" />
+
+<link rel="stylesheet" href="https://cdn.qwiklabs.com/assets/application-8d0da6e71ba98bd3217b84c05ed4a00246800878da1221817d0a22324ac17852.css" media="all" />
+
+
+<style>
+  :root {
+    --primary-text-on-surface-color: #1a73e8;
+    --primary-text-on-surface-color-dark: #1568d6;
+    --primary-text-on-surface-color-darker: #135ec1;
+    --primary-text-on-surface-color-darkest: #1154ac;
+    --primary-surface-color: #1a73e8;
+    --primary-surface-color-rgb: 26,115,232;
+    --primary-surface-color-light: #d1e3fa;
+    --primary-surface-color-lightest: #e8f1fd;
+    --text-on-primary-color: #ffffff;
+    --accent-text-on-surface-color: #f29900;
+    --accent-surface-color: #f9ab00;
+    --accent-surface-color-rgb: 249,171,0;
+    --accent-surface-color-light: #ffefcc;
+    --text-on-accent-color: #202124;
+  }
+</style>
+
+<style>
+  :root {
+    --navbar-height: 112px;
+  }
+</style>
+
+
+
+</head>
+<body class='lab-show l-full no-nav course-layout-body l-full no-nav  application-new course_sessions-labs course_sessions-labs-show lab-show l-full no-nav course-layout-body l-full no-nav  '>
+<ql-toolbar centered class='course-header'>
+<div class='course-header-navigation' role='navigation' slot='navigation'>
+<ul>
+<li>
+<ql-icon-button href='/course_templates/99' icon='home' label='Course home' tip='Home'></ql-icon-button>
+</li>
+<li>
+<ql-toggle-button class='course-side-toggle' data-analytics-action='Toggled course outline panel' data-analytics-category='Course' data-analytics-label='Logging, Monitoring and Observability in Google Cloud' expandable for='course-outline-drawer' icon='list' id='toggle-outline' label='Toggle course outline' tip='Toggle course outline'></ql-toggle-button>
+</li>
+<li>
+<ql-icon-button href='/course_sessions/4031204/video/385021' icon='arrow_back' label='Previous activity' tip='Previous activity'></ql-icon-button>
+</li>
+<li>
+<ql-icon-button href='/course_sessions/4031204/quizzes/385023' icon='arrow_forward' label='Next activity' tip='Next activity'></ql-icon-button>
+</li>
+</ul>
+</div>
+<h1 class='ql-headline-6' slot='title'>
+Optimizing Applications Using Cloud Profiler
+</h1>
+<div class='course-header-actions' slot='action'>
+<ql-icon-button id='control-panel-target' style='display: none;'>
+dashboard
+</ql-icon-button>
+<ql-menu for='control-panel-target' id='control-panel-menu'></ql-menu>
+
+
+<ql-icon-button class='mobile-hide' icon='help_outline' id='help-menu-button' label='Open help menu' tip='Help'></ql-icon-button>
+<ql-menu for='help-menu-button' id='help-menu'>
+<ql-menu-item data-analytics-action='opened_help' data-analytics-label='course' label='Help Center' onclick='hallofmirrors.helpService.startHelp({&quot;productData&quot;:{&quot;userId&quot;:11061062},&quot;context&quot;:&quot;course&quot;})'></ql-menu-item>
+<ql-menu-item href='mailto:support@qwiklabs.com' label='Email support'></ql-menu-item>
+<ql-menu-item label='Chat support' onClick='ql.chat.open()'></ql-menu-item>
+</ql-menu>
+
+</div>
+</ql-toolbar>
+
+
+<nav class='nav-panel js-nav-panel'>
+<div class='nav-panel__logo'>
+<div class="custom-logo"><img alt="Google Cloud Skills Boost for Partners" height="24" aria-label="Google Cloud Skills Boost for Partners" src="https://cdn.qwiklabs.com/PGyhmgS3zZncIEGywnx5UXsKwepRRFQ9BhAg%2FWHNrlQ%3D" /></div>
+</div>
+<nav class='ql-sidenav'>
+<ql-sidenav-item href='/' icon='home' label='Paths'></ql-sidenav-item>
+
+<ql-sidenav-item href='/catalog' icon='school' label='Explore'></ql-sidenav-item>
+
+<ql-sidenav-item href='/profile' icon='event_note' label='Profile'></ql-sidenav-item>
+
+</nav>
+
+</nav>
+<div class='nav-panel__overlay js-nav-toggle'></div>
+
+<main class='js-main' id='jump-content'>
+<div class='l-main-wrapper' id='main-wrapper'>
+<ql-drawer-container class='course-container'>
+<ql-drawer aria-labelledby='toggle-outline' id='course-outline-drawer' localStorageid='course-outline' slot='drawer' width='240'>
+<ql-course-outline activeActivityId='385022' modules='[{&quot;id&quot;:&quot;60203&quot;,&quot;title&quot;:&quot;Introduction&quot;,&quot;description&quot;:&quot;\u003cp\u003eWelcome to Logging, Monitoring and Observability in Google Cloud! Use the resources below to become familiar with the topics this course will cover, learn how to access course materials and how to send feedback.\u003c/p\u003e&quot;,&quot;steps&quot;:[{&quot;id&quot;:&quot;392292&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;384943&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/documents/384943&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Course Introduction&quot;,&quot;type&quot;:&quot;document&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false}],&quot;expanded&quot;:false},{&quot;id&quot;:&quot;60204&quot;,&quot;title&quot;:&quot;Introduction to Monitoring in Google Cloud&quot;,&quot;description&quot;:&quot;\u003cp\u003eIn this module, we will take some time to do a high-level overview of the various products which comprise Google Cloud’s logging, monitoring, and observability suite.\u003c/p\u003e&quot;,&quot;steps&quot;:[{&quot;id&quot;:&quot;392293&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;384944&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/384944&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:66000,&quot;title&quot;:&quot;Module Overview&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392294&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;384945&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/384945&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:190000,&quot;title&quot;:&quot;Overview of Monitoring Tools&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392295&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;384946&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/384946&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:324000,&quot;title&quot;:&quot;Operations-Based Tools&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392296&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;384947&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/384947&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:167000,&quot;title&quot;:&quot;Application Performance Management Tools&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392297&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;384948&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/documents/384948&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Reading: Product Knowledge Instructions&quot;,&quot;type&quot;:&quot;document&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392298&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;384949&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/documents/384949&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Reading: Product Knowledge Worksheet&quot;,&quot;type&quot;:&quot;document&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392299&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;384950&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/quizzes/384950&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Quiz - Introduction to Monitoring in Google Cloud&quot;,&quot;type&quot;:&quot;quiz&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false}],&quot;expanded&quot;:false},{&quot;id&quot;:&quot;60205&quot;,&quot;title&quot;:&quot;Avoiding Customer Pain&quot;,&quot;description&quot;:&quot;\u003cp\u003eIn this module, we discuss several Site Reliability Engineering (SRE) concepts and how we can use them to help avoid customer pain. In this context, a customer is any consumer of a cloud-based system.\u003c/p\u003e&quot;,&quot;steps&quot;:[{&quot;id&quot;:&quot;392300&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;384951&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/384951&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:43000,&quot;title&quot;:&quot;Module Overview&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392301&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;384952&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/384952&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:719000,&quot;title&quot;:&quot;Why Monitor?&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392302&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;384953&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/384953&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:353000,&quot;title&quot;:&quot;Critical Measures&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392303&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;384954&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/384954&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:1175000,&quot;title&quot;:&quot;SLIs, SLOs, SLAs&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392304&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;384955&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/384955&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:315000,&quot;title&quot;:&quot;Choosing a good SLI&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392305&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;384956&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/384956&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:318000,&quot;title&quot;:&quot;Specifying SLIs&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392306&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;384957&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/documents/384957&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Postmortem Review&quot;,&quot;type&quot;:&quot;document&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392307&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;384958&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/384958&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:721000,&quot;title&quot;:&quot;Developing SLOs and SLIs&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392308&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;384959&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/384959&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:14000,&quot;title&quot;:&quot;Lab Intro:  Developing SLOs and SLIs&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392309&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;384960&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/labs/384960&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:2700000,&quot;title&quot;:&quot;Develop SLIs and SLOs&quot;,&quot;type&quot;:&quot;lab&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392310&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;384961&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/quizzes/384961&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Quiz - Avoiding Customer Pain&quot;,&quot;type&quot;:&quot;quiz&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false}],&quot;expanded&quot;:false},{&quot;id&quot;:&quot;60206&quot;,&quot;title&quot;:&quot;Alerting Policies&quot;,&quot;description&quot;:&quot;\u003cp\u003eAlerting gives timely awareness to problems in your cloud applications so you can resolve the problems quickly. In this module, you will learn how to develop alerting strategies, define alerting policies, add notification channels, identify types of alerts and common uses for each, construct and alert on resource groups, and manage alerting policies programmatically.\u003c/p\u003e&quot;,&quot;steps&quot;:[{&quot;id&quot;:&quot;392311&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;384962&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/384962&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:23000,&quot;title&quot;:&quot;Module Overview&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392312&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;384963&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/384963&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:317000,&quot;title&quot;:&quot;Developing an Alerting Strategy&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392313&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;384964&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/384964&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:321000,&quot;title&quot;:&quot;Creating Alerts&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392314&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;384965&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/384965&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:185000,&quot;title&quot;:&quot;Creating Alerting Policies with the CLI&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392315&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;384966&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/384966&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:9000,&quot;title&quot;:&quot;Lab Intro: Alerting in Google Cloud&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392316&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;384967&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/labs/384967&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:5400000,&quot;title&quot;:&quot;Alerting in Google Cloud&quot;,&quot;type&quot;:&quot;lab&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392317&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;384968&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/384968&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:473000,&quot;title&quot;:&quot;Service Monitoring&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392318&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;384969&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/384969&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:18000,&quot;title&quot;:&quot;Lab Intro:  Service Monitoring&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392319&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;384970&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/labs/384970&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:1800000,&quot;title&quot;:&quot;Service Monitoring&quot;,&quot;type&quot;:&quot;lab&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392320&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;384971&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/quizzes/384971&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Quiz - Alerting Policies&quot;,&quot;type&quot;:&quot;quiz&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false}],&quot;expanded&quot;:false},{&quot;id&quot;:&quot;60207&quot;,&quot;title&quot;:&quot;Monitoring Critical Systems&quot;,&quot;description&quot;:&quot;\u003cp\u003eMonitoring is all about keeping track of exactly what&#39;s happening with the resources we&#39;ve spun up inside of Google&#39;s Cloud. In this module, we&#39;ll take a look at options and best practices as they relate to monitoring project architectures. We&#39;ll differentiate the core Cloud IAM roles needed to decide who can do what as it relates to monitoring. Just like architecture, this is another crucial early step. We will examine some of the Google created default dashboards, and see how to use them appropriately. We will create charts and use them to build custom dashboards to show resource consumption and application load. And, finally, we will define uptime checks to track liveliness and latency.\u003c/p\u003e&quot;,&quot;steps&quot;:[{&quot;id&quot;:&quot;392321&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;384972&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/384972&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:45000,&quot;title&quot;:&quot;Module Overview&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392322&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;384973&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/384973&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:323000,&quot;title&quot;:&quot;Observability Architecture&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392323&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;384974&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/384974&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:211000,&quot;title&quot;:&quot;Understanding Dashboards&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392324&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;384975&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/384975&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:560000,&quot;title&quot;:&quot;Creating Charts&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392325&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;384976&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/384976&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:80000,&quot;title&quot;:&quot;Dashboard Construction&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392326&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;384977&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/384977&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:191000,&quot;title&quot;:&quot;Uptime Checks&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392327&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;384978&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/384978&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:24000,&quot;title&quot;:&quot;Lab Intro: Monitoring and Dashboarding Multiple Projects from a Single Workspace&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392328&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;384979&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/labs/384979&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:2700000,&quot;title&quot;:&quot;Monitoring and Dashboarding Multiple Projects&quot;,&quot;type&quot;:&quot;lab&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392329&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;384980&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/quizzes/384980&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Quiz - Monitoring Critical Systems&quot;,&quot;type&quot;:&quot;quiz&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false}],&quot;expanded&quot;:false},{&quot;id&quot;:&quot;60208&quot;,&quot;title&quot;:&quot;Configuring Google Cloud Services for Observability&quot;,&quot;description&quot;:&quot;\u003cp\u003eIn the next part of our Metrics discussion, let’s take a little time to examine the art of Configuring Google Cloud Services for Observability. In this module, we&#39;re going to spend a little time learning how to integrate logging and monitoring agents into Compute Engine VMs and images using Agents, enable and utilize Kubernetes Monitoring, extend and clarify Kubernetes monitoring with Prometheus, and expose custom metrics through code, and with the help of OpenCensus.\u003c/p\u003e&quot;,&quot;steps&quot;:[{&quot;id&quot;:&quot;392330&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;384981&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/384981&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:31000,&quot;title&quot;:&quot;Overview&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392331&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;384982&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/384982&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:229000,&quot;title&quot;:&quot;Monitoring&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392332&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;384983&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/384983&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:174000,&quot;title&quot;:&quot;Logging&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392333&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;384984&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/384984&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:150000,&quot;title&quot;:&quot;Baking an Image&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392334&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;384985&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/384985&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:410000,&quot;title&quot;:&quot;Non-VM Resources&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392335&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;384986&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/384986&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:367000,&quot;title&quot;:&quot;Exposing Custom Metrics&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392336&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;384987&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/labs/384987&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:3600000,&quot;title&quot;:&quot;Monitoring a Compute Engine by using Ops Agent&quot;,&quot;type&quot;:&quot;lab&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392337&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;384988&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/quizzes/384988&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Quiz - Configuring Google Cloud Services for Observability&quot;,&quot;type&quot;:&quot;quiz&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false}],&quot;expanded&quot;:false},{&quot;id&quot;:&quot;60209&quot;,&quot;title&quot;:&quot;Advanced Logging and Analysis&quot;,&quot;description&quot;:&quot;\u003cp\u003eIn this module, we will examine some of Google Cloud&#39;s advanced logging and analysis capabilities. Specifically, in this module you will learn to identify and choose among resource tagging approaches, define log sinks, create monitoring metrics based on log entries, link application errors to Logging and other operation tools using Error Reporting, and export logs to BigQuery for long term storage and SQL based analysis.\u003c/p\u003e&quot;,&quot;steps&quot;:[{&quot;id&quot;:&quot;392338&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;384989&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/384989&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:56000,&quot;title&quot;:&quot;Module Overview&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392339&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;384990&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/384990&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:84000,&quot;title&quot;:&quot;Labeling&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392340&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;384991&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/384991&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:464000,&quot;title&quot;:&quot;Working with the Log Viewer&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392341&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;384992&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/384992&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:581000,&quot;title&quot;:&quot;Using Log-Based Metrics&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392342&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;384993&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/384993&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:758000,&quot;title&quot;:&quot;Exporting and Analyzing Logs&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392343&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;384994&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/384994&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:351000,&quot;title&quot;:&quot;Error Reporting&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392344&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;384995&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/384995&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:14000,&quot;title&quot;:&quot;Lab Intro: Log Analysis&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392345&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;384996&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/labs/384996&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:5400000,&quot;title&quot;:&quot;Log Analysis&quot;,&quot;type&quot;:&quot;lab&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392346&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;384997&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/quizzes/384997&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Quiz - Advanced Logging and Analysis&quot;,&quot;type&quot;:&quot;quiz&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false}],&quot;expanded&quot;:false},{&quot;id&quot;:&quot;60210&quot;,&quot;title&quot;:&quot;Monitoring Network Security and Audit Logs&quot;,&quot;description&quot;:&quot;\u003cp\u003eIn this module, we will examine two key topics: Monitoring as it relates to the VPC network, and how to use Google&#39;s Cloud Audit logs. You will learn to collect and analyze VPC Flow, Firewall Rule, and Cloud NAT logs, enable Packet Mirroring, explain the capabilities of the Network Intelligence Center, and use Cloud Audit logs to answer the question, “Who, did what, and when?” We will also cover best practices for Audit Logging.\u003c/p\u003e&quot;,&quot;steps&quot;:[{&quot;id&quot;:&quot;392347&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;384998&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/384998&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:50000,&quot;title&quot;:&quot;Module Overview&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392348&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;384999&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/384999&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:150000,&quot;title&quot;:&quot;VPC Flow Logs&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392349&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;385000&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/385000&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:260000,&quot;title&quot;:&quot;Firewall Rules Logging&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392350&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;385001&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/385001&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:188000,&quot;title&quot;:&quot;Cloud NAT Logs&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392351&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;385002&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/385002&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:188000,&quot;title&quot;:&quot;Packet Mirroring&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392352&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;385003&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/385003&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:284000,&quot;title&quot;:&quot;Network Intelligence Center&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392353&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;385004&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/385004&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:253000,&quot;title&quot;:&quot;Audit Logs&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392354&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;385005&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/385005&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:132000,&quot;title&quot;:&quot;Data Access Logging&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392355&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;385006&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/385006&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:76000,&quot;title&quot;:&quot;Understanding Audit Logs&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392356&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;385007&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/385007&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:375000,&quot;title&quot;:&quot;Best Practices&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392357&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;385008&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/385008&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:22000,&quot;title&quot;:&quot;Lab Intro:  Cloud Audit Logs&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392358&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;385009&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/labs/385009&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:3600000,&quot;title&quot;:&quot;Cloud Audit Logs&quot;,&quot;type&quot;:&quot;lab&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392359&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;385010&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/385010&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:14000,&quot;title&quot;:&quot;Lab Intro: Optional Lab - Analyzing Network Traffic with VPC Flow Logs&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392360&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;385011&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/labs/385011&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:4800000,&quot;title&quot;:&quot;Analyzing Network Traffic with VPC Flow Logs&quot;,&quot;type&quot;:&quot;lab&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392361&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;385012&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/quizzes/385012&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Quiz - Monitoring Network Security and Audit Logs&quot;,&quot;type&quot;:&quot;quiz&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false}],&quot;expanded&quot;:false},{&quot;id&quot;:&quot;60211&quot;,&quot;title&quot;:&quot;Managing Incidents&quot;,&quot;description&quot;:&quot;\u003cp\u003eUp to this point in our course, we&#39;ve mostly focused on ways to inspect and monitor the status of our systems running in Google Cloud. But no matter how solid your planning, design, architecture, and preventive maintenance strategies are, things will go wrong. When they do go wrong, how you manage those incidents will have a huge impact on user perception. In this module, you will learn how to handle incidents using a systematic process.\u003c/p\u003e&quot;,&quot;steps&quot;:[{&quot;id&quot;:&quot;392362&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;385013&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/385013&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:62000,&quot;title&quot;:&quot;Module Overview&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392363&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;385014&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/385014&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:882000,&quot;title&quot;:&quot;Incident Management&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392364&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;385015&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/385015&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:157000,&quot;title&quot;:&quot;Declaring an Incident&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392365&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;385016&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/385016&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:348000,&quot;title&quot;:&quot;Restoring Service&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392366&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;385017&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/385017&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:183000,&quot;title&quot;:&quot;Preventing Recurrence&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392367&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;385018&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/quizzes/385018&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Quiz - Managing Incidents&quot;,&quot;type&quot;:&quot;quiz&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false}],&quot;expanded&quot;:false},{&quot;id&quot;:&quot;60212&quot;,&quot;title&quot;:&quot;Investigating Application Performance Issues&quot;,&quot;description&quot;:&quot;\u003cp\u003eWhen deploying applications to Google Cloud, the Application Performance Management products provide a suite of tools to give insight into how your code and services are functioning, and to help troubleshoot where needed.\u003c/p\u003e&quot;,&quot;steps&quot;:[{&quot;id&quot;:&quot;392368&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;385019&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/385019&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:33000,&quot;title&quot;:&quot;Module Overview&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392369&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;385020&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/385020&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:417000,&quot;title&quot;:&quot;Trace&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392370&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;385021&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/385021&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:300000,&quot;title&quot;:&quot;Profiler&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392371&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;385022&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/labs/385022&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:5400000,&quot;title&quot;:&quot;Optimizing Applications Using Cloud Profiler&quot;,&quot;type&quot;:&quot;lab&quot;,&quot;isComplete&quot;:false,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:false,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392372&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:false,&quot;activities&quot;:[{&quot;id&quot;:&quot;385023&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/quizzes/385023&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Quiz - Investigating Application Performance Issues&quot;,&quot;type&quot;:&quot;quiz&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false}],&quot;expanded&quot;:false},{&quot;id&quot;:&quot;60213&quot;,&quot;title&quot;:&quot;Optimizing the Costs of Monitoring&quot;,&quot;description&quot;:&quot;\u003cp\u003eIn our final module we discuss optimizing the costs for Google Cloud’s operations suite. Specifically, you will learn to analyze resource utilization costs for operations related components within Google Cloud, and implement best practices for controlling the cost of operations within Google Cloud.\u003c/p\u003e&quot;,&quot;steps&quot;:[{&quot;id&quot;:&quot;392373&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;385024&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/385024&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:22000,&quot;title&quot;:&quot;Module Overview&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392374&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;385025&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/385025&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:110000,&quot;title&quot;:&quot;The Costs of Monitoring&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392375&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;385026&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/385026&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:257000,&quot;title&quot;:&quot;Bill Estimation&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false},{&quot;id&quot;:&quot;392376&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;385027&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/video/385027&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:389000,&quot;title&quot;:&quot;Cost Control Best Practices&quot;,&quot;type&quot;:&quot;video&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false}],&quot;expanded&quot;:false},{&quot;id&quot;:&quot;60214&quot;,&quot;title&quot;:&quot;Course Resources&quot;,&quot;description&quot;:&quot;\u003cp\u003ePDF links to all modules\u003c/p\u003e&quot;,&quot;steps&quot;:[{&quot;id&quot;:&quot;392377&quot;,&quot;prompt&quot;:null,&quot;isOptional&quot;:true,&quot;activities&quot;:[{&quot;id&quot;:&quot;385028&quot;,&quot;href&quot;:&quot;/course_sessions/4031204/documents/385028&quot;,&quot;isLocked&quot;:false,&quot;duration&quot;:0,&quot;title&quot;:&quot;Course Resources&quot;,&quot;type&quot;:&quot;document&quot;,&quot;isComplete&quot;:true,&quot;inProgress&quot;:false,&quot;score&quot;:null}],&quot;isComplete&quot;:true,&quot;allActivitiesRequired&quot;:false}],&quot;expanded&quot;:false}]'></ql-course-outline>
+</ql-drawer>
+<ql-drawer-content class='course-activity' slot='drawer-content'>
+
+
+<div class='lab-assessment__tab js-open-lab-assessment-panel'>
+<button class='js-lab-assessment-total-score'>
+—/100
+</button>
+</div>
+<div aria-labelledby='lab-assessment-checkpoint' class='lab-assessment__panel js-lab-assessment-panel' role='dialog'>
+<div class='lab-assessment__panel__header'>
+<h4 id='lab-assessment-checkpoint'>Checkpoints</h4>
+<ql-icon-button class='js-close-lab-assessment-panel' icon='arrow_forward' label='Close dialog'></ql-icon-button>
+</div>
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Enable the Cloud Profiler API
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button class='js-show-run-step-button' description='Enable the Cloud Profiler API' step_no='1'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-1'>
+</span>
+/ 100
+</p>
+</div>
+</div>
+
+</div>
+<ql-drawer-container class='js-lab-state' data-analytics-payload='{&quot;label&quot;:&quot;Optimizing Applications Using Cloud Profiler&quot;,&quot;lab_name&quot;:&quot;Optimizing Applications Using Cloud Profiler&quot;,&quot;classroom_name&quot;:null,&quot;deployment&quot;:&quot;googlecourses-run&quot;}' data-credits='0.0' data-focus-id='166030559' data-lab-billing-limit='0.0' data-lab-duration='5400' data-parent='course_session' data-recaptcha-enabled id='lab-container'>
+<ql-drawer id='terminal-drawer' slot='drawer' style='width: calc(100% - 480px)'>
+<iframe allow='clipboard-read' class='terminal' id='embedded-resource'></iframe>
+</ql-drawer>
+<ql-drawer-content class='js-lab-wrapper' id='lab-content' slot='drawer-content'>
+<ql-drawer-container id='lab-content-container'>
+<ql-drawer id='control-panel-drawer' open slot='drawer' width='320'>
+<ql-lab-control-panel class='ql-lab-control-panel__max-height control-panel js-lab-control-panel' connectionFiles='[]' labControlButton='{&quot;disabled&quot;:false,&quot;pending&quot;:false,&quot;running&quot;:false}' labDetails='[]' labTimer='{&quot;ticking&quot;:false,&quot;secondsRemaining&quot;:5400}' studentResources='[]'>
+<script src="https://www.recaptcha.net/recaptcha/api.js?render=6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr"   ></script>
+        <script>
+          // Define function so that we can call it again later if we need to reset it
+          // This executes reCAPTCHA and then calls our callback.
+          function executeRecaptchaForStartLab() {
+            grecaptcha.ready(function() {
+              grecaptcha.execute('6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr', {action: 'start_lab'}).then(function(token) {
+                setInputWithRecaptchaResponseTokenForStartLab('g-recaptcha-response-data-start-lab', token)
+              });
+            });
+          };
+          // Invoke immediately
+          executeRecaptchaForStartLab()
+
+          // Async variant so you can await this function from another async function (no need for
+          // an explicit callback function then!)
+          // Returns a Promise that resolves with the response token.
+          async function executeRecaptchaForStartLabAsync() {
+            return new Promise((resolve, reject) => {
+             grecaptcha.ready(async function() {
+                resolve(await grecaptcha.execute('6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr', {action: 'start_lab'}))
+              });
+            })
+          };
+
+                  var setInputWithRecaptchaResponseTokenForStartLab = function(id, token) {
+          var element = document.getElementById(id);
+          if (element !== null) element.value = token;
+        }
+
+        </script>
+<input type="hidden" name="g-recaptcha-response-data[start_lab]" id="g-recaptcha-response-data-start-lab" data-sitekey="6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr" class="g-recaptcha g-recaptcha-response "/>
+
+<div aria-live='polite' class='hidden' id='recaptcha-v2-start-lab' slot='recaptcha'>
+<script src="https://www.recaptcha.net/recaptcha/api.js" async defer ></script>
+<div data-sitekey="6LeOI8IUAAAAAPkHlMAE9NReCD_1WD81iYlBlCnV" data-callback="recaptchaComplete" data-expired-callback="expireV2Token" class="g-recaptcha "></div>
+          <noscript>
+            <div>
+              <div style="width: 302px; height: 422px; position: relative;">
+                <div style="width: 302px; height: 422px; position: absolute;">
+                  <iframe
+                    src="https://www.recaptcha.net/recaptcha/api/fallback?k=6LeOI8IUAAAAAPkHlMAE9NReCD_1WD81iYlBlCnV"
+                    name="ReCAPTCHA"
+                    style="width: 302px; height: 422px; border-style: none; border: 0; overflow: hidden;">
+                  </iframe>
+                </div>
+              </div>
+              <div style="width: 300px; height: 60px; border-style: none;
+                bottom: 12px; left: 25px; margin: 0px; padding: 0px; right: 25px;
+                background: #f9f9f9; border: 1px solid #c1c1c1; border-radius: 3px;">
+                <textarea id="g-recaptcha-response" name="g-recaptcha-response"
+                  class="g-recaptcha-response"
+                  style="width: 250px; height: 40px; border: 1px solid #c1c1c1;
+                  margin: 10px 25px; padding: 0px; resize: none;">
+                </textarea>
+              </div>
+            </div>
+          </noscript>
+
+</div>
+</ql-lab-control-panel>
+</ql-drawer>
+<ql-drawer-content id='lab-instructions' slot='drawer-content'>
+<ql-snackbar id='alert-snackbar'></ql-snackbar>
+<div class='alert alert--fake js-alert'>
+<p class='alert__message js-alert-message' role='alert'></p>
+<ql-icon-button class='alert__close js-alert-close' icon='clear'></ql-icon-button>
+<iframe class='l-ie-iframe-fix' tabindex='-1'></iframe>
+</div>
+<div class='lab-content__renderable-instructions js-lab-content'>
+<div class='lab-preamble'>
+<h1 class='lab-preamble__title'>
+Optimizing Applications Using Cloud Profiler
+</h1>
+<div class='lab-preamble__details subtitle-headline-1'>
+<span>1 hour 30 minutes</span>
+<span>Free</span>
+<div class='lab__rating'>
+<a aria-label="Lab Reviews" href="/focuses/166030559/reviews?parent=course_session"><div class='rateit' data-rateit-readonly='true' data-rateit-value='4.42'></div>
+
+</a></div>
+</div>
+</div>
+<div class='lab-outline-place-holder'></div>
+
+<div class='markdown-lab-instructions js-markdown-instructions' id='markdown-lab-instructions'>
+
+<h2 id="step1">GSP976</h2>
+<p><img alt="Google Cloud self-paced labs logo" src="https://cdn.qwiklabs.com/GMOHykaqmlTHiqEeQXTySaMXYPHeIvaqa2qHEzw6Occ%3D"></p>
+<h2 id="step2">Introduction</h2>
+<p>In this lab, you will deploy an inefficient Go application that is configured to collect profile data. You will learn how to use <strong>Cloud Profiler</strong> to view the application's profile data and identify potential optimizations. Finally you will evaluate approaches to modify the application, re-deploy it and evaluate the effect of the modifications made.</p>
+<h3>Objectives</h3>
+<p>In this lab, you will learn how to:</p>
+<ol>
+<li>Use Cloud Profiler to understand CPU cycle times of an ineffecient application</li>
+<li>Maximize the number of queries per second a server can process</li>
+<li>Reduce the memory usage of an application by eliminating unnecessary memory allocations</li>
+</ol>
+<h2 id="step3">Setup</h2>
+<h3>Before you click the Start Lab button</h3>
+<p>Read these instructions. Labs are timed and you cannot pause them. The timer, which starts when you click <strong>Start Lab</strong>, shows how long Google Cloud resources will be made available to you.</p>
+<p>This hands-on lab lets you do the lab activities yourself in a real cloud environment, not in a simulation or demo environment. It does so by giving you new, temporary credentials that you use to sign in and access Google Cloud for the duration of the lab.</p>
+<p>To complete this lab, you need:</p>
+<ul>
+<li>Access to a standard internet browser (Chrome browser recommended).</li>
+</ul>
+<ql-warningbox>
+<strong>Note:</strong> Use an Incognito or private browser window to run this lab. This prevents any conflicts between your personal account and the Student account, which may cause extra charges incurred to your personal account.
+</ql-warningbox>
+<ul>
+<li>Time to complete the lab---remember, once you start, you cannot pause a lab.</li>
+</ul>
+<ql-warningbox>
+<strong>Note:</strong> If you already have your own personal Google Cloud account or project, do not use it for this lab to avoid extra charges to your account.
+</ql-warningbox>
+<h3>How to start your lab and sign in to the Google Cloud Console</h3>
+<ol>
+<li>
+<p>Click the <strong>Start Lab</strong> button. If you need to pay for the lab, a pop-up opens for you to select your payment method.
+On the left is the <strong>Lab Details</strong> panel with the following:</p>
+<ul>
+<li>The <strong>Open Google Console</strong> button</li>
+<li>Time remaining</li>
+<li>The temporary credentials that you must use for this lab</li>
+<li>Other information, if needed, to step through this lab</li>
+</ul>
+</li>
+<li>
+<p>Click <strong>Open Google Console</strong>.
+The lab spins up resources, and then opens another tab that shows the <strong>Sign in</strong> page.</p>
+<p><strong><em>Tip:</em></strong> Arrange the tabs in separate windows, side-by-side.</p>
+<ql-infobox>
+<strong>Note: </strong>If you see the <strong>Choose an account</strong> dialog, click <strong>Use Another Account</strong>.        
+ </ql-infobox>
+</li>
+<li>
+<p>If necessary, copy the <strong>Username</strong> from the <strong>Lab Details</strong> panel and paste it into the <strong>Sign in</strong> dialog. Click <strong>Next</strong>.</p>
+</li>
+<li>
+<p>Copy the <strong>Password</strong> from the <strong>Lab Details</strong> panel and paste it into the <strong>Welcome</strong> dialog. Click <strong>Next</strong>.</p>
+<ql-infobox>
+<strong>Important: </strong>You must use the credentials from the left panel. Do not use your Google Cloud Skills Boost credentials. 
+ </ql-infobox>
+<ql-warningbox>
+<strong>Note: </strong>Using your own Google Cloud account for this lab may incur extra charges.
+ </ql-warningbox>
+</li>
+<li>
+<p>Click through the subsequent pages:</p>
+<ul>
+<li>Accept the terms and conditions.</li>
+<li>Do not add recovery options or two-factor authentication (because this is a temporary account).</li>
+<li>Do not sign up for free trials.</li>
+</ul>
+</li>
+</ol>
+<p>After a few moments, the Cloud Console opens in this tab.</p>
+<ql-infobox>
+<strong>Note:</strong> You can view the menu with a list of Google Cloud Products and Services by clicking the <strong>Navigation menu</strong> at the top-left.
+<img alt="Navigation menu icon" src="https://cdn.qwiklabs.com/nUxFb6oRFr435O3t6V7WYJAjeDFcrFb16G9wHWp5BzU%3D">
+</ql-infobox>
+<h3>Activate Cloud Shell</h3>
+<p>Cloud Shell is a virtual machine that is loaded with development tools. It offers a persistent 5GB home directory and runs on the Google Cloud. Cloud Shell provides command-line access to your Google Cloud resources.</p>
+<ol>
+<li>Click <strong>Activate Cloud Shell</strong> <img alt="Activate Cloud Shell icon" src="https://cdn.qwiklabs.com/ep8HmqYGdD%2FkUncAAYpV47OYoHwC8%2Bg0WK%2F8sidHquE%3D"> at the top of the Google Cloud console.</li>
+</ol>
+<p>When you are connected, you are already authenticated, and the project is set to your <strong>PROJECT_ID</strong>. The output contains a line that declares the <strong>PROJECT_ID</strong> for this session:</p>
+<ql-code-block output="">
+Your Cloud Platform project in this session is set to YOUR_PROJECT_ID
+</ql-code-block>
+<p><code>gcloud</code> is the command-line tool for Google Cloud. It comes pre-installed on Cloud Shell and supports tab-completion.</p>
+<ol start="2">
+<li>(Optional) You can list the active account name with this command:</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud auth list
+</ql-code-block>
+<ol start="3">
+<li>
+<p>Click <strong>Authorize</strong>.</p>
+</li>
+<li>
+<p>Your output should now look like this:</p>
+</li>
+</ol>
+<p><strong>Output:</strong></p>
+<ql-code-block language="plaintext" output="">
+ACTIVE: *
+ACCOUNT: student-01-xxxxxxxxxxxx@qwiklabs.net
+To set the active account, run:
+    $ gcloud config set account `ACCOUNT`
+</ql-code-block>
+<ol start="5">
+<li>(Optional) You can list the project ID with this command:</li>
+</ol>
+<ql-code-block language="plaintext">
+gcloud config list project
+</ql-code-block>
+<p><strong>Output:</strong></p>
+<ql-code-block language="plaintext" output="">
+[core]
+project = &lt;project_ID&gt;
+</ql-code-block>
+<p><strong>Example output:</strong></p>
+<ql-code-block language="plaintext" output="">
+[core]
+project = qwiklabs-gcp-44776a13dea667a6
+</ql-code-block>
+<ql-infobox>
+<strong>Note: </strong>For full documentation of <code>gcloud</code>, in Google Cloud, refer to <a href="https://cloud.google.com/sdk/gcloud" target="_blank">the gcloud CLI overview guide</a>.
+</ql-infobox>
+<h2 id="step4">Scenario</h2>
+<p>In this scenario, the server uses a gRPC framework, receives a word or phrase, and returns the number of times the word or phrase appears in the works of Shakespeare.</p>
+<p>The average number of queries per second that the server can handle is determined by load testing the server. For each round of tests, a client simulator is called and instructed to issue 20 sequential queries. At the completion of a round, the number of queries sent by the client simulator, the elapsed time, and the average number of queries per second are displayed. The server code is inefficient (by design) for improvements to be made.</p>
+<h2 id="step5">Task 1. Download and run the sample Application</h2>
+<p>In this lab, the sample application's execution time is just long enough to collect profile data. In practice, it's desirable to have at least 10 profiles before analyzing profile data.</p>
+<ql-infobox>
+<strong>Note: </strong>Profiler has to be enabled in the project
+</ql-infobox>
+<ol>
+<li>In <strong>Cloud Shell</strong>, run the following command:</li>
+</ol>
+<ql-code-block language="bash">
+gcloud services enable cloudprofiler.googleapis.com
+</ql-code-block>
+<ql-code-block language="bash">
+git clone https://github.com/GoogleCloudPlatform/golang-samples.git
+cd golang-samples/profiler/shakesapp
+</ql-code-block>
+<ol start="2">
+<li>Run the application with the version set to <code>1</code> and the number of rounds set to <code>15</code>:</li>
+</ol>
+<ql-code-block language="bash">
+go run . -version 1 -num_rounds 15
+</ql-code-block>
+<p>If prompted, click <strong>Authorize</strong> on the modal dialog.</p>
+<ol start="3">
+<li>Use the top search to enter <code>Profiler</code> and select the corresponding service from the drop down when it appers.</li>
+</ol>
+<ql-warningbox><b>Note: </b>Wait until the application is run all 15 rounds before viewing profile information in <b>Cloud Profiler</b></ql-warningbox>
+<ol start="4">
+<li>Once the application run completes you will see a <a href="http://www.brendangregg.com/flamegraphs.html" target="_blank">Flame Graph</a> similar to the figure below displaying the application's profile data. Flame graphs make efficient use of screen real estate by representing a large amount of information in a compact, readable format. You can read more about how <strong>Cloud Profiler</strong> creates flame graphs on the <a href="https://cloud.google.com/profiler/docs/concepts-flame" target="_blank">Flame graphs documentation page</a>.</li>
+</ol>
+<p><img alt="Flame Graph" src="https://cdn.qwiklabs.com/IIgfUwsyd%2FW8%2FPjeIa1%2F%2BTWXksEqpaJvTMccdzgwnYc%3D"></p>
+<p>Notice that the <strong>Profile type</strong> is set to <code>CPU time</code>. This indicates that CPU usage data is displayed on the flame graph presented.</p>
+<ol start="5">
+<li>The output after the application run in <strong>Cloud Shell</strong> should look similar to the following:</li>
+</ol>
+<ql-code-block output="">
+go run . -version 1 -num_rounds 15
+2020/08/27 17:27:34 Simulating client requests, round 1
+2020/08/27 17:27:34 Stackdriver Profiler Go Agent version: 20200618
+2020/08/27 17:27:34 profiler has started
+2020/08/27 17:27:34 creating a new profile via profiler service
+2020/08/27 17:27:51 Simulated 20 requests in 17.3s, rate of 1.156069 reqs / sec
+2020/08/27 17:27:51 Simulating client requests, round 2
+2020/08/27 17:28:10 Simulated 20 requests in 19.02s, rate of 1.051525 reqs / sec
+2020/08/27 17:28:10 Simulating client requests, round 3
+2020/08/27 17:28:29 Simulated 20 requests in 18.71s, rate of 1.068947 reqs / sec
+...
+2020/08/27 17:44:32 Simulating client requests, round 14
+2020/08/27 17:46:04 Simulated 20 requests in 1m32.23s, rate of 0.216849 reqs / sec
+2020/08/27 17:46:04 Simulating client requests, round 15
+2020/08/27 17:47:52 Simulated 20 requests in 1m48.03s, rate of 0.185134 reqs / sec
+</ql-code-block>
+<p>The output from <strong>Cloud Shell</strong> displays the elapsed time for each iteration and the average request rate.</p>
+<p>When the application is started, the entry "Simulated 20 requests in 17.3s, rate of 1.156069 reqs / sec" indicates that the server is executing about 1 request per second.</p>
+<p>By the last round, the entry "Simulated 20 requests in 1m48.03s, rate of 0.185134 reqs / sec" indicates that the server is executing about 1 request every 5 seconds.</p>
+<p>Click <em>Check my progress</em> to verify the objective.
+<ql-activity-tracking step="1">
+Enable the Cloud Profiler API.
+</ql-activity-tracking></p>
+<h2 id="step6">Task 2. Using CPU time profiles to maximize queries per second</h2>
+<p>One approach to maximizing the number of queries per second is to identify CPU intensive methods and optimize their implementations. In this section, you use CPU time profiles to identify a CPU intensive method on the server.</p>
+<h3>Identifying CPU time usage</h3>
+<p>The root frame of the flame graph lists the total CPU time used by the application over the collection interval of 10 seconds:</p>
+<p><img alt="Root Frame" src="https://cdn.qwiklabs.com/ferBzjLkoRiLLYWNq7L%2Fje%2F5MSGR33vIz2UUbHXLrCg%3D"></p>
+<p>In the example above, the service used <code>11.3s</code>. When the system runs on a single core, a CPU time usage of 11.3 seconds corresponds to 113% utilization of that core! For more information on profiling, see <a href="https://cloud.google.com/profiler/docs/concepts-profiling#types_of_profiling_available" target="_blank">the types of profiling available</a>.</p>
+<h2 id="step7">Task 3. Modifying the application</h2>
+<h3>Step 1: Which function is CPU time intensive?</h3>
+<p>One way you can identify code that might need to be optimized is to view the table of functions and identify greedy functions:</p>
+<ol>
+<li>To view the table, click <strong>Focus function list</strong>.</li>
+</ol>
+<p><img alt="Focus Function Button" src="https://cdn.qwiklabs.com/ryh3O0GCt%2Fde%2B7ikpwH9%2Fk4oP3cUIk9GYUQG2mv50zk%3D"></p>
+<ol start="2">
+<li>Sort the table by <strong>Total</strong>. The column labeled <strong>Total</strong> shows the CPU time usage of a function and its children.</li>
+</ol>
+<p>In this example, <code>GetMatchCount</code> is the first <code>shakesapp/server.go</code> function that is listed. That function used 7.54s of the total CPU time, or 67% of the applications total CPU time. This function is known to be handling the gRPC requests.</p>
+<p><img alt="Focus Functions" src="https://cdn.qwiklabs.com/7b6tSa%2B%2BSEVbJEosVnHmEs%2Bi16NbI7oViaAXZZePEuU%3D"></p>
+<p>The flame graph shows that the <code>shakesapp/server.go</code> function <code>GetMatchCount</code> calls <code>MatchString</code>, which in turn is spending most of its time calling <code>Compile</code>:</p>
+<p><img alt="Flame Graph Profile" src="https://cdn.qwiklabs.com/C64XKf240ZWvhc5JtZy9wHOMv3gjL3hF3gA2XDqt4X8%3D"></p>
+<h3>Step 2: How can you use what you've learned?</h3>
+<ol>
+<li>
+<p>Rely on your language expertise. <code>MatchString</code> is a regular-expression method. In general, regular-expression processing is very flexible, but not necessarily the most efficient solution for every problem.</p>
+</li>
+<li>
+<p>Rely on your application expertise. The client is generating a word or phrase, and the server is searching for this phrase.</p>
+</li>
+<li>
+<p>Search the implementation of the <code>shakesapp/server.go</code> method <code>GetMatchCount</code> for uses of <code>MatchString</code>, and then determine if a simpler, more efficient function could replace that call.</p>
+</li>
+</ol>
+<h3>Step 3: How can you change the application?</h3>
+<p>In the file <code>shakesapp/server.go</code>, the existing code contains one call to <code>MatchString</code>:</p>
+<ql-code-block output="">
+isMatch, err := regexp.MatchString(query, line)
+if err != nil {
+   return resp, err
+}
+if isMatch {
+   resp.MatchCount++
+}
+</ql-code-block>
+<p>One option is to replace the <code>MatchString</code> logic with equivalent logic that uses <code>strings.Contains</code>.</p>
+<p>Click the <strong>Open Editor</strong> button at the top of the <strong>Cloud Shell</strong> and open the <code>server.go</code> file in the directory <code>/profiler/shakesapp/shakesapp/server.go</code> when the editor opens. Replace the <code>MatchString</code> logic shown above with the snippet below then save the file.</p>
+<ql-code-block language="go">
+if strings.Contains(line, query) {
+   resp.MatchCount++
+}
+</ql-code-block>
+<ql-warningbox><b>Note: </b>Be sure to <strong>REMOVE</strong> the import statement for the <i>regexp</i> package at the top of the <i>server.go</i> file.</ql-warningbox>
+<h2 id="step8">Task 4. Evaluate the change</h2>
+<p>To evaluate the change, do the following:</p>
+<ol>
+<li>Run the following command in <strong>Cloud Shell</strong> to set the application version to <code>2</code>:</li>
+</ol>
+<ql-code-block language="bash">
+go run . -version 2 -num_rounds 40
+</ql-code-block>
+<ol start="2">
+<li>Wait for the application to complete, and then view the profile data for this version of the application:</li>
+</ol>
+<ul>
+<li>Click <strong>NOW</strong> to load the most recent profile data. For more information, see <a href="https://cloud.google.com/profiler/docs/selecting-profiles#time-config" target="_blank">Range of time</a>.</li>
+<li>In the <strong>Version</strong> menu, select <strong>2</strong>.</li>
+</ul>
+<p>For one example, the flame graph is as shown:</p>
+<p><img alt="version 2" src="https://cdn.qwiklabs.com/AdNjin2EwtShxDdGDCzfUBmPASGP8s2m0Z2Ddqc2JV4%3D"></p>
+<p>In this figure, the root frame shows a value of <code>8.96 s</code>. As a result of changing the string-match function, the CPU time used by the application decreased from 11.3 seconds to 8.96 seconds, or the application went from using 113% of a CPU core to using 89.6% of a CPU core.</p>
+<p>The frame width is a proportional measure of the CPU time usage. In this example, the width of the frame for <code>GetMatchCount</code> indicates that function uses about 29.5% of all CPU time used by the application. In the original flame graph, this same frame was about 67% of the width of the graph. To view the exact CPU time usage, you can use the frame tooltip or you can use the <strong>Focus function list</strong>:</p>
+<ql-code-block output="">
+2023/03/27 23:38:35 Simulating client requests, round 33
+2023/03/27 23:38:38 Simulated 20 requests in 3.13s, rate of 6.389776 reqs / sec
+2023/03/27 23:38:38 Simulating client requests, round 34
+2023/03/27 23:38:41 Simulated 20 requests in 3.18s, rate of 6.289308 reqs / sec
+2023/03/27 23:38:41 Simulating client requests, round 35
+2023/03/27 23:38:44 Simulated 20 requests in 3.16s, rate of 6.329114 reqs / sec
+2023/03/27 23:38:44 Simulating client requests, round 36
+2023/03/27 23:38:47 Simulated 20 requests in 3.02s, rate of 6.622517 reqs / sec
+2023/03/27 23:38:47 Simulating client requests, round 37
+2023/03/27 23:38:50 Simulated 20 requests in 3.09s, rate of 6.472492 reqs / sec
+2023/03/27 23:38:50 Simulating client requests, round 38
+2023/03/27 23:38:54 Simulated 20 requests in 3.17s, rate of 6.309148 reqs / sec
+2023/03/27 23:38:54 Simulating client requests, round 39
+2023/03/27 23:38:57 Simulated 20 requests in 3.26s, rate of 6.134969 reqs / sec
+2023/03/27 23:38:57 Simulating client requests, round 40
+Cloud Profiler: 2023/03/27 23:38:58 successfully created profile CPU
+2023/03/27 23:39:00 Simulated 20 requests in 3.13s, rate of 6.389776 reqs / sec
+</ql-code-block>
+<p>The small change to the application had two different effects:</p>
+<ul>
+<li>The number of requests per second increased from less than 1 per second to greater than 5 per second.</li>
+<li>The CPU time per request, computed by dividing the CPU utilization by the the number of requests per second, decreased.</li>
+</ul>
+<h2 id="step9">Task 5. Using allocated heap profiles to improve resource usage</h2>
+<p>In this task, you will learn how to use the heap and allocated heap profiles to identify an allocation-intensive method in the application.</p>
+<ul>
+<li>Heap profiles show the amount of memory allocated in the program's heap at the instant the profile is collected.</li>
+<li>Allocated heap profiles show the total amount of memory that was allocated in the program's heap during the interval in which the profile was collected. By dividing these values by 10 seconds, the profile collection interval, you can interpret these as allocation rates.</li>
+</ul>
+<h3>Enabling heap profile collection</h3>
+<ol>
+<li>Back in <strong>Cloud Shell</strong>, run the application with the application version set to <code>3</code> and enable the collection of heap and allocated heap profiles.</li>
+</ol>
+<ql-code-block language="bash">
+cd ~/golang-samples/profiler/shakesapp/
+go run . -version 3 -num_rounds 40 -heap -heap_alloc
+</ql-code-block>
+<ol start="2">
+<li>Wait for the application to complete, and then view the profile data for this version of the application:</li>
+</ol>
+<ul>
+<li>Click <strong>NOW</strong> to load the most recent profile data.</li>
+<li>In the <strong>Version</strong> menu, select <strong>3</strong>.</li>
+<li>In the <strong>Profiler type</strong> menu, select <strong>Allocated heap</strong>.</li>
+</ul>
+<p>For one example, the flame graph is as shown:</p>
+<p><img alt="Allocated Heap" src="https://cdn.qwiklabs.com/VjPohnqVUysNavF4npK3P66%2F8FKNhEbDGtwCnilaiA8%3D"></p>
+<h3>Identifying the heap allocation rate</h3>
+<p>The root frame displays the total amount of heap that was allocated during the 10 seconds when a profile was collected, averaged over all profiles. In this example, the root frame shows that, on average, 2.303 GiB of memory was allocated.</p>
+<h2 id="step10">Task 6. Modifying the application</h2>
+<h3>Step 1: Is it worth minimizing the rate of heap allocation?</h3>
+<p>The CPU time usage of the Go background garbage collection function, <code>runtime.gcBgMarkWorker.*</code>, can be used to determine if it's worth the effort to optimize an application to reduce garbage collection costs:</p>
+<ul>
+<li>Skip optimization if the CPU time usage is less than 5%.</li>
+<li>Optimize if the CPU time usage is at least 25%.</li>
+</ul>
+<p>For this example, the CPU time usage of the background garbage collector is 15.8%. This value is high enough that it's worth attempting to optimize shakesapp/server.go:</p>
+<p><img alt="GC Worker" src="https://cdn.qwiklabs.com/VxSm4Epv1E7pgpHbs9ktP%2ByTRTgsCHMaIHnQdkQe7uQ%3D"></p>
+<h3>Step 2: Which function allocates a lot of memory?</h3>
+<p>The file <code>shakesapp/server.go</code> contains two functions that might be targets for optimization: <code>GetMatchCount</code> and <code>readFiles</code>. To determine the rate of memory allocation for these functions, set the <strong>Profile type</strong> to <strong>Allocated heap</strong>, and then use the list <strong>Focus function list</strong>.</p>
+<p>In this example, the total heap allocation for <code>readFiles.func1</code> during the 10 second profile collection is, on average, 1.71 GiB or 74% of the total allocated memory. The self heap allocation during the 10 second profile collection is 336.6 MiB:</p>
+<p><img alt="allocated heap focus" src="https://cdn.qwiklabs.com/ipfAmp%2BTNXVpQlIz17dNRm6ugQD4H7X5kLZSv%2BPdBDg%3D"></p>
+<p>In this example, the Go method <code>io.ReadAll</code> allocated 1.361 GiB during the 10 second profile collection, on average. The simplest way to reduce these allocations is to reduce calls to <code>io.ReadAll</code>. The function <code>readFiles</code> calls <code>io.ReadAll</code> through a library method.</p>
+<h3>Step 3: How can you change the application?</h3>
+<p>One option is to modify the application to read the files one time and then to re-use that content. For example, you could make the following changes. Open <strong>Cloud Shell</strong> and then <strong>Cloud Editor</strong> similar to the previous task to modify the server.go file. This should be located at the path <code>golang-samples/profiler/shakesapp/shakesapp</code>:</p>
+<ol>
+<li>Define a global variable <code>files</code> to store the results of the initial file read:</li>
+</ol>
+<ql-code-block language="go">
+var files []string
+</ql-code-block>
+<p>Place this under the package imports at the top of the <code>server.go</code> file.</p>
+<ql-code-block language="go" output="">
+import (
+	"context"
+	"fmt"
+	"io/ioutil"
+	"strings"
+	"cloud.google.com/go/storage"
+	"google.golang.org/api/iterator"
+	"google.golang.org/api/option"
+)
+// PLACE THE FILES VARIABLE HERE
+var files []string
+</ql-code-block>
+<ol start="2">
+<li>Modify <code>readFiles</code> to return early when files is defined:</li>
+</ol>
+<ql-code-block language="go">
+func readFiles(ctx context.Context, bucketName, prefix string) ([]string, error) {
+   
+   // return if defined
+   if files != nil {
+         return files, nil
+   }
+</ql-code-block>
+<p>Replace the logic below:</p>
+<ql-code-block language="go">
+// Save the result in the variable files
+   ret := make([]string, len(paths))
+	for i := 0; i &lt; len(paths); i++ {
+		r := &lt;-resps
+		if r.err != nil {
+			err = r.err
+		}
+		ret[i] = r.s
+	}
+   return ret, err
+</ql-code-block>
+<p>With the snippet following snippet:</p>
+<ql-code-block language="go">
+files = make([]string, len(paths))
+for i := 0; i &lt; len(paths); i++ {
+      r := &lt;-resps
+      if r.err != nil {
+               return nil, r.err
+      }
+      files[i] = r.s
+}
+return files, nil
+</ql-code-block>
+<p>Save the file and click <strong>Open Terminal</strong> to go back to <strong>Cloud Shell</strong>.</p>
+<h2 id="step11">Task 7. Evaluating the change</h2>
+<p>To evaluate the change, do the following:</p>
+<ol>
+<li>Run the application with the application version set to <code>4</code>:</li>
+</ol>
+<ql-code-block language="go">
+go run . -version 4 -num_rounds 60 -heap -heap_alloc
+</ql-code-block>
+<ol start="2">
+<li>Wait for the application to complete, and then view the profile data for this version of the application:</li>
+</ol>
+<ul>
+<li>Click <strong>NOW</strong> to load the most recent profile data.</li>
+<li>In the <strong>Version</strong> menu, select <strong>4</strong>.</li>
+<li>In the <strong>Profiler type</strong> menu, select <strong>Allocated heap</strong>.</li>
+</ul>
+<ol start="3">
+<li>To quantify the effect of changing <code>readFiles</code> on the heap allocation rate, compare the allocated heap profiles for version <code>4</code> to those collected for <code>3</code>:</li>
+</ol>
+<p><img alt="heap compare" src="https://cdn.qwiklabs.com/haU4lyCCP6flKGZuZ8HRSJWbDprQHKL2uNB%2F8AmkvLk%3D"></p>
+<ol start="4">
+<li>
+<p>In this example, the root frame's tooltip shows that with version 4, the average amount of memory allocated during profile collection decreased by 1.301 GiB, as compared to version 3. The tooltip for <code>readFiles.func1</code> shows a decrease of 1.045 GiB:</p>
+</li>
+<li>
+<p>To determine if there is an impact of the change on the number of requests per second handled by the application, view the output in the <strong>Cloud Shell</strong>.</p>
+</li>
+</ol>
+<p>In the example below, version 4 completes up to 15 requests per second, which is substantially higher than the ~5 requests per second of version 3:</p>
+<ql-code-block output="">
+2020/08/27 21:51:42 Stackdriver Profiler Go Agent version: 20200618
+2020/08/27 21:51:42 profiler has started
+2020/08/27 21:51:42 creating a new profile via profiler service
+2020/08/27 21:51:44 Simulated 20 requests in 1.47s, rate of 13.605442 reqs / sec
+2020/08/27 21:51:44 Simulating client requests, round 2
+2020/08/27 21:51:45 Simulated 20 requests in 1.3s, rate of 15.384615 reqs / sec
+2020/08/27 21:51:45 Simulating client requests, round 3
+2020/08/27 21:51:46 Simulated 20 requests in 1.31s, rate of 15.267176 reqs / sec
+</ql-code-block>
+<p>The increase in queries per second served by the application might be due to less time being spent on garbage collection.</p>
+<h2 id="step12">Congratulations!</h2>
+<p>In this lab, you explored the Cloud Operations suite, which allows Site Reliability Engineers (SRE) to investigate and diagnose issues experienced with workloads deployed.</p>
+<p>CPU time and allocated heap profiles were used to identify potential optimizations to an application. The goals were to maximize the number of requests per second and to eliminate unnecessary allocations.</p>
+<p>By using CPU time profiles, a CPU intensive function was identified. After applying a simple change, the server's request rate increased.</p>
+<p>By using allocated heap profiles, the <code>shakesapp/server.go</code> function <code>readFiles</code> was identified as having a high allocation rate. After optimizing <code>readFiles</code>, the server's request rate increased to 15 requests per second.</p>
+<h3>Finish your quest</h3>
+<p>This self-paced lab is part of the <a href="https://google.qwiklabs.com/quests/24" target="_blank">Cloud Architecture</a> and <a href="https://google.qwiklabs.com/quests/96" target="_blank">DevOps Essentials</a> quests.  A quest is a series of related labs that form a learning path. Completing a quest earns you a badge to recognize your achievement. You can make your badge or badges public and link to them in your online resume or social media account. Enroll in any quest that contains this lab and get immediate completion credit.  Refer to the <a href="http://cloudskillsboost.google/catalog" target="_blank">Google Cloud Skills Boost catalog</a> for all available quests.</p>
+<h3>Take your next lab</h3>
+<p>Continue your quest or check out these suggested materials:</p>
+<ul>
+<li>Practice and learn Cloud Operations on Google Cloud with the <a href="https://cloud-ops-sandbox.dev/" target="_blank">Cloud Operations Sandbox</a>.</li>
+<li><a href="https://google.qwiklabs.com/catalog_lab/1110" target="_blank">Monitoring and Logging for Cloud Functions</a></li>
+</ul>
+<h3>Next steps</h3>
+<ul>
+<li>Learn more about the <a href="https://cloud.google.com/stackdriver/docs/" target="_blank">Google Cloud Operations Suite</a>.</li>
+</ul>
+<h3>Google Cloud training and certification</h3>
+<p>...helps you make the most of Google Cloud technologies. <a href="https://cloud.google.com/training/courses" target="_blank">Our classes</a> include technical skills and best practices to help you get up to speed quickly and continue your learning journey. We offer fundamental to advanced level training, with on-demand, live, and virtual options to suit your busy schedule. <a href="https://cloud.google.com/certification/" target="_blank">Certifications</a> help you validate and prove your skill and expertise in Google Cloud technologies.</p>
+<p><strong>Manual Last Updated: August 16, 2023</strong></p>
+<p><strong>Lab Last Tested: August 16, 2023</strong></p>
+<h2 id="step13">End your lab</h2>
+<p>When you have completed your lab, click <strong>End Lab</strong>. Your account and the resources you've used are removed from the lab platform.</p>
+<p>You will be given an opportunity to rate the lab experience. Select the applicable number of stars, type a comment, and then click <strong>Submit</strong>.</p>
+<p>The number of stars indicates the following:</p>
+<ul>
+<li>1 star = Very dissatisfied</li>
+<li>2 stars = Dissatisfied</li>
+<li>3 stars = Neutral</li>
+<li>4 stars = Satisfied</li>
+<li>5 stars = Very satisfied</li>
+</ul>
+<p>You can close the dialog box if you don't want to provide feedback.</p>
+<p>For feedback, suggestions, or corrections, please use the <strong>Support</strong> tab.</p>
+<p>Copyright 2023 Google LLC All rights reserved. Google and the Google logo are trademarks of Google LLC. All other company and product names may be trademarks of the respective companies with which they are associated.</p>
+
+</div>
+</div>
+
+
+<div class='lab-content__end-lab-button js-end-lab-button-container hidden'>
+<ql-lab-control-button class='js-end-lab-button' running></ql-lab-control-button>
+</div>
+<!-- / TODO: Move recommendations into the end lab modal -->
+</ql-drawer-content>
+<ql-drawer end id='outline-drawer' open slot='drawer' width='320'>
+<div aria-label='Lab Table of Contents' role='navigation'>
+<ul class='lab-content__outline js-lab-content-outline'>
+<li><a href="#step1">GSP976</a></li><li><a href="#step2">Introduction</a></li><li><a href="#step3">Setup</a></li><li><a href="#step4">Scenario</a></li><li><a href="#step5">Task 1. Download and run the sample Application</a></li><li><a href="#step6">Task 2. Using CPU time profiles to maximize queries per second</a></li><li><a href="#step7">Task 3. Modifying the application</a></li><li><a href="#step8">Task 4. Evaluate the change</a></li><li><a href="#step9">Task 5. Using allocated heap profiles to improve resource usage</a></li><li><a href="#step10">Task 6. Modifying the application</a></li><li><a href="#step11">Task 7. Evaluating the change</a></li><li><a href="#step12">Congratulations!</a></li><li><a href="#step13">End your lab</a></li>
+</ul>
+</div>
+</ql-drawer>
+</ql-drawer-container>
+</ql-drawer-content>
+</ql-drawer-container>
+
+
+
+</ql-drawer-content>
+</ql-drawer-container>
+
+</div>
+</main>
+
+<span class='hidden' id='flash-sibling-before'></span>
+<ql-snackbar></ql-snackbar>
+
+
+<ql-dialog headline='Score Details' icon='task_alt' id='jupyter-feedback-modal'>
+<iframe id='jupyter-feedback-frame' srcdoc='' title='Jupyter Feedback'></iframe>
+</ql-dialog>
+
+<div class='modal fade' id='lab-details-modal'>
+<div class='modal-container'>
+<div class='modal-content mdl-shadow--24dp'>
+<div class='modal-body'>
+<p class='l-mbm'>
+In this lab, you will learn how to use the Cloud Operations Tracing and Profiler tools to diagnose and correct application latencies.
+</p>
+<p>
+This lab is included in the quest
+<a href="/quests/189">Measure Site Reliability using Cloud Operations Suite</a>.
+If you complete this lab you&#39;ll receive credit for it when you enroll in this quest.
+</p>
+<p class='small-label l-mbs'>
+<strong>
+Duration:
+</strong>
+0m setup
+&middot;
+90m access
+&middot;
+90m completion
+</p>
+<p class='small-label l-mbs'>
+<strong>AWS Region:</strong>
+[] <strong></strong>
+</p>
+<p class='small-label l-mbs'>
+<span><strong>Levels: </strong>introductory</span>
+</p>
+<p class='small-label'>
+<strong>
+Permalink:
+</strong>
+<a href="https://partner.cloudskillsboost.google/catalog_lab/6228">https://partner.cloudskillsboost.google/catalog_lab/6228</a>
+</p>
+</div>
+<div class='modal-actions'>
+<a class='button button--text' data-dismiss='modal'>
+Got It
+</a>
+</div>
+
+
+</div>
+</div>
+<iframe class='l-ie-iframe-fix' tabindex='-1' title='modal'></iframe>
+</div>
+<ql-dialog headline='How satisfied are you with this lab?&lt;span aria-hidden=&quot;true&quot;&gt;*&lt;/span&gt;' id='lab-review-dialog'>
+<form class="simple_form js-lab-review-form" id="new_lab_review" action="/lab_reviews" accept-charset="UTF-8" data-remote="true" method="post"><input name="utf8" type="hidden" value="&#x2713;" autocomplete="off" /><div aria-labelledby='lab-review-dialog' aria-required='true' aria-valuemax='5' aria-valuemin='0' aria-valuenow='0' class='rateit js-rateit' data-rateit-max='5' data-rateit-min='0' data-rateit-resetable='false' data-rateit-step='1' data-rateit-value='0' id='lab-review-rateit' role='slider' tabindex='0'></div>
+<div class='l-mtm'>
+
+<div class="control-group hidden lab_review_user_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" value="11061062" name="lab_review[user_id]" id="lab_review_user_id" /></div></div>
+<div class="control-group hidden lab_review_classroom_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" name="lab_review[classroom_id]" id="lab_review_classroom_id" /></div></div>
+<div class="control-group hidden lab_review_lab_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" value="6228" name="lab_review[lab_id]" id="lab_review_lab_id" /></div></div>
+<div class="control-group hidden lab_review_focus_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" name="lab_review[focus_id]" id="lab_review_focus_id" /></div></div>
+<div class="control-group hidden lab_review_rating"><div class="controls"><input class="hidden js-rating-input" autocomplete="off" type="hidden" name="lab_review[rating]" id="lab_review_rating" /></div></div>
+<div class="control-group text optional lab_review_comment"><label class="text optional control-label" for="lab_review_comment">Additional Comments</label><div class="controls"><textarea class="text optional" name="lab_review[comment]" id="lab_review_comment">
+</textarea></div></div>
+</div>
+</form><ql-button disabled id='submit' label='Submit' slot='action' text></ql-button>
+</ql-dialog>
+
+<ql-dialog headline='All done? If you end this lab, you will lose all your work. You may not be able to restart the lab if there is a quota limit. Are you sure you want to end this lab?' icon='error_outline' id='js-lab-are-you-sure-dialog'>
+<ql-button id='js-are-you-sure-button' label='Submit' slot='action' text></ql-button>
+</ql-dialog>
+<ql-dialog dismissalLabel='Cancel' headline='A newer version of this course is available. Your progress will carry over if you choose to upgrade. However, your completion percentage may change if the new version has added or removed any learning activities. Click the preview button to see the course changes before upgrading.' icon='error' id='course-session-upgrade-modal'>
+<ql-button href='/course_templates/99/preview' label='Preview' slot='action'>
+Preview
+</ql-button>
+</ql-dialog>
+
+
+
+<script>
+  $(function() {
+    ql.initMaterialInputs();
+    initChosen();
+    initSearch();
+    initTabs();
+    ql.list.init();
+    ql.favoriting.init();
+    ql.header.myAccount.init();
+    initTooltips();
+    ql.autocomplete.init();
+    ql.modals.init();
+    ql.toggleButtons.init();
+    ql.analytics.init();
+    ql.labControlPanel.addRecaptchaErrorHandler();
+  initLabContent();
+  ql.labOutline.links.init();
+  initLabReviewModal();
+  initLabReviewTranslations( {"star_amount_1":"1 of 5 stars","star_amount_2":"2 of 5 stars","star_amount_3":"3 of 5 stars","star_amount_4":"4 of 5 stars","star_amount_5":"5 of 5 stars"} )
+  ql.labAssessment.init();
+  ql.labData.init();
+  initLabTranslations( {"are_you_sure":"All done? If you end this lab, you will lose all your work. You may not be able to restart the lab if there is a quota limit. Are you sure you want to end this lab?","in_progress":"*In Progress*","ending":"*Ending*","starting":"*Starting, please wait*","end_concurrent_labs":"Sorry, you can only run one lab at a time. To start this lab, please confirm that you want all of your existing labs to end.","copied":"Copied","no_resource":"Error retrieving resource.","no_support":"No Support","mac_press":"Press ⌘-C to copy","thanks_review":"Thanks for reviewing this lab.","windows_press":"Press Ctrl-C to copy","days":"days"} );
+  ql.labRun.init();
+  ql.chat.init();
+  ql.navPanel.init();
+  ql.navigation.init();
+  
+  });
+</script>
+
+</body>
+</html>
+
+
