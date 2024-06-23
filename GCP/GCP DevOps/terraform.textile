@@ -1,0 +1,17 @@
+			GCP Commands 
+Terraform -- Create VM
+
+1. Create a provider.ts and main.ts files
+2. Change a directory to the same location where files are located.
+3. terraform init 
+4. terraform plan
+5. terraform apply
+6. terraform destroy
+
+
+Secure container deployment 
+	use google preferred images for vulnerability free deployment 
+
+Binary Authorization 
+	it is mandatory to enable binary authorization 
+	How to prevent from delpoyment

@@ -1,0 +1,843 @@
+
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<title>A Tour of Google Cloud Hands-on Labs | Google Cloud Skills Boost</title>
+<meta name="action-cable-url" content="/cable" />
+<script>
+//<![CDATA[
+window.gon={};gon.deployment="google-run";
+//]]>
+</script>
+<script>
+  (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer',"GTM-5XSKHDX");
+</script>
+<script src="https://www.googletagmanager.com/gtag/js?id=G-2X30ZRBDSG" async="async"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', "G-2X30ZRBDSG", {
+    user_id: "11061062"
+  });
+</script>
+<script>
+  const properties = JSON.parse(atob('eyJsb2NhbGUiOiJlbiIsInVzZXJfcm9sZXMiOiJzdHVkZW50IiwiZmVhdHVyZV9hbGV4YW5kcmlhX3Nob3dfYnVuZGxlX2Vycm9ycyI6dHJ1ZSwiZmVhdHVyZV9jb3Vyc2VfbW9uZXRpemF0aW9uIjpmYWxzZSwiZmVhdHVyZV9jb21wbGV0aW9uc19kYXNoYm9hcmQiOmZhbHNlLCJmZWF0dXJlX3NlYXJjaF91cGRhdGVzIjpmYWxzZSwiZmVhdHVyZV9hbGV4YW5kcmlhX3N1YnNjcmlwdGlvbnNfcGFnaW5hdGlvbiI6dHJ1ZSwiZmVhdHVyZV9vcmdhbml6YXRpb25fbGVhcm5pbmdfcGxhbnMiOnRydWUsImZlYXR1cmVfY29udGVudF9wcm92aWRlcl9hZG1pbiI6dHJ1ZSwiZmVhdHVyZV91c2VkX2luIjp0cnVlLCJmZWF0dXJlX3BlcmZfdGVzdCI6ZmFsc2UsImZlYXR1cmVfYWlfc2tpbGxzIjp0cnVlLCJmZWF0dXJlX3RlYW1zIjp0cnVlLCJmZWF0dXJlX2NoYXRfb2ZmX2Zvcl9zaWduZWRfb3V0X3VzZXJzIjp0cnVlLCJmZWF0dXJlX2NvdXJzZV91cGdyYWRlIjp0cnVlLCJmZWF0dXJlX2Nhbm9uaWNhbF9kb21haW5fcmVkaXJlY3QiOnRydWUsImZlYXR1cmVfYWJfY29udGVudF9nY3Atb25kZW1hbmQtY29udGVudC9ULUdPT0dBVi1CfHByb2plY3Qtc2Vla2hvLXB1YmxpYy1jYXRhbG9nfDEuMHwxLjEiOmZhbHNlLCJmZWF0dXJlX3RlbGxfbmF2eV9hbGxvd2VkX3pvbmVzIjpmYWxzZSwiZmVhdHVyZV9pbHRfY29udGVudF9wcm9ncmFtIjpmYWxzZSwiZmVhdHVyZV9zaG93X2FubnVhbF9wdXJjaGFzZV9ub3ciOnRydWUsImZlYXR1cmVfcHJvZ3JhbV9hbm5vdW5jZW1lbnRzIjp0cnVlLCJmZWF0dXJlX29hdXRoX3Jpc2Nfc2h1dG9mZiI6dHJ1ZSwiZmVhdHVyZV9wcm9ncmFtX2xlYXJuaW5nX2Fzc2lnbm1lbnQiOnRydWUsImZlYXR1cmVfY29tbXVuaXR5X2ZvcnVtIjp0cnVlLCJmZWF0dXJlX3BlZXJfYXNzaWdubWVudCI6ZmFsc2UsImZlYXR1cmVfbG9nX2Nvb2tpZXMiOmZhbHNlLCJmZWF0dXJlX3BlcnNvbmFsaXplZF9xdWVzdHMiOmZhbHNlLCJmZWF0dXJlX29yZ2FuaXphdGlvbl9hbm5vdW5jZW1lbnRzIjp0cnVlLCJmZWF0dXJlX3R1cmJvIjpmYWxzZSwiZmVhdHVyZV9iYXJrZXJfcGF1c2UiOmZhbHNlLCJncm91cF9zdWFkbWlucyI6ZmFsc2UsImdyb3VwX25vbl9zdWFkbWlucyI6dHJ1ZSwiZ3JvdXBfYWRtaW5zIjpmYWxzZSwiZ3JvdXBfdHJhaW5lcnMiOmZhbHNlLCJncm91cF9jb29yZGluYXRvcnMiOmZhbHNlLCJncm91cF9jcmVhdG9ycyI6ZmFsc2UsImdyb3VwX3N0dWRlbnRzIjp0cnVlLCJncm91cF9ub25fb3JnYW5pemF0aW9uIjp0cnVlLCJncm91cF9ub25fcHJvZ3JhbSI6dHJ1ZSwiZ3JvdXBfZ29vZ2xlcnMiOmZhbHNlfQ=='));
+  gtag('set', 'user_properties', properties);
+</script>
+<script src="https://cdn.qwiklabs.com/assets/hallofmirrors/polyfills/webcomponents-loader-b1b28b59480cca2ab0c23485f64ba2ec8893bdc9.js"></script>
+<script src="https://cdn.qwiklabs.com/assets/vendor-6acbac427f1b829fb7af1936177882a8bf972fed.js"></script>
+<script src="https://cdn.qwiklabs.com/assets/application-05149a7ba331c4aad0a5e9eab8e4acaf82e29a0d.js"></script>
+<script src="https://cdn.qwiklabs.com/assets/hallofmirrors/hallofmirrors-a0a040e0490f74453c6ad0e3c84b1fbbc2323732.js"></script>
+<script id='ze-snippet' src='https://static.zdassets.com/ekr/snippet.js?key=511e4158-0aec-4e3c-b2e6-4daa1769f51e'></script>
+
+
+<meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="jt7EWIHgrIgHxoa8QDJFfmtWnsUrXtE5mSE9NpcOEVDYYfvQezTncuwFRpwlHfWIr1uOx56rClNdOREyiH4CNQ==" />
+<meta content='width=device-width, initial-scale=1.0, user-scalable=yes' name='viewport'>
+<meta content='1rRsY0INj8RvwB5EF5pwdxt2A2P9aDgAlsICaJ0d5w0' name='google-site-verification'>
+<meta content='#3681E4' property='msapplication-TileColor'>
+<meta content='/favicon-144.png' property='msapplication-TileImage'>
+<meta content='{&quot;userId&quot;:11061062,&quot;experimentIds&quot;:[&quot;alexandria_show_bundle_errors&quot;,&quot;search_updates&quot;,&quot;alexandria_subscriptions_pagination&quot;,&quot;organization_learning_plans&quot;,&quot;content_provider_admin&quot;,&quot;used_in&quot;,&quot;ai_skills&quot;,&quot;teams&quot;,&quot;chat_off_for_signed_out_users&quot;,&quot;course_upgrade&quot;,&quot;canonical_domain_redirect&quot;,&quot;show_annual_purchase_now&quot;,&quot;program_announcements&quot;,&quot;oauth_risc_shutoff&quot;,&quot;program_learning_assignment&quot;,&quot;community_forum&quot;,&quot;organization_announcements&quot;]}' name='help-api-product-data'>
+<meta content='{&quot;groupIds&quot;:[&quot;non_suadmins&quot;,&quot;students&quot;,&quot;non_organization&quot;,&quot;non_program&quot;]}' name='help-api-custom-data'>
+<meta content='In this first hands-on lab you will access the Google Cloud console and use these basic Google Cloud features: Projects, Resources, IAM Users, Roles, Permissions, and APIs.' name='description'>
+<meta content='Qwiklabs' name='author'>
+<meta content='A Tour of Google Cloud Hands-on Labs | Google Cloud Skills Boost' property='og:title'>
+<meta content='website' property='og:type'>
+<meta content='/favicon-144.png' property='og:image'>
+<meta content='Qwiklabs' property='og:site_name'>
+<meta content='In this first hands-on lab you will access the Google Cloud console and use these basic Google Cloud features: Projects, Resources, IAM Users, Roles, Permissions, and APIs.' property='og:description'>
+<meta content='/qwiklabs_logo_900x887.png' property='og:logo' size='900x887'>
+<meta content='/qwiklabs_logo_994x187.png' property='og:logo' size='994x187'>
+
+
+<meta property="og:url" content="https://www.cloudskillsboost.google/focuses/2794?parent=catalog" /><link href="https://www.cloudskillsboost.google/focuses/2794?parent=catalog" rel="canonical" />
+<link color='#3681E4' href='/favicon-svg.svg' rel='mask-icon'>
+<link href='/favicon-180.png' rel='apple-touch-icon-precomposed'>
+<link href='https://cdn.qwiklabs.com/X46FrQX4iLxHW5MxL8jICvgZM0evMEKscCeQO%2BazGdo%3D' rel='shortcut icon' type='image/x-icon'>
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oswald:400|Roboto+Mono:400,700|Roboto:300,400,500,700|Google+Sans:300,400,500,700|Google+Sans+Display:400|Material+Icons|Google+Material+Icons|Google+Sans+Text:400,500,700" media="screen" />
+
+<link rel="stylesheet" href="https://cdn.qwiklabs.com/assets/application-25d5deef9355ee0f1acc843b933637ba8d8bc971.css" media="all" />
+<link rel="stylesheet" href="https://www.gstatic.com/glue/cookienotificationbar/cookienotificationbar.min.css" media="screen" />
+
+
+<style>
+  :root {
+    --primary-text-on-surface-color: #1a73e8;
+    --primary-text-on-surface-color-dark: #1568d6;
+    --primary-text-on-surface-color-darker: #135ec1;
+    --primary-text-on-surface-color-darkest: #1154ac;
+    --primary-surface-color: #1a73e8;
+    --primary-surface-color-rgb: 26,115,232;
+    --primary-surface-color-light: #d1e3fa;
+    --primary-surface-color-lightest: #e8f1fd;
+    --text-on-primary-color: #ffffff;
+    --accent-text-on-surface-color: #f29900;
+    --accent-surface-color: #f9ab00;
+    --accent-surface-color-rgb: 249,171,0;
+    --accent-surface-color-light: #ffefcc;
+    --text-on-accent-color: #202124;
+  }
+</style>
+
+
+
+</head>
+<body class='lab-show l-full no-nav application-new focuses focuses-show lab-show l-full no-nav '>
+<div class='header-container light-theme'>
+<div class='header'>
+<ql-toolbar jumpEnabled>
+<div class='header__title' slot='title'>
+<ql-icon-button label="Back" href="https://www.cloudskillsboost.google/paths/20" id="4c36748946954e5e" tip="Back">arrow_back</ql-icon-button>
+<h1 class='ql-title-medium'>A Tour of Google Cloud Hands-on Labs</h1>
+</div>
+<div class='header__actions' slot='action'>
+<ql-icon-button icon='share' id='share_1281' label='Share on social media' tip='Share'></ql-icon-button>
+<ql-menu for='share_1281'>
+<ql-menu-item data-analytics-action='Shared to LinkedIn Feed.' data-analytics-category='Lab' data-analytics-label='A Tour of Google Cloud Hands-on Labs' href='https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fwww.cloudskillsboost.google%2Fcatalog_lab%2F1281%3Futm_medium%3Dsocial%26utm_source%3Dlinkedin%26utm_campaign%3Dql-social-share' icon='post_linkedin' label='Share on LinkedIn Feed' role='link' target='_blank'>
+<span class='label'>Share on LinkedIn Feed</span>
+</ql-menu-item>
+
+<ql-menu-item data-analytics-action='Shared to Twitter.' data-analytics-category='Lab' data-analytics-label='A Tour of Google Cloud Hands-on Labs' href='https://twitter.com/intent/tweet?text=Excited%20to%20share%20what%20I%E2%80%99m%20learning%20on%20%23GoogleCloudSkillsBoost&amp;url=https%3A%2F%2Fwww.cloudskillsboost.google%2Fcatalog_lab%2F1281%3Futm_medium%3Dsocial%26utm_source%3Dtwitter%26utm_campaign%3Dql-social-share&amp;hashtags=' icon='post_twitter' label='Twitter' role='link' target='_blank'>
+<span class='label'>Twitter</span>
+</ql-menu-item>
+
+<ql-menu-item data-analytics-action='Shared to Facebook.' data-analytics-category='Lab' data-analytics-label='A Tour of Google Cloud Hands-on Labs' href='https://facebook.com/sharer.php?display=popup&amp;u=https%3A%2F%2Fwww.cloudskillsboost.google%2Fcatalog_lab%2F1281%3Futm_medium%3Dsocial%26utm_source%3Dfacebook%26utm_campaign%3Dql-social-share' icon='post_facebook' label='Facebook' role='link' target='_blank'>
+<span class='label'>Facebook</span>
+</ql-menu-item>
+
+<ql-copyable-input label='Share Link' value='https://www.cloudskillsboost.google/catalog_lab/1281'></ql-copyable-input>
+</ql-menu>
+
+<ql-toggle-button class='icon-button js-favorite-button favorite-button' data-id='2794' data-name='A Tour of Google Cloud Hands-on Labs' data-type='CatalogItem' href='/favorite.json?item_id=2794&amp;item_type=CatalogItem' id='CatalogItem-2794-favorite-button' label='Add to favorites' tip='Add to favorites'>
+favorite_border
+</ql-toggle-button>
+
+
+
+<ql-icon-button id='control-panel-target' style='display: none;'>
+dashboard
+</ql-icon-button>
+<ql-menu for='control-panel-target' id='control-panel-menu'></ql-menu>
+<ql-icon-button class='mobile-hide' icon='help_outline' id='help-menu-button' label='Open help menu' tip='Help'></ql-icon-button>
+<ql-menu for='help-menu-button' id='help-menu'>
+<ql-menu-item data-analytics-action='opened_help' data-analytics-label='lab' label='Help Center' onclick='hallofmirrors.helpService.startHelp({&quot;productData&quot;:{&quot;userId&quot;:11061062},&quot;context&quot;:&quot;lab&quot;})'></ql-menu-item>
+<ql-menu-item href='mailto:support@qwiklabs.com' label='Email support'></ql-menu-item>
+<ql-menu-item label='Chat support' onClick='ql.chat.open()'></ql-menu-item>
+</ql-menu>
+
+<ql-icon-button class='mobile-hide' icon='language' id='language' label='Select your language preference' tip='Language'></ql-icon-button>
+<ql-menu for='language'>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='ar' href='/focuses/2794?locale=ar&amp;parent=catalog&amp;path=20' label='العربية‬‎' lang='ar'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='de' href='/focuses/2794?locale=de&amp;parent=catalog&amp;path=20' label='Deutsch' lang='de'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='en' href='/focuses/2794?locale=en&amp;parent=catalog&amp;path=20' label='English' lang='en'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='es' href='/focuses/2794?locale=es&amp;parent=catalog&amp;path=20' label='español (Latinoamérica)' lang='es'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='fr' href='/focuses/2794?locale=fr&amp;parent=catalog&amp;path=20' label='français' lang='fr'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='fr_CA' href='/focuses/2794?locale=fr_CA&amp;parent=catalog&amp;path=20' label='français (Canada)' lang='fr-CA'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='he' href='/focuses/2794?locale=he&amp;parent=catalog&amp;path=20' label='עברית' lang='he'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='id' href='/focuses/2794?locale=id&amp;parent=catalog&amp;path=20' label='bahasa Indonesia' lang='id'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='it' href='/focuses/2794?locale=it&amp;parent=catalog&amp;path=20' label='italiano' lang='it'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='ja' href='/focuses/2794?locale=ja&amp;parent=catalog&amp;path=20' label='日本語' lang='ja'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='ko' href='/focuses/2794?locale=ko&amp;parent=catalog&amp;path=20' label='한국어' lang='ko'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='pl' href='/focuses/2794?locale=pl&amp;parent=catalog&amp;path=20' label='polski' lang='pl'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='pt_BR' href='/focuses/2794?locale=pt_BR&amp;parent=catalog&amp;path=20' label='português (Brasil)' lang='pt-BR'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='pt_PT' href='/focuses/2794?locale=pt_PT&amp;parent=catalog&amp;path=20' label='português (Portugal)' lang='pt-PT'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='ru' href='/focuses/2794?locale=ru&amp;parent=catalog&amp;path=20' label='русский' lang='ru'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='tr' href='/focuses/2794?locale=tr&amp;parent=catalog&amp;path=20' label='Türkçe' lang='tr'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='uk' href='/focuses/2794?locale=uk&amp;parent=catalog&amp;path=20' label='українська' lang='uk'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='zh' href='/focuses/2794?locale=zh&amp;parent=catalog&amp;path=20' label='简体中文' lang='zh'></ql-menu-item>
+<ql-menu-item data-analytics-action='changed_locale' data-analytics-label='zh_TW' href='/focuses/2794?locale=zh_TW&amp;parent=catalog&amp;path=20' label='繁體中文' lang='zh-TW'></ql-menu-item>
+</ql-menu>
+
+<ql-user-points leaderboardHref='/profile/leaderboard' leagueImageSrc='https://cdn.qwiklabs.com/assets/leagues/bronze_icon-e39312c8973c998da7bde8ed32e96ee1c8813eee.png'></ql-user-points>
+
+<ql-icon-button id='my_account' label='My account' tip='My account'>
+<ql-avatar></ql-avatar>
+</ql-icon-button>
+<ql-menu for='my_account' id='my_account_menu'>
+<div class='my-account-menu'>
+<ql-avatar class='l-mtl l-mbl' size='120'></ql-avatar>
+<div class='my-account-menu__user-info l-mbl'>
+<h4 class='ql-title-medium'>Ausaf Khan</h4>
+<p class='ql-body-medium text--light'>ausaf.khan@rakuten.com</p>
+<p class='ql-body-medium text--light'>
+</p>
+<a class="text--green ql-title-small" href="/my_account/payments"><ql-chip positive>
+0 Credits
+</ql-chip>
+</a></div>
+<div class='buttons l-mbl'>
+<a class="button button--hairline l-mrm" id="profile" href="/public_profiles/1d61c1a3-8a07-4495-8abe-b57e519718e6">Public Profile</a>
+<a class="button button--hairline" id="settings" href="/my_account/profile">Settings</a>
+</div>
+<hr>
+<ql-button data-analytics-action='clicked_sign_out' href='/users/sign_out' method='delete'>
+Sign Out
+</ql-button>
+<div class='privacy l-mtl'>
+<a target="_blank" class="ql-label-medium text--light" href="/privacy_policy">Privacy</a>
+<span class='ql-label-medium text--light l-mls l-mrs'>&middot;</span>
+<a class="ql-label-medium text--light" href="/terms_of_service">Terms</a>
+</div>
+</div>
+</ql-menu>
+
+</div>
+</ql-toolbar>
+
+</div>
+</div>
+
+<nav class='nav-panel js-nav-panel'>
+<div class='nav-panel__logo'>
+<div class="custom-logo"><img alt="Google Cloud Skills Boost" height="24" aria-label="Google Cloud Skills Boost" src="https://cdn.qwiklabs.com/PGyhmgS3zZncIEGywnx5UXsKwepRRFQ9BhAg%2FWHNrlQ%3D" /></div>
+</div>
+<nav class='ql-sidenav'>
+<ql-sidenav-item href='/' icon='home' label='Dashboard'></ql-sidenav-item>
+
+<ql-sidenav-item href='/paths' icon='playlist_add_check' label='Paths'></ql-sidenav-item>
+
+<ql-sidenav-item active href='/catalog' icon='school' label='Explore'></ql-sidenav-item>
+
+<ql-sidenav-item href='/profile' icon='event_note' label='Profile'></ql-sidenav-item>
+
+<ql-sidenav-item href='/subscriptions' icon='subscriptions' label='Subscriptions'></ql-sidenav-item>
+
+</nav>
+
+</nav>
+<div class='nav-panel__overlay js-nav-toggle'></div>
+
+<main class='js-main' id='jump-content'>
+<div class='l-main-wrapper' id='main-wrapper'>
+
+
+
+
+<div class='lab-assessment__tab js-open-lab-assessment-panel'>
+<button class='js-lab-assessment-total-score'>
+—/100
+</button>
+</div>
+<div aria-labelledby='lab-assessment-checkpoint' class='lab-assessment__panel js-lab-assessment-panel' role='dialog'>
+<div class='lab-assessment__panel__header'>
+<h4 id='lab-assessment-checkpoint'>Checkpoints</h4>
+<ql-icon-button class='js-close-lab-assessment-panel' icon='arrow_forward' label='Close dialog'></ql-icon-button>
+</div>
+<div class='lab-assessment__step'>
+<p class='lab-assessment__step__title' id='lab-assessment-step-title'>
+Enable the Dialogflow API
+</p>
+<div class='lab-assessment__step__action'>
+<ql-button class='js-show-run-step-button' description='Enable the Dialogflow API' step_no='1'>
+Check my progress
+</ql-button>
+<p class='lab-assessment__step__score'>
+<span class='js-assessment-step-score-1'>
+</span>
+/ 100
+</p>
+</div>
+</div>
+
+</div>
+<ql-drawer-container class='js-lab-state' data-analytics-payload='{&quot;label&quot;:&quot;A Tour of Google Cloud Hands-on Labs&quot;,&quot;lab_name&quot;:&quot;A Tour of Google Cloud Hands-on Labs&quot;,&quot;classroom_name&quot;:null,&quot;deployment&quot;:&quot;google-run&quot;}' data-credits='0.0' data-focus-id='2794' data-lab-billing-limit='0.0' data-lab-duration='2700' data-learning-plan-id='20' data-parent='catalog' data-recaptcha-enabled id='lab-container'>
+<ql-drawer id='terminal-drawer' slot='drawer'>
+<iframe allow='clipboard-read' class='terminal' id='embedded-resource'></iframe>
+</ql-drawer>
+<ql-drawer-content class='js-lab-wrapper' id='lab-content' slot='drawer-content'>
+<ql-drawer-container id='lab-content-container'>
+<ql-drawer id='control-panel-drawer' open slot='drawer' width='320'>
+<ql-lab-control-panel class='ql-lab-control-panel__max-height control-panel js-lab-control-panel' connectionFiles='[]' labControlButton='{&quot;disabled&quot;:false,&quot;pending&quot;:false,&quot;running&quot;:false}' labDetails='[]' labTimer='{&quot;ticking&quot;:false,&quot;secondsRemaining&quot;:2700}' studentResources='[]'>
+<script src="https://www.recaptcha.net/recaptcha/api.js?render=6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr"   ></script>
+        <script>
+          // Define function so that we can call it again later if we need to reset it
+          // This executes reCAPTCHA and then calls our callback.
+          function executeRecaptchaForStartLab() {
+            grecaptcha.ready(function() {
+              grecaptcha.execute('6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr', {action: 'start_lab'}).then(function(token) {
+                setInputWithRecaptchaResponseTokenForStartLab('g-recaptcha-response-data-start-lab', token)
+              });
+            });
+          };
+          // Invoke immediately
+          executeRecaptchaForStartLab()
+
+          // Async variant so you can await this function from another async function (no need for
+          // an explicit callback function then!)
+          // Returns a Promise that resolves with the response token.
+          async function executeRecaptchaForStartLabAsync() {
+            return new Promise((resolve, reject) => {
+             grecaptcha.ready(async function() {
+                resolve(await grecaptcha.execute('6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr', {action: 'start_lab'}))
+              });
+            })
+          };
+
+                  var setInputWithRecaptchaResponseTokenForStartLab = function(id, token) {
+          var element = document.getElementById(id);
+          if (element !== null) element.value = token;
+        }
+
+        </script>
+<input type="hidden" name="g-recaptcha-response-data[start_lab]" id="g-recaptcha-response-data-start-lab" data-sitekey="6LeVI8IUAAAAAJNdox5eTkYrw9SbvhZ1TFyv3iHr" class="g-recaptcha g-recaptcha-response "/>
+
+<div aria-live='polite' class='hidden' id='recaptcha-v2-start-lab' slot='recaptcha'>
+<script src="https://www.recaptcha.net/recaptcha/api.js" async defer ></script>
+<div data-sitekey="6LeOI8IUAAAAAPkHlMAE9NReCD_1WD81iYlBlCnV" data-callback="recaptchaComplete" data-expired-callback="expireV2Token" class="g-recaptcha "></div>
+          <noscript>
+            <div>
+              <div style="width: 302px; height: 422px; position: relative;">
+                <div style="width: 302px; height: 422px; position: absolute;">
+                  <iframe
+                    src="https://www.recaptcha.net/recaptcha/api/fallback?k=6LeOI8IUAAAAAPkHlMAE9NReCD_1WD81iYlBlCnV"
+                    name="ReCAPTCHA"
+                    style="width: 302px; height: 422px; border-style: none; border: 0; overflow: hidden;">
+                  </iframe>
+                </div>
+              </div>
+              <div style="width: 300px; height: 60px; border-style: none;
+                bottom: 12px; left: 25px; margin: 0px; padding: 0px; right: 25px;
+                background: #f9f9f9; border: 1px solid #c1c1c1; border-radius: 3px;">
+                <textarea id="g-recaptcha-response" name="g-recaptcha-response"
+                  class="g-recaptcha-response"
+                  style="width: 250px; height: 40px; border: 1px solid #c1c1c1;
+                  margin: 10px 25px; padding: 0px; resize: none;">
+                </textarea>
+              </div>
+            </div>
+          </noscript>
+
+</div>
+</ql-lab-control-panel>
+</ql-drawer>
+<ql-drawer-content id='lab-instructions' slot='drawer-content'>
+<div class='lab-content-container'>
+<div class='alert alert--fake js-alert'>
+<p class='alert__message js-alert-message' role='alert'></p>
+<ql-icon-button class='alert__close js-alert-close' icon='clear'></ql-icon-button>
+<iframe class='l-ie-iframe-fix' tabindex='-1'></iframe>
+</div>
+<div class='lab-content__renderable-instructions js-lab-content'>
+<div class='lab-preamble'>
+<h1 class='ql-display-large lab-preamble__title'>
+A Tour of Google Cloud Hands-on Labs
+</h1>
+<div class='lab-preamble__details ql-title-medium'>
+<span>
+<ql-icon icon='schedule'></ql-icon>
+45 minutes
+</span>
+<span>
+<ql-icon>universal_currency_alt</ql-icon>
+No cost
+</span>
+</div>
+<div class='lab__rating'>
+<a aria-label="Lab Reviews" href="/focuses/2794/reviews?parent=catalog"><div class='rateit' data-rateit-readonly='true' data-rateit-value='4.7492'></div>
+
+</a><ql-button aria-label='Rate Lab' id='rate-lab-btn' label='Rate Lab' text></ql-button>
+</div>
+</div>
+<div class='lab-outline-mobile' id='outline_mobile'>
+<div class='header'>
+<div class='ql-label-small'>Lab instructions and tasks</div>
+<ql-toggle-button expandable for='outline_mobile' offIcon='expand_less' onIcon='expand_more'></ql-toggle-button>
+</div>
+<ul class='lab-content__outline'>
+<li><a href="#step1">GSP282</a></li><li><a href="#step2">Overview</a></li><li><a href="#step3">Lab fundamentals</a></li><li><a href="#step4">Task 1. Accessing the Cloud Console</a></li><li><a href="#step5">Task 2. Projects in the Cloud console</a></li><li><a href="#step6">Task 3. Roles and permissions</a></li><li><a href="#step7">Task 4. APIs and services</a></li><li><a href="#step8">Task 5. Ending your lab</a></li><li><a href="#step9">Congratulations!</a></li>
+</ul>
+</div>
+
+<div class='markdown-lab-instructions js-markdown-instructions' id='markdown-lab-instructions'>
+
+<h2 id="step1">GSP282</h2>
+<p><img alt="Google Cloud self-paced labs logo" src="https://cdn.qwiklabs.com/GMOHykaqmlTHiqEeQXTySaMXYPHeIvaqa2qHEzw6Occ%3D"></p>
+
+<h2 id="step2">Overview</h2>
+<p><a href="https://cloud.google.com/" target="_blank">Google Cloud</a> is a suite of cloud services hosted on Google's infrastructure. From computing and storage to data analytics, machine learning, and networking, Google Cloud offers a wide variety of services and APIs that can be integrated with any cloud-computing application or project, from personal to enterprise-grade.</p>
+<p><a href="https://www.cloudskillsboost.google/" target="_blank">Google Cloud Skills Boost</a> is where you can access Google Cloud’s entire catalog of labs and courses. You can discover learning paths, build in-demand cloud skills, track your activity progress, and validate your knowledge with badges. Qwiklabs is the technology platform the labs and courses sit on. You may see the  Qwiklabs name in your Google Cloud learning adventure.</p>
+<p>In this introductory-level lab, you take your first steps with Google Cloud by getting hands-on practice with the <a href="https://cloud.google.com/cloud-console/" target="_blank">Cloud Console</a>—an in-browser UI that lets you access and manage Google Cloud services. You will identify key features of Google Cloud and also learn about the details of the lab environment.</p>
+<p>If you are new to cloud computing or looking for an overview of Google Cloud and the Qwiklabs platform, you are in the right place. Read on to learn about the specifics of this lab and areas that you will get hands-on practice with.</p>
+<h3>What you'll learn</h3>
+<p>In this lab, you will learn about the following:</p>
+<ul>
+<li>The lab platform, and how to identify key features of a lab environment</li>
+<li>How to access the Cloud console with specific credentials</li>
+<li>Google Cloud projects, and identify common misconceptions about them</li>
+<li>How to use the Google Cloud Navigation menu to identify types of Google Cloud services</li>
+<li>Basic roles, and use the Cloud IAM service to inspect actions available to specific users</li>
+<li>The API library, and examine its chief features</li>
+</ul>
+<h3>Prerequisites</h3>
+<p>This is an <em>introductory-level</em> lab and the first lab you should take if you're unfamiliar with Google Cloud. If you are already experienced with Cloud console, consider taking one of the following labs:</p>
+<ul>
+<li><a href="https://google.qwiklabs.com/catalog_lab/320" target="_blank">Getting Started with Cloud Shell and gcloud</a></li>
+<li><a href="https://google.qwiklabs.com/catalog_lab/1427" target="_blank">Creating a Virtual Machine</a></li>
+</ul>
+<p>If you decide to take one, be sure to <strong>end this lab now</strong>.</p>
+<p>If you have a personal or corporate Google Cloud account or project, sign out of that account. If you stay logged in to your personal/corporate account and run the lab in the same browser, your credentials could get confused, resulting in getting logged out of the lab accidentally.</p>
+<p>If you are using a Pixelbook, run your lab an Incognito window.</p>
+<h2 id="step3">Lab fundamentals</h2>
+<h3>Features and components</h3>
+<p>Regardless of topic or expertise level, all labs share a common interface. The lab that you're taking should look similar to this:</p>
+<p><img alt="Google Cloud Skills Boost lab" src="https://cdn.qwiklabs.com/Gx5QWak6EsvW0PQURmiMyf10sLtl2AT%2BUSrD04WuCzY%3D" title="Lab Front Image"></p>
+<ql-infobox><b>Note: </b>You are not taking the "Creating a Virtual Machine" lab shown in the image; it is used as an example to highlight common features across labs.
+</ql-infobox>
+<p>Read the following lab component definitions, and then locate them in the interface.</p>
+<h4>Start Lab (button)</h4>
+<p>Clicking this button creates a temporary Google Cloud environment, with all the necessary services and credentials enabled, so you can get hands-on practice with the lab's material. This also starts a countdown timer.</p>
+<h4>Credit</h4>
+<p>The price of a lab. 1 Credit is <em>usually</em> equivalent to 1 US dollar (discounts are available when you purchase credits in bulk). Some introductory-level labs (like this one) are free. The more specialized labs cost more because they involve heavier computing tasks and demand more Google Cloud resources.</p>
+<h4>Time</h4>
+<p>Specifies the amount of time you have to complete a lab. When you click the Start Lab button, the timer will count down until it reaches 00:00:00. When it does, your temporary Google Cloud environment and resources are deleted. Ample time is given to complete a lab, but make sure you don't work on something else while a lab is running: you risk losing all of your hard work!</p>
+<h4>Score</h4>
+<p>Many labs include a score. This feature is called "activity tracking" and ensures that you complete specified steps in a lab. To pass a lab with activity tracking, you need to complete all the steps <em>in order</em>. Only then will you receive completion credit.</p>
+<h3>Paying for a lab</h3>
+<p>Some labs are free, but others require you to pay. For those, when you click the Start Lab button, a dialog gives you the choice to launch the lab with an access code or credits. If you don't have either, click <strong>Buy credits</strong> and follow the instructions.</p>
+<h3>Reading and following instructions</h3>
+<p>This browser tab contains the lab instructions. When you start a lab, the Google Cloud console user interface opens in a new browser tab. You will need to switch between the two browser tabs to read the instructions and then perform the tasks. Depending on your physical computer setup, you could also move the two tabs to separate monitors.</p>
+<h3>Test your understanding</h3>
+<p>Answer the following multiple choice questions to reinforce your understanding of the concepts we've covered so far.</p>
+<p><ql-multiple-choice-probe answerindex="0" optiontitles='[
+"Start lab (button)",
+"Credit",
+"Time",
+"Score"
+]' shuffle="" stem="This builds a temporary environment in Google Cloud.">
+</ql-multiple-choice-probe></p>
+<p><ql-multiple-choice-probe answerindex="0" optiontitles='[
+"True",
+"False"
+]' shuffle="" stem="When the timer reaches 00:00:00, you will lose access to your temporary Google Cloud environment.">
+</ql-multiple-choice-probe></p>
+<p><ql-multiple-choice-probe answerindex="0" optiontitles='[
+"True",
+"False"
+]' shuffle="" stem="Some labs have tracking, which scores your completion of hands-on lab activities.">
+</ql-multiple-choice-probe></p>
+<p><ql-multiple-choice-probe answerindex="0" optiontitles='[
+"True",
+"False"
+]' shuffle="" stem="In order to receive completion credit for a lab that has tracking, you must complete the required hands-on lab activities.">
+</ql-multiple-choice-probe></p>
+<h2 id="step4">Task 1. Accessing the Cloud Console</h2>
+<h3>Start the lab</h3>
+<ul>
+<li>Now that you understand the key features and components of a lab, click <strong>Start Lab</strong>.</li>
+</ul>
+<p>It may take a moment for the Google Cloud environment and credentials to spin up. When the timer starts counting down and the Start Lab button changes to a red End Lab button, everything is in place and you're ready to sign in to the Cloud console.</p>
+<ql-infobox>
+<b>Note:</b> Do not click the <strong>End Lab</strong> button until you have completed all the tasks in the lab. When you click the button, your temporary credentials are invalidated and you won't be able to access the work you've done throughout the lab. <p></p>You must click this button when you finish; if you do not, you won't be able to take another lab. (The Qwiklabs platform has protections in place to prevent concurrent enrollment.)  </ql-infobox>
+<h3>Lab details pane</h3>
+<p>Now that your lab instance is up and running, look at the <strong>Lab details</strong> pane on the left. It contains an <strong>Open Google Console</strong> button, credentials (username and password), and a <strong>Project ID</strong> field.</p>
+<p><img alt="Lab details pane" src="https://cdn.qwiklabs.com/%2FtHp4GI5VSDyTtdqi3qDFtevuY014F88%2BFow%2FadnRgE%3D" title="Lab details pane"></p>
+<ql-infobox>
+<b>Note:</b> Your credentials will resemble but not match the image; every lab instance generates new temporary credentials.
+</ql-infobox>
+<p>Now examine each of these components.</p>
+<h4>Open Google Cloud console</h4>
+<p>This button opens the <a href="https://cloud.google.com/cloud-console/" target="_blank">Cloud console</a>: the web console and central development hub for Google Cloud. You will do the majority of your work in Google Cloud from this interface.</p>
+<h4>Project ID</h4>
+<p>A <a href="https://cloud.google.com/docs/overview/#projects" target="_blank">Google Cloud project</a> is an organizing entity for your Google Cloud resources. It often contains resources and services; for example, it may hold a pool of virtual machines, a set of databases, and a network that connects them together. Projects also contain settings and permissions, which specify security rules and who has access to what resources.</p>
+<p>A <em>Project ID</em> is a unique identifier that is used to link Google Cloud resources and APIs to your specific project. Project IDs are unique across Google Cloud: there can be only one <strong>qwiklabs-gcp-xxx....</strong>, which makes it globally identifiable.</p>
+<h4>Username and Password</h4>
+<p>These credentials represent an identity in the Cloud Identity and Access Management (Cloud IAM) service. This identity has access permissions (a role or roles) that allow you to work with Google Cloud resources in the project you've been allocated. These credentials are <em>temporary</em> and will only work for the access time of the lab. When the timer reaches 00:00:00, you will no longer have access to your Google Cloud project with those credentials.</p>
+<h3>Sign in to Google Cloud</h3>
+<p>Now that you have a better understanding of the <strong>Lab details</strong> pane, use its contents to sign in to the Cloud console.</p>
+<ol>
+<li>Click <strong>Open Google console</strong>.</li>
+</ol>
+<p>This opens the Google Cloud sign-in page in a new browser tab.</p>
+<p>If you've ever signed in to a Google application like Gmail, this page should look familiar.</p>
+<p><strong><em>Tip</em></strong> Open the tabs in separate windows, side-by-side.</p>
+<ql-infobox>
+<strong>Note: </strong>If the <strong>Choose an account</strong> page opens, click <strong>Use Another Account</strong>.
+
+  <img alt="Choose an account window highlighting the Use another account option" src="https://cdn.qwiklabs.com/eQ6xPnPn13GjiJP3RWlHWwiMjhooHxTNvzfg1AL2WPw%3D">
+</ql-infobox>
+<ol start="2">
+<li>The <strong>Username</strong> from the Lab Details pane automatically fills in. Click <strong>Next</strong>.</li>
+</ol>
+<p><em>Wait! Make sure to use the googlexxxxxx_student@qwiklabs.net email to sign in, NOT your personal or company email address!</em></p>
+<ql-infobox>
+<strong>Note: </strong>The username that resembles googlexxxxxx_student@qwiklabs.net is a Google account that was created for your use as a  student. It has a specific domain name, which is "qwiklabs.net," and has been assigned IAM roles that allow you to access the Google Cloud Project that you have been provisioned.
+  </ql-infobox>
+<ol start="3">
+<li>
+<p>Copy the <strong>Password</strong> from the Lab Connection pane, paste it in the <strong>Password</strong> field, and click <strong>Next</strong>.</p>
+</li>
+<li>
+<p>Click <strong>I understand</strong> to indicate your acknowledgement of Google's terms of service and privacy policy.</p>
+</li>
+<li>
+<p>On the <strong>Welcome</strong> page, check <strong>Terms of Service</strong>  to agree to Google Cloud's terms of service, and click <strong>Agree and continue</strong>.</p>
+</li>
+</ol>
+<p>You've successfully accessed the Cloud Console with your student credentials! Your page should now look like this:</p>
+<p><img alt="Google Cloud console" src="https://cdn.qwiklabs.com/vPsOw690IZhUlPPxZk3asDaXQBRVZRiyr%2B6nBXCqEf4%3D" title="Google Cloud console logged in"></p>
+<h3>Test your understanding</h3>
+<p>Answer the following multiple choice questions to reinforce your understanding of the concepts covered so far.</p>
+<p><ql-multiple-choice-probe answerindex="3" optiontitles='[
+"Open Google console",
+"Password",
+"Project ID",
+"System admin"
+]' shuffle="" stem="What field is NOT found in the left pane?">
+</ql-multiple-choice-probe></p>
+<p><ql-multiple-choice-probe answerindex="0" optiontitles='[
+"True",
+"False"
+]' shuffle="" stem="The username in the left panel, which resembles googlexxxxxx_student@qwiklabs.net, is a Cloud IAM identity.">
+</ql-multiple-choice-probe></p>
+<p>Now that you have signed in to the Cloud console and understand the basics of your credentials, it's time to learn a little bit more about Google Cloud projects.</p>
+<h2 id="step5">Task 2. Projects in the Cloud console</h2>
+<p>Google Cloud projects were explained in the section about the contents of the Lab Connection pane. Here's the definition once again:</p>
+<p>A <a href="https://cloud.google.com/docs/overview/#projects" target="_blank">Google Cloud project</a> is an organizing entity for your Google Cloud resources. It often contains resources and services; for example, it may hold a pool of virtual machines, a set of databases, and a network that connects them together. Projects also contain settings and permissions, which specify security rules and who has access to what resources.</p>
+<p>The upper-left corner of the central pane contains a card labeled <em>Project info</em> that looks like this:</p>
+<p><img alt="Google Cloud Project info tile" src="https://cdn.qwiklabs.com/kaHKc2t7OyP7YUPOj4Eqw0nuUXQvt0iUypsuaeqkzKw%3D" title="Google Cloud Project info tile"></p>
+<p>Your project has a <em>name</em>, <em>number</em>, and <em>ID</em>. These identifiers are frequently used when interacting with Google Cloud services. You are working with one project to get experience with a specific service or feature of Google Cloud.</p>
+<h3>View all projects</h3>
+<p>You actually have access to more than one Google Cloud project. In fact, in some labs you may be given more than one project in order to complete the assigned tasks.</p>
+<ol>
+<li>In the Google Cloud console title bar, next to your project name, click the drop-down menu.</li>
+<li>In the <strong>Select a project</strong> dialog, click <strong>All</strong>.
+The resulting list of projects includes a "Qwiklabs Resources" project.</li>
+</ol>
+<ql-infobox><strong>Note: </strong><strong>Do not switch over to the Qwiklabs Resources project at this point!</strong> However, you may need to use it in other labs.</ql-infobox>
+<p>It's not uncommon for large enterprises or experienced users of Google Cloud to have dozens to thousands of Google Cloud projects. Organizations use Google Cloud in different ways, so projects are a good method for organizing cloud computing services (by team or product, for example.)</p>
+<p>The "Qwiklabs Resources" project contains files, datasets, and machine images for certain labs and can be accessed from every Google Cloud lab environment. It's important to note that "Qwiklabs Resources" is shared (read only) with all student users, which means that you cannot delete or modify it.</p>
+<p>The Google Cloud project that you are working with is <em>temporary</em>, which means that the project and everything it contains will be deleted when the lab ends. Whenever you start a new lab, you will be given access to one or more new Google Cloud projects, and there (not "Qwiklabs Resources") is where you will run all of the lab steps.</p>
+<ol start="3">
+<li>Click <strong>Cancel</strong> to return to the Cloud overview page.</li>
+</ol>
+<h3>Test your understanding</h3>
+<p>Answer the following multiple choice questions to reinforce your understanding of the concepts covered so far.</p>
+<p><ql-multiple-choice-probe answerindex="0" optiontitles='[
+"Google Cloud Project",
+"Cloud Storage bucket",
+"Username",
+"Password"
+]' shuffle="" stem="An organizing entity for anything you build with Google Cloud.">
+</ql-multiple-choice-probe></p>
+<p><ql-multiple-choice-probe answerindex="0" optiontitles='[
+"True",
+"False"
+]' shuffle="" stem="Qwiklabs Resources is shared (read only) with all Qwiklabs users, which means that you cannot delete or modify it.">
+</ql-multiple-choice-probe></p>
+<p><ql-multiple-choice-probe answerindex="1" optiontitles='[
+"True",
+"False"
+]' shuffle="" stem="Qwiklabs Resources is the project where you run all of your lab steps.">
+</ql-multiple-choice-probe></p>
+<h3>Navigation menu and services</h3>
+<p>The Google Cloud console title bar also contains the <strong>Navigation menu</strong> icon, which appears as three lines:</p>
+<p><img alt="Navigation menu icon" src="https://cdn.qwiklabs.com/jNaEVX1xXeOOasukmY%2B9mcktmn9gjkwgNAJEkBlIYbI%3D" title="Navigation menu icon"></p>
+<p>Clicking this icon opens (or hides) the <em>Navigation menu</em> that provides quick access to Google Cloud's core services.</p>
+<ol>
+<li>If the menu isn't open, click <strong>Navigation menu</strong>.</li>
+<li>Click <strong>More Products</strong>, then scroll through the categories of tools and services.</li>
+</ol>
+<p><a href="https://cloud.google.com/docs/overview/cloud-platform-services#top_of_page" target="_blank">This link</a> takes you to documentation that covers each of these categories in more detail.</p>
+<h2 id="step6">Task 3. Roles and permissions</h2>
+<p>In addition to cloud computing services, Google Cloud also contains a collection of permissions and roles that define who has access to what resources. You can use the <a href="https://cloud.google.com/iam/" target="_blank">Cloud Identity and Access Management (Cloud IAM)</a> service to inspect and modify these roles and permissions.</p>
+<h3>View your roles and permissions</h3>
+<ol>
+<li>
+<p>On the <strong>Navigation menu</strong> (<img alt="Navigation menu" src="https://cdn.qwiklabs.com/tkgw1TDgj4Q%2BYKQUW4jUFd0O5OEKlUMBRYbhlCrF0WY%3D" title="Navigation menu">), click <strong>IAM &amp; Admin &gt; IAM</strong>. This opens a page that contains a list of users and specifies permissions and roles granted to specific accounts.</p>
+</li>
+<li>
+<p>Find the student "@qwiklabs" username you signed in with:</p>
+</li>
+</ol>
+<p><img alt="Account list with the your Username highlighted" src="https://cdn.qwiklabs.com/VpeV7knPXEDf39QBcfOJuAZpDB7zPgjzMSFmmCy2avk%3D" title="Find username"></p>
+<p>The <em>Principal</em> column displays <code>googlexxxxxx_student@qwiklabs.net</code> (Your matches the username you signed in with).
+The <em>Name</em> column displays <code>student XXXXXXXX</code>.
+The <em>Role</em> column displays <code>Editor</code>, which is one of three <em>basic roles</em> offered by Google Cloud.
+Basic roles set project-level permissions and, unless otherwise specified, control access and management to all Google Cloud services.</p>
+<p>The following table pulls definitions from the <a href="https://cloud.google.com/iam/docs/understanding-roles/#primitive\_roles" target="_blank">roles documentation</a>, which gives a brief overview of viewer, editor, and owner role permissions:</p>
+<table>
+
+<tr>
+<th>Role Name</th>
+<th>Permissions</th>
+</tr>
+
+
+<tr>
+<td>roles/viewer</td>
+<td>Permissions for read-only actions that do not affect state, such as viewing (but not modifying) existing resources or data.</td>
+</tr>
+<tr>
+<td>roles/editor</td>
+<td>All viewer permissions, plus permissions for actions that modify state, such as changing existing resources.</td>
+</tr>
+<tr>
+<td>roles/owner</td>
+<td>All editor permissions and permissions for the following actions: manage roles and permissions for a project and all resources within the project; set up billing for a project.</td>
+</tr>
+
+</table>
+<p>As an editor, you can create, modify, and delete Google Cloud resources. However, you can't add or delete members from Google Cloud projects.</p>
+<h3>Test your understanding</h3>
+<p>Answer the following multiple choice questions to reinforce your understanding of the concepts covered so far.</p>
+<p><ql-multiple-choice-probe answerindex="0" optiontitles='[
+"Navigation menu",
+"Compute",
+"Cloud Operations",
+"Networking"
+]' shuffle="" stem="Offers quick access to the platform's services and also outlines its offerings.">
+</ql-multiple-choice-probe></p>
+<p><ql-multiple-choice-probe answerindex="0" optiontitles='[
+"True",
+"False"
+]' shuffle="" stem="Basic roles set project-level permissions and, unless otherwise specified, control access and management to all Google Cloud services.">
+</ql-multiple-choice-probe></p>
+<p><ql-multiple-choice-probe answerindex="1" optiontitles='[
+"Viewer role",
+"Editor role",
+"Google Cloud project"
+]' shuffle="" stem="Provides all viewer permissions, plus permissions for actions that modify state, such as changing existing resources.">
+</ql-multiple-choice-probe></p>
+<h2 id="step7">Task 4. APIs and services</h2>
+<p>Google Cloud APIs are a key part of Google Cloud. Like services, the 200+ APIs, in areas that range from business administration to machine learning, all easily integrate with Google Cloud projects and applications.</p>
+<p>APIs are <em>application programming interfaces</em> that you can call directly or via the client libraries. Cloud APIs use resource-oriented design principles as described in the <a href="https://cloud.google.com/apis/design/" target="_blank">API Design Guide</a>.</p>
+<p>When a lab provides a new Google Cloud project for a lab instance, it enables many APIs automatically so you can quickly start work on the lab's tasks. When you create your own Google Cloud projects outside of the lab environment, you will have to enable APIs yourself.</p>
+<p>Most Cloud APIs provide you with detailed information on your project’s usage of that API, including traffic levels, error rates, and even latencies, which helps you quickly triage problems with applications that use Google services.</p>
+<ol>
+<li>
+<p>On the <strong>Navigation menu</strong> (<img alt="Navigation menu" src="https://cdn.qwiklabs.com/tkgw1TDgj4Q%2BYKQUW4jUFd0O5OEKlUMBRYbhlCrF0WY%3D" title="Navigation menu">), click <strong>APIs &amp; Services &gt; Library</strong>.
+The left pane, under the header <strong>Category</strong>, displays the different categories available.</p>
+</li>
+<li>
+<p>In the API search bar, type <strong>Dialogflow</strong>, and then click <strong>Dialogflow API</strong>.
+The Dialogflow description page opens.</p>
+<p>The Dialogflow API allows you to build rich conversational applications (e.g., for Google Assistant) without having to understand the underlying machine learning and natural language schema.</p>
+</li>
+<li>
+<p>Click <strong>Enable</strong>.</p>
+</li>
+<li>
+<p>Click the back button in your browser to verify that the API is now enabled.</p>
+</li>
+</ol>
+<p><img alt="Dialogflow tile with API enabled highlighted" src="https://cdn.qwiklabs.com/eTgnbsNvLaqrex7qumvUuzQEc114GwncM%2FV8xL4j594%3D" title="API enabled Confirmation"></p>
+<ol start="5">
+<li>
+<p>Click <strong>Try this API</strong>.
+A new browser tab displays documentation for the Dialogflow API. Explore this information, and close the tab when you're finished.</p>
+</li>
+<li>
+<p>To return to the main page of the Cloud console, on the <strong>Navigation menu</strong>,  click <strong>Cloud overview</strong>.</p>
+</li>
+</ol>
+<ql-infobox><strong>Note: </strong>
+  You will now encounter a unique feature called Activity Tracking that assesses completion of a task. As you complete tasks and verify these with '<strong>Check my progress</strong>' tests, notice that your score increases in the box in the upper right corner. This scoring determines lab completion towards the accomplishment of badges and credentials.  Scoring also contributes to leaderboard position in lab games.
+
+  <p></p>In this case, Activity Tracking will verify if you completed enabling the Dialogflow API.
+  </ql-infobox>
+<p>Click <strong>Check my progress</strong> to verify the objective.
+<ql-activity-tracking step="1">
+Enable the Dialogflow API
+</ql-activity-tracking></p>
+<p>If you're interested in learning more about APIs, refer to the <a href="https://developers.google.com/apis-explorer/#p/" target="_blank">Google APIs Explorer Directory</a>. The lab, <a href="https://google.qwiklabs.com/catalog_lab/1241" target="_blank">APIs Explorer: Qwik Start</a>, also provides hands-on experience with the tool, using a simple example.including traffic levels, error rates, and even latencies, which helps you quickly triage problems with applications that use Google services.</p>
+<h3>View available APIs</h3>
+<h3>Test your understanding</h3>
+<p>Answer the following multiple choice question to reinforce your understanding of the concepts covered so far.</p>
+<p><ql-multiple-choice-probe answerindex="1" optiontitles='[
+"True",
+"False"
+]' shuffle="" stem="When you start a lab, you need to enable APIs in your project to start working with Google Cloud.">
+</ql-multiple-choice-probe></p>
+<h2 id="step8">Task 5. Ending your lab</h2>
+<ol>
+<li>
+<p>When you're finished with the lab, click <strong>End Lab</strong> and then click <strong>Submit</strong> to confirm it.</p>
+</li>
+<li>
+<p>Please rate each lab you take.
+<img alt="Five-star rating" src="https://cdn.qwiklabs.com/LZUBJPyOLYREWQFfmfqWDA%2Ftgxsb4hvRrg32UipHjD0%3D" title="Five-star rating"></p>
+</li>
+</ol>
+<p>Give the lab five stars if you were satisfied, something less if you weren't.
+Leave comments about your experiences in the <strong>Comment</strong> window; Google always appreciates thoughtful feedback.</p>
+<p>Ending a lab removes your access to the Google Cloud project and the work you've done in it.</p>
+<p>If you return to the Cloud console, you will see that you've been signed out automatically. You can close that tab now.</p>
+<h2 id="step9">Congratulations!</h2>
+<p>In just 30 minutes, you developed a solid understanding of the Cloud console and the platform's key features. You learned about projects, roles, and the types of services the platform offers. You also practiced with Cloud IAM and the API libraries. You are now ready to take more labs.</p>
+<h3>Take your next lab</h3>
+<p>Continue learning with <a href="https://google.qwiklabs.com/catalog_lab/1427" target="_blank">Creating a Virtual Machine</a>, or check out these other Google Cloud Skills Boost labs:</p>
+<ul>
+<li><a href="https://google.qwiklabs.com/catalog_lab/759" target="_blank">Compute Engine: Qwik Start - Windows</a></li>
+<li><a href="https://google.qwiklabs.com/catalog_lab/320" target="_blank">Getting Started with Cloud Shell and gcloud</a></li>
+</ul>
+<h3>Google Cloud training and certification</h3>
+<p>...helps you make the most of Google Cloud technologies. <a href="https://cloud.google.com/training/courses" target="_blank">Our classes</a> include technical skills and best practices to help you get up to speed quickly and continue your learning journey. We offer fundamental to advanced level training, with on-demand, live, and virtual options to suit your busy schedule. <a href="https://cloud.google.com/certification/" target="_blank">Certifications</a> help you validate and prove your skill and expertise in Google Cloud technologies.</p>
+
+<p><strong>Manual Last Updated January 25, 2023</strong></p>
+<p><strong>Lab Last Tested August 10, 2023</strong></p>
+<p>Copyright 2024 Google LLC All rights reserved. Google and the Google logo are trademarks of Google LLC. All other company and product names may be trademarks of the respective companies with which they are associated.</p>
+
+
+
+
+
+</div>
+</div>
+
+
+<div class='lab-content__end-lab-button js-end-lab-button-container hidden'>
+<ql-lab-control-button class='js-end-lab-button' running></ql-lab-control-button>
+</div>
+<!-- / TODO: Move recommendations into the end lab modal -->
+<div class='lab-content__renderable-instructions'>
+<div class='lab-content__recommendation'>
+<h4 class='ql-headline-medium'>
+Ready for more?
+<p>Here&#39;s another lab we think you&#39;ll like.</p>
+<div class='content-card-grid'>
+<ql-activity-card aria-label='Cloud SQL for MySQL: Qwik Start' name='Cloud SQL for MySQL: Qwik Start' path='/focuses/936?parent=catalog' progress='0.0' type='lab'></ql-activity-card>
+
+</div>
+</h4>
+</div>
+
+</div>
+</div>
+<div aria-label='Lab Table of Contents' class='outline-container' id='js-outline-container' role='navigation'>
+<ul class='lab-content__outline js-lab-content-outline'>
+<div class='ql-label-small'>Lab instructions and tasks</div>
+<li><a href="#step1">GSP282</a></li><li><a href="#step2">Overview</a></li><li><a href="#step3">Lab fundamentals</a></li><li><a href="#step4">Task 1. Accessing the Cloud Console</a></li><li><a href="#step5">Task 2. Projects in the Cloud console</a></li><li><a href="#step6">Task 3. Roles and permissions</a></li><li><a href="#step7">Task 4. APIs and services</a></li><li><a href="#step8">Task 5. Ending your lab</a></li><li><a href="#step9">Congratulations!</a></li>
+</ul>
+</div>
+</ql-drawer-content>
+</ql-drawer-container>
+</ql-drawer-content>
+</ql-drawer-container>
+<ql-snackbar id='alert-snackbar'></ql-snackbar>
+
+
+
+</div>
+</main>
+
+<span class='hidden' id='flash-sibling-before'></span>
+<ql-snackbar></ql-snackbar>
+
+<script data-glue-cookie-notification-bar-category='2B' src='https://www.gstatic.com/glue/cookienotificationbar/cookienotificationbar.min.js'></script>
+
+
+
+<ql-dialog headline='Score Details' icon='task_alt' id='jupyter-feedback-modal'>
+<iframe id='jupyter-feedback-frame' srcdoc='' title='Jupyter Feedback'></iframe>
+</ql-dialog>
+
+<div class='modal fade' id='lab-details-modal'>
+<div class='modal-container'>
+<div class='modal-content mdl-shadow--24dp'>
+<div class='modal-body'>
+<p class='l-mbm'>
+In this first hands-on lab you will access the Google Cloud console and use these basic Google Cloud features: Projects, Resources, IAM Users, Roles, Permissions, and APIs.
+</p>
+<p>
+This lab is included in these quests:
+<a href="/quests/23">Google Cloud Essentials</a>, <a href="/quests/120">Create and Manage Cloud Resources</a>, <a href="/quests/90">Understanding Your Google Cloud Costs</a>.
+If you complete this lab you&#39;ll receive credit for it when you enroll in one of these quests.
+</p>
+<p class='small-label l-mbs'>
+<strong>
+Duration:
+</strong>
+0m setup
+&middot;
+45m access
+&middot;
+30m completion
+</p>
+<p class='small-label l-mbs'>
+<strong>AWS Region:</strong>
+[] <strong></strong>
+</p>
+<p class='small-label l-mbs'>
+<span><strong>Levels: </strong>introductory</span>
+</p>
+<p class='small-label'>
+<strong>
+Permalink:
+</strong>
+<a href="https://www.cloudskillsboost.google/catalog_lab/1281">https://www.cloudskillsboost.google/catalog_lab/1281</a>
+</p>
+</div>
+<div class='modal-actions'>
+<a class='button button--text' data-dismiss='modal'>
+Got It
+</a>
+</div>
+
+
+</div>
+</div>
+<iframe class='l-ie-iframe-fix' tabindex='-1' title='modal'></iframe>
+</div>
+<ql-dialog headline='How satisfied are you with this lab?&lt;span aria-hidden=&quot;true&quot;&gt;*&lt;/span&gt;' id='lab-review-dialog'>
+<form class="simple_form js-lab-review-form" id="edit_lab_review_28980367" action="/lab_reviews/28980367" accept-charset="UTF-8" data-remote="true" method="post"><input name="utf8" type="hidden" value="&#x2713;" autocomplete="off" /><input type="hidden" name="_method" value="patch" autocomplete="off" /><div aria-labelledby='lab-review-dialog' aria-required='true' aria-valuemax='5' aria-valuemin='0' aria-valuenow='5' class='rateit js-rateit' data-rateit-max='5' data-rateit-min='0' data-rateit-resetable='false' data-rateit-step='1' data-rateit-value='5' id='lab-review-rateit' role='slider' tabindex='0'></div>
+<div class='l-mtm'>
+
+<div class="control-group hidden lab_review_user_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" value="11061062" name="lab_review[user_id]" id="lab_review_user_id" /></div></div>
+<div class="control-group hidden lab_review_classroom_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" name="lab_review[classroom_id]" id="lab_review_classroom_id" /></div></div>
+<div class="control-group hidden lab_review_lab_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" value="1281" name="lab_review[lab_id]" id="lab_review_lab_id" /></div></div>
+<div class="control-group hidden lab_review_focus_id"><div class="controls"><input class="hidden" autocomplete="off" type="hidden" name="lab_review[focus_id]" id="lab_review_focus_id" /></div></div>
+<div class="control-group hidden lab_review_rating"><div class="controls"><input class="hidden js-rating-input" autocomplete="off" type="hidden" value="2" name="lab_review[rating]" id="lab_review_rating" /></div></div>
+<div class="control-group text optional lab_review_comment"><label class="text optional control-label" for="lab_review_comment">Additional Comments</label><div class="controls"><textarea class="text optional" name="lab_review[comment]" id="lab_review_comment">
+</textarea></div></div>
+</div>
+</form><ql-button disabled id='submit' label='Submit' slot='action' text></ql-button>
+</ql-dialog>
+
+<ql-dialog headline='Are you sure? You may not be able to restart the lab, and you&#39;ll need to start from the beginning if you do.' icon='error_outline' id='js-lab-are-you-sure-dialog'>
+<ql-button id='js-are-you-sure-button' label='End Lab' slot='action' text></ql-button>
+</ql-dialog>
+
+
+<script>
+  $(function() {
+    ql.initMaterialInputs();
+    initChosen();
+    initSearch();
+    initTabs();
+    ql.list.init();
+    ql.favoriting.init();
+    ql.header.myAccount.init();
+    initTooltips();
+    ql.autocomplete.init();
+    ql.modals.init();
+    ql.toggleButtons.init();
+    ql.analytics.init();
+    Turbo.session.drive = false;
+    ql.favoriting.init();
+  ql.chat.init();
+  ql.jumpContent.init();
+  ql.labControlPanel.addRecaptchaErrorHandler();
+  initLabContent();
+  ql.labOutline.links.init();
+  initLabReviewModal();
+  initLabReviewTranslations( {"star_amount_1":"1 of 5 stars","star_amount_2":"2 of 5 stars","star_amount_3":"3 of 5 stars","star_amount_4":"4 of 5 stars","star_amount_5":"5 of 5 stars"} )
+  ql.labAssessment.init();
+  ql.labData.init();
+  initLabTranslations( {"are_you_sure":"Are you sure? You may not be able to restart the lab, and you'll need to start from the beginning if you do.","in_progress":"*In Progress*","ending":"*Ending*","starting":"*Starting, please wait*","end_concurrent_labs":"Sorry, you can only run one lab at a time. To start this lab, please confirm that you want all of your existing labs to end.","copied":"Copied","no_resource":"Error retrieving resource.","no_support":"No Support","mac_press":"Press ⌘-C to copy","thanks_review":"Thanks for reviewing this lab.","windows_press":"Press Ctrl-C to copy","days":"days"} );
+  ql.labRun.init();
+  ql.navPanel.init();
+  ql.navigation.init();
+  
+  });
+</script>
+
+</body>
+</html>
+

@@ -1,0 +1,396 @@
+A. Gcloud Environment Variables:
+	1. GOOGLE_CLOUD_PROJECT
+	2. DEVSHELL_PROJECT_ID
+
+B. Gcloud Basic Commands:
+	gcloud compute regions list
+	gcloud auth list
+	gcloud config list project
+	gcloud config set compute/region <Region>
+
+	export my_zone=us-central1-a
+	export my_cluster=standard-cluster-1
+
+
+To display php homepage: sudo sh -c 'echo "<?php phpinfo(); ?>" > apache2/htdocs/phpinfo.php'
+
+
+C. Firewall Rules;
+
+* Notice that there are 4 Ingress firewall rules for the default network:
+    * default-allow-icmp
+    * default-allow-rdp
+    * default-allow-ssh
+    * default-allow-internal
+
+ The deny-all-ingress and allow-all-egress rules are also displayed, but you cannot check or uncheck them because they are implied. 
+
+
+
+D. Google Cloud Bucket:
+
+$ gsutil mb gs://<BUCKET_NAME>
+$ gsutil cp [MY_FILE] gs://[BUCKET_NAME]
+$ gsutil mb -l $LOCATION gs://$DEVSHELL_PROJECT_ID
+$ gsutil cp gs://cloud-training/gcpfci/my-excellent-blog.png my-excellent-blog.png
+$ gsutil cp my-excellent-blog.png gs://$DEVSHELL_PROJECT_ID/my-excellent-blog.png
+$ gsutil acl ch -u allUsers:R gs://$DEVSHELL_PROJECT_ID/my-excellent-blog.png
+
+
+
+E. Google Cloud Google Kubernetes Engine (GKE)
+
+$ gcloud container clusters create webfrontend --zone $MY_ZONE --num-nodes 2
+$ gcloud container clusters get-credentials $my_cluster --zone $my_zone
+$ git clone https://github.com/GoogleCloudPlatform/training-data-analyst
+
+$ kubectl apply -f ./nginx-deployment.yaml
+$ kubectl get deployments
+$ kubectl scale --replicas=3 deployment nginx-deployment
+$ kubectl set image deployment.v1.apps/nginx-deployment nginx=nginx:1.9.1 --record
+$ kubectl rollout status deployment.v1.apps/nginx-deployment
+$ kubectl rollout history deployment nginx-deployment
+$ kubectl rollout undo deployments nginx-deployment
+$ kubectl rollout history deployment nginx-deployment
+$ kubectl rollout history deployment/nginx-deployment --revision=3
+$ kubectl apply -f ./service-nginx.yaml
+$ kubectl get service nginx
+$ kubectl apply -f nginx-canary.yaml
+$ kubectl scale --replicas=0 deployment nginx-deployment
+$ kubectl get deployments
+
+
+$ kubectl version
+$ kubectl create deployment nginx --image=nginx:1.17.10
+$ kubectl get pods
+$ kubectl expose deployment nginx --port 80 --type LoadBalancer
+$ kubectl get services
+$ kubectl scale deployment nginx --replicas 3
+$ kubectl get pods
+$ kubectl get services
+
+
+
+
+F. Google Cloud Cloud RUN:
+
+Enable the Cloud Run API :
+$ gcloud services enable run.googleapis.com
+
+Set the compute region:
+$ gcloud config set compute/region us-central1
+
+Build your container image using Cloud Build:
+$ gcloud builds submit --tag gcr.io/$GOOGLE_CLOUD_PROJECT/helloworld
+
+List all the container images associated with your current project:
+
+$ gcloud container images list
+$ docker run -d -p 8080:8080 gcr.io/$GOOGLE_CLOUD_PROJECT/helloworld
+$ gcloud run deploy --image gcr.io/$GOOGLE_CLOUD_PROJECT/helloworld --allow-unauthenticated --region=$LOCATION
+$ gcloud container images delete gcr.io/$GOOGLE_CLOUD_PROJECT/helloworld
+$ gcloud run services delete helloworld --region=us-central1
+
+
+
+G. Google Cloud App Engine
+
+$ gcloud app deploy app.yaml
+$ gcloud app browse
+
+
+
+H. Google Cloud Pub/Sub
+
+	a. As stated earlier, Google Cloud Pub/Sub is an asynchronous global messaging service. There are three terms in Pub/Sub that appear often: topics, publishing, and subscribing.
+	b. A topic is a shared string that allows applications to connect with one another through a common thread.
+	c. Publishers push (or publish) a message to a Cloud Pub/Sub topic.
+	d. Subscribers make a "subscription" to a topic where they will either pull messages from the subscription or configure webhooks for push subscriptions. Every subscriber must acknowledge each message within a configurable window of time.
+		To sum it up, a producer publishes messages to a topic and a consumer creates a subscription to a topic to receive messages from it.
+
+	Pub/Sub topics
+$ gcloud pubsub topics create myTopic
+$ gcloud pubsub topics create Test1
+$ gcloud pubsub topics create Test2
+$ gcloud pubsub topics list
+$ gcloud pubsub topics delete Test1
+$ gcloud pubsub topics delete Test2
+$ gcloud pubsub topics list
+	
+	Pub/Sub subscriptions
+$ gcloud  pubsub subscriptions create --topic myTopic mySubscription
+	Add another two subscriptions to myTopic. Run the following commands to make Test1 and Test2 subscriptions:
+$ gcloud  pubsub subscriptions create --topic myTopic Test1
+$ gcloud  pubsub subscriptions create --topic myTopic Test2
+$ gcloud pubsub topics list-subscriptions myTopic
+$ gcloud pubsub subscriptions delete Test1
+	
+	Pub/Sub publishing and pulling a single message
+$ gcloud pubsub topics publish myTopic --message "Hello"
+$ gcloud pubsub topics publish myTopic --message "Publisher's name is <YOUR NAME>"
+$ gcloud pubsub topics publish myTopic --message "Publisher likes to eat <FOOD>"
+$ gcloud pubsub topics publish myTopic --message "Publisher thinks Pub/Sub is awesome"
+	Use the following command to pull the messages you just published from the Pub/Sub topic:
+$ gcloud pubsub subscriptions pull mySubscription --auto-ack
+
+	Pub/Sub pulling all messages from subscriptions
+$ gcloud pubsub topics publish myTopic --message "Publisher is starting to get the hang of Pub/Sub"
+$ gcloud pubsub topics publish myTopic --message "Publisher wonders if all messages will be pulled"
+$ gcloud pubsub topics publish myTopic --message "Publisher will have to test to find out"
+$ gcloud pubsub subscriptions pull mySubscription --auto-ack --limit=3
+
+
+
+I. Service Accounts and Roles: Fundamentals
+
+$ gcloud auth list
+$ gcloud config list project
+$ gcloud config set compute/region Region
+$ gcloud iam service-accounts create my-sa-123 --display-name "my service account"
+$ gcloud projects add-iam-policy-binding $DEVSHELL_PROJECT_ID \
+    --member serviceAccount:my-sa-123@$DEVSHELL_PROJECT_ID.iam.gserviceaccount.com --role roles/editor
+
+    There are three types of roles in Cloud IAM:
+
+	a. Primitive roles, which include the Owner, Editor, and Viewer roles that existed prior to the introduction of Cloud IAM.
+	b. Predefined roles, which provide granular access for a specific service and are managed by Google Cloud.
+	c. Custom roles, which provide granular access according to a user-specified list of permissions.
+
+J. Multiple VPC Networks
+
+$ gcloud compute networks create privatenet --subnet-mode=custom
+$ gcloud compute networks subnets create privatesubnet-us --network=privatenet --region=us-east1 --range=172.16.0.0/24
+$ gcloud compute networks subnets create privatesubnet-eu --network=privatenet --region=europe-west1 --range=172.20.0.0/20
+$ gcloud compute networks list
+$ gcloud compute networks subnets list --sort-by=NETWORK
+	
+	In Cloud Shell, run the following command to create the privatenet-allow-icmp-ssh-rdp firewall rule:
+$ gcloud compute firewall-rules create privatenet-allow-icmp-ssh-rdp --direction=INGRESS --priority=1000 --network=privatenet --action=ALLOW --rules=icmp,tcp:22,tcp:3389 --source-ranges=0.0.0.0/0
+$ gcloud compute firewall-rules list --sort-by=NETWORK
+
+$ gcloud compute instances create privatenet-us-vm --zone="" --machine-type=e2-micro --subnet=privatesubnet-us
+$ gcloud compute instances list --sort-by=ZONE
+$ 
+
+
+
+K. Cloud Monitoring
+	Cloud Monitoring provides visibility into the performance, uptime, and overall health of cloud-powered applications. Cloud Monitoring collects metrics, events, and metadata from Google Cloud, Amazon Web Services, hosted uptime probes, application instrumentation, and a variety of common application components including Cassandra, Nginx, Apache Web Server, Elasticsearch, and many others. Cloud Monitoring ingests that data and generates insights via dashboards, charts, and alerts. Cloud Monitoring alerting helps you collaborate by integrating with Slack, PagerDuty, HipChat, Campfire, and more.
+
+	Install the Monitoring and Logging agents
+	Agents collect data and then send or stream info to Cloud Monitoring in the Cloud Console.
+	The Cloud Monitoring agent is a collected-based daemon that gathers system and application metrics from virtual machine instances and sends them to Monitoring. By default, the Monitoring agent collects disk, CPU, network, and process metrics. Configuring the Monitoring agent allows third-party applications to get the full list of agent metrics. On the Google Cloud, Operations website, see Cloud Monitoring Documentation for more information.
+
+	Run the Monitoring agent install script command in the SSH terminal of your VM instance to install the Cloud Monitoring agent:
+$ curl -sSO https://dl.google.com/cloudagents/add-google-cloud-ops-agent-repo.sh
+$ sudo bash add-google-cloud-ops-agent-repo.sh --also-install
+$ sudo systemctl status google-cloud-ops-agent"*"
+
+
+
+
+Terraform with GCP:
+
+1. 	terraform --version
+mkdir tfinfra
+cd tfinfra
+
+2. Name the new file provider.tf, and then open it. Copy the code into provider.tf and save it.
+provider "google" {}
+
+3. To initialize Terraform, run the following command in the folder 'tfinfra':
+terraform init
+
+4. Name the new file mynetwork.tf,Copy the following base code into mynetwork.tf:
+	# Create the mynetwork network
+	resource [RESOURCE_TYPE] "mynetwork" {
+	name = [RESOURCE_NAME]
+	# RESOURCE properties go here
+	}
+ 
+replace [RESOURCE_TYPE] with "google_compute_network" and replace [RESOURCE_NAME] with "mynetwork" [with the quotes]. 
+Add the following property to mynetwork.tf: 
+	auto_create_subnetworks = "true"
+7. $ cat mynetwork.tf
+# Create the mynetwork network
+resource "google_compute_network" "mynetwork" {
+name = "mynetwork"
+# RESOURCE properties go here
+auto_create_subnetworks = "true"
+}
+
+
+6. Define a firewall rule to allow HTTP, SSH, RDP, and ICMP traffic on mynetwork.
+
+# Add a firewall rule to allow HTTP, SSH, RDP and ICMP traffic on mynetwork
+resource [RESOURCE_TYPE] "mynetwork-allow-http-ssh-rdp-icmp" {
+name = [RESOURCE_NAME]
+# RESOURCE properties go here
+}
+
+replace [RESOURCE_TYPE] with "google_compute_firewall" (with the quotes) and replace [RESOURCE_NAME] with "mynetwork-allow-http-ssh-rdp-icmp" (with the quotes).
+Add the following property to mynetwork.tf:
+network = google_compute_network.mynetwork.self_link
+
+Add the following properties to mynetwork.tf:
+allow {
+    protocol = "tcp"
+    ports    = ["22", "80", "3389"]
+    }
+allow {
+    protocol = "icmp"
+    }
+source_ranges = ["0.0.0.0/0"]
+
+7. cat mynetwork.tf
+
+# Create the mynetwork network
+resource "google_compute_network" "mynetwork" {
+name = "mynetwork"
+# RESOURCE properties go here
+auto_create_subnetworks = "true"
+}
+# Add a firewall rule to allow HTTP, SSH, RDP and ICMP traffic on mynetwork
+resource "google_compute_firewall" "mynetwork-allow-http-ssh-rdp-icmp" {
+name = "mynetwork-allow-http-ssh-rdp-icmp"
+# RESOURCE properties go here
+network = google_compute_network.mynetwork.self_link
+allow {
+    protocol = "tcp"
+    ports    = ["22", "80", "3389"]
+    }
+allow {
+    protocol = "icmp"
+    }
+source_ranges = ["0.0.0.0/0"]
+}
+
+
+8. Name the new file main.tf
+
+resource [RESOURCE_TYPE] "vm_instance" {
+  name = [RESOURCE_NAME]
+  # RESOURCE properties go here
+}
+
+replace [RESOURCE_TYPE] with "google_compute_instance" (with the quotes) and replace [RESOURCE_NAME] with "${var.instance_name}" (with the quotes).
+Add the following properties to main.tf:
+  zone         = "${var.instance_zone}"
+  machine_type = "${var.instance_type}"
+
+
+  boot_disk {
+    initialize_params {
+      image = "debian-cloud/debian-11"
+      }
+  }
+
+
+  network_interface {
+    network = "${var.instance_network}"
+    access_config {
+      # Allocate a one-to-one NAT IP to the instance
+    }
+  }
+
+ 9. cat main.tf
+
+ resource "google_compute_instance" "vm_instance" {
+  name         = "${var.instance_name}"
+  zone         = "${var.instance_zone}"
+  machine_type = "${var.instance_type}"
+  boot_disk {
+    initialize_params {
+      image = "debian-cloud/debian-11"
+      }
+  }
+  network_interface {
+    network = "${var.instance_network}"
+    access_config {
+      # Allocate a one-to-one NAT IP to the instance
+    }
+  }
+}
+
+10. Name the new file variables.tf,
+variable "instance_name" {}
+variable "instance_zone" {}
+variable "instance_type" {
+  default = "e2-micro"
+  }
+variable "instance_network" {}
+
+11. 17. Add the following VM instances to mynetwork.tf:
+# Create the mynet-us-vm instance
+module "mynet-us-vm" {
+  source           = "./instance"
+  instance_name    = "mynet-us-vm"
+  instance_zone    = "Zone"
+  instance_network = google_compute_network.mynetwork.self_link
+}
+# Create the mynet-eu-vm" instance
+module "mynet-eu-vm" {
+  source           = "./instance"
+  instance_name    = "mynet-eu-vm"
+  instance_zone    = "europe-west1-d"
+  instance_network = google_compute_network.mynetwork.self_link
+}
+
+12. cat mynetwork.tf
+
+# Create the mynetwork network
+resource "google_compute_network" "mynetwork" {
+name = "mynetwork"
+# RESOURCE properties go here
+auto_create_subnetworks = "true"
+}
+# Add a firewall rule to allow HTTP, SSH, RDP and ICMP traffic on mynetwork
+resource "google_compute_firewall" "mynetwork-allow-http-ssh-rdp-icmp" {
+name = "mynetwork-allow-http-ssh-rdp-icmp"
+# RESOURCE properties go here
+network = google_compute_network.mynetwork.self_link
+allow {
+    protocol = "tcp"
+    ports    = ["22", "80", "3389"]
+    }
+allow {
+    protocol = "icmp"
+    }
+source_ranges = ["0.0.0.0/0"]
+}
+# Create the mynet-us-vm instance
+module "mynet-us-vm" {
+  source           = "./instance"
+  instance_name    = "mynet-us-vm"
+  instance_zone    = "Zone"
+  instance_network = google_compute_network.mynetwork.self_link
+}
+# Create the mynet-eu-vm" instance
+module "mynet-eu-vm" {
+  source           = "./instance"
+  instance_name    = "mynet-eu-vm"
+  instance_zone    = "europe-west1-d"
+  instance_network = google_compute_network.mynetwork.self_link
+}
+
+
+13. To rewrite the Terraform configuration files to a canonical format and style, run the following command:
+			terraform fmt
+
+14. To initialize Terraform, run the following command:
+			terraform init
+
+
+15. The output should look like this:
+Initializing modules...
+- mynet-eu-vm in instance
+- mynet-us-vm in instance
+...
+* provider.google: version = "~> 4.43.0"
+Terraform has been successfully initialized!
+
+16. To create an execution plan, run the following command:
+		terraform plan
+
+17. To apply the desired changes, run the following command:
+		terraform apply
