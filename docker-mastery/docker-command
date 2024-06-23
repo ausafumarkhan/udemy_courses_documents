@@ -1,0 +1,26 @@
+To check status of docker daemon and other docker services:
+	$ docker info
+
+To initialize docker swarm:
+	$ docker swarm init
+
+	OR
+
+	$ docker swarm init --advertise-addr 192.168.33.10 --listen-addr 192.168.33.10   # If there are multiple network interface, take IP of one interface and initilize the docker swarm
+
+	$ docker node ls 	# To check node list
+
+
+To create docker swarm token:
+	$ docker swarm join-token manager		# To add node as a manger
+
+	$ docker swarm join-token worker 		# To add node as a worker
+
+	Output will be like this: 
+		$ docker swarm join --token SWMTKN-1-2ifizwg4fy764og6qiq40inp4taluvbmdjs9enkmabidb8epwn-cofkptdagznmuv3hri2grkpdy 192.168.33.10:2377
+
+Note: a.  If there is any certification issue, Please refer the following link to resolve it. 
+	https://stackoverflow.com/questions/45502822/docker-swarm-error-response-from-daemon-error-while-validating-root-ca-certifi
+	  b. If there is port or firewall issue, execute the following commands
+	  sudo firewall-cmd --zone=public --add-port=2377/tcp --permanent
+	  sudo firewall-cmd --reload
