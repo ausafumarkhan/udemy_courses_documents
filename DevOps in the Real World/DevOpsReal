@@ -1,0 +1,977 @@
+To add box to local system for 'virtualBox':
+	$ vagrant box add 
+	jasonc/centos8 
+
+To initailize a Vagrant project:
+	$ vagrant init jasonc/centos8	# It creates vagrant file in the present working directory.
+	$ vagrant up 					# It will import the box into virtual Box and start it.
+
+To login or get the shell	
+	$ vagrant ssh
+	$ exit
+
+Extra helpful vagrant commands:
+	$ vagrant halt		# Stops VM
+	$ vagrant up		# Starts VM
+	$ vagrant suspend 	# Suspends VM
+	$ vagrant resume 	# Resumes VM
+	$ vagrant destroy	# Removes VM
+	$ vagrant status	# Shows status of VMs
+
+Vagrantfile
+
+	Vagrant.configure("2") do |config|
+		config.vm.box = "jasonc/centos8"
+		config.vm.hostname = "linuxserver"
+		config.vm.network "private_network", ip: "192.168.33.10"
+		config.vm.network "public_network"
+		config.vm.provider "virtualbox" do |vb|
+      		vb.memory = "16096"
+      		vb.cpus = 8
+    	end
+    	config.vm.provision "shell", path: "setup.sh"
+    	#config.vm.provision "shell", inline: <<-SHELL
+  		#   apt-get update
+  		#   apt-get install -y apache2
+  		# SHELL
+
+	end
+
+LAMP ------- Linux, Apache, MySql, PHP
+	To install software, we need root privileges are required to manage software and services. root is a superuser who can do anything. 
+	
+	swicthing user using su:
+		$ su [username]
+
+		$ su - [username]		# su – changes our path to the path of the target user, while su doesn’t.
+
+	Example:
+		$ test@server:~$ pwd 
+		  /home/test 
+		$ test@server:~$ su - 
+		  Password: 
+		$ root@server:~ pwd 
+		  /root 
+		$ root@server:~# logout 
+		$ test@server:~$ su 
+		  Password: 
+		$ root@server:/home/test# pwd 
+		  /home/test 
+
+	sudo - Super User do
+		- Executes a command as another user, typically the superuser.
+		- No need to know/share the root password.
+
+	Using sudo 
+		$ sudo -l 					# list available commands
+		$ sudo command  			# Run command as root
+		$ sudo -u root command 		# same as above
+		$ sudo -u apache command 	# Run command as apache 
+
+	Switching accounts with sudo
+		$ sudo -s 	# The first one sudo -s will simply start a shell as the root user and pwd will be /home/<user-name>.
+		$ sudo -i   # simulate an initial login of the root user and root shell initialization files will be read and executed, pwd will be /root.
+
+		$ sudo su 	# It is like sudo -s
+		$ sudo su - # It is like sudo -i
+
+	Changing the Sudo Configuration 
+		$ visudo 	# Edit /etc/sudoers file
+
+	Sudoers file format
+		user host=(users) [NOPASSWD:] commands
+		where,
+			user: can be a username, list of usernames (comma separated) or a Linux group. If you want the specification to apply to all members of a group, use the %[group_name]
+			host: The host can be a host name a comma separated list of host names or a wildcard pattern.
+			(users): The next part of the specification determines what user the commands can be executed as. This is enclosed in parentheses.
+			commands: Finally, you specify the command or commands the user is allowed to execute. Its important to note that you have to provide full paths.
+
+		ex:
+		jasonc linuxserver=(root) /usr/sbin/reboot
+
+		vagrant ALL=(ALL) NOPASSWD:ALL 	# This example uses the special wildcard keyword of all, which matches everything.
+
+	Package:
+		1. A collection of files. 2. Data/Metadata --> Package description, Version, Dependencies. 3. Superuser (root) privileges are required to install Packages.
+
+	Package Manager:
+		1. Install, Upgrades and Removes Packages. 2. Manages Dependencies. 3. Uses repositories. 4. Keeps track of what is installed.
+
+	Installing Software on RPM Distribution:
+		1. Use the dnf command 	--> CentOS 8 and later, RedHat 8 and later, Oracle linux 8 and later, Fedora 22 and later.
+		2. Use yum command for earlier Versions:
+			The yum command is a symlink to dnf (for now).
+
+	Package seach using dnf command:	
+		$ dnf search TERM1 TERM2
+	e.g:
+		$ dnf search apache
+		$ dnf search apache php mysql
+	
+	Package detail using dnf:
+		$ dnf info [Package1] [PackageN]	# Display Info
+	e.g:
+		$ dnf info httpd
+		$ dnf info httpd php
+	
+	Package installation using dnf:			# Package Installation
+		$ dnf intall [-y] PACKAGE1 PACKAGEN
+	e.g:
+		$ dnf install httpd
+		$ dnf install -y httpd php
+
+	Package uninstallation using dnf: 		# Package uninstallation
+		$ $ dnf remove [-y] PACKAGE1 PACKAGEN
+	e.g:
+		$ dnf remove httpd
+		$ dnf remove -y httpd php
+
+	EPEL: Extar Packages for Enterprise Linux
+		https://fedoraproject.org/wiki/EPEL if you need additional package, try EPEL
+		Example: 
+			a. Libararies and modules for various programming languages such as PHP, Perl, Python, and Ruby
+			b. System administartion tools - monitoring, metrics, reporting, etc.
+
+		Adding the EPEL repository:
+			$ dnf install epel-release 			# creates: /etc/yum.repos.d/epel.repo
+
+Project2- Managing Software - Skills Practice Walkthrough 
+			
+			$ vagrant resume 
+			$ vagrant ssh 
+			$ whoami
+			$ sudo -l
+			
+			$ dnf search apache
+			$ dnf search apache server 
+			$ dnf info httpd
+			$ sudo dnf install -y httpd
+			$ sudo systemctl status httpd
+			$ sudo systemctl start httpd
+			$ sudo systemctl enable httpd
+
+			$ dnf search mariadb
+			$ dnf info mariadb
+			$ dnf info mariadb-server
+			$ sudo -s
+
+Here, after sudo -s, we will see '#' instead of '$'
+
+			]# dnf install -y mariadb-server
+			]# systemctl status mariadb
+			]# systemctl start mariadb
+			]# systemctl enable mariadb
+			]# mysqlshow
+			]# dnf search htop
+			'No matches found.'
+			]# dnf install -y epel-release
+			]# dnf search htop
+			]# dnf install -y htop
+			]# dnf remove -y htop
+			]# exit
+
+			$ dnf search php
+			$ dnf search php mysql
+			$ sudo dnf install -y php php-mysqlnd
+
+	Apache HTTP server
+		$ dnf install -y httpd
+
+			"d" = deamon/demon - for servers/services
+
+		Apache Configuration files
+		http.conf
+		/etc/httpd/conf
+		/etc/httpd/conf/httpd.conf 		-- Specific location of the Configuration file.
+		/etc/httpd/conf.modules.d
+		/etc/httpd/conf.d
+		/etc/httpd/conf.d/*.conf 
+
+		The ".d" convention
+			- dir_name.d = configuration directory
+			- Allow for modular confg files
+
+		The DocumentRoot
+			DocumentRoot "path/to/files"
+			DocumentRoot "var/www/html"
+			http://abc.com/cat.jpg = /var/www/html/cat.jpg
+
+		DirectoryIndex
+			DirectoryIndex index.html index.php
+
+			http://abc.com/ = /var/www/html/index.html
+							OR
+			http://abc.com/ = /var/www/html/index.php
+
+		LogFiles
+			/var/log/httpd/access_log
+			/var/log/httpd/error_log
+
+		Starting httpd
+			$ systemctl start httpd.service
+			$ sudo systemctl start httpd.service
+			$ systemctl start httpd
+
+		Starting httpd at boot
+			$ systemctl enable httpd.service
+			$ systemctl enable httpd
+
+		Stopping httpd
+			$ systemctl stop httpd.service
+			$ sudo systemctl stop httpd.service
+			$ systemctl stop httpd
+
+		Not Starting httpd at boot
+			$ systemctl disable httpd.service
+			$ systemctl disable httpd
+
+		Restarting httpd
+			$ systemctl restart httpd.service
+			$ systemctl restart httpd
+
+		Checking the status
+			$ systemctl status httpd.service
+			$ systemctl status httpd
+
+		is it running?
+			$ systemctl is-active httpd.service
+			$ systemctl is-active httpd
+
+	Not just for httpd, but for other too.
+		The same process for many services
+			systemctl
+				start
+				enable
+				stop
+				disable
+				restart
+				status
+				is-active
+
+	PHP
+		- HTML was designed to be static
+		- From disk (storage device) to browser
+		- PHP is a server side scripting language
+		- PHP: Hypertext Preprocessor
+		- Can be embedded in HTML
+		- During installation, mod_php which is php module is also installed.
+		- Typically outputs HTML
+		- Allows for dynamic (changing) content.
+
+		Installing PHP
+			$ dnf install php
+			$ systemctl restart httpd.service
+
+		PHP configuration file
+			/etc/php.ini
+			/etc/php.d 		-- Addition configuration directory
+
+		Testing PHP
+			Contents of /var/www/html/phpinfo.php (dont copy the quotes):
+
+			"<?php
+			phpinfo();
+			?>"
+
+		Finding and Installing PHP module
+			$ dnf search php module
+			$ dnf install php-mysqlnd
+			$ dnf install -y epel-release
+			$ dnf install php-adodb
+
+	MySql and MariaDB
+		MariaDB
+			- Database/RDBMS
+			- Drop-in replacement for MySql
+			- MariaDB =~ MySql
+
+		Installing MariaDB
+			$ dnf install mariadb-server
+			$ systemctl start mariadb.service
+			$ systemctl enable mariadb.service
+			$ systemctl is-active mariadb.service
+
+		Securing the Default Installation
+			- security information stored in mysql db.
+			- No root password by default for local connections.
+			- Local anonymous user connections are allowed.
+			- A test database exists.
+
+			$ mysql_secure_installation
+
+		Typical workflow
+			- Create a database for an application 
+			- Create a database user
+			- Grant that user permissions to access the database
+
+		Creating a database
+			  mysqladmin create DATABASE_NAME
+			$ mysqladmin -u root -p create newdb
+			$ mysqladmin -u root -pROOTPW create newdb
+
+		Connecting with a client (Monitor)
+		 	  mysql -u root -p [DATABASE_NAME]
+		 	$ mysql -u newdbuser -pPASS newdb
+		 	$ mysql -u root -p mysql
+
+		Creating a user
+			Syntax:
+				GRANT [PRIVS] ON [DB] to [USER]@[HOST] identified by 'PASSWORD';
+				FLUSH PRIVILEGES;
+
+			Example:
+				GRANT ALL ON newdb.* to newdbuser@localhost identified by 'PASS';
+				FLUSH PRIVILEGES;
+
+		Displaying Databases and Tables
+			$ mysqlshow -u root -p DATABASE_NAME
+
+		MariaDB configuration file
+			/etc/my.cnf
+			/etc/my.cnf.d
+
+		MariaDB Log files
+			/var/log/mariadb/mariadb.log
+			/var/log/messages
+
+		MariaDB Data Storage 
+			/var/lib/mysql
+
+	Installing a LAMP Application – Walkthrough – Kanboard
+
+		Configure Vagrant: 
+			$ mkdir kanboard
+			$ cd kanboard
+			$ vagrant init jasonc/centos8
+
+			config.vm.hostname = "kanboard"
+			config.vm.network "private_network", ip: "10.23.45.25"
+
+			$ vagrant up
+		
+			$ vagrant ssh
+
+		Install Apache
+			$ sudo dnf install -y httpd
+
+		Install PHP
+			$ sudo dnf install -y php php-mysqlnd
+			
+			$ dnf search php gd
+			$ dnf info php-gd
+			$ sudo dnf install -y php-gd
+			
+			$ dnf search php mbstring
+			$ sudo dnf install -y php-mbstring
+			
+			$ dnf search php json
+			$ sudo dnf install -y php-json
+			
+			$ dnf search php xml
+			$ sudo dnf install -y php-xml
+
+		  OR we can install all php modules in a single line
+
+			$ sudo dnf install -y php php-mysqlnd php-gd php-mbstring php-json php-xml
+
+		  Start and Enable the Web Server
+		  	$ sudo systemctl start httpd
+			$ sudo systemctl enable httpd
+		
+		Install MariaDB
+			$ sudo dnf install -y mariadb-server
+			$ sudo systemctl start mariadb
+			$ sudo systemctl enable mariadb
+		  
+		  Secure MariaDB
+			$ sudo mysql_secure_installation
+
+		  Create a Database for the Application
+		  	$ mysqladmin -u root -p create kanboard
+
+		  Create a DB User for the Database
+			$ mysql -u root -p
+			> GRANT ALL on kanboard.* to kanboard@localhost identified by 'kanboard123';
+			> FLUSH PRIVILEGES;
+			> exit
+
+		  Download the Web Application
+
+			$ curl -LO http://mirror.linuxtrainingacademy.com/kanboard/kanboard-v1.2.15.zip
+
+			Internet download location: ​https://github.com/kanboard/kanboard/archive/v1.2.15.zip
+
+		  Extract the Web Application
+			$ unzip kanboard-v1.2.15.zip
+
+		  Move the Web Application into the DocumentRoot
+		  	$ sudo mv kanboard-1.2.15/* /var/www/html
+			$ ls -l /var/www/html
+
+		  We need to tell the web application how to connect to the database. Per the applications documentation we need to create a configuration file named ​config.php​. 
+		  To create the file, simply edit it.
+		  	$ sudo nano /var/www/html/config.php
+
+		  Paste below lines:
+			<?php
+			define('DB_DRIVER', 'mysql');
+			define('DB_USERNAME', 'kanboard');
+			define('DB_PASSWORD', 'kanboard123');
+			define('DB_HOSTNAME', 'localhost');
+			define('DB_NAME', 'kanboard');
+
+		  The Web App is Ready
+			Now you can start using the application. Open up a web browser on your local machine. Enter the IP address of the server (​http://10.23.45.25​) into the address bar and press enter. 
+			You can log in with the username of "admin" and the password of "admin".
+
+		  Database Troubleshooting Tips
+		  	Database Connectivity Issues
+
+		   If there is any authentication issue,
+		  	$ mysql -u root -p
+
+		  	> FLUSH PRIVILEGES;
+
+		  	OR
+
+		  	$ mysql -u root -p flush-privileges
+
+		  	$ sudo systemctl restart mariadb
+
+		   	$ mysql -u kanboard -pkanboard123 kanboard
+
+		  We can configure a user using GRANT statement, irrespective of old password but we have to login as root in sql server.
+		  	$ mysql -u root -p
+
+		  	> GRANT ALL on kanboard.* to kanboard@localhost identified by 'kanboard1234';
+		  	> FLUSH PRIVILEGES;
+
+		  	$ mysql -u kanboard -pkanboard1234 kanboard
+
+		 Although, application has to store this connection information somewhere is usually a configuration file. In our case /var/www/html/config.php
+		   We have to be insecure about content of config is updated and matched with update password.
+
+		   Summary:
+		   	- Check credentials: Username and password
+		   	- Fix the credentials in the application
+		   	- Fix the credentails in the database
+		   	- May require application restart
+
+ 
+Project3 – Installing a LAMP Application – Walkthrough – Hesk
+
+		Please refer project 3 documentation to get more details.
+
+Project4 - Sending Email from linux server
+
+	Forwarding Emails to an SMTP Relay --> SMTP stands for Simple Mail Transfer Protocol
+
+	Challenges:
+		- ISPs block access to common SMPT ports
+		- Home or work netork may prevent outgoing email
+		- We are using a local lab environment 
+		- We are not using real domain names
+	More Challenges:
+		- Transactional email services may require verified email addresses and/or domains
+		- Email server providers may refuse to deliver your emails
+		- Delivered emila may be end up in the spam folder
+
+	SMTP Relay Services:
+		- SendGrid 
+			https://www.sendgrid.comm
+		- ReachMail's' Easy-SMTP Service
+			https://reachmail.com/solutions/easy-smtp/
+		- Email Providers
+			Gmail, Outlook, Yahoos, GMX, etc.
+
+	Use less popular email provider like GMX. So, we will use GXM as Email service providera and create an account on GXM.
+
+		Login -> Click on Email -> Setting -> POP3 and IMAP -> Select Enable access to this account via pop3 and IMAP -> save
+			Click on "Detailed instruction on how to set up your email application..."
+
+			Here, we will get POP3 server data like below
+				Incoming (POP3)			Outgoing (SMTP)
+	server 	 	pop.gmx.com 			mail.gmx.com
+	Port  		995						587
+	Encrytion	SSL or encrytion 		STARTTLS, TLS or encrytion 
+
+	Troubleshooting:
+		- Check /var/log/maillog 
+		- Make sure the 'from' email address is valid 
+		- Make sure the 'to' email address is valid 
+		- Read all the message in the maillog
+		- Authorization / credential failure --> Check your username and passwd 
+		- Consult the SMTP relay provider's troubleshooting documentation.'
+		- Contact suport for the SMTP relay provider.
+
+
+		Please refer project 4 documentation to get more details.
+
+Project 5 – Monitoring and Alerting with Icinga
+
+	
+Icinga – Walkthrough – Part 1 – Server Configuration
+
+	Icinga Installation:
+		- Install the LAMP stack
+		- Configure a database for historical data and another one for the web front-end
+
+	Install Apache
+		$ sudo dnf install -y httpd
+
+	Install PHP
+		$ sudo dnf install -y php php-gd php-intl php-ldap php-opcache
+
+		Configure PHP
+			$ sudo cp /etc/php.ini /etc/php.ini.bak
+
+			$ sudo nano /etc/php.ini
+
+		In the "[Date]" section of the /etc/php.ini file, change the date.timezone as of your default timezone.
+
+			$ sudo systemctl restart httpd
+			
+	Install MariaDB
+		$ sudo dnf install -y mariadb-server
+		$ sudo systemctl enable --now mariadb   # This will start and enable mariadb at a same time
+		$ sudo mysql_secure_installation
+		
+		Create Databases for the Applications
+
+			$ mysqladmin -u root -p create icinga
+
+			$ mysqladmin -u root -p create icingaweb # This database will be used by the web front end to Icinga.
+
+		Create DB Users for the Databases
+			$ mysql -u root -p
+
+			GRANT ALL on icinga.* to icinga@localhost identified by "icinga123";
+
+			GRANT ALL on icingaweb.* to icingaweb@localhost identified by "icingaweb123";
+			FLUSH PRIVILEGES;
+			exit;
+
+		
+	Configure the Icinga Repository
+
+			$ sudo dnf install -y http://mirror.linuxtrainingacademy.com/icinga/icinga-rpm-release.noarch.rpm
+
+		Install Icinga
+
+			$ sudo dnf install -y icinga2 icingaweb2 icingacli icinga2-ido-mysql
+
+		Configure the Database
+			$ mysql -u root -p icinga < /usr/share/icinga2-ido-mysql/schema/mysql.sql
+
+			$ mysqlshow -u root -p icinga
+
+		Now we need to tell Icinga how to connect to the database. Edit the /etc/icinga2/features-available/ido-mysql.conf file.
+
+			$ sudo nano /etc/icinga2/features-available/ido-mysql.conf
+
+
+			 /**
+			 * The IdoMysqlConnection type implements MySQL support
+			 * for DB IDO.
+			 */
+			object IdoMysqlConnection "ido-mysql" {
+			  user = "icinga"
+			  password = "icinga123"
+			  host = "localhost"
+			  database = "icinga"
+			}
+
+		Enable the IDO-MySQL Feature
+			$ sudo icinga2 feature enable ido-mysql
+
+			$ sudo icinga2 feature list.   # You can see what features are enabled by running this command.
+
+		Install Monitoring Plugins
+				$ sudo dnf install -y epel-release
+
+			One of the nagios monitors, check_disk_smb, requires a Perl package that is not in the default CentOS repository or in the EPEL repository. However, it is in the PowerTools repository. It's' disabled by default, so enable it now:
+
+				$ sudo dnf config-manager --set-enabled powertools
+
+			Now dnf will be able to find the nagios plugins. Install them with this command:
+
+				$ sudo dnf install -y nagios-plugins-all
+
+		Prepare the Server for Clients
+			This one time process needs to be completed if you will be using an Icinga client installed locally on the machines you plan to monitor.
+
+				$ sudo icinga2 node wizard
+
+
+		Start Icinga
+			$ sudo systemctl start icinga2.service
+			$ sudo systemctl enable icinga2.service
+
+		Configure the Web front end
+			$ sudo systemctl restart httpd
+
+		Next, we need to determine what the Icinga API password is. It is randomly generated by the node wizard.
+			
+			$ sudo cat /etc/icinga2/conf.d/api-users.conf
+				Note the value on the "password" line. In this example the password is "ca1981cfd34ec3a8". Note: The quotation marks are NOT part of the password.
+
+				password = "ca1981cfd34ec3a8"
+
+		Next, create a setup token. This token is used to prove to the web front end that you are the administrator of Icinga.
+
+			$ sudo icingacli setup token create
+				The newly generated setup token is: 967e4523f7b27846
+
+			$ sudo icingacli setup token show
+
+
+		Open a web browser on your local system and navigate to: http://10.23.45.30/icingaweb2/setup. Here, you'll' enter the token you just created into the web application. Click the button labeled "Next".
+
+			In case of any issue, Please refer the official documentation: https://icinga.com/docs/icinga-web/latest/doc/02-Installation/03-CentOS/
+
+			Please refer project 5 documentation to follow configuration steps till 'Update the Default Icinga Host Monitoring Configuration'.
+
+
+Add a Host to Monitoring
+
+	Now let's add some configuration to monitor the "kanboard" host. Create a configuration file for the kanboard host by editing it.'
+		$ sudo nano /etc/icinga2/zones.d/master/kanboard.conf
+
+		object Host "kanboard" {
+  		import "generic-host"
+  		address = "10.23.45.25"
+  		vars.os = "Linux"
+		}
+
+		vars is a used to create custom variable.
+
+
+	Open up a new command session and change the state of the kanboard machine. I'm going to assume it was not running and therefore I'm going to start it.
+
+
+Prepare the Server for the Client
+	For each Icinga client you install, you'll need to create a ticket for it on the master Icinga server. 
+This is part of the certificate process that allows for secure communications between the master Icinga server and the client machine.
+Make sure you're connected to the Icinga server by switching back to your original command line session. Create a ticket for the "kanboard" host.
+
+	$ sudo icinga2 pki ticket --cn 'kanboard'
+	8909f6665ee4980366819db51cc5128e9b65d2e5
+
+	You'll need this ticket number when you configure the client.'
+
+Install the Icinga Client
+	Connect to the kanboard VM. Start off by enabling the Icinga repository.
+		$  sudo dnf install -y http://mirror.linuxtrainingacademy.com/icinga/icinga-rpm-release.noarch.rpm
+
+	Next, enabled the EPEL repository.
+		$ sudo dnf install -y epel-release
+
+	Now enable the PowerTools repository.
+		$  sudo dnf config-manager --set-enabled powertools
+
+	Finally, install Icinga and the Nagios monitors.
+		$  sudo dnf install -y icinga2 nagios-plugins-all
+
+	Run the node wizard to tell the client about the master Icinga server. Use the information in bold below to supply the node wizard with the appropriate information.
+		$  sudo icinga2 node wizard
+
+
+	Start icinga on the kanboard host so it will load this configuration. Remember to enable the service as well.
+		$ sudo systemctl start icinga2.service
+		$ sudo systemctl enable icinga2.service
+
+Add Additional Monitors for the Client on the Server
+	Return to your command line session on the Icinga server. Insert the following configuration on the master Icinga server in /etc/icinga2/zones.d/master/kanboard.conf. 
+
+Be sure to insert it to the top of the file and leave the existing contents in place.
+		$ sudo nano /etc/icinga2/zones.d/master/kanboard.conf
+
+
+		object Endpoint "kanboard" {
+		  host = "10.23.45.25"
+		}
+		object Zone "kanboard" {
+		  endpoints = [ "kanboard" ]
+		  parent = "master"
+		}
+		object Host "kanboard" {
+		  import "generic-host"
+		  address = "10.23.45.25"
+		  vars.os = "Linux"
+		}
+
+Let's check the load average on the kanboard host. Add the following configuration to the bottom of /etc/icinga2/zones.d/master/kanboard.conf on the master Icinga server.'
+
+		object Service "load" {
+		  import "generic-service"
+		  check_command = "load"
+		  host_name = "kanboard"
+		  command_endpoint = "kanboard"
+		}
+
+Since we've updated the configuration, we need to restart icinga.'
+		$  sudo systemctl restart icinga2.service
+
+	Go back to the web front end and confirm that the load service now appears for the kanboard host. Let's add even more checks. Add the following configuration to the bottom of
+/etc/icinga2/zones.d/master/kanboard.conf on the master Icinga server.'
+
+		object Service "swap" {
+		  import "generic-service"
+		  check_command = "swap"
+		  host_name = "kanboard"
+		  command_endpoint = "kanboard"
+		}
+		object Service "disk" {
+		  import "generic-service"
+		  check_command = "disk"
+		  host_name = "kanboard"
+		  command_endpoint = "kanboard"
+		}
+Since we've updated the configuration, we need to restart icinga.'
+ 		$ sudo systemctl restart icinga2.service
+
+
+Process Checks
+	Let's monitor the processes that are running inside the client. To do that, we can use the "procs" check command. For each process we want to monitor we can create a new service. 
+	Add the following configuration to the bottom of /etc/icinga2/zones.d/master/kanboard.conf on the master Icinga server.'
+
+	object Service "proc-sshd" {
+	  import "generic-service"
+	  check_command = "procs"
+	  vars.procs_command = "sshd"
+	  vars.procs_critical = "1:"
+	  host_name = "kanboard"
+	  command_endpoint = "kanboard"
+	}
+	object Service "proc-httpd" {
+	  import "generic-service"
+	  check_command = "procs"
+	  vars.procs_command = "httpd"
+	  vars.procs_critical = "1:50"
+	  host_name = "kanboard"
+	  command_endpoint = "kanboard"
+	}
+	object Service "proc-mysqld" {
+	  import "generic-service"
+	  check_command = "procs"
+	  vars.procs_command = "mysqld"
+	  vars.procs_critical = "1:1"
+	  host_name = "kanboard"
+	  command_endpoint = "kanboard"
+	}
+	object Service "proc-rsyslog" {
+	  import "generic-service"
+	  check_command = "procs"
+	  vars.procs_command = "rsyslogd"
+	  vars.procs_critical = "1:1"
+	  host_name = "kanboard"
+	  command_endpoint = "kanboard"
+	}
+
+To see hidden special characters:
+	$ sudo cat -A /etc/icinga2/zones.d/master/kanboard.conf
+
+Monitoring MariaDB
+	
+	To do that, switch to the command line session associated with the kanboard host and start the mysql client.
+		$ mysql -u root -p
+	
+	Now we create an "icinga" user with a password of "icinga123". Remember to flush the privileges.
+		CREATE USER 'icinga' IDENTIFIED BY 'icinga123';
+		FLUSH PRIVILEGES;
+		exit
+
+Add the following configuration to the bottom of /etc/icinga2/zones.d/master/kanboard.conf on the master Icinga server. 
+Make sure you're connected to the Icinga server by switching back to your original command line session.'
+		
+		$ sudo nano /etc/icinga2/zones.d/master/kanboard.conf
+
+		object Service "mysql" {
+		  import "generic-service"
+		  check_command = "mysql"
+		  vars.mysql_username = "icinga"
+		  vars.mysql_password = "icinga123"
+		  host_name = "kanboard"
+		  command_endpoint = "kanboard"
+		}
+
+		$ sudo systemctl restart icinga2.service
+
+
+Let's add one final check for the kanboard host. Since it runs a web application, let's make sure the web service is monitored. This will be an external check that will run from the Icinga server. 
+To add this check, we can use a custom attribute on the host. Edit /etc/icinga2/zones.d/master/kanboard.conf on the master Icinga server and change the kanboard host stanza to the following. 
+(NOTE: DO NOT APPEND A WHOLE NEW STANZA. Change the existing host stanza.)
+
+		object Host "kanboard" {
+		  import "generic-host"
+		  address = "10.23.45.25"
+		  vars.os = "Linux"
+		  vars.http_vhosts["http"] = {
+		    http_uri = "/"
+		  }
+		}
+
+Notifications
+
+	Up until this point we've been using the web front end to look at the status of hosts and services. 
+Let's tell Icinga to send an email when something is wrong, so we don't have to constantly monitor the web interface. 
+To do that, update the kanboard host stanza in /etc/icinga2/zones.d/master/kanboard.conf to look like the following.'
+	
+	object Host "kanboard" {
+	  import "generic-host"
+	  address = "10.23.45.25"
+	  vars.os = "Linux"
+	  vars.http_vhosts["http"] = {
+	    http_uri = "/"
+	  }
+	  vars.notification["mail"] = {
+	    groups = [ "icingaadmins" ]
+	  }
+	}
+
+	This tells Icinga to email anyone in the icingaadmins group. Let's change the email address in /etc/icinga2/conf.d/users.conf from icinga@localhost to vagrant@localhost. 
+	By the way, if you wanted to create more users and groups, this is the place to do that.'
+
+	$  sudo nano /etc/icinga2/conf.d/users.conf
+
+	$ sudo systemctl restart icinga2.service
+
+Switch to the command line session associated with the kanboard host, disconnect from the host and stop it.
+	$ exit
+	$ vagrant halt
+
+Now watch in the web interface as the system goes from UP to DOWN. After the system has been down for 5 minutes, it will send an email. 
+To check for mail, use the mail command. Make sure you're connected to the Icinga server by switching back to your original command line session.'
+
+	$ mail
+
+	To read a message, type the message number and hit enter. For example: "1<ENTER>". To quit the mail reader, type "q" and hit enter.
+
+
+
+Project 7:
+	
+
+
+Telegraf
+	Collecting Metrics with Telegraf
+		
+		Why Collect Metrics?
+			- Find "hot spots"
+			- Discover overallocated resources
+
+		Discovering utilization Issues
+			- Users as a monitoring solution 
+			- You dont
+			- You do it manually, system by system
+				Time consuming 
+
+		Collecting Metrics
+			- Telegraf collects system performance statistics periodically and provides mechanisms to store the value.
+			- Uses Plugins:
+				CPU, Disk, Memory, Users, Uptime
+				Apache, MariaDB
+			- Accepts Custom Metrics
+
+		Configuring Telegraf
+			/etc/telegraf/telegraf.conf
+			/etc/telegraf/telegraf.d
+
+		Telegraf Requires an Output Plugins
+			- Telegraf needs to know where to send metrics.
+			- Output Plugins
+				[[outputs.influxdb]]
+					[[outputs.elasticsearch]]
+					[[outputs.file]]
+					[[outputs.graphite]]
+					[[outputs.opentsdb]]
+					etc...
+
+		Telegraf Logging 
+			/var/log/messages
+
+
+InfluxDB
+	Metric storage with InfluxDB
+		- Designed to store time series data. 
+		- Alows for fast ingest speeds and high data comprression of time series data.
+		- Provides a SQL-Like language called InfluxQL to query the stored time series data.
+
+	InfluxDB Architecture
+		- Listens on port 8086 
+			Telegraf sends data to influxDB on port 8086
+		- Stores data in /var/lib/influxdb/data 
+			/var/lib/influxdb/data/telegraf
+			/var/lib/influxdb/data/_internal
+
+	Write-Ahead Log (WAL)
+			/var/lib/influxdb/wal
+
+	Creating an InfluxDB Database
+		$ influx
+		> create database myappdb
+		> show databases
+		> exit
+
+	Deleting an InfluxDB Database
+		$ influx
+		> drop database myappdb
+		> show databases
+		> exit
+
+	InfluxDB logging
+		/var/log/messages
+
+	Configuring InfluxDB
+		/etc/influxdb/influxdb.conf
+
+Grafana
+	- "Grafana provides a powerful and elegant way to create, explore, and share dashboards and data with your team and the world."
+	- Explore your metrics
+	- Create your own graphs and dashboards
+	-  Use official and community built dashboards
+
+	Logging in
+		- http://SERVER_IP:3000		-- defualt port is 3000
+		Default user: admin
+		Default password: admin
+
+	Grafana Configuration
+		/etc/grafana/grafana.ini
+
+	Grafana Logging
+		/var/log/grafana/grafana.log
+
+
+ Project 7 – Metrics Collection and Graphing System – Walkthrough Part 1
+
+ 	Install InfluxDB
+
+		$ sudo dnf install -y http://mirror.linuxtrainingacademy.com/grafana/influxdb-1.8.2.x86_64.rpm
+
+	Now that InfluxDB is installed, start and enable it.
+		
+		$ sudo systemctl start influxdb
+		$ sudo systemctl enable influxdb
+
+
+	Instal Telegraf
+		$ sudo dnf install -y http://mirror.linuxtrainingacademy.com/grafana/telegraf-1.15.3-1.x86_64.rpm
+
+	First, open the Telegraf configuration file for editing.
+
+
+
+
+
+
+		
+
+
+
+
+
+
+
+
+
