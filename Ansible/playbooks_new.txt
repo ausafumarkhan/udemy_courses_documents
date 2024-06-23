@@ -1,0 +1,366 @@
+
+=============Playbook============
+main.yml
+- name: Install vsftpd
+  import_playbook: pkg.yml
+
+- name: Uninstall postfix
+  import_playbook: pkgrem.yml
+
+- name: Multiple Package Installation
+  import_playbook: multitasks.yml
+=================================
+
+=============Playbook============
+multitasks.yml
+---
+- hosts: server
+  become: true
+  become_user: root
+  tasks:
+          - name: Mount the OS Media Drive
+            command: mount /dev/sr0 /mnt
+          - name: Copy the local repo file
+            copy:
+                    src: /home/sverma/ansible/server.repo
+                    dest: /etc/yum.repos.d
+          - name: Install VSFTPD Package
+            yum:
+                    name: vsftpd
+                    state: latest
+          - name: Install HTTPD Package
+            yum:
+                    name: httpd
+                    state: latest
+          - name: Start & Enable VSFTPD Service
+            service:
+                    name: vsftpd
+                    state: started
+                    enabled: true
+          - name: Start & Enable HTTPD Service
+            service:
+                    name: httpd
+                    state: started
+                    enabled: true
+=================================
+
+=============Playbook============
+newmain.yml
+---
+- hosts: server
+  become: true
+  become_user: root
+  tasks:
+    - import_tasks: pkgtask.yml
+    - import_tasks: pkgrem.yml
+=================================
+
+=============Playbook============
+newvarmain.yml
+---
+- hosts: server
+  become: true
+  become_user: root
+  tasks:
+    - import_tasks: varpkg.yml
+      vars:
+        package: vsftpd
+        service: service
+=================================
+
+=============Playbook============
+pkgrem.yml
+- name: remove postfix package
+  yum:
+    name: postfix
+    state: absent
+=================================
+
+=============Playbook============
+pkgtask.yml
+- name: Update vsftpd package
+  yum:
+    name: vsftpd
+    state: present
+=================================
+
+=============Playbook============
+pkg.yml
+---
+- hosts: server
+  become: true
+  become_user: root
+  tasks:
+     - name: Update vsftpd package
+       yum:
+         name: vsftpd
+         state: present
+       notify: restart vsftpd
+  handlers:
+     - name: restart vsftpd
+       service:
+         name: vsftpd
+         state: restarted
+
+
+=================================
+
+=============Playbook============
+varpkg.yml
+- name: Install the {{ package }} package
+  yum:
+    name: "{{ package }}"
+    state: present
+- name: start the {{ package }} service
+  service:
+    name: "{{ package }}"
+    enabled: true
+    state: started
+=================================
+
+Include
+=======
+
+main.yml
+---
+- hosts: server
+  become: true
+  become_user: root
+  tasks:
+  - include_tasks: pkgtask.yml
+  - include_tasks: pkgrem.yml
+  - include_tasks: multitasks.yml
+=================================
+
+=============Playbook============
+multitasks.yml
+          - name: Mount the OS Media Drive
+            command: mount /dev/sr0 /mnt
+          - name: Copy the local repo file
+            copy:
+                    src: /home/sverma/ansible/server.repo
+                    dest: /etc/yum.repos.d
+          - name: Install VSFTPD Package
+            yum:
+                    name: vsftpd
+                    state: latest
+          - name: Install HTTPD Package
+            yum:
+                    name: httpd
+                    state: latest
+          - name: Start & Enable VSFTPD Service
+            service:
+                    name: vsftpd
+                    state: started
+                    enabled: true
+          - name: Start & Enable HTTPD Service
+            service:
+                    name: httpd
+                    state: started
+                    enabled: true
+=================================
+
+=============Playbook============
+pkgrem.yml
+- name: remove vsftpd package
+  yum:
+    name: vsftpd
+    state: absent
+=================================
+
+=============Playbook============
+pkgtask.yml
+- name: Update vsftpd package
+  yum:
+    name: vsftpd
+    state: present
+=================================
+
+
+guided exer
+
+main.yml
+---
+- hosts: server
+  become: true
+  become_user: root
+  tasks:
+    - name: Include the environment task file
+      include_tasks: tasks/environment.yml
+      vars:
+        package: httpd
+        service: httpd
+      when: ansible_facts['os_family'] == 'RedHat'
+
+    - name: Import the firewall task file
+      import_tasks: tasks/firewall.yml
+      vars:
+        firewall_pkg: firewalld
+        firewall_svc: firewalld
+        rule:
+          - http
+          - https
+    - name: Import the index file
+      import_tasks: tasks/index.yml
+      vars:
+        file: /var/www/html/index.html
+
+- name: Import test playbook
+  import_playbook: tasks/test.yml
+  vars:
+    url: 'http://server.example.com'
+
+
+=============Playbook============
+environment.yml
+- name: Install the {{ package }} package
+  yum:
+    name: "{{ package }}"
+    state: latest
+
+- name: Start the {{ service }} service
+  service:
+    name: "{{ service }}"
+    enabled: true
+    state: started
+=================================
+
+=============Playbook============
+firewall.yml
+- name: Install the firewall
+  yum:
+    name: "{{ firewall_pkg }}"
+    state: latest
+
+- name: Start the firewall
+  service:
+    name: "{{ firewall_svc }}"
+    enabled: true
+    state: started
+
+- name: Open the ports for {{ rule }}
+  firewalld:
+    service: "{{ item }}"
+    immediate: true
+    permanent: true
+    state: enabled
+  loop: "{{ rule }}"
+=================================
+
+=============Playbook============
+index.yml
+- name: Create index.html file
+  copy:
+    content: "{{ ansible_facts['fqdn'] }} is the Automation server. \n"
+    dest: "{{ file }}"
+=================================
+
+=============Playbook============
+test.yml
+---
+- hosts: localhost
+  become: no
+  tasks:
+    - name: Check the conectivity of web server
+      uri:
+        url: "{{ url }}"
+        return_content: yes
+        status_code: 200
+=================================
+
+
+guided_exercise
+
+cat main.yml
+---
+- hosts: server
+  become: true
+  become_user: root
+  tasks:
+  - name: Include the environment task file and set the variables
+    include_tasks: tasks/environment.yml
+    vars:
+      package : httpd
+      service: httpd
+    when: ansible_facts['os_family'] == 'RedHat'
+  - name: Import the firewall task file and set the variables
+    import_tasks: tasks/firewall.yml
+    vars:
+      firewall_pkg: firewalld
+      firewall_svc: firewalld
+      rule:
+        - http
+        - https
+
+  - name: Import the placeholder task file and set the variable
+    import_tasks: tasks/placeholder.yml
+    vars:
+      file: /var/www/html/index.html
+
+- name: Import test play file and set the variable
+  import_playbook: tasks/test.yml
+  vars:
+    url: 'http://server.example.com'
+
+environment.yml
+- name: Install the {{ package }} package
+  yum:
+    name: "{{ package }}"
+    state: latest
+- name: Start the {{ service }} service
+  service:
+    name: "{{ service }}"
+    enabled: true
+    state: started
+=================================
+
+=============Playbook============
+firewall.yml
+- name: Install the firewall
+  yum:
+    name: "{{ firewall_pkg }}"
+    state: latest
+- name: Start the firewall
+  service:
+    name: "{{ firewall_svc }}"
+    enabled: true
+    state: started
+- name: Open the port for {{ rule }}
+  firewalld:
+    service: "{{ item }}"
+    immediate: true
+    permanent: true
+    state: enabled
+  loop: "{{ rule }}"
+=================================
+
+=============Playbook============
+placeholder.yml
+- name: Create placeholder file
+  copy:
+    content: "{{ ansible_facts['fqdn'] }} has been customized using Ansible. \n"
+    dest: "{{ file }}"
+=================================
+
+=============Playbook============
+test.yml
+- name: Test web service
+  hosts: localhost
+  become: no
+  tasks:
+  - name: connect to internet web server
+    uri:
+      url: "{{ url }}"
+      return_content: yes
+      status_code: 200
+=================================
+
+
+
+
+
+
+
+
+
+
