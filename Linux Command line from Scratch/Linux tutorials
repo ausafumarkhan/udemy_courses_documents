@@ -638,6 +638,12 @@ To delete secondary group of a user
 
 	$ $ sudo gpasswd -d <username> <groupname>
 
+To change default Shell of a user:
+	$ sudo chsh <username>
+
+To list all the available shells:
+	$ cat /etc/shells
+
 
 
 
