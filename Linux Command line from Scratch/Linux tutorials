@@ -594,6 +594,9 @@ Network and Port
 
 	$ ss -ltnp
 
+	To check status of a port
+	$ nmap <ip_addr> -p <port>
+
 To clear RAM, swap cache:
 
 	$ echo "3" > /proc/sys/vm/drops_caches
@@ -644,7 +647,17 @@ To change default Shell of a user:
 To list all the available shells:
 	$ cat /etc/shells
 
+To check status of SElinux:
 
+	$ sestatus
+
+	$ getenforce
+
+	When enabled, SELinux has two modes: enforcing and permissive. Use the getenforce or sestatus commands to check the status of SELinux. 
+	The getenforce command returns Enforcing , Permissive , or Disabled .
+     
+	To change the SELinux status
+    $ sudo setenforce 0
 
 
  
