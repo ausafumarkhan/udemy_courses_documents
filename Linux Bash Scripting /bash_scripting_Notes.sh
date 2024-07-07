@@ -2,7 +2,7 @@
 
 Change shell to bash 
 
-	$ chsh -s /bin/bash 
+	$ chsh -s /bin/bash 	# To get new shell we need to logout and login again, Only superuser can change shell for any user. A user can change own shell only.
 
 What is shell??
 	A shell is:
@@ -1218,6 +1218,18 @@ New Course on Shell Script
 
 Linux Shell Scripting: A Project-Based Approach to Learning
 
+	$ man test
+	To get all the possible test - check file types and compare values
+
+	$ type -a test
+
+	$ id -un		# to get username 
+
+	$ echo ${?}		# to get exit code
+
+To update and set default parameters for new user, we need to edit the following file.
+	
+	$ nano /etc/login.defs
 
 
 
