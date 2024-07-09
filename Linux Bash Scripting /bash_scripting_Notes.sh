@@ -1232,6 +1232,66 @@ To update and set default parameters for new user, we need to edit the following
 	$ nano /etc/login.defs
 
 
+Use checksum or cyptographic hash functions, 
+A checksum is a numeric value computed for a block of data that is relatively unique. 
+Checksum were and are used to verify the integrity of data such as files. For example, if we download a file and want to make sure that it is not corrupt in some way, we
+can find the published checksums for the file and compare with file we download.
+
+To retrieve checksum of a file:
+
+	$ sha1sum <filename>
+
+	We can download the sha1sum file of a file and compare them to verify integrity of a file.
+
+To check list of checksum file or other checksums
+
+ 	$ ls -l /usr/bin/*sum
+
+To retrieve sha256sum of a file:
+	
+	$ sha256sum <filename>
+
+If we change a file content then it will generate different checksum. We can try it by appending any data into file, for example
+
+	$ echo "1" >> <filename>
+	$ sha1sum <filename>
+		This time, it will yield different checksum.
+
+To display first 3 lines of a file
+	$ head -n3 /etc/passwd
+
+
+To display first two character of a files
+
+	$ head -c2 /etc/passwd
+
+	
+# Random number as password
+$ PASSWORD="${RANDOM}"
+$ echo "${PASSWORD}"
+
+# Three Random numbers together
+$ PASSWORD="${RANDOM}${RANDOM}${RANDOM}"
+$ echo "${PASSWORD}"
+
+# Use the current date/time as the basis for the password
+$ PASSWORD=$(date +%s)
+$ echo "${PASSWORD}"
+
+# Use nanosecond to act as randomization
+$ PASSWORD=$(date +%s%N)
+$ echo "${PASSWORD}"
+
+# A better password
+$ PASSWORD=$(date +%s%N${RANDOM}${RANDOM}${RANDOM} | sha256sum | head -c32)
+$ echo "${PASSWORD}"
+
+
+# Append a special charater to a password
+$ SPECIAL_CHARACTER=$(echo '!@#$%^&*()' | fold -w1 | shuf | head -c1)
+$ echo "${PASSWORD}${SPECIAL_CHARACTER}"
+	
+
 
 
 
