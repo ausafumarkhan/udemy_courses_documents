@@ -7,6 +7,7 @@ B. Gcloud Basic Commands:
 	gcloud auth list
 	gcloud config list project
 	gcloud config set compute/region <Region>
+  gcloud config get compute/zone
 
 	export my_zone=us-central1-a
 	export my_cluster=standard-cluster-1
@@ -17,13 +18,13 @@ To display php homepage: sudo sh -c 'echo "<?php phpinfo(); ?>" > apache2/htdocs
 
 C. Firewall Rules;
 
-* Notice that there are 4 Ingress firewall rules for the default network:
+* Notice that there are 4 Ingress firewall rules for the default network:
     * default-allow-icmp
     * default-allow-rdp
     * default-allow-ssh
     * default-allow-internal
 
- The deny-all-ingress and allow-all-egress rules are also displayed, but you cannot check or uncheck them because they are implied. 
+ The deny-all-ingress and allow-all-egress rules are also displayed, but you cannot check or uncheck them because they are implied. 
 
 
 
@@ -43,7 +44,7 @@ E. Google Cloud Google Kubernetes Engine (GKE)
 $ gcloud container clusters create webfrontend --zone $MY_ZONE --num-nodes 2
 $ gcloud container clusters get-credentials $my_cluster --zone $my_zone
 $ git clone https://github.com/GoogleCloudPlatform/training-data-analyst
-
+$ gcloud container clusters list
 $ kubectl apply -f ./nginx-deployment.yaml
 $ kubectl get deployments
 $ kubectl scale --replicas=3 deployment nginx-deployment
@@ -195,21 +196,21 @@ Terraform with GCP:
 mkdir tfinfra
 cd tfinfra
 
-2. Name the new file provider.tf, and then open it. Copy the code into provider.tf and save it.
+2. Name the new file provider.tf, and then open it. Copy the code into provider.tf and save it.
 provider "google" {}
 
 3. To initialize Terraform, run the following command in the folder 'tfinfra':
 terraform init
 
-4. Name the new file mynetwork.tf,Copy the following base code into mynetwork.tf:
+4. Name the new file mynetwork.tf,Copy the following base code into mynetwork.tf:
 	# Create the mynetwork network
 	resource [RESOURCE_TYPE] "mynetwork" {
 	name = [RESOURCE_NAME]
 	# RESOURCE properties go here
 	}
  
-replace [RESOURCE_TYPE] with "google_compute_network" and replace [RESOURCE_NAME] with "mynetwork" [with the quotes]. 
-Add the following property to mynetwork.tf: 
+replace [RESOURCE_TYPE] with "google_compute_network" and replace [RESOURCE_NAME] with "mynetwork" [with the quotes]. 
+Add the following property to mynetwork.tf: 
 	auto_create_subnetworks = "true"
 7. $ cat mynetwork.tf
 # Create the mynetwork network
@@ -266,7 +267,7 @@ source_ranges = ["0.0.0.0/0"]
 }
 
 
-8. Name the new file main.tf
+8. Name the new file main.tf
 
 resource [RESOURCE_TYPE] "vm_instance" {
   name = [RESOURCE_NAME]

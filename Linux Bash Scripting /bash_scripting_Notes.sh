@@ -1290,7 +1290,33 @@ $ echo "${PASSWORD}"
 # Append a special charater to a password
 $ SPECIAL_CHARACTER=$(echo '!@#$%^&*()' | fold -w1 | shuf | head -c1)
 $ echo "${PASSWORD}${SPECIAL_CHARACTER}"
-	
+
+
+Positional parmaters
+
+If we add a file in any of the $PATH location(but it was already in anaother $PATH location). 
+If we delete a file from new location, we need to use hash command to let shell to forget that file location. Otherwise, it will not take old executable path.
+
+$ type <filename/command> 
+This will show that file is hashed. To remove this hash, we need to execute this command.
+$ hash -r 
+
+
+baseman command: strip directory and suffix from filename
+$ baseman /vagrant/<filename>
+
+<filename>
+
+$ baseman /not/here
+
+here
+It will strip directory even if file doesnot exist.
+
+
+dirname command: strip last component from file name
+$ dirname /vagrant/<filename>
+
+/vagrant
 
 
 

@@ -1,0 +1,97 @@
+Creation of Transport Layer Security (TLS) certificates for K8 deployment
+
+Creating TLS certificates for a Kubernetes deployment involves generating a private key and a certificate signing request (CSR), then using a Certificate Authority (CA) to sign the CSR and generate the certificate. Here’s a step-by-step guide to create TLS certificates for a Kubernetes deployment:
+
+Step 1: Install OpenSSL
+Ensure you have OpenSSL installed on your system. You can install it using the following command:
+
+$ sudo yum install openssl -y
+
+Step 2: Generate a Private Key
+Generate a private key for your application:
+
+$ openssl genrsa -out tls.key 2048
+
+Step 3: Create a Certificate Signing Request (CSR)
+Create a CSR using the private key. You will be prompted to enter information about your organization and the domain name for the certificate:
+
+$ openssl req -new -key tls.key -out tls.csr
+
+When prompted, enter the following information:
+
+Country Name: Two-letter country code (e.g., US)
+State or Province Name: Full state or province name
+Locality Name: City name
+Organization Name: Your organization’s name
+Organizational Unit Name: Your department or unit
+Common Name: The fully qualified domain name (FQDN) for your service (e.g.,
+example.com
+)
+Email Address: Your email address
+
+
+Step 4: Generate a Self-Signed Certificate (Optional)
+If you do not have a CA to sign your CSR, you can generate a self-signed certificate. Note that self-signed certificates are not trusted by default and are generally used for testing purposes.
+
+$ openssl x509 -req -in tls.csr -signkey tls.key -out tls.crt -days 365
+
+Step 5: Sign the CSR with a CA (Recommended)
+If you have a CA, you can use it to sign the CSR and generate the certificate. This step will vary depending on your CA. Here’s an example using a local CA:
+
+Generate the CA key and certificate (if you don’t have one already):
+
+$ openssl genrsa -out ca.key 2048
+$ openssl req -x509 -new -nodes -key ca.key -sha256 -days 1024 -out ca.crt
+
+Sign the CSR with the CA:
+
+$ openssl x509 -req -in tls.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out tls.crt -days 365 -sha256
+
+Step 6: Create a Kubernetes Secret
+Once you have the
+tls.crt
+and
+tls.key
+files, you can create a Kubernetes secret to store the TLS certificate and key.
+
+kubectl create secret tls my-tls-secret --cert=tls.crt --key=tls.key
+
+Replace
+my-tls-secret
+with the name you want to give to your secret.
+
+Step 7: Use the TLS Secret in Your Deployment
+You can now use the TLS secret in your Kubernetes deployment. Here’s an example of how to configure an Ingress resource to use the TLS secret:
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: my-ingress
+  namespace: default
+spec:
+  tls:
+  - hosts:
+    - example.com
+    secretName: my-tls-secret
+  rules:
+  - host: example.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: my-service
+            port:
+              number: 80
+
+Replace
+example.com
+with your domain name,
+my-tls-secret
+with the name of your TLS secret, and
+my-service
+with the name of your service.
+
+Summary
+By following these steps, you can generate TLS certificates and use them in your Kubernetes deployment to secure your application. Remember to keep your private key secure and follow best practices for managing TLS certificates.

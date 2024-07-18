@@ -1,0 +1,76 @@
+Installing Jenkins on CentOS 8 involves several steps, including setting up the necessary repositories, installing Jenkins, and starting the service. 
+Here’s a step-by-step guide to help you through the process:
+
+Step 1: Update the System
+First, ensure your system is up to date by running:
+
+sudo yum update -y
+
+Note: if you are unable to update the system due to mirror error, execute the following commands
+
+cd /etc/yum.repos.d/
+sudo sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
+sudo sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
+sudo yum update -y
+
+
+Step 2: Install Java
+Jenkins requires Java to run. Install OpenJDK 17 (or any other supported version):
+
+sudo yum install java-17-openjdk-devel -y
+
+Step 3: Enable the Jenkins Repository
+Add the Jenkins repository to your system:
+
+sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
+sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key
+
+Note: If you are getting error for gcpkey, then disable it in the repo
+sudo vi /etc/yum.repos.d/jenkins.repo
+Add or modify the following line:
+
+gpgcheck=0
+Save and exit the file, then try installing Jenkins again:
+
+
+
+Step 4: Install Jenkins
+Now, install Jenkins using the following command:
+
+sudo yum install jenkins -y
+
+Step 5: Start and Enable Jenkins
+Start the Jenkins service and enable it to start on boot:
+
+sudo systemctl start jenkins
+sudo systemctl enable jenkins
+
+Step 6: Adjust the Firewall
+If you have a firewall enabled, you need to allow traffic on port 8080 (the default Jenkins port):
+
+sudo firewall-cmd --permanent --zone=public --add-port=8080/tcp
+sudo firewall-cmd --reload
+
+Step 7: Access Jenkins
+Open a web browser and navigate to
+http://your_server_ip_or_domain:8080
+. You should see the Jenkins setup screen.
+
+Step 8: Unlock Jenkins
+During the initial setup, Jenkins will ask for an administrator password. You can find this password in the following file:
+
+sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+
+Copy the password and paste it into the Jenkins setup screen.
+
+Step 9: Customize Jenkins
+Follow the on-screen instructions to install suggested plugins and create your first admin user.
+
+Step 10: Complete the Setup
+Once the setup is complete, you can start using Jenkins.
+
+Additional Tips
+Backup: Regularly back up your Jenkins configuration and jobs.
+Security: Secure your Jenkins instance by configuring proper authentication and authorization.
+Updates: Keep Jenkins and its plugins up to date to benefit from the latest features and security patches.
+By following these steps, you should have a working Jenkins installation on CentOS 8.
