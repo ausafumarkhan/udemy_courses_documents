@@ -1,0 +1,9 @@
+You can read about these options here:
+https://codex.wordpress.org/Changing_The_Site_URL
+
+Add these two lines to the file, immediately after the initial "<?php" line of your theme's function.php file.
+
+
+
+update_option( 'siteurl', 'http://example.com' );
+update_option( 'home', 'http://example.com' );

@@ -1,0 +1,6 @@
+In the wp-config.php file, right before this line:
+/* That's all, stop editing! Happy blogging. */
+
+Insert the following line:
+
+define('FORCE_SSL_ADMIN', true);

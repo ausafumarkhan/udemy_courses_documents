@@ -1214,6 +1214,7 @@ Working with remote Servers
 
 
 
+
 New Course on Shell Script
 
 Linux Shell Scripting: A Project-Based Approach to Learning
@@ -1291,7 +1292,6 @@ $ echo "${PASSWORD}"
 $ SPECIAL_CHARACTER=$(echo '!@#$%^&*()' | fold -w1 | shuf | head -c1)
 $ echo "${PASSWORD}${SPECIAL_CHARACTER}"
 
-
 Positional parmaters
 
 If we add a file in any of the $PATH location(but it was already in anaother $PATH location). 
@@ -1319,24 +1319,60 @@ $ dirname /vagrant/<filename>
 /vagrant
 
 
+IO Redirection
+
+$ sudo passwd --stdin <username> < <password>
+
+$ su - <username>
+Enter the password
+
+$ FILE="/tmp/data"
+$ echo ${FILE}
+
+$ read LINE < ${FILE}
+$ echo "Line contains: ${LINE}"
+
+There are three File Descriptor (FD):
+FD 0 - STDIN
+FD 1 - STDOUT
+FD 2 - 
 
 
+$ cat /etc/centos-release
+
+$ read X < /etc/centos-release
+$ echo ${X}
+
+$ read X 0< /etc/centos-release		# There should be no space between 0 and < 
+$ echo ${X}
+
+$ echo ${UID} > uid 	# This will redirect the content of UID variable to a file named uid
+$ cat uid
+
+$ echo ${UID} 1> uid
+$ cat uid
 
 
+$ head -n1 /etc/passwd /etc/hosts /fakefile > head.out 2> head.err
+
+$ head -n1 /etc/passwd /etc/hosts /fakefile > head.out 2>> head.err
+
+$ head -n1 /etc/passwd /etc/hosts /fakefile > head.both 2>&1 # This combine stdout and stderr in a same file
+$ cat head,both
+
+$ head -n1 /etc/passwd /etc/hosts /fakefile &> head.both	# This is a second way to redirect stdout and stderr to a same file (head.both)
+$ cat head,both
+
+c | cat -n  # First way: Redirect stdout and stderr through a pipe
+
+$ head -n1 /etc/passwd /etc/hosts /fakefile |& cat -n  # Second way: Redirect stdout and stderr through a pipe
 
 
+$ echo "This is std error!" >&2 	# Send output to STDERR
 
 
-
-
-
-
-
-
-	
-
-
-
-
-
+# To discard/nullify stdout, stdin and stderr
+$ head -n1 /etc/passwd /etc/hosts /fakefile > /dev/null
+$ head -n1 /etc/passwd /etc/hosts /fakefile 2> /dev/null
+$ head -n1 /etc/passwd /etc/hosts /fakefile &> /dev/null
 

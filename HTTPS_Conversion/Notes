@@ -1,0 +1,70 @@
+Lecture 1: What is SSL?
+
+SSL (Secure Socket layer) is the standard security technology for establishing an encrypted link between a web server and a browser. 
+This link ensures that all data passed between the web server and browsers remain in private and integral.
+
+TLS (Transport Layer Security) is a new stronger encryption protocol, but is often also referred to simply as SSL, as it does the same thing.
+
+Important Points:
+1. After a secure connection is made to a web page, the session key is used to encrypt all data that is transmitted between the visitor and the webserver.
+2. When the browser connects to the server, it requests the server identity.
+3. The server identifies itself by sending the SSL certificate, including the server's public key.
+
+
+
+Lecture 2: Why Use SSL?
+
+1. Information is passed from one computer to another. E.g. imagine buying something online. You enter your credit card details and they are sent to another computer. You want
+that information encrypted so hackers cannot steal your credit card details, usernames, passwords, etc.
+2. To receive "Secure" padlock in the address bar of a browser. In itself, this gives your visitors confidence.
+3. HTTPS is google ranking factor, though not a very strong one at the moment.
+
+In this course, we are going to install FREE SSL certificates to convert your site into a secure HTTPS website. However, if you are running an eCommerce site, I would recommend you buy a certficate instead.
+
+
+
+Lecture 3: cPanel & AutoSSL
+
+1. cPanel and WHM version 58 introduced a new feature AutoSSL.
+2. AutoSSL can automatically request and install Domain validated Comodo-Signed SSL for your site, and auto-renew the certificate. This is free to cPanel admins, so you should not be charged for it.
+3. AutoSSL works with Let's Encrypt (certificate authority) who offer free certificates.
+4. Check your cPanel version and your host about it.
+
+Lecture 4: How HTTPS Works
+If your host has setup AutoSSL on your site, they will have requested the certificate for you, and installed it already on your server.
+HTTPS ---> SECURE ---> Connection requires a certificate: 1. Data in encrypted with a key, 2. Identification - Browser will tell you if the certificate is wrong or missing.
+HTTP ----> INSECURE --> Data sent as text
+
+Lecture 5: Check if HTTPS is Already Enabled
+
+Lecture 6: HTTP or HTTPS, Not Both
+1. Consolidate to one form only, and make sure the other form is not available, unless you have a specific reason for doing so.
+2. This course will show you how to do this, redirecting all HTTP versions of the URL to HTTPS version. This should also divert any link juice from outside sites, so that all link juice points at the single, valid HTTPS version of the URL.
+
+
+Lecture 7: Why CloudFlare?
+
+Cloudflare is a popular choice for many businesses and individuals looking to enhance their web presence for several reasons.
+1. We can use Cloudflare as a content delivery network (CDN). Its free to use and integrated into the web hosting which are recommended. 
+2. A CDN will speed up the web page load times.
+3. Cloudflare can also secure your website by acting as a proxy between your visitors and your website server. 
+4. Its effective in filtering out malicious visitors before they can wreak havoc on your server, or waste your bandwidth.
+
+Recommended for four reasons:
+1. Protection
+2. Save Bandwidth
+3. Faster page loading and less downtime
+4. Its free
+
+
+Lecture 8: How CloudFlare Works?
+1. Once part of the Cloudfalre network (Content Delivery Network or CDN), your site will be more secure and load faster.
+2. Traffic to your website is routed through Cloudflare's global network which optimizes the delivery of your content to every visitor, so load times are low.
+3. Cloudflare will also block threats and limit abusive bots and crawlers to protect your site and prevent wasted bandwidth and server resources.
+4. Sites in the cloudflare network see significant performnace increases and are less likely to come under spam attacks.
+5. Cloudfalre also offers free SSL certificates for those that want to migrate to an HTTPS connection.
+6. Setting up Cloudfalre on ypur site is free, takes minutes, and costs nothing. If you don't like it, its just as easy to remove.
+
+
+
+

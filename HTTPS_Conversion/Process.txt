@@ -1,0 +1,10 @@
+1. Add the Site to Cloudflare.
+2. Change DNS at registrar and wait to propogate (when you see the Edge Certificate you can move on).
+3. Generate and install the origin certificate if you need to (for Fishy Fats, I will leave the AutoSSL certificate in place, instead).
+4. Secure the Dashboard.
+5. HTACCESS file redirects.
+6. Check SSL and fix mixed content.
+7. Google Analytics.
+8. Search Console.
+
+

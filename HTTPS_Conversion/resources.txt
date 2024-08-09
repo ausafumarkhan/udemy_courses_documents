@@ -1,0 +1,6 @@
+1. Website to spider site and find insecure content:
+https://www.jitbit.com/sslcheck/
+
+2. Chrome Browser Extension - HTTPS Mixed Content Locator
+Find it in Google here:
+https://www.google.com/search?q=locate+mixed+content+chrome+extension

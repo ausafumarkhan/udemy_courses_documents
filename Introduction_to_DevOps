@@ -1,0 +1,186 @@
+Summary and Highlights (week 1)
+
+    Technology is the enabler of innovation, rather than the driver of innovation. You must have an innovative business idea to leverage technology.
+
+    In 2009, John Allspaw described an innovative approach to managing development and operations that enabled Flickr to complete over ten deploys per day, when many companies were completing fewer than one deploy every six months. This was a key moment in the growth of DevOps.
+
+    DevOps is the practice of development and operation engineers working together during the entire development lifecycle, following Lean and Agile principles that allow them to deliver software in a rapid and continuous manner.
+
+    DevOps is not it is not just Dev and Ops working together. It is a cultural change and a different way to work. DevOps has three dimensions: culture, methods, and tools. Of these, culture is the most important. 
+
+    The essential characteristics of DevOps include cultural change, automated pipelines, infrastructure as code, immutable infrastructure, cloud native application design, the ecosystem of containers, and how to deploy with immutable infrastructure.
+
+    DevOps started in 2007 when Patrick Debois and Andrew Clay Shafer began to gather like-minded people together at conferences to talk about common experiences.
+
+    In 2009, Allspaw delivered his now famous “10+ Deploys Per Day – Dev and Ops Cooperation at Flickr” presentation and the idea gained ground. Also in 2009, Patrick Debois started a conference called DevOpsDays that helped spread the DevOps message.
+
+    Books such as Continuous Delivery in 2011, The Phoenix Project in 2015, and The DevOps Handbook in 2016, helped practitioners understand how DevOps worked.
+
+    The major influential people of the early DevOps movement: Patrick Debois, Andrew Clay Shafer, John Allspaw, Jez Humble, Gene Kim, John Willis, Bridget Kromhout, and Nicole Forsgren, went out and made a difference, showing the results that could be achieved with DevOps.
+
+    The message spread from practitioner to practitioner until they began to realize what was possible with DevOps and that it was a better way to work.
+
+Summary and Highlights (week 2)
+
+    Social coding is coding as a community and public repositories and pair programming result in higher code quality. 
+
+    Working in small batches reduces waste and means quickly delivering something useful to the customer. 
+
+    Minimum viable product is as much about delivery as it is about building what the customer really desires. 
+
+    Test driven development is writing the test for the code you wish you had, then writing the code to make the test pass. It allows you to develop faster and with more confidence.
+
+    Behavior driven development focuses on the behavior of the system from the outside in. It looks at the system as a consumer of it. 
+
+    Behavior driven development improves communication by using an approachable syntax that developers and stakeholders can understand. 
+
+    Microservices are built around business capabilities and are independently deployable by fully automated deployment machinery.  
+
+    Cloud native architecture enables independently deployable microservices that take advantage of horizontal scaling and result in more resilient services. 
+
+    Failure is inevitable, so we design for failure rather than trying to avoid failure. 
+
+    It is important to embrace failure and quickly recover when failures happen.  
+
+    Monkey testing is the deliberately killing services to see how other services are affected.
+
+    Bulkhead patterns isolate failing services to limit the scope of failure.
+
+Summary and Highlights (week 3)
+
+    Taylorism was designed for factory work and software development is bespoke, that is, more like craftwork, and that working in silos leads to mistakes and bottlenecks. 
+
+    Team ownership and stable teams make software development more like product development rather than project management. 
+
+    Developers want innovation, while Operations want stability. 
+
+    Required DevOps behaviors include shared ownership, collaboration, embracing change, and data-driven responses. 
+
+    Infrastructure as Code is describing infrastructure in a textual executable format. 
+
+    Ephemeral infrastructure can be used and then discarded because servers are built on demand, via automation, using Infrastructure as Code techniques. 
+
+    Continuous Integration is building, testing, and integrating every developer change into the master branch after tests have passed. 
+
+    The benefits of Continuous Integration include faster reaction time, moving faster, and reducing the risk in integrating code. 
+
+    Continuous Delivery ensures that code can be rapidly and safely deployed to production by delivering every change to a production-like environment. 
+
+    The five principles of Continuous Delivery have to do with quality, working in small batches, automation, continuous improvement, and shared responsibility.
+
+Summary and Highlights (week 4)
+
+    Organizations need to have small, dedicated, cross-functional, self-organizing teams to successfully implement DevOps. 
+
+    Conway’s Law implies that a company’s design results are a direct reflection of the company’s communication structure. 
+
+    Instead of the traditional structure organized around technology, successful DevOps teams should be organized around business domains. Each team should have its own mission that aligns with a business domain. 
+
+    DevOps is a mindset that the whole organization adopts. 
+
+    DevOps solves problems caused by siloed teams. 
+
+    DevOps is the practice of development and operations engineers working together during the entire software lifecycle, following lean and Agile principles that allow them to deliver high-quality results. 
+
+    Actions without consequences can lead to apathy. 
+
+    Allowing teams to feel the effect of their actions fosters empathy, resulting in higher-quality work. 
+
+    The organizational objective of DevOps is to attain a shared mindset and empower everyone to deliver customer value. 
+
+Summary and Highlights (week 5)
+
+    Measure and reward what you want to improve.  
+
+    People seek information on what is rewarded and then seek to do that. 
+
+    Measuring social metrics leads to improved teamwork and measuring DevOps metrics allows you to see the progression toward your goals. 
+
+    If you want people to be social, then measure them being social. 
+
+    DevOps changes the objective of problem resolution from failure prevention to failure recovery. 
+
+    Vanity metrics may be appealing at first but offer limited actionable insights. 
+
+    Actionable metrics provide meaningful ways to measure your processes and take action toward goals. 
+
+    DevOps actionable metrics include mean lead time, release frequency, change failure rate, and mean time to recovery. 
+
+    You can rate statements developed by Dr. Nicole Forsgren to measure your team’s culture, including statements about information, failures, collaboration, and new ideas. 
+
+    Mean lead time is the measure of how long it takes for an idea to get to production. 
+
+    Change failure rate is the rate of failure from pushing new releases out. 
+
+    Mean time to recovery is how long it takes to recover from a failure. 
+
+    Failures are learning opportunities that should not be punished. 
+
+    Dr. Nicole Forsgren developed cultural statements for measuring team culture. 
+
+
+Scenario 1 Thinking DevOps
+
+Estimated time needed: 5 minutes
+
+The Acme company decided to implement DevOps. Since they already had a Dev team and an Ops team, they thought the best approach was to create a new DevOps team in addition to the already existing teams. They thought it would cause minimal disruption to the existing teams. They also allowed the teams to continue to use the ticket system.
+
+Miguel has just joined the new DevOps team at the Acme company. He has been instructed to work closely with the Dev team and the Ops team as a liaison. In his normal day, he maintains the Continuous Integration/Continuous Delivery (CI/CD) pipelines and makes sure that the developers have what they need from Ops and makes sure that Ops has what they need from the developers. When the Dev team has a request, Miguel uses the ticket queue to make that request to Ops on Dev’s behalf. One morning, the Dev team needed virtual machines (VMs) provisioned in a hurry to deploy their application by the deadline.
+
+Miguel thought he had a good relationship with Charles, the SysAdmin, and asked him if he could get the VMs done that day. Charles curtly reminded him that they had a well-established ticket queue system, and that he would have to open a ticket like everyone else. Miguel opened a ticket and let the developers know that he made the request for the VMs. Several days passed. Nancy, on the Dev team, asked Miguel where the VMs were. She reminded him about the deadline and said, “We’ll miss it unless you get us those VMs.”
+
+Two more days passed. In a meeting with the Dev team, Jim, one of the team members, said, “Well, I do kind of have access to something.” He explained that he had a personal Cloud account where he could have the VMs provisioned within the hour. Miguel asked whether this was in concert with corporate policy. Jim replied, “We have to do what it takes to meet customer commitments.” They deployed the application on Jim’s cloud account.
+
+After reading this scenario, consider what you have learned in the course and apply that knowledge to the quiz questions that follow.
+
+Author(s)
+    John Rofrano
+    Mary Deville
+
+
+Scenario 2 Organizing DevOps
+
+Estimated time needed: 5 minutes
+
+Roopa is an application developer at a company that is building their own e-commerce website. She just picked up a story from the Kanban board to add a new feature that requires input from the user. Since she is a back-end developer, she must coordinate with the front-end team to add new data fields to the user interface. She opens an issue on the front-end team’s GitHub to add the required fields. Her feature requires a schema change (that is, a change to the table structure in the database) to hold the new data. So, she opens a ticket with the database team to make the change.
+
+She works on the application logic for her feature and checks the code into the development branch in GitHub. Unfortunately, she can’t test her code until the front-end team updates the user interface (UI) and the database team updates the schema. Because she is blocked, she begins working on another feature story.
+
+Two weeks later, the front-end team and the database team make their changes. Roopa stops working on the feature she is currently working on to go back and merge those changes with her previous code. Her attempt to merge encounters several merge conflicts. It takes several hours to resolve the merge conflicts because the code has drifted over time. She commits her updated code to the development branch. At the end of the month, the development team merges the development branch back into the master branch to prepare for release. Unfortunately, some quick bug fixes that were applied to the master branch now conflict with Roopa’s code in the development branch. She has to spend an entire day remediating those conflicts.
+
+The development team gets everything working and they are ready to deploy to production. They manually deploy the new release into production only to have it fail. The team had to roll back the release so they could determine the cause of the failure. They meticulously went through every feature change to find the cause of the failure. It took three days to test each new feature in isolation. They determined that the schema update for Roopa’s new feature was never applied. Once the schema was updated, everything started working. Roopa overhears a manager complain about how long this took. One developer shrugs and says, “It’s pretty much always like this.”
+
+After reading this scenario, consider what you have learned in the course and apply that knowledge to the quiz questions that follow.
+
+Author(s)
+    John Rofrano
+    Mary Deville
+
+
+Scenario 3 Social Coding
+
+Estimated time needed: 5 minutes
+
+Beta company has several teams that maintain their e-commerce website. They have adopted the microservices architecture and organized their teams along business domains so that they have an account team, a product team, an orders team, and a warehouse team.
+
+The account team has decided to give customers a more personalized experience. They want to be able to recommend products a customer might like based on what other customers are buying. They notice that the product team has a similar function for recommending products and accessories that go with what the customer is viewing online.
+
+Jeff, the account team lead, decided to ask Susan from the product team if they could add this new capability to their existing recommendation function. Susan said the product team was very busy and, “It will be about a month before we can get to it.” Jeff asked whether he could make the changes. Susan replied, “Our code repository is private, and we don’t like to give access to people outside our team.”
+
+Jeff didn’t want to wait and instead, had the account team write 100% of the code from scratch. He didn’t think it would be that difficult and that they would be able to do it faster than waiting for the product team to do it. Unfortunately, it was harder than Jeff expected.
+
+Jeff knew Kiet, one of the most experienced product team members, from a previous project and asked if he could help them with the new feature. Kiet spent two weeks reviewing the account team’s code with them and making suggestions that got the account team back on track.
+
+The account team eventually completed the feature. They delivered two weeks later than anticipated, but because they created a completely new feature, each of the five account team members received an Innovative Contribution Award that included a $500 bonus.
+
+Kiet, who never received any credit for his contribution thought to himself, “That’s the last time I help the account team with anything.”
+
+After reading this scenario, consider what you have learned in the course and apply that knowledge to the quiz questions that follow.
+
+Author(s)
+    John Rofrano
+    Mary Deville
+
+
+
+     
